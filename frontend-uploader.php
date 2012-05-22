@@ -40,13 +40,18 @@ class Frontend_Uploader {
 	public $html;
 	
 	function __construct() {
-		// hooking to wp_ajax
-		add_action('wp_ajax_upload_ugphoto', array( $this, 'upload_photo' ) );
-		add_action('wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_photo' ) );
-		add_action('wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
-		// adding media submenu
-		add_action('admin_menu', array( $this, 'add_menu_item' ) );
-		add_shortcode('fu-upload-form', array( $this, 'upload_form' ) );
+		// Hooking to wp_ajax
+		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_photo' ) );
+		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_photo' ) );
+		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
+		// Adding media submenu
+		add_action( 'admin_menu', array( $this, 'add_menu_item' ) );
+		
+		// Adding our shortcodes
+		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
+		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
+		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
+		
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		
 		// Configuration filter:
@@ -199,17 +204,52 @@ if ( !empty($message) ) { ?>
 		exit;
 	}
 	
+	function shortcode_content_parser( $atts, $content = null, $tag ) {
+		extract( shortcode_atts( array(
+			'id' => '',
+			'name' => '',
+			'description' => '',
+			'value' => '',
+			'type' => '',
+			'class' => '',
+		), $atts ) );
+		switch ( $tag ):
+			case 'textarea':
+				echo $this->html->element( 'label',
+					$description .
+					$this->html->element('textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) )
+					,
+					array('for' => $id ),
+					false );
+			break;
+			case 'input':
+				echo $this->html->element( 'label',
+					$description .
+					$this->html->input( $type, $name, $value, array('id' => $id, 'class' => $class ) )
+					,
+					array('for' => $id ),
+					false );
+		endswitch;
+	}
+	
 	/**
 	 * Display the upload form 
 	 *
 	 * @todo filterize output or provide any other way for users to customize
 	 */
-	function upload_form() {
-	global $post;	
+	function upload_form( $atts, $content = null ) {
+		
+	global $post;
+
 ?>		
 	<form action="<?php echo admin_url( 'admin-ajax.php' ) ?>" method="post" id="ug-photo-form" class="validate" enctype="multipart/form-data">
 	  <div class="content">
-		  <h2>Upload a photo</h2>
+		  <h2>Upload a photo</h2>		  
+<?php		  
+		if ( $content ):
+			do_shortcode( $content );
+		else:
+?>	  
 		  <ul>
 			  <li class="left">
 				  <label for="ug_name">Name (optional)</label>
@@ -230,6 +270,11 @@ if ( !empty($message) ) { ?>
 				  <input type="file" name="photo" id="ug_photo" class="required" aria-required="true" />
 			  </li>
 		  </ul>
+		<div class="footer clearfix">
+		  <a href="#" class="cancel btn btn-inverse">Cancel</a>
+		  <a href="#" class="red_btn submit btn btn-inverse">Submit</a>
+	  </div>
+<?php endif; ?>		  
 		  <input type="hidden" name="action" value="upload_ugphoto" />
 		  <input type="hidden" value="<?php echo $post->ID ?>" name="post_ID" />
 		  <?php
@@ -238,10 +283,6 @@ if ( !empty($message) ) { ?>
 		  ?>
 		  <?php wp_nonce_field( 'upload_ugphoto', 'nonceugphoto' ); ?>
 		  <div class="clear"></div>
-	  </div>
-	  <div class="footer clearfix">
-		  <a href="#" class="cancel btn btn-inverse">Cancel</a>
-		  <a href="#" class="red_btn submit btn btn-inverse">Submit</a>
 	  </div>
 	  </form>
 <?php						

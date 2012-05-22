@@ -110,7 +110,7 @@ class FE_WP_Media_List_Table extends WP_Media_List_Table {
 		}
 		/* translators: column name */
 		$posts_columns['date'] = _x( 'Date', 'column name' );
-		$posts_columns = apply_filters( 'manage_media_columns', $posts_columns, $this->detached );
+		$posts_columns = apply_filters( 'manage_fu_media_columns', $posts_columns, $this->detached );
 
 		return $posts_columns;
 	}

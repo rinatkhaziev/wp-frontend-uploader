@@ -7,6 +7,9 @@
  */
 class Html_Helper {
 	
+	// @todo additional setup on instantiation
+	function __construct() {}
+	
 	/**
 	 * Render multiple choice checkboxes
 	 *
@@ -38,7 +41,7 @@ class Html_Helper {
 		$data = func_get_args();
 		$ret = '';
 		foreach ( $data as $cell )
-	  		$ret .= $this->element ('td', $cell, null, false );
+	  		$ret .= $this->element( 'td', $cell, null, false );
   		return "<tr>" . $ret . "</tr>\n";
 	}
 
@@ -52,7 +55,7 @@ class Html_Helper {
 	function input( $type, $name, $data = null, $attrs = array() ) {
 		if ($type == 'select')
 			return $this->_select( $name, $data, $attrs );
-		elseif ( in_array($type, array( 'text', 'hidden', 'submit' ) ) )
+		elseif ( in_array($type, array( 'text', 'hidden', 'submit', 'file' ) ) )
 			return $this->_text( $name, $type,  $data, $attrs ) ;
 	}
 	
@@ -121,7 +124,7 @@ class Html_Helper {
 	 * @return string rendered html tag
 	 */
 	function element( $tag, $content, $params = array(), $escape = true ) {
-	  $allowed = array( 'div', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'td', 'option' );
+	  $allowed = apply_filters( 'hh_allowed_html_elements' , array( 'div', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'td', 'option', 'label', 'textarea' ) );
 	  $attr_string = $this->_format_attributes( $params );
 	  if ( in_array ( $tag, $allowed) )
 	  return "<{$tag} {$attr_string}>" . ( $escape ? esc_html ( $content ) : $content ) . "</{$tag}>";
@@ -156,6 +159,6 @@ class Html_Helper {
 	 * returns allowed HTML attributes
 	 */
 	function _allowed_html_attrs() {
-		return apply_filters( 'hh_allowed_html_attributes', array( 'href', 'class', 'id', 'value', 'action', 'name', 'method', 'selected', 'checked' ) );
+		return apply_filters( 'hh_allowed_html_attributes', array( 'href', 'class', 'id', 'value', 'action', 'name', 'method', 'selected', 'checked', 'for' ) );
 	}
 }
