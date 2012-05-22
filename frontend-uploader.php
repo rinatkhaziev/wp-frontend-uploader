@@ -32,10 +32,12 @@ define( 'UGC_FILE_PATH' , UGC_ROOT . '/' . basename( __FILE__ ) );
 define( 'UGC_URL' , plugins_url( '/', __FILE__ ) );
 
 require_once( UGC_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php' );
+require_once( UGC_ROOT . '/lib/php/class-html-helper.php' );
 
 class Frontend_Uploader {
 
 	public $allowed_mime_types;
+	public $html;
 	
 	function __construct() {
 		// hooking to wp_ajax
@@ -50,6 +52,8 @@ class Frontend_Uploader {
 		// Configuration filter:
 		// fu_allowed_mime_types should return array of allowed mime types
 		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', array( 'image/jpeg', 'image/jpg', 'image/png', 'image/gif') );
+		// HTML helper to render HTML elements
+		$this->html = new Html_Helper;
 	}
 
 	/**
