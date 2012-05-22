@@ -51,4 +51,4 @@ add_action('fu_additional_html', function() {
 = 0.1 (May 21, 2012)
 * Initial release and poorly written readme
 
-[Fork the plugin on Github](https://github.com/rinatkhaziev/)
+[Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
