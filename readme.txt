@@ -9,7 +9,7 @@ This plugin allows your visitors to upload User Generated Content.
 
 == Description ==
 
-This plugin is useful if you want to power up your site with user content and give your visitors ability to easily upload content.  
+This plugin is useful if you want to power up your site with user content and give your visitors ability to easily upload content. You can easily customize the form using special shortcodes inside [fu-upload-form] 
 
 == Installation ==
 
@@ -17,6 +17,16 @@ This plugin is useful if you want to power up your site with user content and gi
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Use the following shortcode in post or page: [fu-upload-form]
 1. You can moderate uploaded files in Media -> Manage UGC menu
+
+== Shortcode example ==
+
+Here's example of default form (you don't need to enter all that if you want to use default form, just use [fu-upload-form]):
+
+[fu-upload-form class="your-class" title="Upload your media"]
+[textarea name="caption" class="textarea" id="ug_caption" description="Description (optional)"]	   
+[input type="file" name="photo" id="ug_photo" class="required" description="Your Photo"]
+[input type="submit" class="btn" value="Submit"]
+[/fu-upload-form]
 
 == Configuration Filters ==
 
@@ -48,7 +58,11 @@ add_action('fu_additional_html', function() {
 
 == Changelog ==
 
-= 0.1 (May 21, 2012)
+= 0.1.1 (May 23, 2012)
+* Feature: allow form customization
+* Feature: re-attach attachment to different post
+
+= 0.1 (May 21, 2012) =
 * Initial release and poorly written readme
 
 [Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
