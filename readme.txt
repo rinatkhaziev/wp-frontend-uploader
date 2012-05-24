@@ -3,7 +3,7 @@ Contributors: rinatkhaziev
 Tags: frontend, image, media, uploader
 Requires at least: 3.1
 Tested up to: 3.4
-Stable tag: 0.1
+Stable tag: 0.1.1
 
 This plugin allows your visitors to upload User Generated Content.
 
