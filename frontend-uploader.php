@@ -68,21 +68,24 @@ class Frontend_Uploader {
 	$media_ids = array(); // will hold uploaded media IDS
 
 	if ( !wp_verify_nonce( $_POST['nonceugphoto'], 'upload_ugphoto' ) )  {
-		wp_redirect ( add_query_arg(array('uaresponse' => 'noncefailure' ), $_POST['_wp_http_referer'] ) );
+		wp_redirect ( add_query_arg( array( 'response' => 'nonce-failure' ), $_POST['_wp_http_referer'] ) );
 		exit;
 	} // if nonce is invalid, redirect to referer and display error flash notice
 
-	if (!empty( $_FILES ) && intval( $_POST['post_ID'] ) != 0) {
+	if ( !empty( $_FILES ) && intval( $_POST['post_ID'] ) != 0 ) {
 		foreach ( $_FILES as $k => $v ) {
+			// Iterate through files, and save upload if it's one of allowed MIME types
 			if ( in_array( $v['type'], $this->allowed_mime_types ) )  {
+				// Setup some default values
+				// However, you can make additional changes on 'fu_after_upload' action
 				$post_overrides = array(
 					'post_status' => 'private',
 					'post_title' => isset( $_POST['caption'] ) && ! empty( $_POST['caption'] ) ? filter_var( $_POST['caption'], FILTER_SANITIZE_STRING ) : 'Unnamed',
-					'post_content' => !empty( $_POST['name'] ) ? 'Courtesy of ' . filter_var($_POST['name'], FILTER_SANITIZE_STRING) : 'Anonymous',
+					'post_content' => !empty( $_POST['name'] ) ? 'Courtesy of ' . filter_var($_POST['name'], FILTER_SANITIZE_STRING) : '',
 				);
 				$media_ids[] =  media_handle_upload( $k, intval( $_POST['post_ID'] ), $post_overrides );
 			}
-		} // iterate through files, and save upload if it's one of allowed MIME types
+		} 
 	}
 	
 	// Allow additional setup
@@ -90,7 +93,7 @@ class Frontend_Uploader {
 	do_action( 'fu_after_upload', $media_ids );
 	
 	if ( $_POST['_wp_http_referer'] )
-	  wp_redirect ( add_query_arg( array( 'uaresponse' => 'ugsent' ), $_POST['_wp_http_referer'] ) );
+	  wp_redirect ( add_query_arg( array( 'response' => 'ugc-sent' ), $_POST['_wp_http_referer'] ) );
 	  exit;
   }
 
@@ -204,6 +207,13 @@ if ( !empty($message) ) { ?>
 		exit;
 	}
 	
+	/**
+	 * Shortcode callback for inner content of [fu-upload-form] shortcode
+	 *
+	 * @param array $atts shortcode attributes
+	 * @param $content not used
+	 * @param string $tag
+	 */
 	function shortcode_content_parser( $atts, $content = null, $tag ) {
 		extract( shortcode_atts( array(
 			'id' => '',
@@ -229,6 +239,8 @@ if ( !empty($message) ) { ?>
 					,
 					array('for' => $id ),
 					false );
+			// @todo implement select and checkboxes
+			// For now additional customization is available via do_action( 'fu_additional_html' );
 		endswitch;
 	}
 	
@@ -238,42 +250,30 @@ if ( !empty($message) ) { ?>
 	 * @todo filterize output or provide any other way for users to customize
 	 */
 	function upload_form( $atts, $content = null ) {
-		
+		extract( shortcode_atts( array(
+			'description' => '',
+			'title' => 'Upload a photo',
+			'type' => '',
+			'class' => 'validate',
+		), $atts ) );	
 	global $post;
 
 ?>		
-	<form action="<?php echo admin_url( 'admin-ajax.php' ) ?>" method="post" id="ug-photo-form" class="validate" enctype="multipart/form-data">
-	  <div class="content">
-		  <h2>Upload a photo</h2>		  
-<?php		  
+	<form action="<?php echo admin_url( 'admin-ajax.php' ) ?>" method="post" id="ugc-media-form" class="<?php echo esc_attr( $class )?>" enctype="multipart/form-data">
+	  <div class="ugc-inner-wrapper">
+		  <h2><?php echo esc_html( $title ) ?></h2>		  
+<?php
+		echo $this->user_response();
+		// We have some customizations, nice!
+		// Let's parse them
 		if ( $content ):
 			do_shortcode( $content );
+		// Or render default form	
 		else:
-?>	  
-		  <ul>
-			  <li class="left">
-				  <label for="ug_name">Name (optional)</label>
-				  <input type="text" name="name" id="ug_name" />
-			  </li>
-			  <li class="left">
-				  <label for="ug_email">Email (optional)</label>
-				  <input type="text" name="email" id="ug_email" />
-			  </li>
-			  <li class="clear"></li>
-			  <li class="left">
-				  <label for="ug_caption">Caption (optional)</label>
-				  <input type="text" name="caption" id="ug_caption" />
-			  </li>
-			  <li class="clear"></li>
-			  <li class="left">
-				  <label for="ug_photo">Your photo</label>
-				  <input type="file" name="photo" id="ug_photo" class="required" aria-required="true" />
-			  </li>
-		  </ul>
-		<div class="footer clearfix">
-		  <a href="#" class="cancel btn btn-inverse">Cancel</a>
-		  <a href="#" class="red_btn submit btn btn-inverse">Submit</a>
-	  </div>
+			do_shortcode( ' [textarea name="caption" class="textarea" id="ug_caption" description="Description (optional)"]	   
+						    [input type="file" name="photo" id="ug_photo" class="required" description="Your Photo"]
+							[input type="submit" class="btn" value="Submit"]');
+?>	  		
 <?php endif; ?>		  
 		  <input type="hidden" name="action" value="upload_ugphoto" />
 		  <input type="hidden" value="<?php echo $post->ID ?>" name="post_ID" />
@@ -286,6 +286,22 @@ if ( !empty($message) ) { ?>
 	  </div>
 	  </form>
 <?php						
+	}
+	
+	function user_response() {
+		if ( empty( $_GET['response'] ) ) 
+			return;
+		switch($_GET['response']) {
+			case 'ugc-sent':
+				$title ='Your file was successfully uploaded!';
+			break;
+			case 'nonce-failure':
+				$title = 'Security check failed';
+			break;
+			default:
+			    $title = '';
+		}
+		return "<p>$title</p>";
 	}
 	
 	function enqueue_scripts() {
