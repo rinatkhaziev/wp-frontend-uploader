@@ -245,9 +245,10 @@ if ( !empty($message) ) { ?>
 	}
 	
 	/**
-	 * Display the upload form 
+	 * Display the upload form
 	 *
-	 * @todo filterize output or provide any other way for users to customize
+	 * @param array $atts shortcode attributes
+	 * @param string $content content that is encloded in [fe-upload-form][/fe-upload-form]
 	 */
 	function upload_form( $atts, $content = null ) {
 		extract( shortcode_atts( array(
@@ -287,7 +288,9 @@ if ( !empty($message) ) { ?>
 	  </form>
 <?php						
 	}
-	
+	/**
+	 * Render notice for user
+	 */
 	function user_response() {
 		if ( empty( $_GET['response'] ) ) 
 			return;
@@ -304,6 +307,9 @@ if ( !empty($message) ) { ?>
 		return "<p>$title</p>";
 	}
 	
+	/**
+	 * Enqueue our assets
+	 */
 	function enqueue_scripts() {
 		wp_enqueue_style( 'frontend-uploader', UGC_URL . '/lib/css/frontend-uploader.css' );
 		wp_enqueue_script( 'jquery-validate', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js', array( 'jquery' ) );
@@ -311,6 +317,7 @@ if ( !empty($message) ) { ?>
 	}
 	
 }
+
 global $frontend_uploader;
 $frontend_uploader = new Frontend_Uploader;
 ?>

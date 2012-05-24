@@ -265,7 +265,7 @@ foreach ( $columns as $column_name => $column_display_name ) {
 	default:
 ?>
 		<td <?php echo $attributes ?>>
-			<?php do_action( 'manage_media_custom_column', $column_name, $id ); ?>
+			<?php do_action( 'manage_fu_media_custom_column', $column_name, $id ); ?>
 		</td>
 <?php
 		break;
@@ -320,4 +320,42 @@ foreach ( $columns as $column_name => $column_display_name ) {
 
 		return $actions;
 	}
+}
+
+// Add a nice little feature:
+// Re-attach Media
+// http://wordpress.org/support/topic/detach-amp-re-attach-media-attachment-images-from-posts
+
+add_filter("manage_fu_media_columns", 'fu_upload_columns');
+add_action("manage_fu_media_custom_column", 'fu_media_custom_columns', 0, 2);
+
+function fu_upload_columns( $columns ) {
+	unset( $columns['parent'] );
+	$columns['better_parent'] = "Parent";
+	return $columns;
+}
+
+function fu_media_custom_columns( $column_name, $id ) {
+	$post = get_post( $id );
+	if( $column_name != 'better_parent' )
+		return;
+
+		if ( $post->post_parent > 0 ) {
+			if ( get_post($post->post_parent) ) {
+				$title =_draft_or_post_title( $post->post_parent );
+			} else {
+				$title = '<em>Untitled</em>';
+			}
+			?>
+			<strong><a href="<?php echo get_edit_post_link( $post->post_parent ); ?>"><?php echo $title ?></a></strong>, <?php echo get_the_time(__('Y/m/d')); ?>
+			<br />
+			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>');return false;" href="#the-list"><?php _e('Re-Attach'); ?></a>
+
+			<?php
+		} else {
+			?>
+			<?php _e('(Unattached)'); ?><br />
+			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>');return false;" href="#the-list"><?php _e('Attach'); ?></a>
+			<?php
+		}
 }
