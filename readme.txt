@@ -9,7 +9,12 @@ This plugin allows your visitors to upload User Generated Content.
 
 == Description ==
 
-This plugin is useful if you want to power up your site with user content and give your visitors ability to easily upload content. You can easily customize the form using special shortcodes inside [fu-upload-form] 
+This plugin is useful if you want to power up your site with user generated content and give your users ability to easily upload it. Essentially, the plugin is a customizeable upload form that adds files with allowed MIME-type to your WordPress Media Library under a special tab "Manage UGC". There you can moderate your user submissions (cause, you know, you'd better moderate 'em):
+* Approve
+* Delete
+* Re-attach to other post/page/custom-post-type
+
+[Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
 
 == Installation ==
 
@@ -64,5 +69,3 @@ add_action('fu_additional_html', function() {
 
 = 0.1 (May 21, 2012) =
 * Initial release and poorly written readme
-
-[Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
