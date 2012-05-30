@@ -33,6 +33,9 @@ Here's example of default form (you don't need to enter all that if you want to 
 [input type="submit" class="btn" value="Submit"]
 [/fu-upload-form]
 
+== Screenshots ==
+1. Screenshot of plugin's UI (It's looks like standard media list table, with slightly better Parent column and additional row action: "Approve")
+
 == Configuration Filters ==
 
 = fu_allowed_mime_types =

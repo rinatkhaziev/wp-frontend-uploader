@@ -62,7 +62,7 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Handles the upload of a user's phot
+	 * Handles the upload of a user's photo
 	 */
 	function upload_photo() {
 	$media_ids = array(); // will hold uploaded media IDS
