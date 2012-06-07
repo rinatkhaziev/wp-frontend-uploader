@@ -68,11 +68,11 @@ add_action('fu_additional_html', function() {
 
 == Changelog ==
 
-= 0.1.2 (June 6, 2012)
+= 0.1.2 (June 6, 2012) =
 
 * Added localization strings 
 
-= 0.1.1 (May 23, 2012)
+= 0.1.1 (May 23, 2012) =
 
 * Feature: allow form customization
 * Feature: re-attach attachment to different post
