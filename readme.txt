@@ -3,7 +3,7 @@ Contributors: rinatkhaziev
 Tags: frontend, image, media, uploader
 Requires at least: 3.1
 Tested up to: 3.4
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 
 This plugin allows your visitors to upload User Generated Content.
 
@@ -35,6 +35,7 @@ Here's example of default form (you don't need to enter all that if you want to 
 [/fu-upload-form]
 
 == Screenshots ==
+
 1. Screenshot of plugin's UI (It's looks like standard media list table, with slightly better Parent column and additional row action: "Approve")
 
 == Configuration Filters ==
@@ -67,9 +68,15 @@ add_action('fu_additional_html', function() {
 
 == Changelog ==
 
+= 0.1.2 (June 6, 2012)
+
+* Added localization strings 
+
 = 0.1.1 (May 23, 2012)
+
 * Feature: allow form customization
 * Feature: re-attach attachment to different post
 
 = 0.1 (May 21, 2012) =
+
 * Initial release and poorly written readme
