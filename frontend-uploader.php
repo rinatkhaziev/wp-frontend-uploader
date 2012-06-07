@@ -264,7 +264,8 @@ if ( !empty($message) ) { ?>
 	  <div class="ugc-inner-wrapper">
 		  <h2><?php echo esc_html( $title ) ?></h2>		  
 <?php
-		echo $this->user_response();
+		if ( !empty( $_GET['response'] ) )
+			echo $this->user_response( $_GET['response'] );
 		// We have some customizations, nice!
 		// Let's parse them
 		if ( $content ):
@@ -291,10 +292,10 @@ if ( !empty($message) ) { ?>
 	/**
 	 * Render notice for user
 	 */
-	function user_response() {
-		if ( empty( $_GET['response'] ) ) 
+	function user_response( $response ) {
+		if ( empty( $response ) ) 
 			return;
-		switch($_GET['response']) {
+		switch( $response ) {
 			case 'ugc-sent':
 				$title = __( 'Your file was successfully uploaded!', 'frontend-uploader' );
 			break;
