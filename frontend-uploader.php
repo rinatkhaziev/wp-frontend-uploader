@@ -98,10 +98,10 @@ class Frontend_Uploader {
   }
 
 	function admin_list() {
-		$title = 'Manage UGC';
+		$title = __( 'Manage UGC', 'frontend-uploader' );
 		set_current_screen( 'upload' );
-		if ( !current_user_can( 'upload_files' ) )
-			wp_die( __( 'You do not have permission to upload files.' ) );
+		if ( ! current_user_can( 'upload_files' ) )
+			wp_die( __( 'You do not have permission to upload files.', 'frontend-uploader' ) );
 
 		$wp_list_table = new FE_WP_Media_List_Table();
 
@@ -187,7 +187,7 @@ if ( !empty($message) ) { ?>
 	}
 
 	function add_menu_item() {
-		add_media_page('Manage UGC', 'Manage UGC', 'edit_posts', 'manage_frontend_uploader', array( $this, 'admin_list' ) );
+		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_uploader', array( $this, 'admin_list' ) );
 	}
 
 	function approve_photo() {
@@ -235,7 +235,7 @@ if ( !empty($message) ) { ?>
 			case 'input':
 				echo $this->html->element( 'label',
 					$description .
-					$this->html->input( $type, $name, $value, array('id' => $id, 'class' => $class ) )
+					$this->html->input( $type, $name, $value, array( 'id' => $id, 'class' => $class ) )
 					,
 					array('for' => $id ),
 					false );
@@ -253,7 +253,7 @@ if ( !empty($message) ) { ?>
 	function upload_form( $atts, $content = null ) {
 		extract( shortcode_atts( array(
 			'description' => '',
-			'title' => 'Upload a photo',
+			'title' => __( 'Upload a photo', 'frontend-uploader' ),
 			'type' => '',
 			'class' => 'validate',
 		), $atts ) );	
@@ -296,10 +296,10 @@ if ( !empty($message) ) { ?>
 			return;
 		switch($_GET['response']) {
 			case 'ugc-sent':
-				$title ='Your file was successfully uploaded!';
+				$title = __( 'Your file was successfully uploaded!', 'frontend-uploader' );
 			break;
 			case 'nonce-failure':
-				$title = 'Security check failed';
+				$title = __( 'Security check failed', 'frontend-uploader' );
 			break;
 			default:
 			    $title = '';
