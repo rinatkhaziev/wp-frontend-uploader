@@ -1,6 +1,6 @@
 === Frontend Uploader ===
 Contributors: rinatkhaziev
-Tags: frontend, image, media, uploader
+Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures
 Requires at least: 3.1
 Tested up to: 3.4
 Stable tag: 0.1.1
