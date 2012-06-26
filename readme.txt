@@ -3,13 +3,14 @@ Contributors: rinatkhaziev
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures
 Requires at least: 3.1
 Tested up to: 3.4
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 
 This plugin allows your visitors to upload User Generated Content.
 
 == Description ==
 
 This plugin is useful if you want to power up your site with user generated content and give your users ability to easily upload it. Essentially, the plugin is a customizeable upload form that adds files with allowed MIME-type to your WordPress Media Library under a special tab "Manage UGC". There you can moderate your user submissions (cause, you know, you'd better moderate 'em):
+
 * Approve
 * Delete
 * Re-attach to other post/page/custom-post-type
@@ -32,6 +33,10 @@ Here's example of default form (you don't need to enter all that if you want to 
 [input type="file" name="photo" id="ug_photo" class="required" description="Your Photo"]
 [input type="submit" class="btn" value="Submit"]
 [/fu-upload-form]
+
+== Screenshots ==
+
+1. Screenshot of plugin's UI (It's looks like standard media list table, with slightly better Parent column and additional row action: "Approve")
 
 == Configuration Filters ==
 
@@ -63,9 +68,15 @@ add_action('fu_additional_html', function() {
 
 == Changelog ==
 
-= 0.1.1 (May 23, 2012)
+= 0.1.2 (June 6, 2012) =
+
+* Added localization strings 
+
+= 0.1.1 (May 23, 2012) =
+
 * Feature: allow form customization
 * Feature: re-attach attachment to different post
 
 = 0.1 (May 21, 2012) =
+
 * Initial release and poorly written readme

@@ -3,7 +3,7 @@
 Plugin Name: UGC Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev
-Version: 0.1.1
+Version: 0.1.2
 Author URI: http://digitallyconscious.com
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 // Define our paths and urls and bootstrap
-define( 'UGC_VERSION', '0.1.1' );
+define( 'UGC_VERSION', '0.1.2' );
 define( 'UGC_ROOT' , dirname( __FILE__ ) );
 define( 'UGC_FILE_PATH' , UGC_ROOT . '/' . basename( __FILE__ ) );
 define( 'UGC_URL' , plugins_url( '/', __FILE__ ) );
@@ -62,7 +62,7 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * handles upload of usesr photo
+	 * Handles the upload of a user's photo
 	 */
 	function upload_photo() {
 	$media_ids = array(); // will hold uploaded media IDS
@@ -98,10 +98,10 @@ class Frontend_Uploader {
   }
 
 	function admin_list() {
-		$title = 'Manage UGC';
+		$title = __( 'Manage UGC', 'frontend-uploader' );
 		set_current_screen( 'upload' );
-		if ( !current_user_can( 'upload_files' ) )
-			wp_die( __( 'You do not have permission to upload files.' ) );
+		if ( ! current_user_can( 'upload_files' ) )
+			wp_die( __( 'You do not have permission to upload files.', 'frontend-uploader' ) );
 
 		$wp_list_table = new FE_WP_Media_List_Table();
 
@@ -187,7 +187,7 @@ if ( !empty($message) ) { ?>
 	}
 
 	function add_menu_item() {
-		add_media_page('Manage UGC', 'Manage UGC', 'edit_posts', 'manage_frontend_uploader', array( $this, 'admin_list' ) );
+		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_uploader', array( $this, 'admin_list' ) );
 	}
 
 	function approve_photo() {
@@ -235,7 +235,7 @@ if ( !empty($message) ) { ?>
 			case 'input':
 				echo $this->html->element( 'label',
 					$description .
-					$this->html->input( $type, $name, $value, array('id' => $id, 'class' => $class ) )
+					$this->html->input( $type, $name, $value, array( 'id' => $id, 'class' => $class ) )
 					,
 					array('for' => $id ),
 					false );
@@ -253,7 +253,7 @@ if ( !empty($message) ) { ?>
 	function upload_form( $atts, $content = null ) {
 		extract( shortcode_atts( array(
 			'description' => '',
-			'title' => 'Upload a photo',
+			'title' => __( 'Upload a photo', 'frontend-uploader' ),
 			'type' => '',
 			'class' => 'validate',
 		), $atts ) );	
@@ -264,7 +264,8 @@ if ( !empty($message) ) { ?>
 	  <div class="ugc-inner-wrapper">
 		  <h2><?php echo esc_html( $title ) ?></h2>		  
 <?php
-		echo $this->user_response();
+		if ( !empty( $_GET['response'] ) )
+			echo $this->user_response( $_GET['response'] );
 		// We have some customizations, nice!
 		// Let's parse them
 		if ( $content ):
@@ -291,15 +292,15 @@ if ( !empty($message) ) { ?>
 	/**
 	 * Render notice for user
 	 */
-	function user_response() {
-		if ( empty( $_GET['response'] ) ) 
+	function user_response( $response ) {
+		if ( empty( $response ) ) 
 			return;
-		switch($_GET['response']) {
+		switch( $response ) {
 			case 'ugc-sent':
-				$title ='Your file was successfully uploaded!';
+				$title = __( 'Your file was successfully uploaded!', 'frontend-uploader' );
 			break;
 			case 'nonce-failure':
-				$title = 'Security check failed';
+				$title = __( 'Security check failed', 'frontend-uploader' );
 			break;
 			default:
 			    $title = '';
