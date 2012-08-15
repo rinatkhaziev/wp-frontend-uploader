@@ -33,8 +33,9 @@ class Html_Helper {
 			}
 		}
 	}
+
 	/**
-	 * this method supports unlimited arguments,
+	 * This method supports unlimited arguments,
 	 * each argument represents html value
 	 */
 	function table_row() {
@@ -104,7 +105,9 @@ class Html_Helper {
 		echo '</form>';
 	}
 	/**
-	 * cast to string and return with leading zero
+	 * Cast to string and return with leading zero
+	 * @param int $number
+	 * @todo Why is this here?
 	 */
 	function leading_zero( $number ) {
 		$number = (string) $number;
@@ -115,7 +118,7 @@ class Html_Helper {
 	}
 
 	/**
-	 * renders html element
+	 * Renders html element
 	 *
 	 * @param string $tag one of allowed tags
 	 * @param string content innerHTML content of tag
@@ -131,9 +134,10 @@ class Html_Helper {
 	}
 
 	/**
-	 * format and return string of allowed html attrs
+	 * Formats and returns string of allowed html attrs
 	 *
 	 * @param array $attrs
+	 * @return string attributes
 	 */
 	function _format_attributes( $attrs = array() ) {
 		$attr_string = '';
@@ -143,20 +147,23 @@ class Html_Helper {
 		}
 		return $attr_string;
 	}
+
 	/**
-	 * validates and returns url as A HTML element
+	 * Validates and returns url as A HTML element
 	 *
 	 * @param string $url any valid url
 	 * @param string $title
 	 * @param $params array of html attributes
+	 * @return string html link
 	 */
 	function a( $url, $title = '', $params = array() ) {
 		$attr_string = $this->_format_attributes( $params );
 		if ( filter_var( trim ( $url ), FILTER_VALIDATE_URL ) )
 			return '<a href="' . esc_url( trim( $url ) ) . '" ' . $attr_string . '>' . ( $title != '' ? esc_html ( $title ) : esc_url( trim( $url ) ) ) . '</a>';
 	}
+
 	/**
-	 * returns allowed HTML attributes
+	 * Returns allowed HTML attributes
 	 */
 	function _allowed_html_attrs() {
 		return apply_filters( 'hh_allowed_html_attributes', array( 'href', 'class', 'id', 'value', 'action', 'name', 'method', 'selected', 'checked', 'for', 'multiple' ) );
