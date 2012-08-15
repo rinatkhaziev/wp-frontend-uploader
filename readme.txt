@@ -30,7 +30,7 @@ Here's example of default form (you don't need to enter all that if you want to 
 
 [fu-upload-form class="your-class" title="Upload your media"]
 [textarea name="caption" class="textarea" id="ug_caption" description="Description (optional)"]	   
-[input type="file" name="photo" id="ug_photo" class="required" description="Your Photo"]
+[input type="file" name="photo" id="ug_photo" class="required" description="Your Photo" multiple=""]
 [input type="submit" class="btn" value="Submit"]
 [/fu-upload-form]
 
@@ -72,6 +72,10 @@ function my_fu_additional_html() {
 }
 
 == Changelog ==
+
+= 0.2 (August 15, 2012) =
+
+* Utilized support of "multiple" file tag attribute in modern browsers, that allows multiple files upload at once ( no IE )
 
 = 0.1.2 (June 6, 2012) =
 
