@@ -55,7 +55,7 @@ class Html_Helper {
 	function input( $type, $name, $data = null, $attrs = array() ) {
 		if ($type == 'select')
 			return $this->_select( $name, $data, $attrs );
-		elseif ( in_array($type, array( 'text', 'hidden', 'submit', 'file' ) ) )
+		elseif ( in_array( $type, array( 'text', 'hidden', 'submit', 'file' ) ) )
 			return $this->_text( $name, $type,  $data, $attrs ) ;
 	}
 	
@@ -65,7 +65,7 @@ class Html_Helper {
 	 * @access private
 	 */
 	function _text ( $name = '', $type='text', $data = '', $attrs = array() ) {
-		return '<input type="' . esc_attr( $type ) . '" value="'. esc_attr( $data ) . '" name="' . esc_attr( $name ) . '" '.$this->_format_attributes($attrs) . ' />';
+		return '<input type="' . esc_attr( $type ) . '" value="'. esc_attr( $data ) . '" name="' . esc_attr( $name ) . '" '.$this->_format_attributes( $attrs ) . ' />';
 	}
 	
 	/**
@@ -126,7 +126,7 @@ class Html_Helper {
 	function element( $tag, $content, $params = array(), $escape = true ) {
 	  $allowed = apply_filters( 'hh_allowed_html_elements' , array( 'div', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'td', 'option', 'label', 'textarea' ) );
 	  $attr_string = $this->_format_attributes( $params );
-	  if ( in_array ( $tag, $allowed) )
+	  if ( in_array ( $tag, $allowed ) )
 	  return "<{$tag} {$attr_string}>" . ( $escape ? esc_html ( $content ) : $content ) . "</{$tag}>";
 	}
 
@@ -139,7 +139,7 @@ class Html_Helper {
 		$attr_string = '';
 	  	foreach ( (array) $attrs as $attr => $value ) {
 		  if ( in_array( $attr, $this->_allowed_html_attrs() ) )
-			$attr_string .= " {$attr}='" . esc_attr ( filter_var ($value, FILTER_SANITIZE_STRING ) ) . "'";
+			$attr_string .= " {$attr}='" . esc_attr ( $value ) . "'";
 		}
 		return $attr_string;
 	}
@@ -159,6 +159,6 @@ class Html_Helper {
 	 * returns allowed HTML attributes
 	 */
 	function _allowed_html_attrs() {
-		return apply_filters( 'hh_allowed_html_attributes', array( 'href', 'class', 'id', 'value', 'action', 'name', 'method', 'selected', 'checked', 'for' ) );
+		return apply_filters( 'hh_allowed_html_attributes', array( 'href', 'class', 'id', 'value', 'action', 'name', 'method', 'selected', 'checked', 'for', 'multiple' ) );
 	}
 }
