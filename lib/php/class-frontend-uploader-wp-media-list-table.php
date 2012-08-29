@@ -66,9 +66,9 @@ class FE_WP_Media_List_Table extends WP_Media_List_Table {
 
 	function get_bulk_actions() {
 		$actions = array();
-		$actions['delete'] = __( 'Delete Permanently' );
+		$actions['delete'] = __( 'Delete Permanently', 'frontend-uploader' );
 		if ( $this->detached )
-			$actions['attach'] = __( 'Attach to a post' );
+			$actions['attach'] = __( 'Attach to a post', 'frontend-uploader' );
 
 		return $actions;
 	}
@@ -94,7 +94,7 @@ class FE_WP_Media_List_Table extends WP_Media_List_Table {
 	}
 
 	function no_items() {
-		_e( 'No media attachments found.' );
+		__( 'No media attachments found.', 'frontend-uploader' );
 	}
 
 	function get_columns() {
@@ -103,7 +103,7 @@ class FE_WP_Media_List_Table extends WP_Media_List_Table {
 		$posts_columns['icon'] = '';
 		/* translators: column name */
 		$posts_columns['title'] = _x( 'File', 'column name' );
-		$posts_columns['author'] = __( 'Author' );
+		$posts_columns['author'] = __( 'Author', 'frontend-uploader'  );
 		/* translators: column name */
 		if ( !$this->detached ) {
 			$posts_columns['parent'] = _x( 'Attached to', 'column name' );
@@ -162,7 +162,7 @@ foreach ( $columns as $column_name => $column_display_name ) {
 					echo $thumb;
 				} else {
 ?>
-				<a href="<?php echo get_edit_post_link( $post->ID, true ); ?>" title="<?php echo esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;' ), $att_title ) ); ?>">
+				<a href="<?php echo get_edit_post_link( $post->ID, true ); ?>" title="<?php echo esc_attr( sprintf( __( 'Edit "%s"', 'frontend-uploader' ), $att_title ) ); ?>">
 					<?php echo $thumb; ?>
 				</a>
 
@@ -175,7 +175,7 @@ foreach ( $columns as $column_name => $column_display_name ) {
 
 	case 'title':
 ?>
-		<td <?php echo $attributes ?>><strong><?php if ( $this->is_trash ) echo $att_title; else { ?><a href="<?php echo get_edit_post_link( $post->ID, true ); ?>" title="<?php echo esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;' ), $att_title ) ); ?>"><?php echo $att_title; ?></a><?php };  _media_states( $post ); ?></strong>
+		<td <?php echo $attributes ?>><strong><?php if ( $this->is_trash ) echo $att_title; else { ?><a href="<?php echo get_edit_post_link( $post->ID, true ); ?>" title="<?php echo esc_attr( sprintf( __( 'Edit "%s"', 'frontend-uploader' ), $att_title ) ); ?>"><?php echo $att_title; ?></a><?php };  _media_states( $post ); ?></strong>
 			<p>
 <?php
 			if ( preg_match( '/^.*?\.(\w+)$/', get_attached_file( $post->ID ), $matches ) )
@@ -207,7 +207,7 @@ foreach ( $columns as $column_name => $column_display_name ) {
 				$out[] = "<a href='edit.php?tag=$c->slug'> " . esc_html( sanitize_term_field( 'name', $c->name, $c->term_id, 'post_tag', 'display' ) ) . "</a>";
 			echo join( ', ', $out );
 		} else {
-			_e( 'No Tags' );
+			__( 'No Tags', 'frontend-uploader' );
 		}
 ?>
 		</td>
@@ -222,18 +222,18 @@ foreach ( $columns as $column_name => $column_display_name ) {
 
 	case 'date':
 		if ( '0000-00-00 00:00:00' == $post->post_date && 'date' == $column_name ) {
-			$t_time = $h_time = __( 'Unpublished' );
+			$t_time = $h_time = __( 'Unpublished', 'frontend-uploader' );
 		} else {
-			$t_time = get_the_time( __( 'Y/m/d g:i:s A' ) );
+			$t_time = get_the_time( __( 'Y/m/d g:i:s A', 'frontend-uploader' ) );
 			$m_time = $post->post_date;
 			$time = get_post_time( 'G', true, $post, false );
 			if ( ( abs( $t_diff = time() - $time ) ) < 86400 ) {
 				if ( $t_diff < 0 )
-					$h_time = sprintf( __( '%s from now' ), human_time_diff( $time ) );
+					$h_time = sprintf( __( '%s from now', 'frontend-uploader' ), human_time_diff( $time ) );
 				else
-					$h_time = sprintf( __( '%s ago' ), human_time_diff( $time ) );
+					$h_time = sprintf( __( '%s ago', 'frontend-uploader' ), human_time_diff( $time ) );
 			} else {
-				$h_time = mysql2date( __( 'Y/m/d' ), $m_time );
+				$h_time = mysql2date( __( 'Y/m/d', 'frontend-uploader' ), $m_time );
 			}
 		}
 ?>
@@ -249,13 +249,13 @@ foreach ( $columns as $column_name => $column_display_name ) {
 ?>
 			<td <?php echo $attributes ?>>
 				<strong><a href="<?php echo get_edit_post_link( $post->post_parent ); ?>"><?php echo $title ?></a></strong>,
-				<?php echo get_the_time( __( 'Y/m/d' ) ); ?>
+				<?php echo get_the_time( __( 'Y/m/d', 'frontend-uploader' ) ); ?>
 			</td>
 <?php
 		} else {
 ?>
-			<td <?php echo $attributes ?>><?php _e( '(Unattached)' ); ?><br />
-			<a class="hide-if-no-js" onclick="findPosts.open( 'media[]','<?php echo $post->ID ?>' );return false;" href="#the-list"><?php _e( 'Attach' ); ?></a></td>
+			<td <?php echo $attributes ?>><?php __( '(Unattached)', 'frontend-uploader' ); ?><br />
+			<a class="hide-if-no-js" onclick="findPosts.open( 'media[]','<?php echo $post->ID ?>' );return false;" href="#the-list"><?php _e_( 'Attach', 'frontend-uploader' ); ?></a></td>
 <?php
 		}
 		break;
@@ -281,38 +281,38 @@ foreach ( $columns as $column_name => $column_display_name ) {
 
 		if ( $this->detached ) {
 			if ( current_user_can( 'edit_post', $post->ID ) )
-				$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, true ) . '">' . __( 'Edit' ) . '</a>';
+				$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, true ) . '">' . __( 'Edit', 'frontend-uploader' ) . '</a>';
 			if ( current_user_can( 'delete_post', $post->ID ) )
 				if ( EMPTY_TRASH_DAYS && MEDIA_TRASH ) {
-					$actions['trash'] = "<a class='submitdelete' href='" . wp_nonce_url( "post.php?action=trash&amp;post=$post->ID", 'trash-attachment_' . $post->ID ) . "'>" . __( 'Trash' ) . "</a>";
+					$actions['trash'] = "<a class='submitdelete' href='" . wp_nonce_url( "post.php?action=trash&amp;post=$post->ID", 'trash-attachment_' . $post->ID ) . "'>" . __( 'Trash', 'frontend-uploader' ) . "</a>";
 				} else {
 					$delete_ays = !MEDIA_TRASH ? " onclick='return showNotice.warn();'" : '';
-					$actions['delete'] = "<a class='submitdelete'$delete_ays href='" . wp_nonce_url( "post.php?action=delete&amp;post=$post->ID", 'delete-attachment_' . $post->ID ) . "'>" . __( 'Delete Permanently' ) . "</a>";
+					$actions['delete'] = "<a class='submitdelete'$delete_ays href='" . wp_nonce_url( "post.php?action=delete&amp;post=$post->ID", 'delete-attachment_' . $post->ID ) . "'>" . __( 'Delete Permanently', 'frontend-uploader' ) . "</a>";
 				}
-			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( sprintf( __( 'View &#8220;%s&#8221;' ), $att_title ) ) . '" rel="permalink">' . __( 'View' ) . '</a>';
+			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( sprintf( __( 'View "%s"', 'frontend-uploader' ), $att_title ) ) . '" rel="permalink">' . __( 'View', 'frontend-uploader' ) . '</a>';
 			if ( current_user_can( 'edit_post', $post->ID ) )
-				$actions['attach'] = '<a href="#the-list" onclick="findPosts.open( \'media[]\',\''.$post->ID.'\' );return false;" class="hide-if-no-js">'.__( 'Attach' ).'</a>';
+				$actions['attach'] = '<a href="#the-list" onclick="findPosts.open( \'media[]\',\''.$post->ID.'\' );return false;" class="hide-if-no-js">'.__( 'Attach', 'frontend-uploader' ).'</a>';
 		}
 		else {
 			if ( current_user_can( 'edit_post', $post->ID ) && !$this->is_trash )
-				$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, true ) . '">' . __( 'Edit' ) . '</a>';
+				$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, true ) . '">' . __( 'Edit', 'frontend-uploader' ) . '</a>';
 			if ( current_user_can( 'delete_post', $post->ID ) ) {
 				if ( $this->is_trash )
-					$actions['untrash'] = "<a class='submitdelete' href='" . wp_nonce_url( "post.php?action=untrash&amp;post=$post->ID", 'untrash-attachment_' . $post->ID ) . "'>" . __( 'Restore' ) . "</a>";
+					$actions['untrash'] = "<a class='submitdelete' href='" . wp_nonce_url( "post.php?action=untrash&amp;post=$post->ID", 'untrash-attachment_' . $post->ID ) . "'>" . __( 'Restore', 'frontend-uploader' ) . "</a>";
 				elseif ( EMPTY_TRASH_DAYS && MEDIA_TRASH )
-					$actions['trash'] = "<a class='submitdelete' href='" . wp_nonce_url( "post.php?action=trash&amp;post=$post->ID", 'trash-attachment_' . $post->ID ) . "'>" . __( 'Trash' ) . "</a>";
+					$actions['trash'] = "<a class='submitdelete' href='" . wp_nonce_url( "post.php?action=trash&amp;post=$post->ID", 'trash-attachment_' . $post->ID ) . "'>" . __( 'Trash', 'frontend-uploader' ) . "</a>";
 				if ( $this->is_trash || !EMPTY_TRASH_DAYS || !MEDIA_TRASH ) {
 					$delete_ays = ( !$this->is_trash && !MEDIA_TRASH ) ? " onclick='return showNotice.warn();'" : '';
-					$actions['delete'] = "<a class='submitdelete'$delete_ays href='" . wp_nonce_url( "post.php?action=delete&amp;post=$post->ID", 'delete-attachment_' . $post->ID ) . "'>" . __( 'Delete Permanently' ) . "</a>";
+					$actions['delete'] = "<a class='submitdelete'$delete_ays href='" . wp_nonce_url( "post.php?action=delete&amp;post=$post->ID", 'delete-attachment_' . $post->ID ) . "'>" . __( 'Delete Permanently', 'frontend-uploader' ) . "</a>";
 				}
 
 				if ($post->post_status == 'private') {
-				  $actions['pass'] = '<a href="'.admin_url('admin-ajax.php').'?action=approve_ugc&id=' . $post->ID . '">Approve</a>';
+				  $actions['pass'] = '<a href="'.admin_url('admin-ajax.php').'?action=approve_ugc&id=' . $post->ID . '">'. __('Approve', 'frontend-uploader') .'</a>';
 				}
 			}
 			if ( !$this->is_trash ) {
 				$title =_draft_or_post_title( $post->post_parent );
-				$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( sprintf( __( 'View &#8220;%s&#8221;' ), $title ) ) . '" rel="permalink">' . __( 'View' ) . '</a>';
+				$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( sprintf( __( 'View "%s"', 'frontend-uploader' ), $title ) ) . '" rel="permalink">' . __( 'View', 'frontend-uploader' ) . '</a>';
 			}
 		}
 
@@ -347,15 +347,15 @@ function fu_media_custom_columns( $column_name, $id ) {
 				$title = '<em>Untitled</em>';
 			}
 			?>
-			<strong><a href="<?php echo get_edit_post_link( $post->post_parent ); ?>"><?php echo $title ?></a></strong>, <?php echo get_the_time(__('Y/m/d')); ?>
+			<strong><a href="<?php echo get_edit_post_link( $post->post_parent ); ?>"><?php echo $title ?></a></strong>, <?php echo get_the_time(__('Y/m/d', 'frontend-uploader')); ?>
 			<br />
-			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>');return false;" href="#the-list"><?php _e('Re-Attach'); ?></a>
+			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>');return false;" href="#the-list"><?php __('Re-Attach', 'frontend-uploader'); ?></a>
 
 			<?php
 		} else {
 			?>
-			<?php _e('(Unattached)'); ?><br />
-			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>');return false;" href="#the-list"><?php _e('Attach'); ?></a>
+			<?php __('(Unattached)', 'frontend-uploader'); ?><br />
+			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>');return false;" href="#the-list"><?php __('Attach', 'frontend-uploader'); ?></a>
 			<?php
 		}
 }
