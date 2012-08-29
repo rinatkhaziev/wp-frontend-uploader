@@ -344,7 +344,7 @@ if ( !empty($message) ) { ?>
 				$title = __( 'Security check failed', 'frontend-uploader' );
 			break;
 			case 'ugc-disallowed_mime_type':
-				$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' );
+				$title = __( 'This kind of file is not allowed. Please, try again selectiong other file.', 'frontend-uploader' );
 				break;
 			default:
 			    $title = '';
