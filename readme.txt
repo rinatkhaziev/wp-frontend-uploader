@@ -1,5 +1,5 @@
 === Frontend Uploader ===
-Contributors: rinatkhaziev
+Contributors: rinatkhaziev, gastonbesada
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.1
 Tested up to: 3.4
