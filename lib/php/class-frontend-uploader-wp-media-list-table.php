@@ -111,7 +111,6 @@ class FE_WP_Media_List_Table extends WP_Media_List_Table {
 		/* translators: column name */
 		$posts_columns['date'] = _x( 'Date', 'column name' );
 		$posts_columns = apply_filters( 'manage_fu_media_columns', $posts_columns, $this->detached );
-
 		return $posts_columns;
 	}
 
@@ -128,7 +127,7 @@ class FE_WP_Media_List_Table extends WP_Media_List_Table {
 				continue;
 
 			$alt = ( 'alternate' == $alt ) ? '' : 'alternate';
-			$post_owner = ( get_current_user_id() == $post->post_author ) ? 'self' : 'other';
+			$post_owner = ( get_current_user_id() == $post->post_author ) ? 'self' : 'other' ;
 			$att_title = _draft_or_post_title();
 ?>
 	<tr id='post-<?php echo $id; ?>' class='<?php echo trim( $alt . ' author-' . $post_owner . ' status-' . $post->post_status ); ?>' valign="top">
@@ -349,13 +348,13 @@ function fu_media_custom_columns( $column_name, $id ) {
 			?>
 			<strong><a href="<?php echo get_edit_post_link( $post->post_parent ); ?>"><?php echo $title ?></a></strong>, <?php echo get_the_time(__('Y/m/d', 'frontend-uploader')); ?>
 			<br />
-			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>');return false;" href="#the-list"><?php __('Re-Attach', 'frontend-uploader'); ?></a>
+			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>');return false;" href="#the-list"><?php _e('Re-Attach', 'frontend-uploader'); ?></a>
 
 			<?php
 		} else {
 			?>
 			<?php __('(Unattached)', 'frontend-uploader'); ?><br />
-			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>');return false;" href="#the-list"><?php __('Attach', 'frontend-uploader'); ?></a>
+			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>');return false;" href="#the-list"><?php _e('Attach', 'frontend-uploader'); ?></a>
 			<?php
 		}
 }
