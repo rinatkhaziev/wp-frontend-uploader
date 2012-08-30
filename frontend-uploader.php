@@ -24,7 +24,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-
 // Define our paths and urls and bootstrap
 define( 'UGC_VERSION', '0.2' );
 define( 'UGC_ROOT' , dirname( __FILE__ ) );
@@ -47,10 +46,9 @@ class Frontend_Uploader {
 	 */
 	function l10n()
 	{
-		load_plugin_textdomain( 'frontend-uploader', false, UGC_ROOT . '/languages/' );
+		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
-	
-	
+		
 	function __construct() {
 		// Hooking to wp_ajax
 		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_photo' ) );
@@ -70,8 +68,7 @@ class Frontend_Uploader {
 		// fu_allowed_mime_types should return array of allowed mime types
 		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', array( 'image/jpeg', 'image/jpg', 'image/png', 'image/gif') );
 		// HTML helper to render HTML elements
-		$this->html = new Html_Helper;
-		
+		$this->html = new Html_Helper;		
 		// Localization
 		$this->l10n();
 	}
