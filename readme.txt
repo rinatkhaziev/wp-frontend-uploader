@@ -73,6 +73,10 @@ function my_fu_additional_html() {
 
 == Changelog ==
 
+= 0.2.1 (August 30, 2012) =
+
+* Added l10n support, added spanish translation. Props gastonbesada
+
 = 0.2 (August 15, 2012) =
 
 * Utilized support of "multiple" file tag attribute in modern browsers, that allows multiple files upload at once ( no IE )
