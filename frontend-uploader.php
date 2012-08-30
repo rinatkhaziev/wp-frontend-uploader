@@ -47,7 +47,7 @@ class Frontend_Uploader {
 	 */
 	function l10n()
 	{
-		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'frontend-uploader', false, UGC_ROOT . '/languages/' );
 	}
 	
 	
@@ -72,8 +72,8 @@ class Frontend_Uploader {
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
 		
-		// localization
-		self::l10n();
+		// Localization
+		$this->l10n();
 	}
 
 	/**
@@ -344,7 +344,7 @@ if ( !empty($message) ) { ?>
 				$title = __( 'Security check failed', 'frontend-uploader' );
 			break;
 			case 'ugc-disallowed_mime_type':
-				$title = __( 'This kind of file is not allowed. Please, try again selectiong other file.', 'frontend-uploader' );
+				$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' );
 				break;
 			default:
 			    $title = '';
