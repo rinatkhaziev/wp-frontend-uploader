@@ -66,7 +66,7 @@ class Frontend_Uploader {
 		
 		// Configuration filter:
 		// fu_allowed_mime_types should return array of allowed mime types
-		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', array( 'image/jpeg', 'image/jpg', 'image/png', 'image/gif') );
+		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', array( 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ) );
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;		
 		// Localization
@@ -89,7 +89,7 @@ class Frontend_Uploader {
 		$files = current( $_FILES );
 		
 		for( $i = 0; $i < count( $_FILES['photo']['name'] ); $i++ ) {
-			$fields = array('name','type', 'tmp_name', 'error', 'size' );
+			$fields = array( 'name','type', 'tmp_name', 'error', 'size' );
 			foreach ( $fields as $field ) {
 				$k[$field] = $files[$field][$i]; 
 			}
@@ -137,53 +137,53 @@ class Frontend_Uploader {
 ?>
 <div class="wrap">
 <?php screen_icon(); ?>
-<h2><?php echo esc_html( $title ); ?> <a href="media-new.php" class="add-new-h2"><?php echo esc_html_x('Add New', 'file'); ?></a> <?php
+<h2><?php echo esc_html( $title ); ?> <a href="media-new.php" class="add-new-h2"><?php echo esc_html_x( 'Add New', 'file' ); ?></a> <?php
 if ( isset($_REQUEST['s']) && $_REQUEST['s'] )
-	printf( '<span class="subtitle">' . __('Search results for &#8220;%s&#8221;', 'frontend-uploader') . '</span>', get_search_query() ); ?>
+	printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'frontend-uploader' ) . '</span>', get_search_query() ); ?>
 </h2>
 
 <?php
 $message = '';
 if ( isset($_GET['posted']) && (int) $_GET['posted'] ) {
-	$message = __('Media attachment updated.', 'frontend-uploader');
-	$_SERVER['REQUEST_URI'] = remove_query_arg(array('posted'), $_SERVER['REQUEST_URI']);
+	$message = __( 'Media attachment updated.', 'frontend-uploader' );
+	$_SERVER['REQUEST_URI'] = remove_query_arg(array( 'posted' ), $_SERVER['REQUEST_URI']);
 }
 
 if ( isset($_GET['attached']) && (int) $_GET['attached'] ) {
 	$attached = (int) $_GET['attached'];
-	$message = sprintf( _n('Reattached %d attachment.', 'Reattached %d attachments.', $attached), $attached );
-	$_SERVER['REQUEST_URI'] = remove_query_arg(array('attached'), $_SERVER['REQUEST_URI']);
+	$message = sprintf( _n( 'Reattached %d attachment.', 'Reattached %d attachments.', $attached), $attached );
+	$_SERVER['REQUEST_URI'] = remove_query_arg(array( 'attached' ), $_SERVER['REQUEST_URI']);
 }
 
 if ( isset($_GET['deleted']) && (int) $_GET['deleted'] ) {
 	$message = sprintf( _n( 'Media attachment permanently deleted.', '%d media attachments permanently deleted.', $_GET['deleted'] ), number_format_i18n( $_GET['deleted'] ) );
-	$_SERVER['REQUEST_URI'] = remove_query_arg(array('deleted'), $_SERVER['REQUEST_URI']);
+	$_SERVER['REQUEST_URI'] = remove_query_arg(array( 'deleted' ), $_SERVER['REQUEST_URI']);
 }
 
 if ( isset($_GET['trashed']) && (int) $_GET['trashed'] ) {
 	$message = sprintf( _n( 'Media attachment moved to the trash.', '%d media attachments moved to the trash.', $_GET['trashed'] ), number_format_i18n( $_GET['trashed'] ) );
-	$message .= ' <a href="' . esc_url( wp_nonce_url( 'upload.php?doaction=undo&action=untrash&ids='.(isset($_GET['ids']) ? $_GET['ids'] : ''), "bulk-media" ) ) . '">' . __('Undo', 'frontend-uploader') . '</a>';
-	$_SERVER['REQUEST_URI'] = remove_query_arg(array('trashed'), $_SERVER['REQUEST_URI']);
+	$message .= ' <a href="' . esc_url( wp_nonce_url( 'upload.php?doaction=undo&action=untrash&ids='.(isset($_GET['ids']) ? $_GET['ids'] : '' ), "bulk-media" ) ) . '">' . __( 'Undo', 'frontend-uploader' ) . '</a>';
+	$_SERVER['REQUEST_URI'] = remove_query_arg(array( 'trashed' ), $_SERVER['REQUEST_URI']);
 }
 
 if ( isset($_GET['untrashed']) && (int) $_GET['untrashed'] ) {
 	$message = sprintf( _n( 'Media attachment restored from the trash.', '%d media attachments restored from the trash.', $_GET['untrashed'] ), number_format_i18n( $_GET['untrashed'] ) );
-	$_SERVER['REQUEST_URI'] = remove_query_arg(array('untrashed'), $_SERVER['REQUEST_URI']);
+	$_SERVER['REQUEST_URI'] = remove_query_arg(array( 'untrashed' ), $_SERVER['REQUEST_URI']);
 }
 
 if (isset($_GET['approved'])) {
   $message = 'The photo was approved';
 }
 
-$messages[1] = __('Media attachment updated.', 'frontend-uploader');
-$messages[2] = __('Media permanently deleted.', 'frontend-uploader');
-$messages[3] = __('Error saving media attachment.', 'frontend-uploader');
-$messages[4] = __('Media moved to the trash.', 'frontend-uploader') . ' <a href="' . esc_url( wp_nonce_url( 'upload.php?doaction=undo&action=untrash&ids='.(isset($_GET['ids']) ? $_GET['ids'] : ''), "bulk-media" ) ) . '">' . __('Undo', 'frontend-uploader') . '</a>';
-$messages[5] = __('Media restored from the trash.', 'frontend-uploader');
+$messages[1] = __( 'Media attachment updated.', 'frontend-uploader' );
+$messages[2] = __( 'Media permanently deleted.', 'frontend-uploader' );
+$messages[3] = __( 'Error saving media attachment.', 'frontend-uploader' );
+$messages[4] = __( 'Media moved to the trash.', 'frontend-uploader' ) . ' <a href="' . esc_url( wp_nonce_url( 'upload.php?doaction=undo&action=untrash&ids='.(isset($_GET['ids']) ? $_GET['ids'] : '' ), "bulk-media" ) ) . '">' . __( 'Undo', 'frontend-uploader' ) . '</a>';
+$messages[5] = __( 'Media restored from the trash.', 'frontend-uploader' );
 
 if ( isset($_GET['message']) && (int) $_GET['message'] ) {
 	$message = $messages[$_GET['message']];
-	$_SERVER['REQUEST_URI'] = remove_query_arg(array('message'), $_SERVER['REQUEST_URI']);
+	$_SERVER['REQUEST_URI'] = remove_query_arg(array( 'message' ), $_SERVER['REQUEST_URI']);
 }
 
 if ( !empty($message) ) { ?>
@@ -220,7 +220,7 @@ if ( !empty($message) ) { ?>
 	
 		$post = get_post($_GET['id']);
 	
-		if ( is_object( $post ) && $post->post_status == 'private') {
+		if ( is_object( $post ) && $post->post_status == 'private' ) {
 			$post->post_status = 'inherit';
 			wp_update_post( $post );
 			wp_redirect( get_admin_url( null,'upload.php?page=manage_frontend_uploader&approved=1' ) );
@@ -251,9 +251,9 @@ if ( !empty($message) ) { ?>
 			case 'textarea':
 				echo $this->html->element( 'label',
 					$description .
-					$this->html->element('textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) )
+					$this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) )
 					,
-					array('for' => $id ),
+					array( 'for' => $id ),
 					false );
 			break;
 			case 'input':
@@ -312,7 +312,7 @@ if ( !empty($message) ) { ?>
 		
 			do_shortcode( ' [textarea name="caption" class="textarea" id="ug_caption" description="'. $textareadesc .'"]	   
 						    [input type="file" name="photo" id="ug_photo" class="required" description="'. $filedesc .'" multiple=""]
-							[input type="submit" class="btn" value="'. $submitb .'"]');
+							[input type="submit" class="btn" value="'. $submitb .'"]' );
 ?>	  		
 <?php endif; ?>		  
 		  <input type="hidden" name="action" value="upload_ugphoto" />

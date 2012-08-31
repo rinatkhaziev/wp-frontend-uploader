@@ -3,7 +3,7 @@ Contributors: rinatkhaziev, gastonbesada
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.1
 Tested up to: 3.4
-Stable tag: 0.2.1
+Stable tag: 0.2.1.1
 
 This plugin allows your visitors to upload User Generated Content.
 
@@ -14,6 +14,10 @@ This plugin is useful if you want to power up your site with user generated cont
 * Approve
 * Delete
 * Re-attach to other post/page/custom-post-type
+
+Translations:
+
+* Se habla español (props gastonbesada)
 
 [Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
 

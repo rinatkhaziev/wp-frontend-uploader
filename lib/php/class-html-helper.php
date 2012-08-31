@@ -54,7 +54,7 @@ class Html_Helper {
 	 * @param mixed $data
 	 */
 	function input( $type, $name, $data = null, $attrs = array() ) {
-		if ($type == 'select')
+		if ($type == 'select' )
 			return $this->_select( $name, $data, $attrs );
 		elseif ( in_array( $type, array( 'text', 'hidden', 'submit', 'file' ) ) )
 			return $this->_text( $name, $type,  $data, $attrs ) ;
