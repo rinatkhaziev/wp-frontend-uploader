@@ -73,6 +73,10 @@ function my_fu_additional_html() {
 
 == Changelog ==
 
+= 0.2.1.1 (August 30, 2021) =
+
+* Added missing localization strings
+
 = 0.2.1 (August 30, 2012) =
 
 * Added l10n support, added spanish translation. Props gastonbesada
