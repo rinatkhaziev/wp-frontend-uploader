@@ -3,7 +3,7 @@
 Plugin Name: UGC Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev
-Version: 0.2.1
+Version: 0.2.1.1
 Author URI: http://digitallyconscious.com
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
@@ -69,6 +69,15 @@ class Frontend_Uploader {
 		// Configuration filter:
 		// fu_allowed_mime_types should return array of allowed mime types
 		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', array( 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ) );
+
+		// Disallow php files no matter what (this is a full list of possible mime types for php scripts)
+		$no_pasaran = array( 'application/x-php', 'text/x-php', 'text/php', 'application/php', 'application/x-httpd-php', 'application/x-httpd-php-source' );
+		// THEY SHALL NOT PASS
+		foreach ( $no_pasaran as $np ) {
+			if ( false !== ( $key = array_search( $np, $this->allowed_mime_types ) ) ) {
+				unset( $this->allowed_mime_types[$key] );
+			}
+		}
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;		
 	}
@@ -93,7 +102,7 @@ class Frontend_Uploader {
 			foreach ( $fields as $field ) {
 				$k[$field] = $files[$field][$i]; 
 			}
-
+			//var_dump( $k ); exit;
 			// Iterate through files, and save upload if it's one of allowed MIME types
 			if ( in_array( $k['type'], $this->allowed_mime_types ) )  {
 				// Setup some default values
