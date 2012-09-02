@@ -16,8 +16,8 @@ This plugin is useful if you want to power up your site with user generated cont
 * Re-attach to other post/page/custom-post-type
 
 Translations:
-
-* Se habla español (props gastonbesada)
+* Se habla español (props gastonbesada) (Spanish)
+* Мы говорим по-русски (Russian)
 
 [Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
 
