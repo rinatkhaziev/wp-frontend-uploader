@@ -77,6 +77,12 @@ function my_fu_additional_html() {
 
 == Changelog ==
 
+= 0.2.2 (Sep 2, 2012) =
+
+* Hardened security. Even if user for some reason will allow PHP file uploads, they won't be uploaded.
+* Added Russian translation
+* Added translations for jquery.validate plugin
+
 = 0.2.1.1 (August 30, 2021) =
 
 * Added missing localization strings
