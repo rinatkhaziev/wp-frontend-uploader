@@ -48,32 +48,32 @@ Here's example of default form (you don't need to enter all that if you want to 
 
 By default plugin only allows GIF, PNG, JPG images but you can use this filter to pass additional MIME types like that:
 
-add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );
+`add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );
 function my_fu_allowed_mime_types( $mime_types ) {
 	$mime_types[] = 'image/tiff';
 	return $mime_types;
-}
+}`
 
 = fu_after_upload =
 
-add_action( 'fu_after_upload', 'my_fu_after_upload' );
+`add_action( 'fu_after_upload', 'my_fu_after_upload' );
 
 function my_fu_after_upload( $attachment_ids ) {
 	// do something with freshly uploaded files
 	// This happens on POST request, so $_POST will also be available for you
-}
+}`
 
 = fu_additional_html =
 
 Allows you to add additional HTML to form
 
-add_action('fu_additional_html', 'my_fu_additional_html' );
+`add_action('fu_additional_html', 'my_fu_additional_html' );
 
 function my_fu_additional_html() {
 ?>
 <input type="hidden" name="my_custom_param" value="something" />
 <?php 
-}
+}`
 
 == Changelog ==
 
