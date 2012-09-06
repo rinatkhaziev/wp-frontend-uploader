@@ -44,8 +44,7 @@ class Frontend_Uploader {
 	 * @return void
 	 * @author Gaston Besada
 	 */
-	function l10n()
-	{
+	function l10n() {
 		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 		
