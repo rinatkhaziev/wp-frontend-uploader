@@ -134,7 +134,7 @@ class Frontend_Uploader {
 		if ( ! current_user_can( 'upload_files' ) )
 			wp_die( __( 'You do not have permission to upload files.', 'frontend-uploader' ) );
 
-		$wp_list_table = new FE_WP_Media_List_Table();
+		$wp_list_table = new FU_WP_Media_List_Table();
 
 		$pagenum = $wp_list_table->get_pagenum();
 		$doaction = $wp_list_table->current_action();

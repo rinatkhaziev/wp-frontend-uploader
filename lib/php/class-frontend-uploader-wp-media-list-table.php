@@ -4,7 +4,7 @@
  */
 require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
 require_once ABSPATH . '/wp-admin/includes/class-wp-media-list-table.php';
-class FE_WP_Media_List_Table extends WP_Media_List_Table {
+class FU_WP_Media_List_Table extends WP_Media_List_Table {
 
 	function prepare_items() {
 		global $lost, $wpdb, $wp_query, $post_mime_types, $avail_post_mime_types;
