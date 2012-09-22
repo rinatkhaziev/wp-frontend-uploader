@@ -88,7 +88,7 @@ class Frontend_Uploader {
 		$media_ids = array(); // will hold uploaded media IDS
 
 		if ( !wp_verify_nonce( $_POST['nonceugphoto'], 'upload_ugphoto' ) ) {
-			wp_redirect ( add_query_arg( array( 'response' => 'nonce-failure' ), $_POST['_wp_http_referer'] ) );
+			wp_safe_redirect( add_query_arg( array( 'response' => 'nonce-failure' ), $_POST['_wp_http_referer'] ) );
 			exit;
 		} // If nonce is invalid, redirect to referer and display error flash notice
 
@@ -113,7 +113,7 @@ class Frontend_Uploader {
 					);
 					$media_ids[] =  media_handle_sideload( $k, intval( $_POST['post_ID'] ), $post_overrides['post_title'], $post_overrides );
 				}else {
-					wp_redirect ( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type' ), $_POST['_wp_http_referer'] ) );
+					wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type' ), $_POST['_wp_http_referer'] ) );
 					die;
 				}
 			}
@@ -124,7 +124,7 @@ class Frontend_Uploader {
 		do_action( 'fu_after_upload', $media_ids );
 
 		if ( $_POST['_wp_http_referer'] )
-			wp_redirect ( add_query_arg( array( 'response' => 'ugc-sent' ), $_POST['_wp_http_referer'] ) );
+			wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-sent' ), $_POST['_wp_http_referer'] ) );
 		exit;
 	}
 
@@ -212,8 +212,6 @@ class Frontend_Uploader {
 
 </form>
 </div>
-
-
 <?php
 	}
 
@@ -224,17 +222,17 @@ class Frontend_Uploader {
 	function approve_photo() {
 		// check for permissions and id
 		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( 'nonceugphoto', 'upload_ugphoto' ) )
-			wp_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
+			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
 
 		$post = get_post( $_GET['id'] );
 
 		if ( is_object( $post ) && $post->post_status == 'private' ) {
 			$post->post_status = 'inherit';
 			wp_update_post( $post );
-			wp_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&approved=1' ) );
+			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&approved=1' ) );
 		}
 
-		wp_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader' ) );
+		wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader' ) );
 		exit;
 	}
 
@@ -338,17 +336,20 @@ class Frontend_Uploader {
 		switch ( $response ) {
 		case 'ugc-sent':
 			$title = __( 'Your file was successfully uploaded!', 'frontend-uploader' );
+			$class = 'success';
 			break;
 		case 'nonce-failure':
 			$title = __( 'Security check failed', 'frontend-uploader' );
+			$class = 'failure';
 			break;
 		case 'ugc-disallowed_mime_type':
 			$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' );
+			$class = 'failure';
 			break;
 		default:
 			$title = '';
 		}
-		return "<p>$title</p>";
+		return "<p class='ugc-notice {$class}'>$title</p>";
 	}
 
 	/**
@@ -371,4 +372,3 @@ class Frontend_Uploader {
 
 global $frontend_uploader;
 $frontend_uploader = new Frontend_Uploader;
-?>

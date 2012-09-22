@@ -2,7 +2,7 @@
 	list-style: none;
 }
 .ugc-inner-wrapper .ugc-input-wrapper {
-	width: 50%;
+	min-width: 50%;
 	padding: 5px 0px;
 }
 .ugc-inner-wrapper .ugc-input-wrapper input {
@@ -16,4 +16,18 @@
 }
 .ugc-inner-wrapper h2 {
 	padding: 5px 0px;
+}
+.ugc-notice {
+	border: 1px solid;
+	border-radius: 5px;
+	padding: 5px 5px;
+}
+.ugc-notice.success {
+	border-color: #3dbc15;
+/*	background-color: #19D215;
+	color: white;
+	 */
+}
+.ugc-notice.failure {
+	border-color: red;
 }
