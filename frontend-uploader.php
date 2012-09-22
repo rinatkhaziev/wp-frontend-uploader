@@ -257,12 +257,8 @@ class Frontend_Uploader {
 				), $atts ) );
 		switch ( $tag ):
 		case 'textarea':
-			echo $this->html->element( 'label',
-				$description .
-				$this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) )
-				,
-				array( 'for' => $id ),
-				false );
+			$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) ), array( 'for' => $id ), false );
+			echo $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 		break;
 	case 'input':
 		$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
@@ -272,17 +268,15 @@ class Frontend_Uploader {
 
 		// Allow multiple file upload by default.
 		// To do so, we need to add array notation to name field: []
-		if ( !strpos( $name, '[]' ) )
+		if ( !strpos( $name, '[]' ) && $type == 'file' )
 			$name = $name . '[]';
 
-		echo $this->html->element( 'label',
-			$description .
-			$this->html->input( $type, $name, $value, $atts )
-			,
-			array( 'for' => $id ),
-			false );
+		$element = $this->html->element( 'label', $description . $this->html->input( $type, $name, $value, $atts ) ,array( 'for' => $id ), false );
+
+		echo $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper'), false );
 		// @todo implement select and checkboxes
 		// For now additional customization is available via do_action( 'fu_additional_html' );
+		default: 
 		endswitch;
 	}
 

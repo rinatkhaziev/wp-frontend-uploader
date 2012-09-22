@@ -1,3 +1,19 @@
 #ug-photo-form li {
 	list-style: none;
 }
+.ugc-inner-wrapper .ugc-input-wrapper {
+	width: 50%;
+	padding: 5px 0px;
+}
+.ugc-inner-wrapper .ugc-input-wrapper input {
+	display: block;
+}
+.ugc-inner-wrapper .ugc-input-wrapper label {
+	font-weight: bold;
+}
+.ugc-inner-wrapper .ugc-input-wrapper input[type="text"], .ugc-inner-wrapper .ugc-input-wrapper textarea {
+	width: 100%;
+}
+.ugc-inner-wrapper h2 {
+	padding: 5px 0px;
+}
