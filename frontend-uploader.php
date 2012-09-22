@@ -55,16 +55,18 @@ class Frontend_Uploader {
 		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
 		// Adding media submenu
 		add_action( 'admin_menu', array( $this, 'add_menu_item' ) );
-
 		// Adding our shortcodes
 		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
 		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
-
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		// Preventing wpautop going crazy on
+		remove_filter( 'the_content', 'wpautop' );
+		add_filter( 'the_content', 'wpautop' , 99 );
+		add_filter( 'the_content', 'shortcode_unautop', 100 );
+
 		// Localization
 		add_action( 'init', array( $this, 'l10n' ) );
-
 		// Configuration filter:
 		// fu_allowed_mime_types should return array of allowed mime types
 		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', array( 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ) );
@@ -256,7 +258,7 @@ class Frontend_Uploader {
 		switch ( $tag ):
 		case 'textarea':
 			$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) ), array( 'for' => $id ), false );
-			echo $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 		break;
 	case 'input':
 		$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
@@ -269,12 +271,12 @@ class Frontend_Uploader {
 		if ( !strpos( $name, '[]' ) && $type == 'file' )
 			$name = $name . '[]';
 
-		$element = $this->html->element( 'label', $description . $this->html->input( $type, $name, $value, $atts ) ,array( 'for' => $id ), false );
+		$element = $this->html->element( 'label', $description . $this->html->input( $type, $name, $value, $atts ) , array( 'for' => $id ), false );
 
-		echo $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper'), false );
+		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 		// @todo implement select and checkboxes
 		// For now additional customization is available via do_action( 'fu_additional_html' );
-		default: 
+	default:
 		endswitch;
 	}
 
@@ -292,7 +294,7 @@ class Frontend_Uploader {
 					'class' => 'validate',
 				), $atts ) );
 		global $post;
-
+		ob_start();
 ?>
 	<form action="<?php echo admin_url( 'admin-ajax.php' ) ?>" method="post" id="ugc-media-form" class="<?php echo esc_attr( $class )?>" enctype="multipart/form-data">
 	  <div class="ugc-inner-wrapper">
@@ -303,16 +305,16 @@ class Frontend_Uploader {
 		// We have some customizations, nice!
 		// Let's parse them
 		if ( $content ):
-			do_shortcode( $content );
+			echo do_shortcode( $content );
 		// Or render default form
 		else:
-			$textareadesc = __( 'Description (optional)', 'frontend-uploader' );
-		$filedesc = __( 'Your Photo', 'frontend-uploader' );
-		$submitb = __( 'Submit', 'frontend-uploader' );
+			$textarea_desc = __( 'Description (optional)', 'frontend-uploader' );
+		$file_desc = __( 'Your Photo', 'frontend-uploader' );
+		$submit_button = __( 'Submit', 'frontend-uploader' );
 
-		do_shortcode( '[textarea name="caption" class="textarea" id="ug_caption" description="'. $textareadesc .'"]
-						    [input type="file" name="photo" id="ug_photo" class="required" description="'. $filedesc .'" multiple=""]
-							[input type="submit" class="btn" value="'. $submitb .'"]' );
+		echo do_shortcode( '[textarea name="caption" class="textarea" id="ug_caption" description="'. $textarea_desc .'"]
+						    [input type="file" name="photo" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]
+							[input type="submit" class="btn" value="'. $submit_button .'"]' );
 ?>
 <?php endif; ?>
 		  <input type="hidden" name="action" value="upload_ugphoto" />
@@ -326,7 +328,9 @@ class Frontend_Uploader {
 	  </div>
 	  </form>
 <?php
+		return ob_get_clean();
 	}
+
 	/**
 	 * Render notice for user
 	 */
