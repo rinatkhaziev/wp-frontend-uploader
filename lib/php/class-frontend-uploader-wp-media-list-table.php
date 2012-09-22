@@ -18,14 +18,14 @@ class FE_WP_Media_List_Table extends WP_Media_List_Table {
 		list( $post_mime_types, $avail_post_mime_types ) = wp_edit_attachments_query( $q );
 		$this->is_trash = isset( $_REQUEST['status'] ) && 'trash' == $_REQUEST['status'];
 		$this->set_pagination_args( array(
-			'total_items' => $wp_query->found_posts,
-			'total_pages' => $wp_query->max_num_pages,
-			'per_page' => $wp_query->query_vars['posts_per_page'],
-		) );
+				'total_items' => $wp_query->found_posts,
+				'total_pages' => $wp_query->max_num_pages,
+				'per_page' => $wp_query->query_vars['posts_per_page'],
+			) );
 		remove_filter( 'posts_where', array( &$this, 'modify_post_status_to_private' ) );
 	}
 
-	function modify_post_status_to_private($where) {
+	function modify_post_status_to_private( $where ) {
 		return str_replace( "post_status = 'inherit' ", "post_status = 'private' ", $where );
 	}
 
@@ -35,31 +35,31 @@ class FE_WP_Media_List_Table extends WP_Media_List_Table {
 		$type_links = array();
 		$_num_posts = (array) wp_count_attachments();
 
-		$_total_posts = array_sum($_num_posts) - $_num_posts['trash'];
+		$_total_posts = array_sum( $_num_posts ) - $_num_posts['trash'];
 		if ( !isset( $total_orphans ) )
-				$total_orphans = $wpdb->get_var( "SELECT COUNT( * ) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND post_parent < 1" );
-		$matches = wp_match_mime_types(array_keys($post_mime_types), array_keys($_num_posts));
+			$total_orphans = $wpdb->get_var( "SELECT COUNT( * ) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND post_parent < 1" );
+		$matches = wp_match_mime_types( array_keys( $post_mime_types ), array_keys( $_num_posts ) );
 		foreach ( $matches as $type => $reals )
 			foreach ( $reals as $real )
 				$num_posts[$type] = ( isset( $num_posts[$type] ) ) ? $num_posts[$type] + $_num_posts[$real] : $_num_posts[$real];
 
-		$class = ( empty($_GET['post_mime_type']) && !$this->detached && !isset($_GET['status']) ) ? ' class="current"' : '';
+			$class = ( empty( $_GET['post_mime_type'] ) && !$this->detached && !isset( $_GET['status'] ) ) ? ' class="current"' : '';
 		$type_links['all'] = "<a href='upload.php'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $_total_posts, 'uploaded files' ), number_format_i18n( $_total_posts ) ) . '</a>';
 		foreach ( $post_mime_types as $mime_type => $label ) {
 			$class = '';
 
-			if ( !wp_match_mime_types($mime_type, $avail_post_mime_types) )
+			if ( !wp_match_mime_types( $mime_type, $avail_post_mime_types ) )
 				continue;
 
-			if ( !empty($_GET['post_mime_type']) && wp_match_mime_types($mime_type, $_GET['post_mime_type']) )
+			if ( !empty( $_GET['post_mime_type'] ) && wp_match_mime_types( $mime_type, $_GET['post_mime_type'] ) )
 				$class = ' class="current"';
 			if ( !empty( $num_posts[$mime_type] ) )
-				$type_links[$mime_type] = "<a href='upload.php?post_mime_type=$mime_type'$class>" . sprintf( translate_nooped_plural( $label[2], $num_posts[$mime_type] ), number_format_i18n( $num_posts[$mime_type] )) . '</a>';
+				$type_links[$mime_type] = "<a href='upload.php?post_mime_type=$mime_type'$class>" . sprintf( translate_nooped_plural( $label[2], $num_posts[$mime_type] ), number_format_i18n( $num_posts[$mime_type] ) ) . '</a>';
 		}
 		$type_links['detached'] = '<a href="upload.php?detached=1"' . ( $this->detached ? ' class="current"' : '' ) . '>' . sprintf( _nx( 'Unattached <span class="count">(%s)</span>', 'Unattached <span class="count">(%s)</span>', $total_orphans, 'detached files' ), number_format_i18n( $total_orphans ) ) . '</a>';
 
-		if ( !empty($_num_posts['trash']) )
-			$type_links['trash'] = '<a href="upload.php?status=trash"' . ( (isset($_GET['status']) && $_GET['status'] == 'trash' ) ? ' class="current"' : '' ) . '>' . sprintf( _nx( 'Trash <span class="count">(%s)</span>', 'Trash <span class="count">(%s)</span>', $_num_posts['trash'], 'uploaded files' ), number_format_i18n( $_num_posts['trash'] ) ) . '</a>';
+		if ( !empty( $_num_posts['trash'] ) )
+			$type_links['trash'] = '<a href="upload.php?status=trash"' . ( ( isset( $_GET['status'] ) && $_GET['status'] == 'trash' ) ? ' class="current"' : '' ) . '>' . sprintf( _nx( 'Trash <span class="count">(%s)</span>', 'Trash <span class="count">(%s)</span>', $_num_posts['trash'], 'uploaded files' ), number_format_i18n( $_num_posts['trash'] ) ) . '</a>';
 
 		return array();
 	}
@@ -117,159 +117,159 @@ class FE_WP_Media_List_Table extends WP_Media_List_Table {
 	function display_rows() {
 		global $post, $id;
 
-		add_filter( 'the_title','esc_html' );
+		add_filter( 'the_title', 'esc_html' );
 		$alt = '';
 
 		while ( have_posts() ) : the_post();
 
-			if ( $this->is_trash && $post->post_status != 'trash'
-			||	!$this->is_trash && $post->post_status == 'trash' )
-				continue;
+		if ( $this->is_trash && $post->post_status != 'trash'
+			|| !$this->is_trash && $post->post_status == 'trash' )
+			continue;
 
-			$alt = ( 'alternate' == $alt ) ? '' : 'alternate';
-			$post_owner = ( get_current_user_id() == $post->post_author ) ? 'self' : 'other' ;
-			$att_title = _draft_or_post_title();
+		$alt = ( 'alternate' == $alt ) ? '' : 'alternate';
+		$post_owner = ( get_current_user_id() == $post->post_author ) ? 'self' : 'other' ;
+		$att_title = _draft_or_post_title();
 ?>
 	<tr id='post-<?php echo $id; ?>' class='<?php echo trim( $alt . ' author-' . $post_owner . ' status-' . $post->post_status ); ?>' valign="top">
 <?php
 
-list( $columns, $hidden ) = $this->get_column_info();
+		list( $columns, $hidden ) = $this->get_column_info();
 
-foreach ( $columns as $column_name => $column_display_name ) {
-	$class = "class='$column_name column-$column_name'";
+		foreach ( $columns as $column_name => $column_display_name ) {
+			$class = "class='$column_name column-$column_name'";
 
-	$style = '';
-	if ( in_array( $column_name, $hidden ) )
-		$style = ' style="display:none;"';
+			$style = '';
+			if ( in_array( $column_name, $hidden ) )
+				$style = ' style="display:none;"';
 
-	$attributes = $class . $style;
+			$attributes = $class . $style;
 
-	switch ( $column_name ) {
+			switch ( $column_name ) {
 
-	case 'cb':
+			case 'cb':
 ?>
 		<th scope="row" class="check-column"><?php if ( current_user_can( 'edit_post', $post->ID ) ) { ?><input type="checkbox" name="media[]" value="<?php the_ID(); ?>" /><?php } ?></th>
 <?php
-		break;
+				break;
 
-	case 'icon':
-		$attributes = 'class="column-icon media-icon"' . $style;
+			case 'icon':
+				$attributes = 'class="column-icon media-icon"' . $style;
 ?>
 		<td <?php echo $attributes ?>><?php
-			if ( $thumb = wp_get_attachment_image( $post->ID, array( 80, 60 ), true ) ) {
-				if ( $this->is_trash ) {
-					echo $thumb;
-				} else {
+				if ( $thumb = wp_get_attachment_image( $post->ID, array( 80, 60 ), true ) ) {
+					if ( $this->is_trash ) {
+						echo $thumb;
+					} else {
 ?>
 				<a href="<?php echo get_edit_post_link( $post->ID, true ); ?>" title="<?php echo esc_attr( sprintf( __( 'Edit "%s"', 'frontend-uploader' ), $att_title ) ); ?>">
 					<?php echo $thumb; ?>
 				</a>
 
-<?php			}
-			}
+<?php   }
+				}
 ?>
 		</td>
 <?php
-		break;
+				break;
 
-	case 'title':
+			case 'title':
 ?>
 		<td <?php echo $attributes ?>><strong><?php if ( $this->is_trash ) echo $att_title; else { ?><a href="<?php echo get_edit_post_link( $post->ID, true ); ?>" title="<?php echo esc_attr( sprintf( __( 'Edit "%s"', 'frontend-uploader' ), $att_title ) ); ?>"><?php echo $att_title; ?></a><?php };  _media_states( $post ); ?></strong>
 			<p>
 <?php
-			if ( preg_match( '/^.*?\.(\w+)$/', get_attached_file( $post->ID ), $matches ) )
-				echo esc_html( strtoupper( $matches[1] ) );
-			else
-				echo strtoupper( str_replace( 'image/', '', get_post_mime_type() ) );
+				if ( preg_match( '/^.*?\.(\w+)$/', get_attached_file( $post->ID ), $matches ) )
+					echo esc_html( strtoupper( $matches[1] ) );
+				else
+					echo strtoupper( str_replace( 'image/', '', get_post_mime_type() ) );
 ?>
 			</p>
 <?php
-		echo $this->row_actions( $this->_get_row_actions( $post, $att_title ) );
+				echo $this->row_actions( $this->_get_row_actions( $post, $att_title ) );
 ?>
 		</td>
 <?php
-		break;
+				break;
 
-	case 'author':
+			case 'author':
 ?>
 		<td <?php echo $attributes ?>><?php the_author() ?></td>
 <?php
-		break;
+				break;
 
-	case 'tags':
+			case 'tags':
 ?>
 		<td <?php echo $attributes ?>><?php
-		$tags = get_the_tags();
-		if ( !empty( $tags ) ) {
-			$out = array();
-			foreach ( $tags as $c )
-				$out[] = "<a href='edit.php?tag=$c->slug'> " . esc_html( sanitize_term_field( 'name', $c->name, $c->term_id, 'post_tag', 'display' ) ) . "</a>";
-			echo join( ', ', $out );
-		} else {
-			__( 'No Tags', 'frontend-uploader' );
-		}
+				$tags = get_the_tags();
+				if ( !empty( $tags ) ) {
+					$out = array();
+					foreach ( $tags as $c )
+						$out[] = "<a href='edit.php?tag=$c->slug'> " . esc_html( sanitize_term_field( 'name', $c->name, $c->term_id, 'post_tag', 'display' ) ) . "</a>";
+					echo join( ', ', $out );
+				} else {
+					__( 'No Tags', 'frontend-uploader' );
+				}
 ?>
 		</td>
 <?php
-		break;
+				break;
 
-	case 'desc':
+			case 'desc':
 ?>
 		<td <?php echo $attributes ?>><?php echo has_excerpt() ? $post->post_excerpt : ''; ?></td>
 <?php
-		break;
+				break;
 
-	case 'date':
-		if ( '0000-00-00 00:00:00' == $post->post_date && 'date' == $column_name ) {
-			$t_time = $h_time = __( 'Unpublished', 'frontend-uploader' );
-		} else {
-			$t_time = get_the_time( __( 'Y/m/d g:i:s A', 'frontend-uploader' ) );
-			$m_time = $post->post_date;
-			$time = get_post_time( 'G', true, $post, false );
-			if ( ( abs( $t_diff = time() - $time ) ) < 86400 ) {
-				if ( $t_diff < 0 )
-					$h_time = sprintf( __( '%s from now', 'frontend-uploader' ), human_time_diff( $time ) );
-				else
-					$h_time = sprintf( __( '%s ago', 'frontend-uploader' ), human_time_diff( $time ) );
-			} else {
-				$h_time = mysql2date( __( 'Y/m/d', 'frontend-uploader' ), $m_time );
-			}
-		}
+			case 'date':
+				if ( '0000-00-00 00:00:00' == $post->post_date && 'date' == $column_name ) {
+					$t_time = $h_time = __( 'Unpublished', 'frontend-uploader' );
+				} else {
+					$t_time = get_the_time( __( 'Y/m/d g:i:s A', 'frontend-uploader' ) );
+					$m_time = $post->post_date;
+					$time = get_post_time( 'G', true, $post, false );
+					if ( ( abs( $t_diff = time() - $time ) ) < 86400 ) {
+						if ( $t_diff < 0 )
+							$h_time = sprintf( __( '%s from now', 'frontend-uploader' ), human_time_diff( $time ) );
+						else
+							$h_time = sprintf( __( '%s ago', 'frontend-uploader' ), human_time_diff( $time ) );
+					} else {
+						$h_time = mysql2date( __( 'Y/m/d', 'frontend-uploader' ), $m_time );
+					}
+				}
 ?>
 		<td <?php echo $attributes ?>><?php echo $h_time ?></td>
 <?php
-		break;
+				break;
 
-	case 'parent':
-		if ( $post->post_parent > 0 ) {
-			if ( get_post( $post->post_parent ) ) {
-				$title =_draft_or_post_title( $post->post_parent );
-			}
+			case 'parent':
+				if ( $post->post_parent > 0 ) {
+					if ( get_post( $post->post_parent ) ) {
+						$title =_draft_or_post_title( $post->post_parent );
+					}
 ?>
 			<td <?php echo $attributes ?>>
 				<strong><a href="<?php echo get_edit_post_link( $post->post_parent ); ?>"><?php echo $title ?></a></strong>,
 				<?php echo get_the_time( __( 'Y/m/d', 'frontend-uploader' ) ); ?>
 			</td>
 <?php
-		} else {
+				} else {
 ?>
 			<td <?php echo $attributes ?>><?php __( '(Unattached)', 'frontend-uploader' ); ?><br />
 			<a class="hide-if-no-js" onclick="findPosts.open( 'media[]','<?php echo $post->ID ?>' );return false;" href="#the-list"><?php _e_( 'Attach', 'frontend-uploader' ); ?></a></td>
 <?php
-		}
-		break;
+				}
+				break;
 
 
 
-	default:
+			default:
 ?>
 		<td <?php echo $attributes ?>>
 			<?php do_action( 'manage_fu_media_custom_column', $column_name, $id ); ?>
 		</td>
 <?php
-		break;
-	}
-}
+				break;
+			}
+		}
 ?>
 	</tr>
 <?php endwhile;
@@ -285,9 +285,9 @@ foreach ( $columns as $column_name => $column_display_name ) {
 				if ( EMPTY_TRASH_DAYS && MEDIA_TRASH ) {
 					$actions['trash'] = "<a class='submitdelete' href='" . wp_nonce_url( "post.php?action=trash&amp;post=$post->ID", 'trash-attachment_' . $post->ID ) . "'>" . __( 'Trash', 'frontend-uploader' ) . "</a>";
 				} else {
-					$delete_ays = !MEDIA_TRASH ? " onclick='return showNotice.warn();'" : '';
-					$actions['delete'] = "<a class='submitdelete'$delete_ays href='" . wp_nonce_url( "post.php?action=delete&amp;post=$post->ID", 'delete-attachment_' . $post->ID ) . "'>" . __( 'Delete Permanently', 'frontend-uploader' ) . "</a>";
-				}
+				$delete_ays = !MEDIA_TRASH ? " onclick='return showNotice.warn();'" : '';
+				$actions['delete'] = "<a class='submitdelete'$delete_ays href='" . wp_nonce_url( "post.php?action=delete&amp;post=$post->ID", 'delete-attachment_' . $post->ID ) . "'>" . __( 'Delete Permanently', 'frontend-uploader' ) . "</a>";
+			}
 			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( sprintf( __( 'View "%s"', 'frontend-uploader' ), $att_title ) ) . '" rel="permalink">' . __( 'View', 'frontend-uploader' ) . '</a>';
 			if ( current_user_can( 'edit_post', $post->ID ) )
 				$actions['attach'] = '<a href="#the-list" onclick="findPosts.open( \'media[]\',\''.$post->ID.'\' );return false;" class="hide-if-no-js">'.__( 'Attach', 'frontend-uploader' ).'</a>';
@@ -305,8 +305,8 @@ foreach ( $columns as $column_name => $column_display_name ) {
 					$actions['delete'] = "<a class='submitdelete'$delete_ays href='" . wp_nonce_url( "post.php?action=delete&amp;post=$post->ID", 'delete-attachment_' . $post->ID ) . "'>" . __( 'Delete Permanently', 'frontend-uploader' ) . "</a>";
 				}
 
-				if ($post->post_status == 'private' ) {
-				  $actions['pass'] = '<a href="'.admin_url('admin-ajax.php' ).'?action=approve_ugc&id=' . $post->ID . '">'. __('Approve', 'frontend-uploader' ) .'</a>';
+				if ( $post->post_status == 'private' ) {
+					$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc&id=' . $post->ID . '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
 				}
 			}
 			if ( !$this->is_trash ) {
@@ -325,8 +325,8 @@ foreach ( $columns as $column_name => $column_display_name ) {
 // Re-attach Media
 // http://wordpress.org/support/topic/detach-amp-re-attach-media-attachment-images-from-posts
 
-add_filter("manage_fu_media_columns", 'fu_upload_columns' );
-add_action("manage_fu_media_custom_column", 'fu_media_custom_columns', 0, 2);
+add_filter( "manage_fu_media_columns", 'fu_upload_columns' );
+add_action( "manage_fu_media_custom_column", 'fu_media_custom_columns', 0, 2 );
 
 function fu_upload_columns( $columns ) {
 	unset( $columns['parent'] );
@@ -336,25 +336,25 @@ function fu_upload_columns( $columns ) {
 
 function fu_media_custom_columns( $column_name, $id ) {
 	$post = get_post( $id );
-	if( $column_name != 'better_parent' )
+	if ( $column_name != 'better_parent' )
 		return;
 
-		if ( $post->post_parent > 0 ) {
-			if ( get_post($post->post_parent) ) {
-				$title =_draft_or_post_title( $post->post_parent );
-			} else {
-				$title = '<em>Untitled</em>';
-			}
-			?>
-			<strong><a href="<?php echo get_edit_post_link( $post->post_parent ); ?>"><?php echo $title ?></a></strong>, <?php echo get_the_time(__('Y/m/d', 'frontend-uploader' )); ?>
+	if ( $post->post_parent > 0 ) {
+		if ( get_post( $post->post_parent ) ) {
+			$title =_draft_or_post_title( $post->post_parent );
+		} else {
+			$title = '<em>Untitled</em>';
+		}
+?>
+			<strong><a href="<?php echo get_edit_post_link( $post->post_parent ); ?>"><?php echo $title ?></a></strong>, <?php echo get_the_time( __( 'Y/m/d', 'frontend-uploader' ) ); ?>
 			<br />
-			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>' );return false;" href="#the-list"><?php _e('Re-Attach', 'frontend-uploader' ); ?></a>
+			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>' );return false;" href="#the-list"><?php _e( 'Re-Attach', 'frontend-uploader' ); ?></a>
 
 			<?php
-		} else {
-			?>
-			<?php __('(Unattached)', 'frontend-uploader' ); ?><br />
-			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>' );return false;" href="#the-list"><?php _e('Attach', 'frontend-uploader' ); ?></a>
+	} else {
+?>
+			<?php __( '(Unattached)', 'frontend-uploader' ); ?><br />
+			<a class="hide-if-no-js" onclick="findPosts.open('media[]','<?php echo $post->ID ?>' );return false;" href="#the-list"><?php _e( 'Attach', 'frontend-uploader' ); ?></a>
 			<?php
-		}
+	}
 }
