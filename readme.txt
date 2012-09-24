@@ -16,6 +16,7 @@ This plugin is useful if you want to power up your site with user generated cont
 * Re-attach to other post/page/custom-post-type
 
 Translations:
+
 * Se habla español (props gastonbesada) (Spanish)
 * Мы говорим по-русски (Russian)
 
@@ -33,7 +34,7 @@ Translations:
 Here's example of default form (you don't need to enter all that if you want to use default form, just use [fu-upload-form]):
 
 [fu-upload-form class="your-class" title="Upload your media"]
-[textarea name="caption" class="textarea" id="ug_caption" description="Description (optional)"]	   
+[textarea name="caption" class="textarea" id="ug_caption" description="Description (optional)"]
 [input type="file" name="photo" id="ug_photo" class="required" description="Your Photo" multiple=""]
 [input type="submit" class="btn" value="Submit"]
 [/fu-upload-form]
@@ -72,10 +73,14 @@ Allows you to add additional HTML to form
 function my_fu_additional_html() {
 ?>
 <input type="hidden" name="my_custom_param" value="something" />
-<?php 
+<?php
 }`
 
 == Changelog ==
+
+= 0.2.3 (Sept 22, 2012) =
+
+* UI update
 
 = 0.2.2 (Sep 2, 2012) =
 
@@ -97,7 +102,7 @@ function my_fu_additional_html() {
 
 = 0.1.2 (June 6, 2012) =
 
-* Added localization strings 
+* Added localization strings
 
 = 0.1.1 (May 23, 2012) =
 

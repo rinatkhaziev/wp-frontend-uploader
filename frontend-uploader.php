@@ -32,6 +32,8 @@ define( 'UGC_URL' , plugins_url( '/', __FILE__ ) );
 
 require_once UGC_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php';
 require_once UGC_ROOT . '/lib/php/class-html-helper.php';
+require_once UGC_ROOT . '/lib/php/settings-api/class.settings-api.php';
+require_once UGC_ROOT . '/lib/php/frontend-uploader-settings.php';
 
 class Frontend_Uploader {
 
