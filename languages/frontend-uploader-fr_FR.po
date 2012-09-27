@@ -1,0 +1,247 @@
+# Copyright (C) 2012 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: UGC Frontend Uploader v0.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
+"POT-Creation-Date: 2012-08-30 05:30:59+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2012-09-26 12:41+0100\n"
+"Last-Translator: Guillaume Duhec <guillaume@guillaumeduhec.com>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.5.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Language: fr_FR\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../\n"
+
+#: frontend-uploader.php:124 frontend-uploader.php:213
+msgid "Manage UGC"
+msgstr "Organiser les UGC"
+
+#: frontend-uploader.php:127
+msgid "You do not have permission to upload files."
+msgstr "Vous n'avez pas les permissions nécessaires pour envoyer des fichiers."
+
+#: frontend-uploader.php:140
+msgctxt "file"
+msgid "Add New"
+msgstr "Ajouter"
+
+#: frontend-uploader.php:142
+msgid "Search results for &#8220;%s&#8221;"
+msgstr "Résultats de recherche pour &#8220;%s&#8221;"
+
+#: frontend-uploader.php:148 frontend-uploader.php:178
+msgid "Media attachment updated."
+msgstr "Fichier média mis à jour."
+
+#: frontend-uploader.php:154
+msgid "Reattached %d attachment."
+msgid_plural "Reattached %d attachments."
+msgstr[0] "Rattachement de %d fichiers attaché."
+msgstr[1] "Rattachement de %d fichiers attachés."
+
+#: frontend-uploader.php:159
+msgid "Media attachment permanently deleted."
+msgid_plural "%d media attachments permanently deleted."
+msgstr[0] "Fichier média supprimé définitivement."
+msgstr[1] "%d fichiers média supprimés définitivement."
+
+#: frontend-uploader.php:164
+msgid "Media attachment moved to the trash."
+msgid_plural "%d media attachments moved to the trash."
+msgstr[0] "Fichier média mis à la corbeille."
+msgstr[1] "%d fichiers média mis à la corbeille."
+
+#: frontend-uploader.php:165 frontend-uploader.php:181
+msgid "Undo"
+msgstr "Annuler"
+
+#: frontend-uploader.php:170
+msgid "Media attachment restored from the trash."
+msgid_plural "%d media attachments restored from the trash."
+msgstr[0] "Fichier média récupéré depuis la corbeille."
+msgstr[1] "%d fichiers média récupérés depuis la corbeille."
+
+#: frontend-uploader.php:179
+msgid "Media permanently deleted."
+msgstr "Fichier média supprimé définitivement."
+
+#: frontend-uploader.php:180
+msgid "Error saving media attachment."
+msgstr "Erreur d'enregistrement du fichier média."
+
+#: frontend-uploader.php:181
+msgid "Media moved to the trash."
+msgstr "Fichier média mis à la corbeille."
+
+#: frontend-uploader.php:182
+msgid "Media restored from the trash."
+msgstr "Fichier média récupéré depuis la corbeille."
+
+#: frontend-uploader.php:197
+msgid "Search Media"
+msgstr "Rechercher un fichier média"
+
+#: frontend-uploader.php:290
+msgid "Upload a photo"
+msgstr "Envoyer une image"
+
+#: frontend-uploader.php:309
+msgid "Description (optional)"
+msgstr "Description (facultatif)"
+
+#: frontend-uploader.php:310
+msgid "Your Photo"
+msgstr "Votre image"
+
+#: frontend-uploader.php:311
+msgid "Submit"
+msgstr "Envoyer"
+
+#: frontend-uploader.php:338
+msgid "Your file was successfully uploaded!"
+msgstr "Votre fichier a été envoyé avec succès !"
+
+#: frontend-uploader.php:341
+msgid "Security check failed"
+msgstr "Le contrôle de sécurité a échoué."
+
+#: frontend-uploader.php:344
+msgid ""
+"This kind of file is not allowed. Please, try again selecting other file."
+msgstr ""
+"Ce type de fichier n'est pas autorisé. Merci d'essayer avec un autre fichier."
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:47
+msgctxt "uploaded files"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] "Tous <span class=\"count\">(%s)</span>"
+msgstr[1] "Tous <span class=\"count\">(%s)</span>"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:59
+msgctxt "detached files"
+msgid "Unattached <span class=\"count\">(%s)</span>"
+msgid_plural "Unattached <span class=\"count\">(%s)</span>"
+msgstr[0] "Non attaché <span class=\"count\">(%s)</span>"
+msgstr[1] "Non attachés <span class=\"count\">(%s)</span>"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:62
+msgctxt "uploaded files"
+msgid "Trash <span class=\"count\">(%s)</span>"
+msgid_plural "Trash <span class=\"count\">(%s)</span>"
+msgstr[0] "Corbeille <span class=\"count\">(%s)</span>"
+msgstr[1] "Corbeille <span class=\"count\">(%s)</span>"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:69
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:290
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:306
+msgid "Delete Permanently"
+msgstr "Supprimer définitivement"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:71
+msgid "Attach to a post"
+msgstr "Joindre à un article"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:97
+msgid "No media attachments found."
+msgstr "Aucun fichier média."
+
+#. translators: column name
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:105
+msgctxt "column name"
+msgid "File"
+msgstr "Fichier"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:106
+msgid "Author"
+msgstr "Auteur"
+
+#. translators: column name
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:109
+msgctxt "column name"
+msgid "Attached to"
+msgstr "Attaché à"
+
+#. translators: column name
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:112
+msgctxt "column name"
+msgid "Date"
+msgstr "Date"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:165
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:178
+msgid "Edit \"%s\""
+msgstr "Modifier \"%s\""
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:210
+msgid "No Tags"
+msgstr "Aucun mot-clef."
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:225
+msgid "Unpublished"
+msgstr "Non publié"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:227
+msgid "Y/m/d g:i:s A"
+msgstr "d/m/Y H:i:s"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:232
+msgid "%s from now"
+msgstr "%s à partir de maintenant"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:234
+msgid "%s ago"
+msgstr "Il y a %s"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:236
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:252
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:350
+msgid "Y/m/d"
+msgstr "d/m/Y"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:257
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:357
+msgid "(Unattached)"
+msgstr "(Non-attaché)"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:284
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:298
+msgid "Edit"
+msgstr "Modifier"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:287
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:303
+msgid "Trash"
+msgstr "Mettre à la corbeille"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:292
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:315
+msgid "View \"%s\""
+msgstr "Afficher \"%s\""
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:292
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:315
+msgid "View"
+msgstr "Afficher"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:294
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:358
+msgid "Attach"
+msgstr "Joindre"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:301
+msgid "Restore"
+msgstr "Récupérer"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:310
+msgid "Approve"
+msgstr "Valider"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:352
+msgid "Re-Attach"
+msgstr "Re-Joindre"
