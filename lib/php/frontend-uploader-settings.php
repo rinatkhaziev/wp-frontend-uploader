@@ -5,54 +5,14 @@
 
 class Frontend_Uploader_Settings {
 
-	private $settings_api, $default_mime_types;
+	private $settings_api;
 
 	function __construct() {
-		$this->settings_api = WeDevs_Settings_API::getInstance();
+		$this->settings_api = new WeDevs_Settings_API;
 
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		$this->default_mime_types = array(
-			'jpg|jpeg|jpe' => 'jpg|jpeg|jpe',
-			'gif' => 'gif',
-			'png' => 'png',
-			'tif|tiff' => 'tif|tiff',
-			'asf|asx|wax|wmv|wmx' => 'asf|asx|wax|wmv|wmx',
-			'avi' => 'avi',
-			'divx' => 'divx',
-			'flv' => 'flv',
-			'mov|qt' => 'mov|qt',
-			'mpeg|mpg|mpe' => 'mpeg|mpg|mpe',
-			'mp3|m4a|m4b' => 'mp3|m4a|m4b',
-			'mp4|m4v' => 'mp4|m4v',
-			'ra|ram' => 'ra|ram',
-			'wav' => 'wav',
-			'ogg|oga' => 'ogg|oga',
-			'ogv' => 'ogv',
-			'mid|midi' => 'mid|midi',
-			'wma' => 'wma',
-			'mka' => 'mka',
-			'mkv' => 'mkv',
-			'pdf' => 'pdf',
-			'doc|docx' => 'doc|docx',
-			'pot|pps|ppt|pptx|ppam|pptm|sldm|ppsm|potm' => 'pot|pps|ppt|pptx|ppam|pptm|sldm|ppsm|potm',
-			'wri' => 'wri',
-			'xla|xls|xlsx|xlt|xlw|xlam|xlsb|xlsm|xltm' => 'xla|xls|xlsx|xlt|xlw|xlam|xlsb|xlsm|xltm',
-			'mdb' => 'mdb',
-			'mpp' => 'mpp',
-			'docm|dotm' => 'docm|dotm',
-			'pptx|sldx|ppsx|potx' => 'pptx|sldx|ppsx|potx',
-			'xlsx|xltx' => 'xlsx|xltx',
-			'docx|dotx' => 'docx|dotx',
-			'onetoc|onetoc2|onetmp|onepkg' => 'onetoc|onetoc2|onetmp|onepkg',
-			'odt' => 'odt',
-			'odp' => 'odp',
-			'ods' => 'ods',
-			'odg' => 'odg',
-			'odc' => 'odc',
-			'odb' => 'odb',
-			'odf' => 'odf',
-			);
+
 	}
 
 	function admin_init() {
@@ -74,10 +34,6 @@ class Frontend_Uploader_Settings {
 			array(
 				'id' => 'basic_settings',
 				'title' => __( 'Basic Settings', 'frontend-uploader' ),
-			),
-			array(
-				'id' => 'mime_settings',
-				'title' => __( 'Allowed MIME-types', 'frontend-uploader' ),
 			),
 		);
 		return $sections;
@@ -102,16 +58,6 @@ class Frontend_Uploader_Settings {
 					'label' => __( 'Admin Notification', 'frontend-uploader' ),
 					'desc' => __( 'Message that admin will get on new file upload', 'frontend-uploader' ),
 					'type' => 'textarea'
-				),
-			),
-			'mime_settings' => array(
-				array(
-					'name' => 'multicheck',
-					'label' => __( 'Allowed MIME-types', 'frontend-uploader' ),
-					'desc' => __( 'Multi checkbox description', 'frontend-uploader' ),
-					'type' => 'multicheck',
-					'default' => $this->default_mime_types,
-					'options' => get_allowed_mime_types()
 				),
 			),
 		);

@@ -71,7 +71,7 @@ class Frontend_Uploader {
 		add_action( 'init', array( $this, 'l10n' ) );
 		// Configuration filter:
 		// fu_allowed_mime_types should return array of allowed mime types
-		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', array( 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ) );
+		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', get_allowed_mime_types() );
 
 		// Disallow php files no matter what (this is a full list of possible mime types for php scripts)
 		$no_pasaran = array( 'application/x-php', 'text/x-php', 'text/php', 'application/php', 'application/x-httpd-php', 'application/x-httpd-php-source' );
