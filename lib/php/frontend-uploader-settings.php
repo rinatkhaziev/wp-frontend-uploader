@@ -32,7 +32,7 @@ class Frontend_Uploader_Settings {
 	function get_settings_sections() {
 		$sections = array(
 			array(
-				'id' => 'basic_settings',
+				'id' => 'frontend_uploader_settings',
 				'title' => __( 'Basic Settings', 'frontend-uploader' ),
 			),
 		);
@@ -46,19 +46,27 @@ class Frontend_Uploader_Settings {
 	 */
 	function get_settings_fields() {
 		$settings_fields = array(
-			'basic_settings' => array(
+			'frontend_uploader_settings' => array(
 				array(
 					'name' => 'notify_admin',
 					'label' => __( 'Notify site admins', 'frontend-uploader' ),
 					'desc' => __( 'Yes', 'frontend-uploader' ),
-					'type' => 'checkbox'
+					'type' => 'checkbox',
 				),
 				array(
-					'name' => 'admin_notification',
+					'name' => 'admin_notification_text',
 					'label' => __( 'Admin Notification', 'frontend-uploader' ),
 					'desc' => __( 'Message that admin will get on new file upload', 'frontend-uploader' ),
-					'type' => 'textarea'
+					'type' => 'textarea',
+					'default' => 'Someone uploaded a new UGC file, please moderate at: ' . admin_url( 'upload.php?page=manage_frontend_uploader' ),
 				),
+				array(
+					'name' => 'notification_email',
+					'label' => __( 'Notification email', 'frontend-uploader' ),
+					'desc' => __( 'Leave blank to use site admin email', 'frontend-uploader' ),
+					'type' => 'text',
+				),
+
 			),
 		);
 

@@ -39,6 +39,7 @@ class Frontend_Uploader {
 
 	public $allowed_mime_types;
 	public $html;
+	public $settings;
 
 	/**
 	 * Load the translation of the plugin
@@ -83,6 +84,8 @@ class Frontend_Uploader {
 		}
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
+
+		$this->settings = get_option( 'frontend_uploader_settings' ); 
 	}
 
 	/**
@@ -99,7 +102,6 @@ class Frontend_Uploader {
 		if ( !empty( $_FILES ) && intval( $_POST['post_ID'] ) != 0 ) {
 			// File field name could be user defined, so we just pick
 			$files = current( $_FILES );
-
 			for ( $i = 0; $i < count( $_FILES['photo']['name'] ); $i++ ) {
 				$fields = array( 'name', 'type', 'tmp_name', 'error', 'size' );
 				foreach ( $fields as $field ) {
@@ -116,7 +118,7 @@ class Frontend_Uploader {
 						'post_content' => !empty( $_POST['name'] ) ? __( 'Courtesy of ', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : '',
 					);
 					$media_ids[] =  media_handle_sideload( $k, intval( $_POST['post_ID'] ), $post_overrides['post_title'], $post_overrides );
-				}else {
+				} else {
 					wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type' ), $_POST['_wp_http_referer'] ) );
 					die;
 				}
@@ -126,6 +128,14 @@ class Frontend_Uploader {
 		// Allow additional setup
 		// Pass array of attachment ids
 		do_action( 'fu_after_upload', $media_ids );
+
+		// Notify site admins of new upload
+		if ( 'on' == $this->settings['notify_admin'] ) {
+			$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
+			$subj = __( 'New file was uploaded on your site', 'frontend-uploader' );
+			var_dump( wp_mail( $to, $subj, $this->settings['admin_notification_text'] ) );
+			exit;
+		}
 
 		if ( $_POST['_wp_http_referer'] )
 			wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-sent' ), $_POST['_wp_http_referer'] ) );
