@@ -1,5 +1,5 @@
 === Frontend Uploader ===
-Contributors: rinatkhaziev, gastonbesada
+Contributors: rinatkhaziev
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.1
 Tested up to: 3.4
@@ -15,21 +15,7 @@ This plugin is useful if you want to power up your site with user generated cont
 * Delete
 * Re-attach to other post/page/custom-post-type
 
-Translations:
-
-* Se habla español (props gastonbesada) (Spanish)
-* Мы говорим по-русски (Russian)
-
-[Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
-
-== Installation ==
-
-1. Upload `frontend-uploader` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Use the following shortcode in post or page: [fu-upload-form]
-1. You can moderate uploaded files in Media -> Manage UGC menu
-
-== Shortcode example ==
+This plugin supports multiple uploads for modern browsers (sorry, no IE). It's enabled for default form. To use it in your custom shortcode add multiple="" attribute to input shortcode. 
 
 Here's example of default form (you don't need to enter all that if you want to use default form, just use [fu-upload-form]):
 
@@ -39,6 +25,25 @@ Here's example of default form (you don't need to enter all that if you want to 
 [input type="submit" class="btn" value="Submit"]
 [/fu-upload-form]
 
+By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Refer to Other notes -> Configuration filters.
+
+
+= Translations: =
+
+* Se habla español (Spanish) (props gastonbesada) 
+* Мы говорим по-русски (Russian)
+* Nous parlons français (Spanish) (props dapickboy)
+
+[Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
+
+== Installation ==
+
+1. Upload `frontend-uploader` to the `/wp-content/plugins/` directory
+1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Tweak the plugin's settings in: Settings -> Frontend Uploader Settings
+1. Use the following shortcode in post or page: [fu-upload-form]
+1. You can moderate uploaded files in Media -> Manage UGC menu
+
 == Screenshots ==
 
 1. Screenshot of plugin's UI (It's looks like standard media list table, with slightly better Parent column and additional row action: "Approve")
@@ -47,11 +52,11 @@ Here's example of default form (you don't need to enter all that if you want to 
 
 = fu_allowed_mime_types =
 
-By default plugin only allows GIF, PNG, JPG images but you can use this filter to pass additional MIME types like that:
+Allows you to add your custom MIME-types
 
 `add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );
 function my_fu_allowed_mime_types( $mime_types ) {
-	$mime_types[] = 'image/tiff';
+	$mime_types[] = 'weird/mime-type';
 	return $mime_types;
 }`
 
@@ -76,11 +81,16 @@ function my_fu_additional_html() {
 <?php
 }`
 
+== Frequently Asked Questions ==
+
+
 == Changelog ==
 
-= 0.2.3 (Sept 22, 2012) =
+= 0.2.3 (Oct 5, 2012) =
 
-* UI update
+* Massive UI Cleanup: added minimal css, and pretty notices
+* Plugin settings: ability to notify site admins of new file uploads
+* Added French translation. Props dapickboy
 
 = 0.2.2 (Sep 2, 2012) =
 
