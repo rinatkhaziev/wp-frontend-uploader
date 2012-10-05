@@ -133,8 +133,7 @@ class Frontend_Uploader {
 		if ( 'on' == $this->settings['notify_admin'] ) {
 			$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
 			$subj = __( 'New file was uploaded on your site', 'frontend-uploader' );
-			var_dump( wp_mail( $to, $subj, $this->settings['admin_notification_text'] ) );
-			exit;
+			wp_mail( $to, $subj, $this->settings['admin_notification_text'] );
 		}
 
 		if ( $_POST['_wp_http_referer'] )
