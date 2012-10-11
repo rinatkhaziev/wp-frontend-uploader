@@ -43,13 +43,24 @@ class Frontend_Uploader {
 	public $settings;
 
 	/**
-	 * Load the translation of the plugin
-	 *
-	 * @return void
-	 * @author Gaston Besada
+	 *  Load languages and a bit of paranoia
 	 */
-	function l10n() {
+	function action_init() {
 		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		$this->allowed_mime_types = apply_filters( 'upload_mimes', get_allowed_mime_types() );
+
+		// Disallow php files no matter what (this is a full list of possible mime types for php scripts)
+		// @todo may be add other executables 
+		// WP allows any mime-type that's specified within upload_mimes filter
+		// I strongly believe in fail-safe devices
+		// So lets just don't take any chances with php files (at least)
+		$no_pasaran = array( 'application/x-php', 'text/x-php', 'text/php', 'application/php', 'application/x-httpd-php', 'application/x-httpd-php-source' );
+		// THEY SHALL NOT PASS
+		foreach ( $no_pasaran as $np ) {
+			if ( false !== ( $key = array_search( $np, $this->allowed_mime_types ) ) ) {
+				unset( $this->allowed_mime_types[$key] );
+			}
+		}		
 	}
 
 	function __construct() {
@@ -73,19 +84,9 @@ class Frontend_Uploader {
 		add_filter( 'posts_where', array( $this, 'filter_posts_where' ) );
 
 		// Localization
-		add_action( 'init', array( $this, 'l10n' ) );
+		add_action( 'init', array( $this, 'action_init' ) );
 		// Configuration filter:
 		// fu_allowed_mime_types should return array of allowed mime types
-		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', get_allowed_mime_types() );
-
-		// Disallow php files no matter what (this is a full list of possible mime types for php scripts)
-		$no_pasaran = array( 'application/x-php', 'text/x-php', 'text/php', 'application/php', 'application/x-httpd-php', 'application/x-httpd-php-source' );
-		// THEY SHALL NOT PASS
-		foreach ( $no_pasaran as $np ) {
-			if ( false !== ( $key = array_search( $np, $this->allowed_mime_types ) ) ) {
-				unset( $this->allowed_mime_types[$key] );
-			}
-		}
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
 		$this->settings = get_option( 'frontend_uploader_settings' ); 
@@ -129,7 +130,6 @@ class Frontend_Uploader {
 				foreach ( $fields as $field ) {
 					$k[$field] = $files[$field][$i];
 				}
-
 				// Iterate through files, and save upload if it's one of allowed MIME types
 				if ( in_array( $k['type'], $this->allowed_mime_types ) ) {
 					// Setup some default values
@@ -146,7 +146,7 @@ class Frontend_Uploader {
 				}
 			}
 		}
-
+		// @todo check $media_ids for is_wp_error
 		// Allow additional setup
 		// Pass array of attachment ids
 		do_action( 'fu_after_upload', $media_ids );
