@@ -30,6 +30,7 @@ define( 'UGC_ROOT' , dirname( __FILE__ ) );
 define( 'UGC_FILE_PATH' , UGC_ROOT . '/' . basename( __FILE__ ) );
 define( 'UGC_URL' , plugins_url( '/', __FILE__ ) );
 
+require_once( ABSPATH . 'wp-admin/includes/screen.php' );
 require_once UGC_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php';
 require_once UGC_ROOT . '/lib/php/class-html-helper.php';
 require_once UGC_ROOT . '/lib/php/settings-api/class.settings-api.php';
@@ -67,6 +68,9 @@ class Frontend_Uploader {
 		remove_filter( 'the_content', 'wpautop' );
 		add_filter( 'the_content', 'wpautop' , 99 );
 		add_filter( 'the_content', 'shortcode_unautop', 100 );
+		// Hiding not approved attachments from Media Gallery
+		// @since core 3.5-beta-1
+		add_filter( 'posts_where', array( $this, 'filter_posts_where' ) );
 
 		// Localization
 		add_action( 'init', array( $this, 'l10n' ) );
@@ -84,8 +88,24 @@ class Frontend_Uploader {
 		}
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
-
 		$this->settings = get_option( 'frontend_uploader_settings' ); 
+	}
+
+	/**
+	 * Since WP 3.5-beta-1 WP Media interface shows private attachments as well
+	 * We don't want that, so we force WHERE statement to post_status = 'inherit'
+	 *
+	 * @todo  probably intermediate workaround
+	 * 
+	 * @param  string $where WHERE statement
+	 * @return string WHERE statement
+	 */
+	function filter_posts_where( $where ) {
+		$screen = get_current_screen();
+		if ( $screen->base == 'upload' && ( !isset( $_GET['page'] ) || $_GET['page'] != 'manage_frontend_uploader' ) ) {
+			$where = str_replace( "post_status = 'private'", "post_status = 'inherit'", $where );	
+		}		
+		return $where;
 	}
 
 	/**

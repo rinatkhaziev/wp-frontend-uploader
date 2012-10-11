@@ -1,10 +1,17 @@
 <?php
 /**
  * Media Library List Table class.
+ *
+ * @todo refactor display_rows() using single row and callbacks
+ *  
  */
 require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
 require_once ABSPATH . '/wp-admin/includes/class-wp-media-list-table.php';
 class FU_WP_Media_List_Table extends WP_Media_List_Table {
+
+	function __construct() {
+		parent::__construct();
+	}
 
 	function prepare_items() {
 		global $lost, $wpdb, $wp_query, $post_mime_types, $avail_post_mime_types;
@@ -22,6 +29,14 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 				'total_pages' => $wp_query->max_num_pages,
 				'per_page' => $wp_query->query_vars['posts_per_page'],
 			) );
+		$this->items = $wp_query->posts;
+		/* -- Register the Columns -- */
+		$columns = $this->get_columns();
+		$hidden = array(
+				'id',
+			);
+		$this->_column_headers = array( $columns, $hidden, $this->get_sortable_columns() ) ;
+
 		remove_filter( 'posts_where', array( &$this, 'modify_post_status_to_private' ) );
 	}
 
@@ -31,7 +46,6 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 
 	function get_views() {
 		global $wpdb, $post_mime_types, $avail_post_mime_types;
-
 		$type_links = array();
 		$_num_posts = (array) wp_count_attachments();
 
@@ -71,9 +85,6 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 			$actions['attach'] = __( 'Attach to a post', 'frontend-uploader' );
 
 		return $actions;
-	}
-
-	function extra_tablenav( $which ) {
 	}
 
 	function current_action() {
@@ -121,10 +132,8 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 		$alt = '';
 
 		while ( have_posts() ) : the_post();
-
-		if ( $this->is_trash && $post->post_status != 'trash'
-			|| !$this->is_trash && $post->post_status == 'trash' )
-			continue;
+			if ( $this->is_trash && $post->post_status != 'trash' || !$this->is_trash && $post->post_status == 'trash' )
+                continue;
 
 		$alt = ( 'alternate' == $alt ) ? '' : 'alternate';
 		$post_owner = ( get_current_user_id() == $post->post_author ) ? 'self' : 'other' ;
@@ -132,9 +141,8 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 ?>
 	<tr id='post-<?php echo $id; ?>' class='<?php echo trim( $alt . ' author-' . $post_owner . ' status-' . $post->post_status ); ?>' valign="top">
 <?php
-
+		
 		list( $columns, $hidden ) = $this->get_column_info();
-
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$class = "class='$column_name column-$column_name'";
 
