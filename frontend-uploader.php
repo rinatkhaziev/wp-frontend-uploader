@@ -101,6 +101,8 @@ class Frontend_Uploader {
 	 * @return string WHERE statement
 	 */
 	function filter_posts_where( $where ) {
+		if ( !is_admin() ) 
+			return $where;
 		$screen = get_current_screen();
 		if ( $screen->base == 'upload' && ( !isset( $_GET['page'] ) || $_GET['page'] != 'manage_frontend_uploader' ) ) {
 			$where = str_replace( "post_status = 'private'", "post_status = 'inherit'", $where );	

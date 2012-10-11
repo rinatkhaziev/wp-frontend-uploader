@@ -2,8 +2,8 @@
 Contributors: rinatkhaziev
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.1
-Tested up to: 3.4
-Stable tag: 0.2.3
+Tested up to: 3.5-beta-1
+Stable tag: 0.2.4
 
 This plugin allows your visitors to upload User Generated Content.
 
@@ -32,7 +32,7 @@ By default plugin allows all MIME-types that are whitelisted in WordPress. Howev
 
 * Se habla español (Spanish) (props gastonbesada) 
 * Мы говорим по-русски (Russian)
-* Nous parlons français (Spanish) (props dapickboy)
+* Nous parlons français (French) (props dapickboy)
 
 [Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
 
@@ -85,6 +85,10 @@ function my_fu_additional_html() {
 
 
 == Changelog ==
+
+= 0.2.4 (Oct 10, 2012) =
+
+* Fix compatibility issue for upcoming WP 3.5
 
 = 0.2.3 (Oct 5, 2012) =
 
