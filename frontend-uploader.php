@@ -393,9 +393,9 @@ class Frontend_Uploader {
 	 * Enqueue our assets
 	 */
 	function enqueue_scripts() {
-		wp_enqueue_style( 'frontend-uploader', UGC_URL . '/lib/css/frontend-uploader.css' );
+		wp_enqueue_style( 'frontend-uploader', UGC_URL . 'lib/css/frontend-uploader.css' );
 		wp_enqueue_script( 'jquery-validate', '//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js', array( 'jquery' ) );
-		wp_enqueue_script( 'frontend-uploader-js', UGC_URL . '/lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
+		wp_enqueue_script( 'frontend-uploader-js', UGC_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 
 		// Include localization strings for default messages of validation plugin
 		if ( '' != WPLANG ) {
