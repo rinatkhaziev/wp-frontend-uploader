@@ -89,7 +89,7 @@ class Frontend_Uploader {
 		// fu_allowed_mime_types should return array of allowed mime types
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
-		$this->settings = get_option( 'frontend_uploader_settings' ); 
+		$this->settings = get_option( 'frontend_uploader_settings' );
 	}
 
 	/**
@@ -97,7 +97,7 @@ class Frontend_Uploader {
 	 * We don't want that, so we force WHERE statement to post_status = 'inherit'
 	 *
 	 * @todo  probably intermediate workaround
-	 * 
+	 *
 	 * @param  string $where WHERE statement
 	 * @return string WHERE statement
 	 */
@@ -403,6 +403,18 @@ class Frontend_Uploader {
 			$url = "//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_{$lang[0]}.js";
 			wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
 		}
+	}
+
+	/**
+	 * 3.5 brings new Media UI
+	 * Unfortunately, we have to specify ids of approved attachments explicitly,
+	 * Otherwise, editors have to pick photos after they have already approved them in "Manage UGC"
+	 *
+	 * This method will search a parent post with a regular expression, and update gallery shortcode with freshly approved attachment ID
+	 * @return [type] [description]
+	 */
+	function update_35_gallery_shortcode() {
+
 	}
 
 }
