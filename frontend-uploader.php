@@ -50,7 +50,7 @@ class Frontend_Uploader {
 		$this->allowed_mime_types = apply_filters( 'upload_mimes', get_allowed_mime_types() );
 
 		// Disallow php files no matter what (this is a full list of possible mime types for php scripts)
-		// @todo may be add other executables 
+		// @todo may be add other executables
 		// WP allows any mime-type that's specified within upload_mimes filter
 		// I strongly believe in fail-safe devices
 		// So lets just don't take any chances with php files (at least)
@@ -60,7 +60,7 @@ class Frontend_Uploader {
 			if ( false !== ( $key = array_search( $np, $this->allowed_mime_types ) ) ) {
 				unset( $this->allowed_mime_types[$key] );
 			}
-		}		
+		}
 	}
 
 	function __construct() {
@@ -102,12 +102,12 @@ class Frontend_Uploader {
 	 * @return string WHERE statement
 	 */
 	function filter_posts_where( $where ) {
-		if ( !is_admin() ) 
+		if ( !is_admin() )
 			return $where;
 		$screen = get_current_screen();
 		if ( $screen->base == 'upload' && ( !isset( $_GET['page'] ) || $_GET['page'] != 'manage_frontend_uploader' ) ) {
-			$where = str_replace( "post_status = 'private'", "post_status = 'inherit'", $where );	
-		}		
+			$where = str_replace( "post_status = 'private'", "post_status = 'inherit'", $where );
+		}
 		return $where;
 	}
 
