@@ -145,6 +145,8 @@ class Frontend_Uploader {
 					die;
 				}
 			}
+		} else {
+			return;
 		}
 		// @todo check $media_ids for is_wp_error
 		// Allow additional setup
