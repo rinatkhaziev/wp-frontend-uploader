@@ -47,7 +47,7 @@ class Frontend_Uploader {
 	 */
 	function action_init() {
 		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-		$this->allowed_mime_types = apply_filters( 'upload_mimes', get_allowed_mime_types() );
+		$this->allowed_mime_types =  $this->mime_types();
 
 		// Disallow php files no matter what (this is a full list of possible mime types for php scripts)
 		// @todo may be add other executables
@@ -61,6 +61,13 @@ class Frontend_Uploader {
 				unset( $this->allowed_mime_types[$key] );
 			}
 		}
+	}
+
+	function mime_types() {
+		$original_mimes = get_allowed_mime_types();
+		$ugc_mimes = apply_filters( 'fu_allowed_mime_types', $original_mimes );
+		add_filter( 'upload_mimes', $ugc_mimes );
+		//apply_filters( 'upload_mimes', get_allowed_mime_types() );
 	}
 
 	function __construct() {
