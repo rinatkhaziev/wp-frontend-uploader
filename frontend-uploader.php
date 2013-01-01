@@ -41,6 +41,8 @@ class Frontend_Uploader {
 	public $allowed_mime_types;
 	public $html;
 	public $settings;
+	public $original_mimes;
+	public $ugc_mimes;
 
 	/**
 	 *  Load languages and a bit of paranoia
@@ -62,12 +64,20 @@ class Frontend_Uploader {
 			}
 		}
 	}
-
+	/**
+	 * Workaround for allowed mime-types
+	 * @return allowed mime-types
+	 */
 	function mime_types() {
-		$original_mimes = get_allowed_mime_types();
-		$ugc_mimes = apply_filters( 'fu_allowed_mime_types', $original_mimes );
-		add_filter( 'upload_mimes', $ugc_mimes );
-		//apply_filters( 'upload_mimes', get_allowed_mime_types() );
+		$this->original_mimes = wp_get_mime_types();
+		$ugc_mimes = apply_filters( 'fu_allowed_mime_types', $this->original_mimes );
+		$this->ugc_mimes = $this->fix_mime_types( $ugc_mimes );
+		add_filter( 'upload_mimes', function() { return $this->ugc_mimes; } );
+		return $ugc_mimes;
+	}
+
+	function fix_mime_types( $mime_types ) {
+
 	}
 
 	function __construct() {
