@@ -314,7 +314,7 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 				}
 
 				if ( $post->post_status == 'private' ) {
-					$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc&id=' . $post->ID . '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
+					$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc&id=' . $post->ID . '&nonceugphoto=' . wp_create_nonce( 'upload_ugphoto' ). '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
 				}
 			}
 			if ( !$this->is_trash ) {

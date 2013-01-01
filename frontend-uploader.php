@@ -256,7 +256,7 @@ class Frontend_Uploader {
 
 	function approve_photo() {
 		// check for permissions and id
-		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( 'nonceugphoto', 'upload_ugphoto' ) )
+		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( $_GET['nonceugphoto'], 'upload_ugphoto' ) )
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
 
 		$post = get_post( $_GET['id'] );
@@ -264,6 +264,7 @@ class Frontend_Uploader {
 		if ( is_object( $post ) && $post->post_status == 'private' ) {
 			$post->post_status = 'inherit';
 			wp_update_post( $post );
+			$this->update_35_gallery_shortcode( $post->post_parent, $post->ID );
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&approved=1' ) );
 		}
 
@@ -413,8 +414,23 @@ class Frontend_Uploader {
 	 * This method will search a parent post with a regular expression, and update gallery shortcode with freshly approved attachment ID
 	 * @return [type] [description]
 	 */
-	function update_35_gallery_shortcode() {
+	function update_35_gallery_shortcode( $post_id, $attachment_id ) {
+		global $wp_version;
+		if ( round( $wp_version, 1 ) >= 3.5 && (int) $post_id != 0 ) {
+			$parent = get_post( $post_id );
+			preg_match( '#(?<before>(.*))\[gallery(.*)ids=(\'|")(?<ids>[0-9,]*)(\'|")](?<after>(.*))#ims', $parent->post_content, $matches ) ;
+			if ( isset( $matches['ids'] ) ) {
+				// @todo account for other possible shortcode atts
+				$gallery = '[gallery ids="' . $matches['ids'] . ',' . (int) $attachment_id  .'"]';
+				$post_to_update = array(
+					'ID' => (int) $post_id,
+					'post_content' => $matches['before'] . $gallery . $matches['after']
+				);
+				wp_update_post( $post_to_update );
+			}
 
+		}
+		return;
 	}
 
 }
