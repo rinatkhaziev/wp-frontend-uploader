@@ -3,7 +3,7 @@ Contributors: rinatkhaziev
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.1
 Tested up to: 3.5
-Stable tag: 0.3
+Stable tag: 0.3.1
 
 This plugin allows your visitors to upload User Generated Content.
 
@@ -85,6 +85,10 @@ function my_fu_additional_html() {
 
 
 == Changelog ==
+
+= 0.3.1 (Jan 3, 2013) =
+
+* Remove closure as it produces Fatal Error in PHP < 5.3
 
 = 0.3 (Jan 2, 2013) =
 
