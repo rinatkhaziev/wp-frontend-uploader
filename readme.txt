@@ -2,8 +2,8 @@
 Contributors: rinatkhaziev
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.1
-Tested up to: 3.5-beta-1
-Stable tag: 0.2.5
+Tested up to: 3.5
+Stable tag: 0.3
 
 This plugin allows your visitors to upload User Generated Content.
 
@@ -15,7 +15,7 @@ This plugin is useful if you want to power up your site with user generated cont
 * Delete
 * Re-attach to other post/page/custom-post-type
 
-This plugin supports multiple uploads for modern browsers (sorry, no IE). It's enabled for default form. To use it in your custom shortcode add multiple="" attribute to input shortcode. 
+This plugin supports multiple uploads for modern browsers (sorry, no IE). It's enabled for default form. To use it in your custom shortcode add multiple="" attribute to input shortcode.
 
 Here's example of default form (you don't need to enter all that if you want to use default form, just use [fu-upload-form]):
 
@@ -30,7 +30,7 @@ By default plugin allows all MIME-types that are whitelisted in WordPress. Howev
 
 = Translations: =
 
-* Se habla español (Spanish) (props gastonbesada) 
+* Se habla español (Spanish) (props gastonbesada)
 * Мы говорим по-русски (Russian)
 * Nous parlons français (French) (props dapickboy)
 
@@ -56,7 +56,7 @@ Allows you to add your custom MIME-types
 
 `add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );
 function my_fu_allowed_mime_types( $mime_types ) {
-	$mime_types[] = 'weird/mime-type';
+	$mime_types['wd|wrd'] = 'weird/mime-type';
 	return $mime_types;
 }`
 
@@ -86,7 +86,13 @@ function my_fu_additional_html() {
 
 == Changelog ==
 
-= 0.2.5 ( Oct 18, 2012) =
+= 0.3 (Jan 2, 2013) =
+
+* Fully compatible with 3.5 Media Manager: automatically adds id of approved picture to the gallery.
+* Fix IE upload issue, props mcnasby
+* fu_allowed_mime_types filter is working now
+
+= 0.2.5 (Oct 18, 2012) =
 
 * Fix potential Fatal Error on activation
 
