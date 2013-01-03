@@ -70,10 +70,13 @@ class Frontend_Uploader {
 	 */
 	function mime_types() {
 		$this->ugc_mimes = apply_filters( 'fu_allowed_mime_types', $this->fix_ie_mime_types( wp_get_mime_types() ) );
-		add_filter( 'upload_mimes', function() { return $this->ugc_mimes; } );
+		add_filter( 'upload_mimes', array( $this, 'filter_upload_mimes' ) );
 		return $this->ugc_mimes;
 	}
 
+	function filter_upload_mimes( $mimes ) {
+		return $this->ugc_mimes;
+	}
 	/**
 	 * Add IE-specific MIME types
 	 * /props mcnasby
