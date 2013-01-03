@@ -41,7 +41,6 @@ class Frontend_Uploader {
 	public $allowed_mime_types;
 	public $html;
 	public $settings;
-	public $original_mimes;
 	public $ugc_mimes;
 
 	/**
@@ -64,20 +63,27 @@ class Frontend_Uploader {
 			}
 		}
 	}
+
 	/**
 	 * Workaround for allowed mime-types
 	 * @return allowed mime-types
 	 */
 	function mime_types() {
-		$this->original_mimes = wp_get_mime_types();
-		$ugc_mimes = apply_filters( 'fu_allowed_mime_types', $this->original_mimes );
-		$this->ugc_mimes = $this->fix_mime_types( $ugc_mimes );
+		$this->ugc_mimes = apply_filters( 'fu_allowed_mime_types', $this->fix_ie_mime_types( wp_get_mime_types() ) );
 		add_filter( 'upload_mimes', function() { return $this->ugc_mimes; } );
-		return $ugc_mimes;
+		return $this->ugc_mimes;
 	}
 
-	function fix_mime_types( $mime_types ) {
-
+	/**
+	 * Add IE-specific MIME types
+	 * /props mcnasby
+	 * @param  array $mime_types [description]
+	 * @return [type]             [description]
+	 */
+	function fix_ie_mime_types( $mime_types ) {
+		$mime_types['jpg|jpe|jpeg'] = 'image/pjpeg';
+		$mime_types['png|pngg'] = 'image/x-png';
+		return $mime_types;
 	}
 
 	function __construct() {
@@ -158,7 +164,7 @@ class Frontend_Uploader {
 					);
 					$media_ids[] =  media_handle_sideload( $k, intval( $_POST['post_ID'] ), $post_overrides['post_title'], $post_overrides );
 				} else {
-					wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type' ), $_POST['_wp_http_referer'] ) );
+					wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type', 'mime' => $k['type'] ), $_POST['_wp_http_referer'] ) );
 					die;
 				}
 			}
@@ -400,7 +406,9 @@ class Frontend_Uploader {
 			$class = 'failure';
 			break;
 		case 'ugc-disallowed_mime_type':
-			$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' );
+			$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ) . "\n";
+			if ( isset( $_GET['mime'] ) )
+				$title .= __( 'The file has following MIME-type:', 'frontend-uploader' ) . esc_attr( $_GET['mime'] );
 			$class = 'failure';
 			break;
 		default:
