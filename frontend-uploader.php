@@ -217,10 +217,10 @@ class Frontend_Uploader {
 			// first thing we'll do is create the post		
 			$page = array(		
 			  'post_type' => 'post',
-			  'post_title'    => filter_var( $_POST['post_title'], FILTER_SANITIZE_STRING ),
-			  'post_content'  => filter_var( $_POST['post_content'], FILTER_SANITIZE_STRING ),
+			  'post_title'    => sanitize_text_field($_POST['post_title']),
+			  'post_content'  => sanitize_text_field($_POST['post_content']),
 			  'post_status'   => 'private',
-			  'post_category' => array(intval( filter_var( $_POST['post_category'], FILTER_SANITIZE_STRING ) )),			  
+			  'post_category' => array( intval( sanitize_text_field( $_POST['post_category'] ) ) )			  
 			);					
 									
 			// if the category is valid create the post
@@ -235,6 +235,7 @@ class Frontend_Uploader {
 			}				
 			else {
 				wp_safe_redirect( add_query_arg( array( 'response' => 'invalid_post' ), $_POST['_wp_http_referer'] ) );	
+				exit;
 			}	
 			
 		}		
@@ -250,9 +251,9 @@ class Frontend_Uploader {
 		if ($_POST['form_layout']=="image" || $_POST['form_layout']=="post_image" ) {
 			
 			if ($_POST['form_layout']=="image")
-				$caption = $_POST['caption'];
+				$caption = sanitize_text_field( $_POST['caption'] );
 			else
-				$caption = $_POST['post_content'];
+				$caption = sanitize_text_field( $_POST['post_content'] );
 				
 			
 			$media_ids = array(); // will hold uploaded media IDS
@@ -320,9 +321,10 @@ class Frontend_Uploader {
 		
 		// and can't believe we got this far, on to the success page (if we have one)
 		
-		if ($_POST['success_page'])				
-			wp_redirect( $_POST['success_page'] );
-		else {		
+		if ($_POST['success_page']){
+			wp_safe_redirect( $_POST['success_page'] );
+			exit;
+		} else {		
 			// and if we don't have one use the traditional method
 			if ( $_POST['_wp_http_referer'] )
 				wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-sent' ), $_POST['_wp_http_referer'] ) );
