@@ -93,6 +93,9 @@ class Frontend_Uploader {
 		return $mime_types;
 	}
 
+	/**
+	 * Here we go
+	 */
 	function __construct() {
 		// Hooking to wp_ajax
 		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_content' ) );
@@ -111,7 +114,6 @@ class Frontend_Uploader {
 
 		// Adding our shortcodes
 		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
-		add_shortcode( 'fu-upload-post-form', array( $this, 'upload_post_form' ) );
 		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -129,8 +131,22 @@ class Frontend_Uploader {
 		// fu_allowed_mime_types should return array of allowed mime types
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
-		$this->settings = get_option( 'frontend_uploader_settings' );
+		$this->settings = get_option( 'frontend_uploader_settings', $this->settings_defaults() );
 
+	}
+
+	/**
+	 * Ensure we're not producing any notices by supplying the defaults to get_option
+	 *
+	 * @return array $defaults
+	 */
+	function settings_defaults() {
+		$defaults = array();
+		$settings = Frontend_Uploader_Settings::get_settings_fields();
+		foreach ( $settings['frontend_uploader_settings'] as $setting ) {
+			$defaults[ $setting['name'] ] = $setting['default'];
+		}
+		return $defaults;
 	}
 
 	/**
@@ -670,7 +686,7 @@ class Frontend_Uploader {
 				echo do_shortcode( '[textarea name="caption" class="textarea" id="ug_caption" description="'. $textarea_desc .'"]
 								[input type="file" name="photo" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
 
-			if ( $this->settings['show_author'] )
+			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
 				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="Author" class=""]' );
 
 			if ( $form_layout=="post_image" or $form_layout=="image" )
