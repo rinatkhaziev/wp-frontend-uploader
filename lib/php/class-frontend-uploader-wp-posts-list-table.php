@@ -3,24 +3,24 @@
  * Posts Library List Table class.
  *
  * @todo refactor display_rows() using single row and callbacks
- *  
+ *
  */
 require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
 require_once ABSPATH . '/wp-admin/includes/class-wp-posts-list-table.php';
 class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 
-	function __construct() {		
+	function __construct() {
 		parent::__construct();
 	}
-	
+
 	function prepare_items() {
 		global $lost, $wpdb, $wp_query, $post_mime_types, $avail_post_mime_types;
 
 		$q = $_REQUEST;
-		
+
 		if ( !empty( $lost ) )
 			$q['post__in'] = implode( ',', $lost );
-			
+
 		add_filter( 'posts_where', array( &$this, 'modify_post_status_to_private' ) );
 
 		list( $post_mime_types, $avail_post_mime_types ) = wp_edit_attachments_query( $q );
@@ -30,24 +30,24 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 				'total_pages' => $wp_query->max_num_pages,
 				'per_page' => $wp_query->query_vars['posts_per_page'],
 			) );
-		$this->items = $wp_query->posts;		
-		
+		$this->items = $wp_query->posts;
+
 		$columns = $this->get_columns();
-				
+
 		$hidden = array(
-				'id',
-			);
-		$this->_column_headers = array( $columns, $hidden, $this->get_sortable_columns() ) ;		
+			'id',
+		);
+		$this->_column_headers = array( $columns, $hidden, $this->get_sortable_columns() ) ;
 
 		remove_filter( 'posts_where', array( &$this, 'modify_post_status_to_private' ) );
 	}
 
 
 	function modify_post_status_to_private( $where ) {
-		
+
 		//also making it posts only
-		return ("AND wp_posts.post_type = 'post' AND (wp_posts.post_status = 'inherit' OR wp_posts.post_status = 'private') ");
-		
+		return "AND wp_posts.post_type = 'post' AND (wp_posts.post_status = 'inherit' OR wp_posts.post_status = 'private') ";
+
 	}
 
 	function get_views() {
@@ -90,13 +90,13 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 		$actions = array();
 		$actions['delete'] = __( 'Delete Permanently', 'frontend-uploader' );
 		//if ( $this->detached )
-		//	$actions['attach'] = __( 'Attach to a post', 'frontend-uploader' );
+		// $actions['attach'] = __( 'Attach to a post', 'frontend-uploader' );
 
 		return $actions;
 	}
 
-	function current_action() {		
-	
+	function current_action() {
+
 		if ( isset( $_REQUEST['find_detached'] ) )
 			return 'find_detached';
 
@@ -104,7 +104,7 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 			return 'attach';
 
 		if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) )
-			return 'delete_all';				
+			return 'delete_all';
 
 		return parent::current_action();
 	}
@@ -116,20 +116,20 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 	function no_items() {
 		__( 'No media attachments found.', 'frontend-uploader' );
 	}
-	
+
 	function get_columns() {
-			
+
 		$posts_columns = array();
 		$posts_columns['cb'] = '<input type="checkbox" />';
 		$posts_columns['title'] = _x( 'Title', 'column name' );
-		
+
 		$posts_columns['categories'] = _x( 'Categories', 'column name' );
-		
+
 		$posts_columns['date'] = _x( 'Date', 'column name' );
 		$posts_columns = apply_filters( 'manage_fu_posts_columns', $posts_columns, $this->detached );
-		
+
 		return $posts_columns;
-		
+
 	}
 
 	function display_rows() {
@@ -139,8 +139,8 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 		$alt = '';
 
 		while ( have_posts() ) : the_post();
-			if ( $this->is_trash && $post->post_status != 'trash' || !$this->is_trash && $post->post_status == 'trash' )
-                continue;
+		if ( $this->is_trash && $post->post_status != 'trash' || !$this->is_trash && $post->post_status == 'trash' )
+			continue;
 
 		$alt = ( 'alternate' == $alt ) ? '' : 'alternate';
 		$post_owner = ( get_current_user_id() == $post->post_author ) ? 'self' : 'other' ;
@@ -148,7 +148,7 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 ?>
 	<tr id='post-<?php echo $id; ?>' class='<?php echo trim( $alt . ' author-' . $post_owner . ' status-' . $post->post_status ); ?>' valign="top">
 <?php
-		
+
 		list( $columns, $hidden ) = $this->get_column_info();
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$class = "class='$column_name column-$column_name'";
@@ -295,11 +295,11 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 
 		if ( current_user_can( 'edit_post', $post->ID ) )
 			$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, true ) . '">' . __( 'Edit', 'frontend-uploader' ) . '</a>';
-			
+
 		if ( $post->post_status == 'private' ) {
 			$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc_post&id=' . $post->ID . '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
-		}			
-		
+		}
+
 		if ( current_user_can( 'delete_post', $post->ID ) ) {
 			if ( 'trash' == $post->post_status )
 				$actions['untrash'] = "<a title='" . esc_attr( __( 'Restore this item from the Trash' ) ) . "' href='" . wp_nonce_url( admin_url( sprintf( $post_type_object->_edit_link . '&amp;action=untrash', $post->ID ) ), 'untrash-post_' . $post->ID ) . "'>" . __( 'Restore' ) . "</a>";
@@ -308,10 +308,9 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 			if ( 'trash' == $post->post_status || !EMPTY_TRASH_DAYS )
 				$actions['delete'] = "<a class='submitdelete' title='" . esc_attr( __( 'Delete this item permanently' ) ) . "' href='" . get_delete_post_link( $post->ID, '', true ) . "'>" . __( 'Delete Permanently' ) . "</a>";
 		}
-				
+
 		$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( sprintf( __( 'View "%s"', 'frontend-uploader' ), $att_title ) ) . '" rel="permalink">' . __( 'View', 'frontend-uploader' ) . '</a>';
-		
+
 		return $actions;
 	}
 }
-
