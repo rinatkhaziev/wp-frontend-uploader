@@ -5,7 +5,7 @@ Requires at least: 3.1
 Tested up to: 3.5
 Stable tag: 0.3.1
 
-This plugin allows your visitors to upload User Generated Content.
+This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types).
 
 == Description ==
 
@@ -27,6 +27,10 @@ Here's example of default form (you don't need to enter all that if you want to 
 
 By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Refer to Other notes -> Configuration filters.
 
+= New in v0.4 =
+
+Now your visitors are able to upload not only media, but guest posts as well! 
+Use [fu-upload-form form_layout="post_image"] to get default form to upload post content and images
 
 = Translations: =
 
@@ -85,6 +89,10 @@ function my_fu_additional_html() {
 
 
 == Changelog ==
+
+= 0.4 = 
+
+* Ability to upload posts+files via [fu-upload-form form_layout="post_image|post|image"] where form_layout might be "post_image", "post", or "image". Defaults to "image". /props 
 
 = 0.3.1 (Jan 3, 2013) =
 
