@@ -52,6 +52,7 @@ class Frontend_Uploader_Settings {
 					'label' => __( 'Notify site admins', 'frontend-uploader' ),
 					'desc' => __( 'Yes', 'frontend-uploader' ),
 					'type' => 'checkbox',
+					'default' => '',
 				),
 				array(
 					'name' => 'admin_notification_text',
@@ -65,26 +66,29 @@ class Frontend_Uploader_Settings {
 					'label' => __( 'Notification email', 'frontend-uploader' ),
 					'desc' => __( 'Leave blank to use site admin email', 'frontend-uploader' ),
 					'type' => 'text',
+					'default' => '',
 				),
 				array(
 					'name' => 'allowed_categories',
 					'label' => __( 'Allowed categories', 'frontend-uploader' ),
 					'desc' => __( 'Comma separated IDs (leave blank for all)', 'frontend-uploader' ),
 					'type' => 'text',
+					'default' => '',
 				),
 				array(
 					'name' => 'user_verification',
 					'label' => __( 'User Verification callback', 'frontend-uploader' ),
 					'desc' => __( 'Leave blank for none', 'frontend-uploader' ),
 					'type' => 'text',
+					'default' => '',
 				),
 				array(
 					'name' => 'show_author',
 					'label' => __( 'Show author field', 'frontend-uploader' ),
 					'desc' => __( 'Yes', 'frontend-uploader' ),
 					'type' => 'checkbox',
+					'default' => '',
 				),
-
 			),
 		);
 
