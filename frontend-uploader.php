@@ -672,11 +672,8 @@ class Frontend_Uploader {
 				$textarea_desc = __( 'Description (Required)', 'frontend-uploader' );
 			$file_desc = __( 'Your Photo', 'frontend-uploader' );
 			$submit_button = __( 'Submit', 'frontend-uploader' );
-			$title_desc = __( 'Title (Required)', 'frontend-uploader' );
-			$author_desc = __( 'Author', 'frontend-uploader' );
-			$credit_desc = __( 'Credit', 'frontend-uploader' );
 
-			echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="'. $title_desc .'" class="required"]' );
+			echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="Title (Required)" class="required"]' );
 
 			// here we select the different fields based on the form layout to allow for different types
 			// of uploads (only a file, only a post or a file and post)
@@ -690,10 +687,10 @@ class Frontend_Uploader {
 								[input type="file" name="photo" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
 
 			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
-				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="'. $author_desc .'" class=""]' );
+				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="Author" class=""]' );
 
 			if ( $form_layout=="post_image" or $form_layout=="image" )
-				echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="'. $credit_desc .'" class=""]' );
+				echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="Credit" class=""]' );
 
 			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 
