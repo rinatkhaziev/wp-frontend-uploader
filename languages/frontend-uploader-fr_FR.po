@@ -494,3 +494,37 @@ msgstr ""
 msgid "Leave blank to use site admin email"
 msgstr ""
 
+#: frontend-uploader.php:675
+#@ frontend-uploader
+msgid "Title (Required)"
+msgstr "Titre de votre message (requis)"
+
+#: frontend-uploader.php:672
+#@ frontend-uploader
+msgid "Description (Required)"
+msgstr "Votre message (requis)"
+
+#: frontend-uploader.php:676
+#@ frontend-uploader
+msgid "Author"
+msgstr "Votre nom ou pseudo"
+
+#: frontend-uploader.php:677
+#@ frontend-uploader
+msgid "Credit"
+msgstr "Crédit photo"
+ 
+#: frontend-uploader.php:738
+#@ frontend-uploader
+msgid "Your post was successfully sent!"
+msgstr "Votre message a été envoyé!"
+
+#: frontend-uploader.php:643
+#@ frontend-uploader
+msgid "Create a new post"
+msgstr "Écrire un nouveau message"
+
+#: frontend-uploader.php:752
+#@ frontend-uploader
+msgid "The content you are trying to post is invalid."
+msgstr "Le contenu proposé n'est pas valide"

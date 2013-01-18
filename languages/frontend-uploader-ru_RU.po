@@ -3,13 +3,13 @@ msgstr ""
 "Project-Id-Version: UGC Frontend Uploader v0.2.3\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-frontend-uploader\n"
 "POT-Creation-Date: 2012-09-01 23:44:34+00:00\n"
-"PO-Revision-Date: 2012-10-11 00:10:48+0000\n"
+"PO-Revision-Date: 2013-01-18 23:26:39+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=3; plural=n%100/10==1 ? 2 : n%10==1 ? 0 : (n+9)%10>3 ? 2 : 1;\n"
 "X-Poedit-Language: \n"
 "X-Poedit-Country: \n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -202,7 +202,7 @@ msgstr "Прикрепить к посту"
 msgid "No media attachments found."
 msgstr "Файлов не найдено"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:116
 #@ default
 msgctxt "column name"
@@ -214,14 +214,14 @@ msgstr "Файл"
 msgid "Author"
 msgstr "Автор"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:120
 #@ default
 msgctxt "column name"
 msgid "Attached to"
 msgstr "Прикреплен к"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:123
 #@ default
 msgctxt "column name"
@@ -324,7 +324,7 @@ msgstr "Переприкрепить"
 #: lib/php/frontend-uploader-settings.php:29
 #@ frontend-uploader
 msgid "Frontend Uploader Settings"
-msgstr ""
+msgstr "Настройки Frontend Uploader"
 
 #: lib/php/frontend-uploader-settings.php:36
 #: lib/php/settings-api/procedural-example.php:19
@@ -332,27 +332,27 @@ msgstr ""
 #@ frontend-uploader
 #@ wedevs
 msgid "Basic Settings"
-msgstr ""
+msgstr "Базовые настройки"
 
 #: lib/php/frontend-uploader-settings.php:52
 #@ frontend-uploader
 msgid "Notify site admins"
-msgstr ""
+msgstr "Уведомлять администратора"
 
 #: lib/php/frontend-uploader-settings.php:53
 #@ frontend-uploader
 msgid "Yes"
-msgstr ""
+msgstr "Да"
 
 #: lib/php/frontend-uploader-settings.php:58
 #@ frontend-uploader
 msgid "Admin Notification"
-msgstr ""
+msgstr "Текст уведомления"
 
 #: lib/php/frontend-uploader-settings.php:59
 #@ frontend-uploader
 msgid "Message that admin will get on new file upload"
-msgstr ""
+msgstr "Сообщение, которое получит администратор при загрузке файла"
 
 #: lib/php/settings-api/procedural-example.php:23
 #: lib/php/settings-api/settings-api.php:51
@@ -489,15 +489,15 @@ msgstr ""
 #: frontend-uploader.php:155
 #@ frontend-uploader
 msgid "New file was uploaded on your site"
-msgstr ""
+msgstr "Новый файл был загружен на ваш сайт"
 
 #: lib/php/frontend-uploader-settings.php:65
 #@ frontend-uploader
 msgid "Notification email"
-msgstr ""
+msgstr "Email для Уведомления"
 
 #: lib/php/frontend-uploader-settings.php:66
 #@ frontend-uploader
 msgid "Leave blank to use site admin email"
-msgstr ""
+msgstr "Оставьте пустым, чтобы использовать email администратора сайта"
 
