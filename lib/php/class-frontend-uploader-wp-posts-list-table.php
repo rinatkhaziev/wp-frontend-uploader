@@ -44,9 +44,10 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 
 
 	function modify_post_status_to_private( $where ) {
+		global $wpdb;
 
 		//also making it posts only
-		return "AND wp_posts.post_type = 'post' AND (wp_posts.post_status = 'inherit' OR wp_posts.post_status = 'private') ";
+		return "AND $wpdb->posts.post_type = 'post' AND ($wpdb->posts.post_status = 'inherit' OR $wpdb->posts.post_status = 'private') ";
 
 	}
 
