@@ -131,7 +131,7 @@ function my_fu_additional_html() {
 
 = 0.2.1 (August 30, 2012) =
 
-* Added l10n support, added spanish translation. Props gastonbesada
+* Added l10n support, added Spanish translation. Props gastonbesada
 
 = 0.2 (August 15, 2012) =
 
