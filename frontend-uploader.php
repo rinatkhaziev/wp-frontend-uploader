@@ -169,68 +169,11 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Handles the upload of a user's photo
-	 */
-	function upload_photo() {
-		$media_ids = array(); // will hold uploaded media IDS
-
-		if ( !wp_verify_nonce( $_POST['nonceugphoto'], 'upload_ugphoto' ) ) {
-			wp_safe_redirect( add_query_arg( array( 'response' => 'nonce-failure' ), $_POST['_wp_http_referer'] ) );
-			exit;
-		} // If nonce is invalid, redirect to referer and display error flash notice
-
-		if ( !empty( $_FILES ) && intval( $_POST['post_ID'] ) != 0 ) {
-			// File field name could be user defined, so we just pick
-			$files = current( $_FILES );
-			for ( $i = 0; $i < count( $_FILES['photo']['name'] ); $i++ ) {
-				$fields = array( 'name', 'type', 'tmp_name', 'error', 'size' );
-				foreach ( $fields as $field ) {
-					$k[$field] = $files[$field][$i];
-				}
-				// Iterate through files, and save upload if it's one of allowed MIME types
-				if ( in_array( $k['type'], $this->allowed_mime_types ) ) {
-					// Setup some default values
-					// However, you can make additional changes on 'fu_after_upload' action
-					$post_overrides = array(
-						'post_status' => 'private',
-						'post_title' => isset( $_POST['caption'] ) && ! empty( $_POST['caption'] ) ? filter_var( $_POST['caption'], FILTER_SANITIZE_STRING ) : 'Unnamed',
-						'post_content' => !empty( $_POST['name'] ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : '',
-					);
-					$media_ids[] =  media_handle_sideload( $k, intval( $_POST['post_ID'] ), $post_overrides['post_title'], $post_overrides );
-				} else {
-					wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type', 'mime' => $k['type'] ), $_POST['_wp_http_referer'] ) );
-					die;
-				}
-			}
-		} else {
-			return;
-		}
-
-		// @todo check $media_ids for is_wp_error
-		// Allow additional setup
-		// Pass array of attachment ids
-		do_action( 'fu_after_upload', $media_ids );
-
-		// Notify site admins of new upload
-		if ( 'on' == $this->settings['notify_admin'] ) {
-			$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
-			$subj = __( 'New file was uploaded on your site', 'frontend-uploader' );
-			wp_mail( $to, $subj, $this->settings['admin_notification_text'] );
-		}
-
-		if ( $_POST['_wp_http_referer'] )
-			wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-sent' ), $_POST['_wp_http_referer'] ) );
-		exit;
-	}
-
-
-
-	/**
 	 * Handles the upload of a form, attached image or both
 	 */
 	function upload_content() {
 
-		if ( $_POST['form_layout']=="post" || $_POST['form_layout']=="post_image" ) {
+		if ( $_POST['form_layout'] == "post" || $_POST['form_layout'] == "post_image" ) {
 
 			// first thing we'll do is create the post
 			$page = array(
@@ -265,7 +208,7 @@ class Frontend_Uploader {
 		// now that we know what to relate the image to we can go ahead with the image upload
 
 		// but only if it's the proper form layout
-		if ( $_POST['form_layout']=="image" || $_POST['form_layout']=="post_image" ) {
+		if ( $_POST['form_layout'] == "image" || $_POST['form_layout'] == "post_image" ) {
 
 			if ( $_POST['form_layout']=="image" )
 				$caption = sanitize_text_field( $_POST['caption'] );
@@ -805,4 +748,3 @@ class Frontend_Uploader {
 
 global $frontend_uploader;
 $frontend_uploader = new Frontend_Uploader;
-
