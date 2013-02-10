@@ -613,29 +613,29 @@ class Frontend_Uploader {
 			// Or render default form
 			else:
 				$textarea_desc = __( 'Description', 'frontend-uploader' );
-			$file_desc = __( 'Your Photo', 'frontend-uploader' );
-			$submit_button = __( 'Submit', 'frontend-uploader' );
+				$file_desc = __( 'Your Photo', 'frontend-uploader' );
+				$submit_button = __( 'Submit', 'frontend-uploader' );
 
-			echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
+				echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
 
-			// here we select the different fields based on the form layout to allow for different types
-			// of uploads (only a file, only a post or a file and post)
-			if ( $form_layout=="post_image" )
-				echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
-						    [input type="file" name="photo" id="ug_photo" description="'. $file_desc .'" multiple=""]' );
-			elseif ( $form_layout=="post" )
-				echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
-			else
-				echo do_shortcode( '[textarea name="caption" class="textarea" id="ug_caption" description="'. $textarea_desc .'"]
-								[input type="file" name="photo" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
+				// here we select the different fields based on the form layout to allow for different types
+				// of uploads (only a file, only a post or a file and post)
+				if ( $form_layout=="post_image" )
+					echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
+							    [input type="file" name="photo" id="ug_photo" description="'. $file_desc .'" multiple=""]' );
+				elseif ( $form_layout=="post" )
+					echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
+				else
+					echo do_shortcode( '[textarea name="caption" class="textarea" id="ug_caption" description="'. $textarea_desc .'"]
+									[input type="file" name="photo" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
 
-			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
-				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
+				if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
+					echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
 
-			if ( $form_layout=="post_image" or $form_layout=="image" )
-				echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="' . __( 'Credit', 'frontend-uploader' ) . '" class=""]' );
+				if ( $form_layout=="post_image" or $form_layout=="image" )
+					echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="' . __( 'Credit', 'frontend-uploader' ) . '" class=""]' );
 
-			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
+				echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 
 
 ?>
