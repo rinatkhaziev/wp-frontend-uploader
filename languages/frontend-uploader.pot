@@ -86,7 +86,7 @@ msgid "Upload a photo"
 msgstr ""
 
 #: frontend-uploader.php:309
-msgid "Description (optional)"
+msgid "Description"
 msgstr ""
 
 #: frontend-uploader.php:310
@@ -107,6 +107,10 @@ msgstr ""
 
 #: frontend-uploader.php:344
 msgid "This kind of file is not allowed. Please, try again selecting other file."
+msgstr ""
+
+#: frontend-uploader.php:676
+msgid "Title"
 msgstr ""
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:47

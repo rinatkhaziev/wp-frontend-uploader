@@ -194,7 +194,7 @@ class Frontend_Uploader {
 					$post_overrides = array(
 						'post_status' => 'private',
 						'post_title' => isset( $_POST['caption'] ) && ! empty( $_POST['caption'] ) ? filter_var( $_POST['caption'], FILTER_SANITIZE_STRING ) : 'Unnamed',
-						'post_content' => !empty( $_POST['name'] ) ? __( 'Courtesy of ', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : '',
+						'post_content' => !empty( $_POST['name'] ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : '',
 					);
 					$media_ids[] =  media_handle_sideload( $k, intval( $_POST['post_ID'] ), $post_overrides['post_title'], $post_overrides );
 				} else {
@@ -301,8 +301,8 @@ class Frontend_Uploader {
 							$post_overrides = array(
 								'post_status' => 'private',
 								'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? filter_var( $_POST['post_title'], FILTER_SANITIZE_STRING ) : 'Unnamed',
-								'post_content' => empty( $caption ) ? __( 'Courtesy of ', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
-								'post_excerpt' => empty( $caption ) ? __( 'Courtesy of ', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
+								'post_content' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
+								'post_excerpt' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
 							);
 
 							$media_ids[] =  media_handle_sideload( $k, intval( $pageid ), $post_overrides['post_title'], $post_overrides );
@@ -669,11 +669,11 @@ class Frontend_Uploader {
 				echo do_shortcode( $content );
 			// Or render default form
 			else:
-				$textarea_desc = __( 'Description (Required)', 'frontend-uploader' );
+				$textarea_desc = __( 'Description', 'frontend-uploader' );
 			$file_desc = __( 'Your Photo', 'frontend-uploader' );
 			$submit_button = __( 'Submit', 'frontend-uploader' );
 
-			echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="' . __( 'Title (Required)', 'frontend-uploader' ) . '" class="required"]' );
+			echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
 
 			// here we select the different fields based on the form layout to allow for different types
 			// of uploads (only a file, only a post or a file and post)
