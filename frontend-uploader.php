@@ -176,10 +176,11 @@ class Frontend_Uploader {
 		if ( $_POST['form_layout'] == "post" || $_POST['form_layout'] == "post_image" ) {
 
 			// first thing we'll do is create the post
+			// @todo remove hardcoded $_POST keys
 			$page = array(
 				'post_type' => 'post',
 				'post_title'    => sanitize_text_field( $_POST['post_title'] ),
-				'post_content'  => sanitize_text_field( $_POST['post_content'] ),
+				'post_content'  => wp_filter_post_kses( $_POST['post_content'] ),
 				'post_status'   => 'private',
 				'post_category' => array( intval( sanitize_text_field( $_POST['post_category'] ) ) )
 			);
@@ -551,8 +552,13 @@ class Frontend_Uploader {
 				), $atts ) );
 		switch ( $tag ):
 		case 'textarea':
-			$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) ), array( 'for' => $id ), false );
-		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+			$rteenabled = true;
+			if ( $rteenabled ) {
+				wp_editor('', $id, array( 'textarea_name' => $name, 'media_buttons' => false, 'teeny' => true, 'quicktags' => false ) );
+			} else {
+				$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) ), array( 'for' => $id ), false );
+				return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+			}
 		break;
 	case 'input':
 		$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
@@ -591,7 +597,7 @@ class Frontend_Uploader {
 					'form_layout' => ''
 				), $atts ) );
 		global $post;
-		if ( $form_layout != "post" && $form_layout != "post_image" ) $form_layout="image";
+		if ( $form_layout != "post" && $form_layout != "post_image" ) $form_layout = "image";
 
 		ob_start();
 ?>
@@ -626,13 +632,13 @@ class Frontend_Uploader {
 				elseif ( $form_layout=="post" )
 					echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
 				else
-					echo do_shortcode( '[textarea name="caption" class="textarea" id="ug_caption" description="'. $textarea_desc .'"]
+					echo do_shortcode( '[textarea name="caption" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
 									[input type="file" name="photo" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
 
 				if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
 					echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
 
-				if ( $form_layout=="post_image" or $form_layout=="image" )
+				if ( $form_layout == "post_image" or $form_layout == "image" )
 					echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="' . __( 'Credit', 'frontend-uploader' ) . '" class=""]' );
 
 				echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
@@ -702,9 +708,9 @@ class Frontend_Uploader {
 	 * Enqueue our assets
 	 */
 	function enqueue_scripts() {
-
 		wp_enqueue_style( 'frontend-uploader', UGC_URL . 'lib/css/frontend-uploader.css' );
 		wp_enqueue_script( 'jquery-validate', '//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js', array( 'jquery' ) );
+		wp_enqueue_script( 'fu-tiny-mce', home_url( WPINC . '/js/tinymce/tiny_mce.js' ) );
 		wp_enqueue_script( 'frontend-uploader-js', UGC_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 
 		// Include localization strings for default messages of validation plugin
