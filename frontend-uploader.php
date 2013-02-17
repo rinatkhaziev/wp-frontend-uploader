@@ -554,8 +554,12 @@ class Frontend_Uploader {
 		case 'textarea':
 			$rteenabled = true;
 			if ( $rteenabled ) {
+				ob_start();
 				wp_editor('', $id, array( 'textarea_name' => $name, 'media_buttons' => false, 'teeny' => true, 'quicktags' => false ) );
-			} else {
+				$tiny = ob_get_clean();
+				$label =  $this->html->element( 'label', $description , array( 'for' => $id ), false );
+				return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
+			} else { 
 				$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) ), array( 'for' => $id ), false );
 				return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 			}
