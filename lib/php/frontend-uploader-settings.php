@@ -10,22 +10,25 @@ class Frontend_Uploader_Settings {
 	function __construct() {
 		$this->settings_api = new WeDevs_Settings_API;
 
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'current_screen', array( $this, 'action_current_screen' ) );
+		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
 
 	}
 
-	function admin_init() {
+	function action_current_screen() {
 
+		$screen = get_current_screen();
+		if ( 'settings_page_fu_settings' == $screen->base ) {
+			$this->settings_api->set_sections( $this->get_settings_sections() );
+			$this->settings_api->set_fields( $this->get_settings_fields() );
+
+			//initialize settings
+			$this->settings_api->admin_init();			
+		}
 		//set the settings
-		$this->settings_api->set_sections( $this->get_settings_sections() );
-		$this->settings_api->set_fields( $this->get_settings_fields() );
-
-		//initialize settings
-		$this->settings_api->admin_init();
 	}
 
-	function admin_menu() {
+	function action_admin_menu() {
 		add_options_page( __( 'Frontend Uploader Settings', 'frontend-uploader' ) , __( 'Frontend Uploader Settings', 'frontend-uploader' ), 'manage_options', 'fu_settings', array( $this, 'plugin_page' ) );
 	}
 
