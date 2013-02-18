@@ -249,7 +249,7 @@ class Frontend_Uploader {
 								'post_excerpt' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
 							);
 
-							$media_ids[] =  media_handle_upload( $k, intval( $pageid ), $post_overrides['post_title'], $post_overrides );
+							$media_ids[] =  media_handle_sideload( $k, intval( $pageid ), $post_overrides['post_title'], $post_overrides );
 						} else {
 							wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type' ), $_POST['_wp_http_referer'] ) );
 							// if the image wasn't allowed then delete the post
@@ -737,7 +737,8 @@ class Frontend_Uploader {
 	 */
 	function update_35_gallery_shortcode( $post_id, $attachment_id ) {
 		global $wp_version;
-		if ( round( $wp_version, 1 ) >= 3.5 && (int) $post_id != 0 ) {
+
+		if ( version_compare( $wp_version, '3.5', '>=')  && (int) $post_id != 0 ) {
 			$parent = get_post( $post_id );
 			preg_match( '#(?<before>(.*))\[gallery(.*)ids=(\'|")(?<ids>[0-9,]*)(\'|")](?<after>(.*))#ims', $parent->post_content, $matches ) ;
 			if ( isset( $matches['ids'] ) ) {
