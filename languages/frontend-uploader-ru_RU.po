@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: UGC Frontend Uploader v0.4-working\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-frontend-uploader\n"
 "POT-Creation-Date: 2012-09-01 23:44:34+00:00\n"
-"PO-Revision-Date: 2013-02-10 01:32:02+0000\n"
+"PO-Revision-Date: 2013-02-18 01:39:58+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,42 +20,42 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: frontend-uploader.php:354
-#: frontend-uploader.php:535
-#: frontend-uploader.php:539
+#: frontend-uploader.php:298
+#: frontend-uploader.php:479
+#: frontend-uploader.php:483
 #@ frontend-uploader
 msgid "Manage UGC"
 msgstr "Модерация UGC"
 
-#: frontend-uploader.php:357
+#: frontend-uploader.php:301
 #@ frontend-uploader
 msgid "You do not have permission to upload files."
 msgstr "Вы не можете загружать файлы."
 
-#: frontend-uploader.php:370
-#: frontend-uploader.php:463
+#: frontend-uploader.php:314
+#: frontend-uploader.php:407
 #@ default
 msgctxt "file"
 msgid "Add New"
 msgstr "Загрузить"
 
-#: frontend-uploader.php:372
-#: frontend-uploader.php:465
+#: frontend-uploader.php:316
+#: frontend-uploader.php:409
 #, php-format
 #@ frontend-uploader
 msgid "Search results for &#8220;%s&#8221;"
 msgstr "Результаты поиска по запросу &#8220;%s&#8221;"
 
-#: frontend-uploader.php:378
-#: frontend-uploader.php:408
-#: frontend-uploader.php:471
-#: frontend-uploader.php:501
+#: frontend-uploader.php:322
+#: frontend-uploader.php:352
+#: frontend-uploader.php:415
+#: frontend-uploader.php:445
 #@ frontend-uploader
 msgid "Media attachment updated."
 msgstr "Файл обновлен"
 
-#: frontend-uploader.php:384
-#: frontend-uploader.php:477
+#: frontend-uploader.php:328
+#: frontend-uploader.php:421
 #, php-format
 #@ default
 msgid "Reattached %d attachment."
@@ -64,8 +64,8 @@ msgstr[0] "%d файл  переприкреплён"
 msgstr[1] "%d файла переприкреплено"
 msgstr[2] "%d файлов переприкреплено"
 
-#: frontend-uploader.php:389
-#: frontend-uploader.php:482
+#: frontend-uploader.php:333
+#: frontend-uploader.php:426
 #, php-format
 #@ default
 msgid "Media attachment permanently deleted."
@@ -74,8 +74,8 @@ msgstr[0] "Файл удален"
 msgstr[1] "%d файла удалено"
 msgstr[2] "%d файлов удалено"
 
-#: frontend-uploader.php:394
-#: frontend-uploader.php:487
+#: frontend-uploader.php:338
+#: frontend-uploader.php:431
 #, php-format
 #@ default
 msgid "Media attachment moved to the trash."
@@ -84,16 +84,16 @@ msgstr[0] "Файл перемещён в корзину"
 msgstr[1] "%d файла перемещено в корзину"
 msgstr[2] "%d файлов перемещено в корзину"
 
-#: frontend-uploader.php:395
-#: frontend-uploader.php:411
-#: frontend-uploader.php:488
-#: frontend-uploader.php:504
+#: frontend-uploader.php:339
+#: frontend-uploader.php:355
+#: frontend-uploader.php:432
+#: frontend-uploader.php:448
 #@ frontend-uploader
 msgid "Undo"
 msgstr "Отменить"
 
-#: frontend-uploader.php:400
-#: frontend-uploader.php:493
+#: frontend-uploader.php:344
+#: frontend-uploader.php:437
 #, php-format
 #@ default
 msgid "Media attachment restored from the trash."
@@ -102,56 +102,56 @@ msgstr[0] "Файл восстановлен из корзины"
 msgstr[1] "%d файла восстановлено из корзины"
 msgstr[2] "%d файлов восстановлено из корзины"
 
-#: frontend-uploader.php:409
-#: frontend-uploader.php:502
+#: frontend-uploader.php:353
+#: frontend-uploader.php:446
 #@ frontend-uploader
 msgid "Media permanently deleted."
 msgstr "Файл удален"
 
-#: frontend-uploader.php:410
-#: frontend-uploader.php:503
+#: frontend-uploader.php:354
+#: frontend-uploader.php:447
 #@ frontend-uploader
 msgid "Error saving media attachment."
 msgstr "Произошла ошибка при сохранении файла"
 
-#: frontend-uploader.php:411
-#: frontend-uploader.php:504
+#: frontend-uploader.php:355
+#: frontend-uploader.php:448
 #@ frontend-uploader
 msgid "Media moved to the trash."
 msgstr "Файл перемещен в корзину"
 
-#: frontend-uploader.php:412
-#: frontend-uploader.php:505
+#: frontend-uploader.php:356
+#: frontend-uploader.php:449
 #@ frontend-uploader
 msgid "Media restored from the trash."
 msgstr "Файл восстановлен из корзины"
 
-#: frontend-uploader.php:427
+#: frontend-uploader.php:371
 #@ frontend-uploader
 msgid "Search Media"
 msgstr "Поиск файла"
 
-#: frontend-uploader.php:673
+#: frontend-uploader.php:625
 #@ frontend-uploader
 msgid "Your Photo"
 msgstr "Ваш файл"
 
-#: frontend-uploader.php:674
+#: frontend-uploader.php:626
 #@ frontend-uploader
 msgid "Submit"
 msgstr "Загрузить"
 
-#: frontend-uploader.php:731
+#: frontend-uploader.php:683
 #@ frontend-uploader
 msgid "Your file was successfully uploaded!"
 msgstr "Файл был загружен"
 
-#: frontend-uploader.php:739
+#: frontend-uploader.php:691
 #@ frontend-uploader
 msgid "Security check failed"
 msgstr "Что-то подозрительное происходит"
 
-#: frontend-uploader.php:743
+#: frontend-uploader.php:695
 #@ frontend-uploader
 msgid "This kind of file is not allowed. Please, try again selecting other file."
 msgstr "Файл данного типа не разрешено загружать. Попробуйте другой файл"
@@ -216,7 +216,7 @@ msgctxt "column name"
 msgid "File"
 msgstr "Файл"
 
-#: frontend-uploader.php:690
+#: frontend-uploader.php:642
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:117
 #@ frontend-uploader
 msgid "Author"
@@ -348,12 +348,12 @@ msgstr "Подтвердить"
 msgid "Re-Attach"
 msgstr "Переприкрепить"
 
-#: lib/php/frontend-uploader-settings.php:29
+#: lib/php/frontend-uploader-settings.php:30
 #@ frontend-uploader
 msgid "Frontend Uploader Settings"
 msgstr "Настройки Frontend Uploader"
 
-#: lib/php/frontend-uploader-settings.php:36
+#: lib/php/frontend-uploader-settings.php:37
 #: lib/php/settings-api/procedural-example.php:20
 #: lib/php/settings-api/settings-api.php:48
 #@ frontend-uploader
@@ -361,23 +361,24 @@ msgstr "Настройки Frontend Uploader"
 msgid "Basic Settings"
 msgstr "Базовые настройки"
 
-#: lib/php/frontend-uploader-settings.php:52
+#: lib/php/frontend-uploader-settings.php:53
 #@ frontend-uploader
 msgid "Notify site admins"
 msgstr "Уведомлять администратора"
 
-#: lib/php/frontend-uploader-settings.php:53
-#: lib/php/frontend-uploader-settings.php:88
+#: lib/php/frontend-uploader-settings.php:54
+#: lib/php/frontend-uploader-settings.php:89
+#: lib/php/frontend-uploader-settings.php:96
 #@ frontend-uploader
 msgid "Yes"
 msgstr "Да"
 
-#: lib/php/frontend-uploader-settings.php:59
+#: lib/php/frontend-uploader-settings.php:60
 #@ frontend-uploader
 msgid "Admin Notification"
 msgstr "Текст уведомления"
 
-#: lib/php/frontend-uploader-settings.php:60
+#: lib/php/frontend-uploader-settings.php:61
 #@ frontend-uploader
 msgid "Message that admin will get on new file upload"
 msgstr "Сообщение, которое получит администратор при загрузке файла"
@@ -514,68 +515,63 @@ msgstr ""
 msgid "Dropdown description"
 msgstr ""
 
-#: frontend-uploader.php:217
-#@ frontend-uploader
-msgid "New file was uploaded on your site"
-msgstr "Новый файл был загружен на ваш сайт"
-
-#: lib/php/frontend-uploader-settings.php:66
+#: lib/php/frontend-uploader-settings.php:67
 #@ frontend-uploader
 msgid "Notification email"
 msgstr "Email для Уведомления"
 
-#: lib/php/frontend-uploader-settings.php:67
+#: lib/php/frontend-uploader-settings.php:68
 #@ frontend-uploader
 msgid "Leave blank to use site admin email"
 msgstr "Оставьте пустым, чтобы использовать email администратора сайта"
 
-#: frontend-uploader.php:335
+#: frontend-uploader.php:279
 #@ frontend-uploader
 msgid "New content was uploaded on your site"
 msgstr "Новый контент был загружен на сайт"
 
-#: frontend-uploader.php:443
-#: frontend-uploader.php:539
+#: frontend-uploader.php:387
+#: frontend-uploader.php:483
 #@ frontend-uploader
 msgid "Manage UGC Posts"
 msgstr "Модерация постов пользователей"
 
-#: frontend-uploader.php:446
+#: frontend-uploader.php:390
 #@ frontend-uploader
 msgid "You do not have permission to publish posts."
 msgstr "У Вас нет права публиковать посты"
 
-#: frontend-uploader.php:520
+#: frontend-uploader.php:464
 #@ frontend-uploader
 msgid "Search Posts"
 msgstr "Найти пост"
 
-#: frontend-uploader.php:643
+#: frontend-uploader.php:595
 #@ frontend-uploader
 msgid "Create a new post"
 msgstr "Создать новый пост"
 
-#: frontend-uploader.php:672
+#: frontend-uploader.php:624
 #@ frontend-uploader
 msgid "Description"
 msgstr "Описание"
 
-#: frontend-uploader.php:693
+#: frontend-uploader.php:645
 #@ frontend-uploader
 msgid "Credit"
 msgstr "Автор"
 
-#: frontend-uploader.php:735
+#: frontend-uploader.php:687
 #@ frontend-uploader
 msgid "Your post was successfully sent!"
 msgstr "Ваш пост отправлен"
 
-#: frontend-uploader.php:745
+#: frontend-uploader.php:697
 #@ frontend-uploader
 msgid "The file has following MIME-type:"
 msgstr "У файла данный  MIME-type:"
 
-#: frontend-uploader.php:749
+#: frontend-uploader.php:701
 #@ frontend-uploader
 msgid "The content you are trying to post is invalid."
 msgstr "Контент, который Вы пытаетесь опубликовать не может быть опубликован"
@@ -607,40 +603,44 @@ msgstr ""
 msgid "Delete this item permanently"
 msgstr ""
 
-#: lib/php/frontend-uploader-settings.php:73
+#: lib/php/frontend-uploader-settings.php:74
 #@ frontend-uploader
 msgid "Allowed categories"
 msgstr "Разрешенные категории"
 
-#: lib/php/frontend-uploader-settings.php:74
+#: lib/php/frontend-uploader-settings.php:75
 #@ frontend-uploader
 msgid "Comma separated IDs (leave blank for all)"
 msgstr "Разделенные запятыми ID (оставьте пустым, чтобы разрешить все)"
 
-#: lib/php/frontend-uploader-settings.php:80
+#: lib/php/frontend-uploader-settings.php:81
 #@ frontend-uploader
 msgid "User Verification callback"
 msgstr "Коллбэк верификации пользователя"
 
-#: lib/php/frontend-uploader-settings.php:81
+#: lib/php/frontend-uploader-settings.php:82
 #@ frontend-uploader
 msgid "Leave blank for none"
 msgstr "Оставье пустым"
 
-#: lib/php/frontend-uploader-settings.php:87
+#: lib/php/frontend-uploader-settings.php:88
 #@ frontend-uploader
 msgid "Show author field"
 msgstr "Показывать автора"
 
-#: frontend-uploader.php:676
+#: frontend-uploader.php:628
 #@ frontend-uploader
 msgid "Title"
 msgstr "Название"
 
-#: frontend-uploader.php:197
-#: frontend-uploader.php:304
-#: frontend-uploader.php:305
+#: frontend-uploader.php:248
+#: frontend-uploader.php:249
 #@ frontend-uploader
 msgid "Courtesy of"
 msgstr "Прислал:"
+
+#: lib/php/frontend-uploader-settings.php:95
+#@ frontend-uploader
+msgid "Enable visual editor"
+msgstr "Включить визуальный редактор"
 
