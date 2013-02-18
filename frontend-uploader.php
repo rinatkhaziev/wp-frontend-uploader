@@ -249,7 +249,7 @@ class Frontend_Uploader {
 								'post_excerpt' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
 							);
 
-							$media_ids[] =  media_handle_sideload( $k, intval( $pageid ), $post_overrides['post_title'], $post_overrides );
+							$media_ids[] =  media_handle_upload( $k, intval( $pageid ), $post_overrides['post_title'], $post_overrides );
 						} else {
 							wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type' ), $_POST['_wp_http_referer'] ) );
 							// if the image wasn't allowed then delete the post
