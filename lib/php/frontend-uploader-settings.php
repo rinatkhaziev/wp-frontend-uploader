@@ -18,7 +18,8 @@ class Frontend_Uploader_Settings {
 	function action_current_screen() {
 
 		$screen = get_current_screen();
-		if ( 'settings_page_fu_settings' == $screen->base ) {
+
+		if ( in_array( $screen->base, array( 'settings_page_fu_settings', 'options' ) ) ) {
 			$this->settings_api->set_sections( $this->get_settings_sections() );
 			$this->settings_api->set_fields( $this->get_settings_fields() );
 
