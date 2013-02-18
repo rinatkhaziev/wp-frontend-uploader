@@ -2,7 +2,7 @@
 /*
 Plugin Name: UGC Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
-Author: Rinat Khaziev
+Author: Rinat Khaziev, Daniel Bachhuber, Ricardo Zappala
 Version: 0.4-working
 Author URI: http://digitallyconscious.com
 
@@ -552,8 +552,7 @@ class Frontend_Uploader {
 				), $atts ) );
 		switch ( $tag ):
 		case 'textarea':
-			$rteenabled = true;
-			if ( $rteenabled ) {
+			if ( 'on' == $this->settings['wysiwyg_enabled'] ) {
 				ob_start();
 				wp_editor('', $id, array( 'textarea_name' => $name, 'media_buttons' => false, 'teeny' => true, 'quicktags' => false ) );
 				$tiny = ob_get_clean();
