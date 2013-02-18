@@ -118,8 +118,6 @@ class Frontend_Uploader {
 		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		// Preventing wpautop going crazy on
-		remove_filter( 'the_content', 'wpautop' );
-		add_filter( 'the_content', 'wpautop' , 99 );
 		add_filter( 'the_content', 'shortcode_unautop', 100 );
 		// Hiding not approved attachments from Media Gallery
 		// @since core 3.5-beta-1
