@@ -16,13 +16,10 @@ class Frontend_Uploader_Settings {
 	}
 
 	function action_current_screen() {
-
 		$screen = get_current_screen();
-
 		if ( in_array( $screen->base, array( 'settings_page_fu_settings', 'options' ) ) ) {
 			$this->settings_api->set_sections( $this->get_settings_sections() );
 			$this->settings_api->set_fields( $this->get_settings_fields() );
-
 			//initialize settings
 			$this->settings_api->admin_init();			
 		}
@@ -93,6 +90,13 @@ class Frontend_Uploader_Settings {
 					'type' => 'checkbox',
 					'default' => '',
 				),
+				array(
+					'name' => 'wysiwyg_enabled',
+					'label' => __( 'Enable visual editor', 'frontend-uploader' ),
+					'desc' => __( 'Yes', 'frontend-uploader' ),
+					'type' => 'checkbox',
+					'default' => 'on',
+				),				
 			),
 		);
 
