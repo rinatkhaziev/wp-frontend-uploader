@@ -14,14 +14,17 @@ class Frontend_Uploader_Settings {
 		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
 
 	}
-
+	/**
+	 * Only run if current screen is plugin settings or options.php
+	 * @return [type] [description]
+	 */
 	function action_current_screen() {
 		$screen = get_current_screen();
 		if ( in_array( $screen->base, array( 'settings_page_fu_settings', 'options' ) ) ) {
 			$this->settings_api->set_sections( $this->get_settings_sections() );
 			$this->settings_api->set_fields( $this->get_settings_fields() );
 			//initialize settings
-			$this->settings_api->admin_init();			
+			$this->settings_api->admin_init();
 		}
 		//set the settings
 	}
@@ -95,8 +98,8 @@ class Frontend_Uploader_Settings {
 					'label' => __( 'Enable visual editor', 'frontend-uploader' ),
 					'desc' => __( 'Yes', 'frontend-uploader' ),
 					'type' => 'checkbox',
-					'default' => 'on',
-				),				
+					'default' => '',
+				),
 			),
 		);
 
