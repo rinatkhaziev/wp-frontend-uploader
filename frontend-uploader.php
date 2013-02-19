@@ -191,25 +191,25 @@ class Frontend_Uploader {
 			// first thing we'll do is create the post
 			// @todo remove hardcoded $_POST keys
 			$page = array(
-				'post_type' => 'post',
+				'post_type' =>  isset( $_POST['post_type'] ) && in_array( $_POST['post_type'], get_post_types() ) ? $_POST['post_type'] : 'post',
 				'post_title'    => sanitize_text_field( $_POST['post_title'] ),
 				'post_content'  => wp_filter_post_kses( $_POST['post_content'] ),
 				'post_status'   => 'private',
 				'post_category' => array( intval( sanitize_text_field( $_POST['post_category'] ) ) )
 			);
 
-			// if the category is valid create the post
+			// If the category is valid create the post or we don't care about categories
 			$allowed_categories = array_filter( explode( ",", str_replace( " ", "",  $this->settings['allowed_categories'] ) ) );
 
 			if ( count( $allowed_categories ) == 0 || in_array( $_POST['post_category'], $allowed_categories ) ) {
 				$pageid = wp_insert_post ( $page );
+				do_action( 'fu_after_create_post', $pageid );
 				// now lets add the author's name as a custom field (if it was used/filled and the post is good)
-				$author_name = filter_var( $_POST['post_author'], FILTER_SANITIZE_STRING );
-				if ( $pageid > 0 && $author_name !="" )
+				$author_name = sanitize_text_field( $_POST['post_author'] );
+				if ( $pageid > 0 && $author_name != "" )
 					add_post_meta( $pageid, 'author_name', $author_name );
-			}
-			else {
-				wp_safe_redirect( add_query_arg( array( 'response' => 'invalid_post' ), $_POST['_wp_http_referer'] ) );
+			} else {
+				wp_safe_redirect( add_query_arg( array( 'response' => 'invalid_post' ), wp_get_referer() ) );
 				exit;
 			}
 
