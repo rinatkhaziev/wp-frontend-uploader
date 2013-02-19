@@ -158,7 +158,7 @@ class Frontend_Uploader {
 		if ( false === $existing_settings = get_option( $this->settings_slug ) ) {
 			update_option( $this->settings_slug, $defaults );
 		} else {
-			update_option( array_merge( $defaults, (array) $existing_settings ) );
+			update_option( $this->settings_slug, array_merge( $defaults, (array) $existing_settings ) );
 		}
 	}
 
