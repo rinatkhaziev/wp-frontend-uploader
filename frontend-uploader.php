@@ -43,6 +43,7 @@ class Frontend_Uploader {
 	public $html;
 	public $settings;
 	public $ugc_mimes;
+	public $settings_slug;
 
 	/**
 	 *  Load languages and a bit of paranoia
@@ -97,6 +98,7 @@ class Frontend_Uploader {
 	 * Here we go
 	 */
 	function __construct() {
+		$this->settings_slug = 'frontend_uploader_settings';
 		// Hooking to wp_ajax
 		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_content' ) );
 		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_content' ) );
@@ -129,8 +131,8 @@ class Frontend_Uploader {
 		// fu_allowed_mime_types should return array of allowed mime types
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
-		$this->settings = get_option( 'frontend_uploader_settings', $this->settings_defaults() );
-
+		$this->settings = get_option( $this->settings_slug, $this->settings_defaults() );
+		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 	}
 
 	/**
@@ -141,10 +143,23 @@ class Frontend_Uploader {
 	function settings_defaults() {
 		$defaults = array();
 		$settings = Frontend_Uploader_Settings::get_settings_fields();
-		foreach ( $settings['frontend_uploader_settings'] as $setting ) {
+		foreach ( $settings[$this->settings_slug] as $setting ) {
 			$defaults[ $setting['name'] ] = $setting['default'];
 		}
 		return $defaults;
+	}
+
+	function activate_plugin() {
+		$defaults = array();
+		$settings = Frontend_Uploader_Settings::get_settings_fields();
+		foreach ( $settings[$this->settings_slug] as $setting ) {
+			$defaults[ $setting['name'] ] = $setting['default'];
+		}
+		if ( false === $existing_settings = get_option( $this->settings_slug ) ) {
+			update_option( $this->settings_slug, $defaults );
+		} else {
+			update_option( array_merge( $defaults, (array) $existing_settings ) );
+		}
 	}
 
 	/**
