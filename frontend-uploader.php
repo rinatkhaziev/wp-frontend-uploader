@@ -602,6 +602,8 @@ class Frontend_Uploader {
 	/**
 	 * Display the upload post form
 	 *
+	 * @todo refactor this. Too ugly
+	 *
 	 * @param array   $atts    shortcode attributes
 	 * @param string  $content content that is encloded in [fe-upload-form][/fe-upload-form]
 	 */
@@ -733,7 +735,6 @@ class Frontend_Uploader {
 	function enqueue_scripts() {
 		wp_enqueue_style( 'frontend-uploader', UGC_URL . 'lib/css/frontend-uploader.css' );
 		wp_enqueue_script( 'jquery-validate', '//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js', array( 'jquery' ) );
-		wp_enqueue_script( 'fu-tiny-mce', home_url( WPINC . '/js/tinymce/tiny_mce.js' ) );
 		wp_enqueue_script( 'frontend-uploader-js', UGC_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 
 		// Include localization strings for default messages of validation plugin
