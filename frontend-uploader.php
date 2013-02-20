@@ -562,10 +562,11 @@ class Frontend_Uploader {
 					'type' => '',
 					'class' => '',
 					'multiple' => 'false',
+					'wysiwyg_enabled' => false,
 				), $atts ) );
 		switch ( $tag ):
 		case 'textarea':
-			if ( 'on' == $this->settings['wysiwyg_enabled'] ) {
+			if ( 'on' == $this->settings['wysiwyg_enabled'] || $wysiwyg_enabled == true ) {
 				ob_start();
 				wp_editor('', $id, array( 'textarea_name' => $name, 'media_buttons' => false, 'teeny' => true, 'quicktags' => false ) );
 				$tiny = ob_get_clean();
