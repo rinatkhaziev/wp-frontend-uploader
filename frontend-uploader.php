@@ -215,7 +215,7 @@ class Frontend_Uploader {
 
 		} else {
 			// well it's only an image, no post so lets set the id to form page's id
-			$pageid = intval( $_POST['post_ID'] );
+			$pageid = (int) $_POST['post_ID'];
 		}
 
 
@@ -571,7 +571,7 @@ class Frontend_Uploader {
 				$tiny = ob_get_clean();
 				$label =  $this->html->element( 'label', $description , array( 'for' => $id ), false );
 				return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
-			} else { 
+			} else {
 				$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) ), array( 'for' => $id ), false );
 				return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 			}
@@ -592,6 +592,8 @@ class Frontend_Uploader {
 		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 		// @todo implement select and checkboxes
 		// For now additional customization is available via do_action( 'fu_additional_html' );
+	case 'select':
+		break;
 	default:
 		endswitch;
 	}
@@ -605,7 +607,7 @@ class Frontend_Uploader {
 	function upload_form( $atts, $content = null ) {
 		extract( shortcode_atts( array(
 					'description' => '',
-					'title' => __( 'Create a new post', 'frontend-uploader' ),
+					'title' => __( 'Submit a new post', 'frontend-uploader' ),
 					'type' => '',
 					'class' => 'validate',
 					'category' => '1',
@@ -613,7 +615,11 @@ class Frontend_Uploader {
 					'form_layout' => ''
 				), $atts ) );
 		global $post;
-		if ( $form_layout != "post" && $form_layout != "post_image" ) $form_layout = "image";
+		if ( $form_layout != "post" && $form_layout != "post_image" )
+			$form_layout = "image";
+
+		if ( $form_layout == 'image' )
+			$title = __( 'Submit a media file', 'frontend-uploader' );
 
 		ob_start();
 ?>
@@ -642,10 +648,10 @@ class Frontend_Uploader {
 
 				// here we select the different fields based on the form layout to allow for different types
 				// of uploads (only a file, only a post or a file and post)
-				if ( $form_layout=="post_image" )
+				if ( $form_layout == "post_image" )
 					echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
 							    [input type="file" name="photo" id="ug_photo" description="'. $file_desc .'" multiple=""]' );
-				elseif ( $form_layout=="post" )
+				elseif ( $form_layout == "post" )
 					echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
 				else
 					echo do_shortcode( '[textarea name="caption" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
@@ -654,7 +660,7 @@ class Frontend_Uploader {
 				if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
 					echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
 
-				if ( $form_layout == "post_image" or $form_layout == "image" )
+				if ( $form_layout == "post_image" || $form_layout == "image" )
 					echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="' . __( 'Credit', 'frontend-uploader' ) . '" class=""]' );
 
 				echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
