@@ -2,638 +2,575 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UGC Frontend Uploader v0.4-working\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
-"POT-Creation-Date: 2012-08-30 05:30:59+00:00\n"
-"PO-Revision-Date: 2013-02-18 01:39:06+0000\n"
+"POT-Creation-Date: 2013-02-18 01:35:10+00:00\n"
+"PO-Revision-Date: 2013-02-22 15:00+0100\n"
 "Last-Translator: Guillaume Duhec <guillaume@guillaumeduhec.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
-"X-Generator: CSL v1.x\n"
-"X-Poedit-Language: \n"
-"X-Poedit-Country: \n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Poedit-Basepath: ../\n"
-"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Textdomain-Support: yes"
 
-#: frontend-uploader.php:298
-#: frontend-uploader.php:479
+# @ frontend-uploader
+#: frontend-uploader.php:248 frontend-uploader.php:249
+msgid "Courtesy of"
+msgstr "Avec l'aimable autorisation de"
+
+# @ frontend-uploader
+#: frontend-uploader.php:279
+msgid "New content was uploaded on your site"
+msgstr "Un nouveau fichier a été envoyé sur votre site !"
+
+# @ frontend-uploader
+#: frontend-uploader.php:298 frontend-uploader.php:479
 #: frontend-uploader.php:483
-#@ frontend-uploader
 msgid "Manage UGC"
-msgstr "Organiser les UGC"
+msgstr "Gérer les UGC"
 
+# @ frontend-uploader
 #: frontend-uploader.php:301
-#@ frontend-uploader
 msgid "You do not have permission to upload files."
 msgstr "Vous n'avez pas les permissions nécessaires pour envoyer des fichiers."
 
-#: frontend-uploader.php:314
-#: frontend-uploader.php:407
-#@ default
+# @ default
+#: frontend-uploader.php:314 frontend-uploader.php:407
 msgctxt "file"
 msgid "Add New"
 msgstr "Ajouter"
 
-#: frontend-uploader.php:316
-#: frontend-uploader.php:409
-#, php-format
-#@ frontend-uploader
+# @ frontend-uploader
+#: frontend-uploader.php:316 frontend-uploader.php:409
 msgid "Search results for &#8220;%s&#8221;"
 msgstr "Résultats de recherche pour &#8220;%s&#8221;"
 
-#: frontend-uploader.php:322
-#: frontend-uploader.php:352
-#: frontend-uploader.php:415
-#: frontend-uploader.php:445
-#@ frontend-uploader
+# @ frontend-uploader
+#: frontend-uploader.php:322 frontend-uploader.php:352
+#: frontend-uploader.php:415 frontend-uploader.php:445
 msgid "Media attachment updated."
 msgstr "Fichier média mis à jour."
 
-#: frontend-uploader.php:328
-#: frontend-uploader.php:421
-#, php-format
-#@ default
+# @ default
+#: frontend-uploader.php:328 frontend-uploader.php:421
 msgid "Reattached %d attachment."
 msgid_plural "Reattached %d attachments."
 msgstr[0] "Rattachement de %d fichiers attaché."
 msgstr[1] "Rattachement de %d fichiers attachés."
 
-#: frontend-uploader.php:333
-#: frontend-uploader.php:426
-#, php-format
-#@ default
+# @ default
+#: frontend-uploader.php:333 frontend-uploader.php:426
 msgid "Media attachment permanently deleted."
 msgid_plural "%d media attachments permanently deleted."
 msgstr[0] "Fichier média supprimé définitivement."
 msgstr[1] "%d fichiers média supprimés définitivement."
 
-#: frontend-uploader.php:338
-#: frontend-uploader.php:431
-#, php-format
-#@ default
+# @ default
+#: frontend-uploader.php:338 frontend-uploader.php:431
 msgid "Media attachment moved to the trash."
 msgid_plural "%d media attachments moved to the trash."
 msgstr[0] "Fichier média mis à la corbeille."
 msgstr[1] "%d fichiers média mis à la corbeille."
 
-#: frontend-uploader.php:339
-#: frontend-uploader.php:355
-#: frontend-uploader.php:432
-#: frontend-uploader.php:448
-#@ frontend-uploader
+# @ frontend-uploader
+#: frontend-uploader.php:339 frontend-uploader.php:355
+#: frontend-uploader.php:432 frontend-uploader.php:448
 msgid "Undo"
 msgstr "Annuler"
 
-#: frontend-uploader.php:344
-#: frontend-uploader.php:437
-#, php-format
-#@ default
+# @ default
+#: frontend-uploader.php:344 frontend-uploader.php:437
 msgid "Media attachment restored from the trash."
 msgid_plural "%d media attachments restored from the trash."
 msgstr[0] "Fichier média récupéré depuis la corbeille."
 msgstr[1] "%d fichiers média récupérés depuis la corbeille."
 
-#: frontend-uploader.php:353
-#: frontend-uploader.php:446
-#@ frontend-uploader
+# @ frontend-uploader
+#: frontend-uploader.php:353 frontend-uploader.php:446
 msgid "Media permanently deleted."
 msgstr "Fichier média supprimé définitivement."
 
-#: frontend-uploader.php:354
-#: frontend-uploader.php:447
-#@ frontend-uploader
+# @ frontend-uploader
+#: frontend-uploader.php:354 frontend-uploader.php:447
 msgid "Error saving media attachment."
 msgstr "Erreur d'enregistrement du fichier média."
 
-#: frontend-uploader.php:355
-#: frontend-uploader.php:448
-#@ frontend-uploader
+# @ frontend-uploader
+#: frontend-uploader.php:355 frontend-uploader.php:448
 msgid "Media moved to the trash."
 msgstr "Fichier média mis à la corbeille."
 
-#: frontend-uploader.php:356
-#: frontend-uploader.php:449
-#@ frontend-uploader
+# @ frontend-uploader
+#: frontend-uploader.php:356 frontend-uploader.php:449
 msgid "Media restored from the trash."
 msgstr "Fichier média récupéré depuis la corbeille."
 
+# @ frontend-uploader
 #: frontend-uploader.php:371
-#@ frontend-uploader
 msgid "Search Media"
 msgstr "Rechercher un fichier média"
 
+# @ frontend-uploader
+#: frontend-uploader.php:387 frontend-uploader.php:483
+msgid "Manage UGC Posts"
+msgstr "Gérer les UGC"
+
+# @ frontend-uploader
+#: frontend-uploader.php:390
+msgid "You do not have permission to publish posts."
+msgstr "Vous n'avez pas les permissions nécessaires pour publier."
+
+# @ frontend-uploader
+#: frontend-uploader.php:464
+msgid "Search Posts"
+msgstr "Rechercher"
+
+# @ frontend-uploader
+#: frontend-uploader.php:595
+msgid "Create a new post"
+msgstr "Écrire un nouveau message"
+
+# @ frontend-uploader
+#: frontend-uploader.php:624
+msgid "Description"
+msgstr "Description"
+
+# @ frontend-uploader
 #: frontend-uploader.php:625
-#@ frontend-uploader
 msgid "Your Photo"
 msgstr "Votre image"
 
+# @ frontend-uploader
 #: frontend-uploader.php:626
-#@ frontend-uploader
 msgid "Submit"
 msgstr "Envoyer"
 
+# @ frontend-uploader
+#: frontend-uploader.php:628
+msgid "Title"
+msgstr "Titre"
+
+# @ frontend-uploader
+#: frontend-uploader.php:642
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:117
+msgid "Author"
+msgstr "Votre nom ou pseudo"
+
+# @ frontend-uploader
+#: frontend-uploader.php:645
+msgid "Credit"
+msgstr "Crédit photo"
+
+# @ frontend-uploader
 #: frontend-uploader.php:683
-#@ frontend-uploader
 msgid "Your file was successfully uploaded!"
 msgstr "Votre fichier a été envoyé avec succès !"
 
+# @ frontend-uploader
+#: frontend-uploader.php:687
+msgid "Your post was successfully sent!"
+msgstr "Votre message a été envoyé!"
+
+# @ frontend-uploader
 #: frontend-uploader.php:691
-#@ frontend-uploader
 msgid "Security check failed"
 msgstr "Le contrôle de sécurité a échoué."
 
+# @ frontend-uploader
 #: frontend-uploader.php:695
-#@ frontend-uploader
-msgid "This kind of file is not allowed. Please, try again selecting other file."
-msgstr "Ce type de fichier n'est pas autorisé. Merci d'essayer avec un autre fichier."
+msgid ""
+"This kind of file is not allowed. Please, try again selecting other file."
+msgstr ""
+"Ce type de fichier n'est pas autorisé. Merci d'essayer avec un autre fichier."
 
+# @ frontend-uploader
+#: frontend-uploader.php:697
+msgid "The file has following MIME-type:"
+msgstr "Ce fichier est du type MIME :"
+
+# @ frontend-uploader
+#: frontend-uploader.php:701
+msgid "The content you are trying to post is invalid."
+msgstr "Le contenu que vous souhaitez envoyer n'est pas valide."
+
+# @ default
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:61
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:68
-#, php-format
-#@ default
 msgctxt "uploaded files"
 msgid "All <span class=\"count\">(%s)</span>"
 msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] "Tous <span class=\"count\">(%s)</span>"
 msgstr[1] "Tous <span class=\"count\">(%s)</span>"
 
+# @ default
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:73
-#, php-format
-#@ default
 msgctxt "detached files"
 msgid "Unattached <span class=\"count\">(%s)</span>"
 msgid_plural "Unattached <span class=\"count\">(%s)</span>"
 msgstr[0] "Non attaché <span class=\"count\">(%s)</span>"
 msgstr[1] "Non attachés <span class=\"count\">(%s)</span>"
 
+# @ default
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:76
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:82
-#, php-format
-#@ default
 msgctxt "uploaded files"
 msgid "Trash <span class=\"count\">(%s)</span>"
 msgid_plural "Trash <span class=\"count\">(%s)</span>"
 msgstr[0] "Corbeille <span class=\"count\">(%s)</span>"
 msgstr[1] "Corbeille <span class=\"count\">(%s)</span>"
 
+# @ frontend-uploader
+# @ default
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:83
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:297
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:313
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:91
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:309
-#@ frontend-uploader
-#@ default
 msgid "Delete Permanently"
 msgstr "Supprimer définitivement"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:85
-#@ frontend-uploader
 msgid "Attach to a post"
 msgstr "Joindre à un article"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:108
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:117
-#@ frontend-uploader
 msgid "No media attachments found."
 msgstr "Aucun fichier média."
 
-#. translators: column name 
+# @ default
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:116
-#@ default
 msgctxt "column name"
 msgid "File"
 msgstr "Fichier"
 
-#: frontend-uploader.php:642
-#: lib/php/class-frontend-uploader-wp-media-list-table.php:117
-#@ frontend-uploader
-msgid "Author"
-msgstr "Votre nom ou pseudo"
-
-#. translators: column name 
+# @ default
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:120
-#@ default
 msgctxt "column name"
 msgid "Attached to"
 msgstr "Attaché à"
 
-#. translators: column name 
+# @ default
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:123
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:128
-#@ default
 msgctxt "column name"
 msgid "Date"
 msgstr "Date"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:172
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:185
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:179
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:192
-#, php-format
-#@ frontend-uploader
 msgid "Edit \"%s\""
 msgstr "Modifier \"%s\""
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:217
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:224
-#@ frontend-uploader
 msgid "No Tags"
 msgstr "Aucun mot-clef."
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:232
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:239
-#@ frontend-uploader
 msgid "Unpublished"
 msgstr "Non publié"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:234
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:241
-#@ frontend-uploader
 msgid "Y/m/d g:i:s A"
 msgstr "d/m/Y H:i:s"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:239
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:246
-#, php-format
-#@ frontend-uploader
 msgid "%s from now"
 msgstr "%s à partir de maintenant"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:241
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:248
-#, php-format
-#@ frontend-uploader
 msgid "%s ago"
 msgstr "Il y a %s"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:243
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:259
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:357
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:250
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:266
-#@ frontend-uploader
 msgid "Y/m/d"
 msgstr "d/m/Y"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:264
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:364
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:271
-#@ frontend-uploader
 msgid "(Unattached)"
 msgstr "(Non-attaché)"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:291
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:305
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:297
-#@ frontend-uploader
 msgid "Edit"
 msgstr "Modifier"
 
+# @ frontend-uploader
+# @ default
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:294
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:310
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:307
-#@ frontend-uploader
-#@ default
 msgid "Trash"
 msgstr "Mettre à la corbeille"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:299
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:322
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:312
-#, php-format
-#@ frontend-uploader
 msgid "View \"%s\""
 msgstr "Afficher \"%s\""
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:299
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:322
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:312
-#@ frontend-uploader
 msgid "View"
 msgstr "Afficher"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:301
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:365
-#@ frontend-uploader
 msgid "Attach"
 msgstr "Joindre"
 
+# @ frontend-uploader
+# @ default
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:308
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:305
-#@ frontend-uploader
-#@ default
 msgid "Restore"
 msgstr "Récupérer"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:317
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:300
-#@ frontend-uploader
 msgid "Approve"
 msgstr "Valider"
 
+# @ frontend-uploader
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:359
-#@ frontend-uploader
 msgid "Re-Attach"
 msgstr "Re-Joindre"
 
+# @ frontend-uploader
 #: lib/php/frontend-uploader-settings.php:30
-#@ frontend-uploader
 msgid "Frontend Uploader Settings"
-msgstr ""
+msgstr "Frontend Uploader - Réglages "
 
+# @ frontend-uploader
+# @ wedevs
 #: lib/php/frontend-uploader-settings.php:37
 #: lib/php/settings-api/procedural-example.php:20
 #: lib/php/settings-api/settings-api.php:48
-#@ frontend-uploader
-#@ wedevs
 msgid "Basic Settings"
-msgstr ""
+msgstr "Réglages de base"
 
+# @ frontend-uploader
 #: lib/php/frontend-uploader-settings.php:53
-#@ frontend-uploader
 msgid "Notify site admins"
-msgstr ""
+msgstr "Notifier l'administrateur du site"
 
+# @ frontend-uploader
 #: lib/php/frontend-uploader-settings.php:54
 #: lib/php/frontend-uploader-settings.php:89
 #: lib/php/frontend-uploader-settings.php:96
-#@ frontend-uploader
 msgid "Yes"
-msgstr ""
+msgstr "Oui"
 
+# @ frontend-uploader
 #: lib/php/frontend-uploader-settings.php:60
-#@ frontend-uploader
 msgid "Admin Notification"
-msgstr ""
+msgstr "Notification à l'administrateur du site"
 
+# @ frontend-uploader
 #: lib/php/frontend-uploader-settings.php:61
-#@ frontend-uploader
 msgid "Message that admin will get on new file upload"
-msgstr ""
+msgstr "Message envoyé à l'administrateur lors d'un nouvel upload"
 
+# @ frontend-uploader
+#: lib/php/frontend-uploader-settings.php:67
+msgid "Notification email"
+msgstr "Notification par email"
+
+# @ frontend-uploader
+#: lib/php/frontend-uploader-settings.php:68
+msgid "Leave blank to use site admin email"
+msgstr "Laisser vide pour utiliser l'email de l'administrateur"
+
+# @ frontend-uploader
+#: lib/php/frontend-uploader-settings.php:74
+msgid "Allowed categories"
+msgstr "Catégories autorisées"
+
+# @ frontend-uploader
+#: lib/php/frontend-uploader-settings.php:75
+msgid "Comma separated IDs (leave blank for all)"
+msgstr "ID séparées par virgule (laisser vide pour 'toutes')"
+
+# @ frontend-uploader
+#: lib/php/frontend-uploader-settings.php:81
+msgid "User Verification callback"
+msgstr "Vérification de l'utilisateur"
+
+# @ frontend-uploader
+#: lib/php/frontend-uploader-settings.php:82
+msgid "Leave blank for none"
+msgstr "Si non, laisser vide"
+
+# @ frontend-uploader
+#: lib/php/frontend-uploader-settings.php:88
+msgid "Show author field"
+msgstr "Afficher le champ 'Auteur'"
+
+# @ frontend-uploader
+#: lib/php/frontend-uploader-settings.php:95
+msgid "Enable visual editor"
+msgstr "Activer l'éditeur visuel"
+
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:24
 #: lib/php/settings-api/settings-api.php:52
-#@ wedevs
 msgid "Advanced Settings"
-msgstr ""
+msgstr "Réglages avancés"
 
+# @ wpuf
 #: lib/php/settings-api/procedural-example.php:28
 #: lib/php/settings-api/settings-api.php:56
-#@ wpuf
 msgid "Other Settings"
-msgstr ""
+msgstr "Autres réglages"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:36
 #: lib/php/settings-api/procedural-example.php:90
 #: lib/php/settings-api/procedural-example.php:145
 #: lib/php/settings-api/settings-api.php:72
 #: lib/php/settings-api/settings-api.php:126
 #: lib/php/settings-api/settings-api.php:181
-#@ wedevs
 msgid "Text Input"
-msgstr ""
+msgstr "Champ de texte"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:37
 #: lib/php/settings-api/procedural-example.php:91
 #: lib/php/settings-api/procedural-example.php:146
 #: lib/php/settings-api/settings-api.php:73
 #: lib/php/settings-api/settings-api.php:127
 #: lib/php/settings-api/settings-api.php:182
-#@ wedevs
 msgid "Text input description"
-msgstr ""
+msgstr "Description du champ de texte"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:43
 #: lib/php/settings-api/procedural-example.php:97
 #: lib/php/settings-api/procedural-example.php:152
 #: lib/php/settings-api/settings-api.php:79
 #: lib/php/settings-api/settings-api.php:133
 #: lib/php/settings-api/settings-api.php:188
-#@ wedevs
 msgid "Textarea Input"
-msgstr ""
+msgstr "Zone de texte"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:44
 #: lib/php/settings-api/procedural-example.php:98
 #: lib/php/settings-api/procedural-example.php:153
 #: lib/php/settings-api/settings-api.php:80
 #: lib/php/settings-api/settings-api.php:134
 #: lib/php/settings-api/settings-api.php:189
-#@ wedevs
 msgid "Textarea description"
-msgstr ""
+msgstr "Description de la zone de texte"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:49
 #: lib/php/settings-api/procedural-example.php:103
 #: lib/php/settings-api/procedural-example.php:158
 #: lib/php/settings-api/settings-api.php:85
 #: lib/php/settings-api/settings-api.php:139
 #: lib/php/settings-api/settings-api.php:194
-#@ wedevs
 msgid "Checkbox"
-msgstr ""
+msgstr "Case à cocher"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:50
 #: lib/php/settings-api/procedural-example.php:104
 #: lib/php/settings-api/procedural-example.php:159
 #: lib/php/settings-api/settings-api.php:86
 #: lib/php/settings-api/settings-api.php:140
 #: lib/php/settings-api/settings-api.php:195
-#@ wedevs
 msgid "Checkbox Label"
-msgstr ""
+msgstr "Description de la case à cocher"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:55
 #: lib/php/settings-api/procedural-example.php:109
 #: lib/php/settings-api/procedural-example.php:164
 #: lib/php/settings-api/settings-api.php:91
 #: lib/php/settings-api/settings-api.php:145
 #: lib/php/settings-api/settings-api.php:200
-#@ wedevs
 msgid "Radio Button"
-msgstr ""
+msgstr "Bouton-radio"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:56
 #: lib/php/settings-api/procedural-example.php:110
 #: lib/php/settings-api/procedural-example.php:165
 #: lib/php/settings-api/settings-api.php:92
 #: lib/php/settings-api/settings-api.php:146
 #: lib/php/settings-api/settings-api.php:201
-#@ wedevs
 msgid "A radio button"
-msgstr ""
+msgstr "Un bouton-radio"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:65
 #: lib/php/settings-api/procedural-example.php:120
 #: lib/php/settings-api/procedural-example.php:174
 #: lib/php/settings-api/settings-api.php:101
 #: lib/php/settings-api/settings-api.php:156
 #: lib/php/settings-api/settings-api.php:210
-#@ wedevs
 msgid "Multile checkbox"
-msgstr ""
+msgstr "Case à cocher multiple"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:66
 #: lib/php/settings-api/procedural-example.php:121
 #: lib/php/settings-api/procedural-example.php:175
 #: lib/php/settings-api/settings-api.php:102
 #: lib/php/settings-api/settings-api.php:157
 #: lib/php/settings-api/settings-api.php:211
-#@ wedevs
 msgid "Multi checkbox description"
-msgstr ""
+msgstr "Description de la case à cocher multiple"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:77
 #: lib/php/settings-api/procedural-example.php:133
 #: lib/php/settings-api/procedural-example.php:186
 #: lib/php/settings-api/settings-api.php:113
 #: lib/php/settings-api/settings-api.php:169
 #: lib/php/settings-api/settings-api.php:222
-#@ wedevs
 msgid "A Dropdown"
-msgstr ""
+msgstr "Menu déroulant"
 
+# @ wedevs
 #: lib/php/settings-api/procedural-example.php:78
 #: lib/php/settings-api/procedural-example.php:134
 #: lib/php/settings-api/procedural-example.php:187
 #: lib/php/settings-api/settings-api.php:114
 #: lib/php/settings-api/settings-api.php:170
 #: lib/php/settings-api/settings-api.php:223
-#@ wedevs
 msgid "Dropdown description"
-msgstr ""
+msgstr "Description du menu déroulant"
 
-#: lib/php/frontend-uploader-settings.php:67
-#@ frontend-uploader
-msgid "Notification email"
-msgstr ""
+#. Plugin Name of the plugin/theme
+msgid "UGC Frontend Uploader"
+msgstr "UGC Frontend Uploader"
 
-#: lib/php/frontend-uploader-settings.php:68
-#@ frontend-uploader
-msgid "Leave blank to use site admin email"
-msgstr ""
+#. Description of the plugin/theme
+msgid "Allow your visitors to upload content and moderate it."
+msgstr "Autoriser les visiteurs à envoyer du contenu et à le modérer."
 
-#: frontend-uploader.php:645
-#@ frontend-uploader
-msgid "Credit"
-msgstr "Crédit photo"
+#. Author of the plugin/theme
+msgid "Rinat Khaziev, Daniel Bachhuber, Ricardo Zappala"
+msgstr "Rinat Khaziev, Daniel Bachhuber, Ricardo Zappala"
 
-#: frontend-uploader.php:687
-#@ frontend-uploader
-msgid "Your post was successfully sent!"
-msgstr "Votre message a été envoyé!"
-
-#: frontend-uploader.php:595
-#@ frontend-uploader
-msgid "Create a new post"
-msgstr "Écrire un nouveau message"
-
-#: frontend-uploader.php:279
-#@ frontend-uploader
-msgid "New content was uploaded on your site"
-msgstr ""
-
-#: frontend-uploader.php:387
-#: frontend-uploader.php:483
-#@ frontend-uploader
-msgid "Manage UGC Posts"
-msgstr ""
-
-#: frontend-uploader.php:390
-#@ frontend-uploader
-msgid "You do not have permission to publish posts."
-msgstr ""
-
-#: frontend-uploader.php:464
-#@ frontend-uploader
-msgid "Search Posts"
-msgstr ""
-
-#: frontend-uploader.php:697
-#@ frontend-uploader
-msgid "The file has following MIME-type:"
-msgstr ""
-
-#: frontend-uploader.php:701
-#@ frontend-uploader
-msgid "The content you are trying to post is invalid."
-msgstr ""
-
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:124
-#@ default
-msgctxt "column name"
-msgid "Title"
-msgstr ""
-
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:126
-#@ default
-msgctxt "column name"
-msgid "Categories"
-msgstr ""
-
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:305
-#@ default
-msgid "Restore this item from the Trash"
-msgstr ""
-
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:307
-#@ default
-msgid "Move this item to the Trash"
-msgstr ""
-
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:309
-#@ default
-msgid "Delete this item permanently"
-msgstr ""
-
-#: lib/php/frontend-uploader-settings.php:74
-#@ frontend-uploader
-msgid "Allowed categories"
-msgstr ""
-
-#: lib/php/frontend-uploader-settings.php:75
-#@ frontend-uploader
-msgid "Comma separated IDs (leave blank for all)"
-msgstr ""
-
-#: lib/php/frontend-uploader-settings.php:81
-#@ frontend-uploader
-msgid "User Verification callback"
-msgstr ""
-
-#: lib/php/frontend-uploader-settings.php:82
-#@ frontend-uploader
-msgid "Leave blank for none"
-msgstr ""
-
-#: lib/php/frontend-uploader-settings.php:88
-#@ frontend-uploader
-msgid "Show author field"
-msgstr ""
-
-#: frontend-uploader.php:624
-#@ frontend-uploader
-msgid "Description"
-msgstr ""
-
-#: frontend-uploader.php:628
-#@ frontend-uploader
-msgid "Title"
-msgstr ""
-
-#: frontend-uploader.php:248
-#: frontend-uploader.php:249
-#@ frontend-uploader
-msgid "Courtesy of"
-msgstr ""
-
-#: lib/php/frontend-uploader-settings.php:95
-#@ frontend-uploader
-msgid "Enable visual editor"
-msgstr ""
-
+#. Author URI of the plugin/theme
+msgid "http://digitallyconscious.com"
+msgstr "http://digitallyconscious.com"
