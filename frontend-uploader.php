@@ -738,8 +738,9 @@ class Frontend_Uploader {
 		wp_enqueue_script( 'frontend-uploader-js', UGC_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 
 		// Include localization strings for default messages of validation plugin
-		if ( '' != WPLANG ) {
-			$lang = explode( '_', WPLANG );
+		$wplang = apply_filters( 'fu_wplang', WPLANG );
+		if ( $wplang ) {
+			$lang = explode( '_', $wplang );
 			$url = "//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_{$lang[0]}.js";
 			wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
 		}
