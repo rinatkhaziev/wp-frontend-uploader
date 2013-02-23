@@ -568,12 +568,22 @@ class Frontend_Uploader {
 		case 'textarea':
 			if ( 'on' == $this->settings['wysiwyg_enabled'] || $wysiwyg_enabled == true ) {
 				ob_start();
-				wp_editor('', $id, array( 'textarea_name' => $name, 'media_buttons' => false, 'teeny' => true, 'quicktags' => false ) );
+				wp_editor('', $id, array( 
+					'textarea_name' => $name, 
+					'media_buttons' => false, 
+					'teeny' => true, 
+					'quicktags' => false 
+				) );
 				$tiny = ob_get_clean();
 				$label =  $this->html->element( 'label', $description , array( 'for' => $id ), false );
 				return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
 			} else {
-				$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) ), array( 'for' => $id ), false );
+				$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array( 
+					'name' => $name, 
+					'id' => $id, 
+					'class' => $class 
+				) ), array( 'for' => $id ), false );
+
 				return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 			}
 		break;

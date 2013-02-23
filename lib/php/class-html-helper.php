@@ -36,6 +36,14 @@ class Html_Helper {
 		}
 	}
 
+	function _checkbox( $name = '', $data = array(), $checked = array() ) {
+
+	}
+
+	function _radio( $name = '', $data = array(), $checked = array() ) {
+
+	}
+
 	/**
 	 * This method supports unlimited arguments,
 	 * each argument represents html value
@@ -56,10 +64,24 @@ class Html_Helper {
 	 * @param mixed   $data
 	 */
 	function input( $type, $name, $data = null, $attrs = array() ) {
-		if ( $type == 'select' )
-			return $this->_select( $name, $data, $attrs );
-		elseif ( in_array( $type, array( 'text', 'hidden', 'submit', 'file' ) ) )
-			return $this->_text( $name, $type,  $data, $attrs ) ;
+		switch( $type ) {
+			case 'select':
+				return $this->_select( $name, $data, $attrs );
+			break;
+			case 'text':
+			case 'hidden':
+			case 'submit':
+			case 'file':
+			case 'checkbox':
+				return $this->_text( $name, $type,  $data, $attrs ) ;
+			break:
+			case 'radio':
+				return $this->_radio( $name, $data, $attrs ) ;
+			default:
+				return;
+		}
+
+
 	}
 
 	/**
