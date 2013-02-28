@@ -102,7 +102,7 @@ class Html_Helper {
 		$ret  = '';
 		foreach ( (array) $data as $key => $value ) {
 			$attrs_to_pass = array( 'value' => $key );
-			if ( isset( $attrs[ 'default' ] ) && $key = $attrs[ 'default' ] )
+			if ( isset( $attrs[ 'default' ] ) && $key == $attrs[ 'default' ] )
 				$attrs_to_pass[ 'selected' ] = 'selected';
 			$ret .= $this->element( 'option', $value, $attrs_to_pass, false );
 		}
