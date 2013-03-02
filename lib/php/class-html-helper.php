@@ -74,7 +74,7 @@ class Html_Helper {
 			case 'file':
 			case 'checkbox':
 				return $this->_text( $name, $type,  $data, $attrs ) ;
-			break:
+			break;
 			case 'radio':
 				return $this->_radio( $name, $data, $attrs ) ;
 			default:
