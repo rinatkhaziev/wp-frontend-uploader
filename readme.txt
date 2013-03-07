@@ -5,17 +5,13 @@ Requires at least: 3.1
 Tested up to: 3.5.1
 Stable tag: 0.3.1
 
-This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types).
+This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
 
 == Description ==
 
-This plugin is useful if you want to power up your site with user generated content and give your users ability to easily upload it. Essentially, the plugin is a customizeable upload form that adds files with allowed MIME-type to your WordPress Media Library under a special tab "Manage UGC". There you can moderate your user submissions (cause, you know, you'd better moderate 'em):
+This plugin gives you an ability to easily accept, moderate and publish user generated content (currently, there are 3 modes: media, post, post + media). The plugin allows you to create a front end form with multiple fields (easily customizable with shortcodes). You can limit which MIME-types are supported for each field. All of the submissions are safely held for moderation in Media/Post/Custom Post Types menu under a special tab "Manage UGC". Review, moderate and publish. It's that easy!
 
-* Approve
-* Delete
-* Re-attach to other post/page/custom-post-type
-
-This plugin supports multiple uploads for modern browsers (sorry, no IE). It's enabled for default form. To use it in your custom shortcode add multiple="" attribute to input shortcode.
+This plugin supports multiple uploads for modern browsers (sorry, no IE). Multiple file uploads are enabled for default form. To use it in your custom shortcode add multiple="" attribute to file shortcode.
 
 Here's example of default form (you don't need to enter all that if you want to use default form, just use [fu-upload-form]):
 
@@ -46,7 +42,8 @@ Use [fu-upload-form form_layout="post_image"] to get default form to upload post
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Tweak the plugin's settings in: Settings -> Frontend Uploader Settings
 1. Use the following shortcode in post or page: [fu-upload-form]
-1. You can moderate uploaded files in Media -> Manage UGC menu
+1. Moderate uploaded files in Media -> Manage UGC menu
+1. Moderate user posts in Posts -> Manage UGC
 
 == Screenshots ==
 
