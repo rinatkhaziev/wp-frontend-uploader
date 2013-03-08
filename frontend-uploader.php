@@ -183,10 +183,66 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Handle media uploads
+	 * Handle uploading of the files
+	 * @param  int $post_id Parent post id
+	 * @return array Combined result of media ids and errors if any
 	 */
-	function _upload_media() {
+	function _handle_files( $post_id ) {
+		$media_ids = $errors = array();
+		// Bail if there are no files
+		if ( empty( $_FILES ) )
+			return false;
 
+		// File field name could be user defined, so we just pick
+		$files = current( $_FILES );
+
+		for ( $i = 0; $i < count( $_FILES['photo']['name'] ); $i++ ) {
+			$fields = array( 'name', 'type', 'tmp_name', 'error', 'size' );
+			foreach ( $fields as $field ) {
+				$k[$field] = $files[$field][$i];
+			}
+
+			// Skip to the next file if upload went wrong
+			if ( $k['tmp_name'] != "" )
+				continue;
+			if ( !in_array( $k['type'], $this->allowed_mime_types ) ) {
+				// @todo change namespace
+				$errors[] = array( 'file_name' => $k['name'], 'error' => 'ugc-disallowed_mime_type' );
+			}
+
+			// Setup some default values
+			// However, you can make additional changes on 'fu_after_upload' action
+			$post_overrides = array(
+				'post_status' => 'private',
+				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? filter_var( $_POST['post_title'], FILTER_SANITIZE_STRING ) : 'Unnamed',
+				'post_content' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
+				'post_excerpt' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
+			);
+
+			// Trying to upload the file
+			$upload_id = media_handle_sideload( $k, (int) $post_id, $post_overrides['post_title'], $post_overrides );
+
+			if ( !is_wp_error( $upload_id ) )
+				$media_ids[] = $upload_id;
+			else
+				$errors[] = array( 'file_name' => $k['name'], 'error' => 'wp-error-media' );
+
+			/*
+				} else {
+					wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type' ), $_POST['_wp_http_referer'] ) );
+					// if the image wasn't allowed then delete the post
+					// that was just created
+					$post_to_remove['ID'] = $pageid;
+					$post_to_remove['post_status'] = 'trash';
+					wp_update_post( $post_to_remove );
+					die;
+				}*/
+		}
+
+		// Allow additional setup
+		// Pass array of attachment ids
+		do_action( 'fu_after_upload', $media_ids );
+		return array( 'media_ids' => $media_ids, 'errors' => $errors );
 	}
 
 	/**
