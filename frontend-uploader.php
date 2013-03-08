@@ -184,7 +184,8 @@ class Frontend_Uploader {
 
 	/**
 	 * Handle uploading of the files
-	 * @param  int $post_id Parent post id
+	 *
+	 * @param int     $post_id Parent post id
 	 * @return array Combined result of media ids and errors if any
 	 */
 	function _handle_files( $post_id ) {
@@ -257,7 +258,7 @@ class Frontend_Uploader {
 	function _handle_files() {
 		// Bail if there are no files
 		if ( empty( $_FILES ) )
-			return false; 
+			return false;
 
 		// File field name could be user defined, so we just pick
 		$files = current( $_FILES );
@@ -692,24 +693,24 @@ class Frontend_Uploader {
 		case 'textarea':
 			if ( 'on' == $this->settings['wysiwyg_enabled'] || $wysiwyg_enabled == true ) {
 				ob_start();
-				wp_editor('', $id, array( 
-					'textarea_name' => $name, 
-					'media_buttons' => false, 
-					'teeny' => true, 
-					'quicktags' => false 
-				) );
+				wp_editor( '', $id, array(
+						'textarea_name' => $name,
+						'media_buttons' => false,
+						'teeny' => true,
+						'quicktags' => false
+					) );
 				$tiny = ob_get_clean();
 				$label =  $this->html->element( 'label', $description , array( 'for' => $id ), false );
 				return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
 			} else {
-				$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array( 
-					'name' => $name, 
-					'id' => $id, 
-					'class' => $class 
-				) ), array( 'for' => $id ), false );
+			$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array(
+						'name' => $name,
+						'id' => $id,
+						'class' => $class
+					) ), array( 'for' => $id ), false );
 
-				return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
-			}
+			return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+		}
 		break;
 	case 'input':
 		$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
@@ -778,29 +779,29 @@ class Frontend_Uploader {
 			// Or render default form
 			else:
 				$textarea_desc = __( 'Description', 'frontend-uploader' );
-				$file_desc = __( 'Your Photo', 'frontend-uploader' );
-				$submit_button = __( 'Submit', 'frontend-uploader' );
+			$file_desc = __( 'Your Photo', 'frontend-uploader' );
+			$submit_button = __( 'Submit', 'frontend-uploader' );
 
-				echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
+			echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
 
-				// here we select the different fields based on the form layout to allow for different types
-				// of uploads (only a file, only a post or a file and post)
-				if ( $form_layout == "post_image" )
-					echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
+			// here we select the different fields based on the form layout to allow for different types
+			// of uploads (only a file, only a post or a file and post)
+			if ( $form_layout == "post_image" )
+				echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
 							    [input type="file" name="photo" id="ug_photo" description="'. $file_desc .'" multiple=""]' );
-				elseif ( $form_layout == "post" )
-					echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
-				else
-					echo do_shortcode( '[textarea name="caption" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
+			elseif ( $form_layout == "post" )
+				echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
+			else
+				echo do_shortcode( '[textarea name="caption" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
 									[input type="file" name="photo" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
 
-				if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
-					echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
+			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
+				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
 
-				if ( $form_layout == "post_image" || $form_layout == "image" )
-					echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="' . __( 'Credit', 'frontend-uploader' ) . '" class=""]' );
+			if ( $form_layout == "post_image" || $form_layout == "image" )
+				echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="' . __( 'Credit', 'frontend-uploader' ) . '" class=""]' );
 
-				echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
+			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 
 
 ?>
@@ -893,7 +894,7 @@ class Frontend_Uploader {
 	function update_35_gallery_shortcode( $post_id, $attachment_id ) {
 		global $wp_version;
 
-		if ( version_compare( $wp_version, '3.5', '>=')  && (int) $post_id != 0 ) {
+		if ( version_compare( $wp_version, '3.5', '>=' )  && (int) $post_id != 0 ) {
 			$parent = get_post( $post_id );
 			preg_match( '#(?<before>(.*))\[gallery(.*)ids=(\'|")(?<ids>[0-9,]*)(\'|")](?<after>(.*))#ims', $parent->post_content, $matches ) ;
 			if ( isset( $matches['ids'] ) ) {
