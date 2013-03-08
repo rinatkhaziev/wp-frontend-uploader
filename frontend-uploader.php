@@ -199,6 +199,46 @@ class Frontend_Uploader {
 	 * Handle file uploads
 	 */
 	function _handle_files() {
+		// Bail if there are no files
+		if ( empty( $_FILES ) )
+			return false; 
+
+		// File field name could be user defined, so we just pick
+		$files = current( $_FILES );
+
+		for ( $i = 0; $i < count( $_FILES['photo']['name'] ); $i++ ) {
+			$fields = array( 'name', 'type', 'tmp_name', 'error', 'size' );
+			foreach ( $fields as $field ) {
+				$k[$field] = $files[$field][$i];
+			}
+
+			// if the tmp file exists then iterate through files, and save
+			// upload if it's one of allowed MIME types
+
+			if ( $k['tmp_name'] != "" ) {
+				if ( in_array( $k['type'], $this->allowed_mime_types ) ) {
+					// Setup some default values
+					// However, you can make additional changes on 'fu_after_upload' action
+					$post_overrides = array(
+						'post_status' => 'private',
+						'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? filter_var( $_POST['post_title'], FILTER_SANITIZE_STRING ) : 'Unnamed',
+						'post_content' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
+						'post_excerpt' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
+					);
+
+					$media_ids[] =  media_handle_sideload( $k, intval( $pageid ), $post_overrides['post_title'], $post_overrides );
+				} else {
+					wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type' ), $_POST['_wp_http_referer'] ) );
+					// if the image wasn't allowed then delete the post
+					// that was just created
+					$post_to_remove['ID'] = $pageid;
+					$post_to_remove['post_status'] = 'trash';
+					wp_update_post( $post_to_remove );
+					die;
+				}
+			}
+
+		}
 
 	}
 
@@ -206,7 +246,7 @@ class Frontend_Uploader {
 	 * Temporary method name to replace upload_content()
 	 */
 	function upload_content_refactored() {
-		
+
 	}
 
 	/**
