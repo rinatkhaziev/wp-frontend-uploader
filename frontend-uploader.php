@@ -156,7 +156,7 @@ class Frontend_Uploader {
 		foreach ( $settings[$this->settings_slug] as $setting ) {
 			$defaults[ $setting['name'] ] = $setting['default'];
 		}
-		if ( false === $existing_settings = get_option( $this->settings_slug ) ) {
+		if ( ! $existing_settings = get_option( $this->settings_slug ) ) {
 			update_option( $this->settings_slug, $defaults );
 		} else {
 			update_option( $this->settings_slug, array_merge( $defaults, (array) $existing_settings ) );
@@ -180,6 +180,33 @@ class Frontend_Uploader {
 			$where = str_replace( "post_status = 'private'", "post_status = 'inherit'", $where );
 		}
 		return $where;
+	}
+
+	/**
+	 * Handle media uploads
+	 */
+	function _upload_media() {
+
+	}
+
+	/**
+	 * Handle post uploads
+	 */
+	function _upload_post() {
+
+	}
+	/**
+	 * Handle file uploads
+	 */
+	function _handle_files() {
+
+	}
+
+	/**
+	 * Temporary method name to replace upload_content()
+	 */
+	function upload_content_refactored() {
+		
 	}
 
 	/**
