@@ -250,7 +250,30 @@ class Frontend_Uploader {
 	 * Handle post uploads
 	 */
 	function _upload_post() {
+		$post_array = array(
+			'post_type' =>  isset( $_POST['post_type'] ) && in_array( $_POST['post_type'], get_post_types() ) ? $_POST['post_type'] : 'post',
+			'post_title'    => sanitize_text_field( $_POST['post_title'] ),
+			'post_content'  => wp_filter_post_kses( $_POST['post_content'] ),
+			'post_status'   => 'private',
+			'post_category' => array( intval( sanitize_text_field( $_POST['post_category'] ) ) )
+		);
 
+		// If the category is valid create the post or we don't care about categories
+		// @todo rk: not sure what it does, need to test
+		$allowed_categories = array_filter( explode( ",", str_replace( " ", "",  $this->settings['allowed_categories'] ) ) );
+
+		if ( count( $allowed_categories ) == 0 || ( isset( $_POST['post_category'] ) && in_array( $_POST['post_category'], $allowed_categories ) ) ) {
+			$post_id = wp_insert_post ( $post_array, true );
+			// Bail if wp_error
+			if ( is_wp_error( $post_id ) )
+				return false;
+
+			do_action( 'fu_after_create_post', $post_id );
+			// now lets add the author's name as a custom field (if it was used/filled and the post is good)
+			$author_name = sanitize_text_field( $_POST['post_author'] );
+			if ( $post_id > 0 && $author_name != "" )
+				add_post_meta( $pageid, 'author_name', $author_name );
+		}
 		return $post_id;
 	}
 
@@ -265,7 +288,8 @@ class Frontend_Uploader {
 			break;
 			case 'post_image':
 				$pid = $this->_upload_post();
-				$result = $this->_handle_files( $pid );
+				if ( ! $pid )
+					$result = $this->_handle_files( $pid );
 			break;
 			case 'image':
 				if ( isset( $_POST['post_ID'] ) && 0 !== $pid = (int) $_POST['post_ID'] ) {
