@@ -738,7 +738,7 @@ class Frontend_Uploader {
 		}
 
 		// if there's no user response or if we've encountered a problem we have to show the form again
-		if ( empty( $_GET['response'] ) || $_GET['response'] == "ugc-disallowed_mime_type" || $_GET['response'] == "nonce-failure" ) {
+		if ( empty( $_GET['response'] ) || $_GET['response'] == "fu-disallowed_mime_type" || $_GET['response'] == "nonce-failure" ) {
 
 			// We have some customizations, nice!
 			// Let's parse them
@@ -804,11 +804,11 @@ class Frontend_Uploader {
 		if ( empty( $response ) )
 			return;
 		switch ( $response ) {
-		case 'ugc-sent':
+		case 'fu-sent':
 			$title = __( 'Your file was successfully uploaded!', 'frontend-uploader' );
 			$class = 'success';
 			break;
-		case 'ugc-post-sent':
+		case 'fu-post-sent':
 			$title = __( 'Your post was successfully sent!', 'frontend-uploader' );
 			$class = 'success';
 			break;
@@ -816,13 +816,13 @@ class Frontend_Uploader {
 			$title = __( 'Security check failed', 'frontend-uploader' );
 			$class = 'failure';
 			break;
-		case 'ugc-disallowed_mime_type':
+		case 'fu-disallowed_mime_type':
 			$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ) . "\n";
 			if ( isset( $_GET['mime'] ) )
 				$title .= __( 'The file has following MIME-type:', 'frontend-uploader' ) . esc_attr( $_GET['mime'] );
 			$class = 'failure';
 			break;
-		case 'invalid_post':
+		case 'fu_invalid_post':
 			$title = __( 'The content you are trying to post is invalid.', 'frontend-uploader' );
 			$class = 'failure';
 			break;
