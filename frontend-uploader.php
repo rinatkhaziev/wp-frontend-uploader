@@ -207,8 +207,8 @@ class Frontend_Uploader {
 			if ( $k['tmp_name'] != "" )
 				continue;
 			if ( !in_array( $k['type'], $this->allowed_mime_types ) ) {
-				// @todo change namespace
-				$errors[] = array( 'file_name' => $k['name'], 'error' => 'ugc-disallowed_mime_type' );
+				$errors[] = array( 'file_name' => $k['name'], 'error' => 'fu-disallowed_mime_type' );
+				continue;
 			}
 
 			// Setup some default values
@@ -394,7 +394,7 @@ class Frontend_Uploader {
 		} else {
 			// and if we don't have one use the traditional method
 			if ( $_POST['_wp_http_referer'] )
-				wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-sent' ), $_POST['_wp_http_referer'] ) );
+				wp_safe_redirect( add_query_arg( array( 'response' => 'fu-sent' ), $_POST['_wp_http_referer'] ) );
 			exit;
 		}
 
@@ -407,7 +407,6 @@ class Frontend_Uploader {
 			wp_die( __( 'You do not have permission to upload files.', 'frontend-uploader' ) );
 
 		$wp_list_table = new FU_WP_Media_List_Table();
-
 		$pagenum = $wp_list_table->get_pagenum();
 		$doaction = $wp_list_table->current_action();
 		$wp_list_table->prepare_items();
@@ -489,16 +488,12 @@ class Frontend_Uploader {
 
 
 	function admin_posts_list() {
-
 		$title = __( 'Manage UGC Posts', 'frontend-uploader' );
 		set_current_screen( 'post' );
 		if ( ! current_user_can( 'publish_posts' ) )
 			wp_die( __( 'You do not have permission to publish posts.', 'frontend-uploader' ) );
 
 		$wp_post_list_table = new FU_WP_Posts_List_Table();
-
-
-
 		$pagenum = $wp_post_list_table->get_pagenum();
 		$doaction = $wp_post_list_table->current_action();
 		$wp_post_list_table->prepare_items();
@@ -591,7 +586,7 @@ class Frontend_Uploader {
 	}
 
 	function approve_photo() {
-		// check for permissions and id
+		// Check permissions, attachment ID, and nonce
 		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( $_GET['nonceugphoto'], 'upload_ugphoto' ) )
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
 
@@ -618,7 +613,6 @@ class Frontend_Uploader {
 
 		$images =& get_children( 'post_type=attachment&post_mime_type=image&post_parent=' . $post->ID );
 
-
 		foreach ( $images as $imageID => $imagePost ) {
 			$current_image = array();
 			$current_image['ID'] = $imageID;
@@ -627,7 +621,6 @@ class Frontend_Uploader {
 		}
 
 		if ( is_object( $post ) && $post->post_status == 'private' ) {
-
 			$post->post_status = 'publish';
 			wp_update_post( $post );
 			wp_safe_redirect( get_admin_url( null, 'edit.php?page=manage_frontend_posts_uploader&approved=1' ) );
