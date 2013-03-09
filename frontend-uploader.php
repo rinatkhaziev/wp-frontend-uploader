@@ -251,13 +251,27 @@ class Frontend_Uploader {
 	 */
 	function _upload_post() {
 
+		return $post_id;
 	}
 
 	/**
 	 * Temporary method name to replace upload_content()
 	 */
 	function upload_content_refactored() {
-
+		$layout = isset( $_POST['form_layout'] ) && !empty( $_POST['form_layout'] ) ? $_POST['form_layout'] : 'image';
+		switch( $layout ) {
+			case 'post':
+				$result = $this->_upload_post();
+			break;
+			case 'post_image':
+				$pid = $this->_upload_post();
+				$result = $this->_handle_files( $pid );
+			break;
+			case 'image':
+				if ( isset( $_POST['post_ID'] ) && 0 !== $pid = (int) $_POST['post_ID'] ) {
+					$result = $this->_handle_files( $pid );
+				}
+		}
 	}
 
 	/**
