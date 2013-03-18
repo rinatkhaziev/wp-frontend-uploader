@@ -101,12 +101,12 @@ class Frontend_Uploader {
 	function __construct() {
 		$this->settings_slug = 'frontend_uploader_settings';
 		// Hooking to wp_ajax
-		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_content' ) );
-		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_content' ) );
+		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_content_refactored' ) );
+		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_content_refactored' ) );
 		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
 
-		add_action( 'wp_ajax_upload_ugpost', array( $this, 'upload_content' ) );
-		add_action( 'wp_ajax_nopriv_upload_ugpost', array( $this, 'upload_content' ) );
+		add_action( 'wp_ajax_upload_ugpost', array( $this, 'upload_content_refactored' ) );
+		add_action( 'wp_ajax_nopriv_upload_ugpost', array( $this, 'upload_content_refactored' ) );
 		add_action( 'wp_ajax_approve_ugc_post', array( $this, 'approve_post' ) );
 
 		// Adding media submenu
@@ -204,8 +204,9 @@ class Frontend_Uploader {
 			}
 
 			// Skip to the next file if upload went wrong
-			if ( $k['tmp_name'] != "" )
+			if ( $k['tmp_name'] == "" )
 				continue;
+			// Add an error message
 			if ( !in_array( $k['type'], $this->allowed_mime_types ) ) {
 				$errors[] = array( 'file_name' => $k['name'], 'error' => 'fu-disallowed_mime_type' );
 				continue;
@@ -222,11 +223,10 @@ class Frontend_Uploader {
 
 			// Trying to upload the file
 			$upload_id = media_handle_sideload( $k, (int) $post_id, $post_overrides['post_title'], $post_overrides );
-
 			if ( !is_wp_error( $upload_id ) )
 				$media_ids[] = $upload_id;
 			else
-				$errors[] = array( 'file_name' => $k['name'], 'error' => 'wp-error-media' );
+				$errors[] = array( 'file_name' => $k['name'], 'error' => 'fu-error-media' );
 
 			/*
 				} else {
@@ -250,6 +250,8 @@ class Frontend_Uploader {
 	 * Handle post uploads
 	 */
 	function _upload_post() {
+		$errors = array();
+		$success = true;
 		$post_array = array(
 			'post_type' =>  isset( $_POST['post_type'] ) && in_array( $_POST['post_type'], get_post_types() ) ? $_POST['post_type'] : 'post',
 			'post_title'    => sanitize_text_field( $_POST['post_title'] ),
@@ -264,17 +266,22 @@ class Frontend_Uploader {
 
 		if ( count( $allowed_categories ) == 0 || ( isset( $_POST['post_category'] ) && in_array( $_POST['post_category'], $allowed_categories ) ) ) {
 			$post_id = wp_insert_post ( $post_array, true );
-			// Bail if wp_error
-			if ( is_wp_error( $post_id ) )
-				return false;
+			// Add the error
+			if ( is_wp_error( $post_id ) ) {
+				$errors[] = 'fu-error-post';
+				$success = false;
+			}
+
 
 			do_action( 'fu_after_create_post', $post_id );
-			// now lets add the author's name as a custom field (if it was used/filled and the post is good)
-			$author_name = sanitize_text_field( $_POST['post_author'] );
-			if ( $post_id > 0 && $author_name != "" )
-				add_post_meta( $pageid, 'author_name', $author_name );
+			// Save the author name if it was filled and post was created successfully
+			if ( !is_wp_error( $post_id )  ) {
+				$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
+				add_post_meta( $post_id, 'author_name', $author );
+			}
+
 		}
-		return $post_id;
+		return array( 'success' => $success, 'post_id' => $post_id, 'errors' => $errors );
 	}
 
 	/**
@@ -287,15 +294,20 @@ class Frontend_Uploader {
 				$result = $this->_upload_post();
 			break;
 			case 'post_image':
-				$pid = $this->_upload_post();
-				if ( ! $pid )
-					$result = $this->_handle_files( $pid );
+				$response = $this->_upload_post();
+				if ( ! is_wp_error( $response['post_id'] ) ) {
+					$result = $this->_handle_files( $response['post_id'] );
+					$result = array_merge( $response, $result );
+				}
 			break;
 			case 'image':
 				if ( isset( $_POST['post_ID'] ) && 0 !== $pid = (int) $_POST['post_ID'] ) {
 					$result = $this->_handle_files( $pid );
 				}
+			break;
 		}
+		var_dump( $result );
+		exit;
 	}
 
 	/**
