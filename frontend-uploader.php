@@ -254,7 +254,7 @@ class Frontend_Uploader {
 		$allowed_categories = array_filter( explode( ",", str_replace( " ", "",  $this->settings['allowed_categories'] ) ) );
 
 		if (  isset( $_POST['post_category'] ) && in_array( $_POST['post_category'], $allowed_categories ) ) {
-			$post_array = array_merge( $post_array, 'post_category' => array( (int) $_POST['post_category']  ) );
+			$post_array = array_merge( $post_array, array( 'post_category' => array( (int) $_POST['post_category'] ) ) );
 		}
 
 		$post_id = wp_insert_post ( $post_array, true );
