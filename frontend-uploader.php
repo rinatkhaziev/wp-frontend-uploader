@@ -101,12 +101,12 @@ class Frontend_Uploader {
 	function __construct() {
 		$this->settings_slug = 'frontend_uploader_settings';
 		// Hooking to wp_ajax
-		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_content_refactored' ) );
-		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_content_refactored' ) );
+		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_content' ) );
+		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_content' ) );
 		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
 
-		add_action( 'wp_ajax_upload_ugpost', array( $this, 'upload_content_refactored' ) );
-		add_action( 'wp_ajax_nopriv_upload_ugpost', array( $this, 'upload_content_refactored' ) );
+		add_action( 'wp_ajax_upload_ugpost', array( $this, 'upload_content' ) );
+		add_action( 'wp_ajax_nopriv_upload_ugpost', array( $this, 'upload_content' ) );
 		add_action( 'wp_ajax_approve_ugc_post', array( $this, 'approve_post' ) );
 
 		// Adding media submenu
@@ -166,8 +166,8 @@ class Frontend_Uploader {
 	/**
 	 * Since WP 3.5-beta-1 WP Media interface shows private attachments as well
 	 * We don't want that, so we force WHERE statement to post_status = 'inherit'
-	 *
-	 * @todo  probably intermediate workaround
+	 * 
+	 * @since  0.3
 	 *
 	 * @param string  $where WHERE statement
 	 * @return string WHERE statement
@@ -185,6 +185,8 @@ class Frontend_Uploader {
 	/**
 	 * Handle uploading of the files
 	 *
+	 * @since  0.4
+	 * 
 	 * @param int     $post_id Parent post id
 	 * @return array Combined result of media ids and errors if any
 	 */
@@ -247,6 +249,8 @@ class Frontend_Uploader {
 
 	/**
 	 * Handle post uploads
+	 * 
+	 * @since 0.4
 	 */
 	function _upload_post() {
 		$errors = array();
@@ -284,9 +288,10 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Temporary method name to replace upload_content()
+	 * Handle post, post+media, or just media files
+	 * @since  0.4
 	 */
-	function upload_content_refactored() {
+	function upload_content() {
 		// Bail if something fishy is going on
 		if ( !wp_verify_nonce( $_POST['nonceugphoto'], 'upload_ugphoto' ) ) {
 			wp_safe_redirect( add_query_arg( array( 'errors' => array( 'nonce-failure' ) ), wp_get_referer() ) );
@@ -319,7 +324,7 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * 
+	 * Notify site administrator by email
 	 */
 	function _notify_admin( $result = array() ) {
 		// Notify site admins of new upload
@@ -331,8 +336,12 @@ class Frontend_Uploader {
 
 	}
 
+	/**
+	 * Process response from upload logic
+	 * 
+	 * @since  0.4
+	 */
 	function _handle_result( $result = array() ) {
-
 		// Redirect to referrer if repsonse is malformed
 		if ( empty( $result ) || !is_array( $result ) ) {
 			wp_safe_redirect( wp_get_referer() );
@@ -353,125 +362,6 @@ class Frontend_Uploader {
 
 		wp_safe_redirect( add_query_arg( array( $query_args ) , $url ) );
 
-
-	}
-
-	/**
-	 * Handles the upload of a form, attached image or both
-	 */
-	function upload_content() {
-
-		if ( $_POST['form_layout'] == "post" || $_POST['form_layout'] == "post_image" ) {
-
-			// first thing we'll do is create the post
-			// @todo remove hardcoded $_POST keys
-			$page = array(
-				'post_type' =>  isset( $_POST['post_type'] ) && in_array( $_POST['post_type'], get_post_types() ) ? $_POST['post_type'] : 'post',
-				'post_title'    => sanitize_text_field( $_POST['post_title'] ),
-				'post_content'  => wp_filter_post_kses( $_POST['post_content'] ),
-				'post_status'   => 'private',
-				'post_category' => array( intval( sanitize_text_field( $_POST['post_category'] ) ) )
-			);
-
-			// If the category is valid create the post or we don't care about categories
-			$allowed_categories = array_filter( explode( ",", str_replace( " ", "",  $this->settings['allowed_categories'] ) ) );
-
-			if ( count( $allowed_categories ) == 0 || in_array( $_POST['post_category'], $allowed_categories ) ) {
-				$pageid = wp_insert_post ( $page );
-				do_action( 'fu_after_create_post', $pageid );
-				// now lets add the author's name as a custom field (if it was used/filled and the post is good)
-				$author_name = sanitize_text_field( $_POST['post_author'] );
-				if ( $pageid > 0 && $author_name != "" )
-					add_post_meta( $pageid, 'author_name', $author_name );
-			} else {
-				wp_safe_redirect( add_query_arg( array( 'response' => 'invalid_post' ), wp_get_referer() ) );
-				exit;
-			}
-
-		} else {
-			// well it's only an image, no post so lets set the id to form page's id
-			$pageid = (int) $_POST['post_ID'];
-		}
-
-
-		// now that we know what to relate the image to we can go ahead with the image upload
-
-		// but only if it's the proper form layout
-		if ( $_POST['form_layout'] == "image" || $_POST['form_layout'] == "post_image" ) {
-
-			if ( $_POST['form_layout'] == "image" )
-				$caption = sanitize_text_field( $_POST['caption'] );
-			else
-				$caption = sanitize_text_field( $_POST['post_content'] );
-
-
-			$media_ids = array(); // will hold uploaded media IDS
-
-			if ( !wp_verify_nonce( $_POST['nonceugphoto'], 'upload_ugphoto' ) ) {
-				wp_safe_redirect( add_query_arg( array( 'response' => 'nonce-failure' ), $_POST['_wp_http_referer'] ) );
-				exit;
-			} // If nonce is invalid, redirect to referer and display error flash notice
-
-			if ( !empty( $_FILES ) && intval( $pageid ) != 0 ) {
-
-				// File field name could be user defined, so we just pick
-				$files = current( $_FILES );
-
-				for ( $i = 0; $i < count( $_FILES['photo']['name'] ); $i++ ) {
-					$fields = array( 'name', 'type', 'tmp_name', 'error', 'size' );
-					foreach ( $fields as $field ) {
-						$k[$field] = $files[$field][$i];
-					}
-
-					// if the tmp file exists then iterate through files, and save
-					// upload if it's one of allowed MIME types
-
-					if ( $k['tmp_name'] != "" ) {
-						if ( in_array( $k['type'], $this->allowed_mime_types ) ) {
-							// Setup some default values
-							// However, you can make additional changes on 'fu_after_upload' action
-							$post_overrides = array(
-								'post_status' => 'private',
-								'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? filter_var( $_POST['post_title'], FILTER_SANITIZE_STRING ) : 'Unnamed',
-								'post_content' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
-								'post_excerpt' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
-							);
-
-							$media_ids[] =  media_handle_sideload( $k, intval( $pageid ), $post_overrides['post_title'], $post_overrides );
-						} else {
-							wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type' ), $_POST['_wp_http_referer'] ) );
-							// if the image wasn't allowed then delete the post
-							// that was just created
-							$post_to_remove['ID'] = $pageid;
-							$post_to_remove['post_status'] = 'trash';
-							wp_update_post( $post_to_remove );
-							die;
-						}
-					}
-
-				}
-			} else {
-				return;
-			}
-			// @todo check $media_ids for is_wp_error
-			// Allow additional setup
-			// Pass array of attachment ids
-			do_action( 'fu_after_upload', $media_ids );
-
-		}
-
-
-		// and can't believe we got this far, on to the success page (if we have one)
-
-		if ( $_POST['success_page'] ) {
-			wp_safe_redirect( $_POST['success_page'] );
-			exit;
-		} else {
-			// and if we don't have one use the traditional method
-			if ( $_POST['_wp_http_referer'] )
-				wp_safe_redirect( add_query_arg( array( 'response' => 'fu-sent' ), $_POST['_wp_http_referer'] ) );
-			exit;
-		}
 
 	}
 
