@@ -209,7 +209,7 @@ class Frontend_Uploader {
 			if ( $k['tmp_name'] == "" )
 				continue;
 			// Add an error message
-			if ( in_array( $k['type'], $this->allowed_mime_types ) ) {
+			if ( !in_array( $k['type'], $this->allowed_mime_types ) ) {
 				$errors[] = array( 'file_name' => $k['name'], 'error' => 'fu-disallowed-mime-type' );
 				//continue;
 			}
@@ -358,7 +358,7 @@ class Frontend_Uploader {
 			$query_args['response'] = 'fu-sent';
 		// @todo verbose response messages
 		if ( !empty( $result['errors'] ) )
-			$query_args['errors'] = $result['errors'] );
+			$query_args['errors'] = $result['errors'];
 
 		wp_safe_redirect( add_query_arg( array( $query_args ) , $url ) );
 
