@@ -207,9 +207,9 @@ class Frontend_Uploader {
 			if ( $k['tmp_name'] == "" )
 				continue;
 			// Add an error message
-			if ( !in_array( $k['type'], $this->allowed_mime_types ) ) {
-				$errors[] = array( 'file_name' => $k['name'], 'error' => 'fu-disallowed_mime_type' );
-				continue;
+			if ( in_array( $k['type'], $this->allowed_mime_types ) ) {
+				$errors[] = array( 'file_name' => $k['name'], 'error' => 'fu-disallowed-mime-type' );
+				//continue;
 			}
 
 			// Setup some default values
@@ -349,7 +349,7 @@ class Frontend_Uploader {
 			$query_args['response'] = 'fu-sent';
 		// @todo verbose response messages
 		if ( !empty( $result['errors'] ) )
-			$query_args['errors'] = implode(',', $result['errors']  );
+			$query_args['errors'] = $result['errors'] );
 
 		wp_safe_redirect( add_query_arg( array( $query_args ) , $url ) );
 
@@ -801,20 +801,17 @@ class Frontend_Uploader {
 	  <div class="ugc-inner-wrapper">
 		  <h2><?php echo esc_html( $title ) ?></h2>
 <?php
-		if ( !empty( $_GET['response'] ) ) {
-			echo $this->user_response( $_GET['response'] );
-		}
+		if ( isset( $_GET['response'] ) && !empty( $_GET['response'] ) )
+			echo $this->_display_notice( $_GET['response'] );
+		if ( isset( $_GET['errors'] ) && !empty( $_GET['errors'] ) )
+			echo $this->_display_errors( $_GET['errors'] );
 
-		// if there's no user response or if we've encountered a problem we have to show the form again
-		if ( empty( $_GET['response'] ) || $_GET['response'] == "fu-disallowed_mime_type" || $_GET['response'] == "nonce-failure" ) {
-
-			// We have some customizations, nice!
-			// Let's parse them
-			if ( $content ):
-				echo do_shortcode( $content );
-			// Or render default form
-			else:
-				$textarea_desc = __( 'Description', 'frontend-uploader' );
+		// Parse nested shortcodes
+		if ( $content ):
+			echo do_shortcode( $content );
+		// Or render default form
+		else:
+			$textarea_desc = __( 'Description', 'frontend-uploader' );
 			$file_desc = __( 'Your Photo', 'frontend-uploader' );
 			$submit_button = __( 'Submit', 'frontend-uploader' );
 
@@ -822,6 +819,8 @@ class Frontend_Uploader {
 
 			// here we select the different fields based on the form layout to allow for different types
 			// of uploads (only a file, only a post or a file and post)
+
+			// @todo refactor
 			if ( $form_layout == "post_image" )
 				echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
 							    [input type="file" name="photo" id="ug_photo" description="'. $file_desc .'" multiple=""]' );
@@ -838,10 +837,7 @@ class Frontend_Uploader {
 				echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="' . __( 'Credit', 'frontend-uploader' ) . '" class=""]' );
 
 			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
-
-
-?>
-<?php endif; ?>
+		endif; ?>
 		  <input type="hidden" name="action" value="upload_ugpost" />
 		  <input type="hidden" value="<?php echo $post->ID ?>" name="post_ID" />
 		  <input type="hidden" value="<?php echo $category; ?>" name="post_category" />
@@ -855,10 +851,6 @@ class Frontend_Uploader {
 ?>
 		  <?php wp_nonce_field( 'upload_ugphoto', 'nonceugphoto' ); ?>
 		  <div class="clear"></div>
-<?php
-		}
-?>
-
 	  </div>
 	  </form>
 <?php
@@ -867,8 +859,10 @@ class Frontend_Uploader {
 
 	/**
 	 * Render notice for user
+	 * 
+	 * @todo  refactor
 	 */
-	function user_response( $response ) {
+	function _display_notice( $response ) {
 		if ( empty( $response ) )
 			return;
 		switch ( $response ) {
@@ -884,13 +878,13 @@ class Frontend_Uploader {
 			$title = __( 'Security check failed', 'frontend-uploader' );
 			$class = 'failure';
 			break;
-		case 'fu-disallowed_mime_type':
+		case 'fu-disallowed-mime-type':
 			$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ) . "\n";
 			if ( isset( $_GET['mime'] ) )
 				$title .= __( 'The file has following MIME-type:', 'frontend-uploader' ) . esc_attr( $_GET['mime'] );
 			$class = 'failure';
 			break;
-		case 'fu_invalid_post':
+		case 'fu-invalid-post':
 			$title = __( 'The content you are trying to post is invalid.', 'frontend-uploader' );
 			$class = 'failure';
 			break;
@@ -900,6 +894,9 @@ class Frontend_Uploader {
 		return "<p class='ugc-notice {$class}'>$title</p>";
 	}
 
+	// @todo
+	function _display_errors( $errors ) {
+	}
 	/**
 	 * Enqueue our assets
 	 */
