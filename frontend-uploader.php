@@ -214,9 +214,11 @@ class Frontend_Uploader {
 
 			// Setup some default values
 			// However, you can make additional changes on 'fu_after_upload' action
+			$caption = '';
+
 			$post_overrides = array(
 				'post_status' => 'private',
-				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? filter_var( $_POST['post_title'], FILTER_SANITIZE_STRING ) : 'Unnamed',
+				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : 'Unnamed',
 				'post_content' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
 				'post_excerpt' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
 			);
@@ -227,17 +229,6 @@ class Frontend_Uploader {
 				$media_ids[] = $upload_id;
 			else
 				$errors[] = array( 'file_name' => $k['name'], 'error' => 'fu-error-media' );
-
-			/*
-				} else {
-					wp_safe_redirect( add_query_arg( array( 'response' => 'ugc-disallowed_mime_type' ), $_POST['_wp_http_referer'] ) );
-					// if the image wasn't allowed then delete the post
-					// that was just created
-					$post_to_remove['ID'] = $pageid;
-					$post_to_remove['post_status'] = 'trash';
-					wp_update_post( $post_to_remove );
-					die;
-				}*/
 		}
 
 		// Allow additional setup
@@ -257,30 +248,31 @@ class Frontend_Uploader {
 			'post_title'    => sanitize_text_field( $_POST['post_title'] ),
 			'post_content'  => wp_filter_post_kses( $_POST['post_content'] ),
 			'post_status'   => 'private',
-			'post_category' => array( intval( sanitize_text_field( $_POST['post_category'] ) ) )
 		);
 
-		// If the category is valid create the post or we don't care about categories
-		// @todo rk: not sure what it does, need to test
+		// Determine if we have a whitelisted category
 		$allowed_categories = array_filter( explode( ",", str_replace( " ", "",  $this->settings['allowed_categories'] ) ) );
 
-		if ( count( $allowed_categories ) == 0 || ( isset( $_POST['post_category'] ) && in_array( $_POST['post_category'], $allowed_categories ) ) ) {
-			$post_id = wp_insert_post ( $post_array, true );
-			// Add the error
-			if ( is_wp_error( $post_id ) ) {
-				$errors[] = 'fu-error-post';
-				$success = false;
-			}
-
-
-			do_action( 'fu_after_create_post', $post_id );
-			// Save the author name if it was filled and post was created successfully
-			if ( !is_wp_error( $post_id )  ) {
-				$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
-				add_post_meta( $post_id, 'author_name', $author );
-			}
-
+		if (  isset( $_POST['post_category'] ) && in_array( $_POST['post_category'], $allowed_categories ) ) {
+			$post_array = array_merge( $post_array, 'post_category' => array( (int) $_POST['post_category']  ) );
 		}
+
+		$post_id = wp_insert_post ( $post_array, true );
+		// Add the error
+		if ( is_wp_error( $post_id ) ) {
+			$errors[] = 'fu-error-post';
+			$success = false;
+		}
+
+
+		do_action( 'fu_after_create_post', $post_id );
+		// Save the author name if it was filled and post was created successfully
+		if ( !is_wp_error( $post_id )  ) {
+			$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
+			add_post_meta( $post_id, 'author_name', $author );
+		}
+
+
 		return array( 'success' => $success, 'post_id' => $post_id, 'errors' => $errors );
 	}
 
@@ -288,12 +280,18 @@ class Frontend_Uploader {
 	 * Temporary method name to replace upload_content()
 	 */
 	function upload_content_refactored() {
+		// Bail if something fishy is going on
+		if ( !wp_verify_nonce( $_POST['nonceugphoto'], 'upload_ugphoto' ) ) {
+			wp_safe_redirect( add_query_arg( array( 'errors' => array( 'nonce-failure' ) ), wp_get_referer() ) );
+			exit;
+	}
 		$layout = isset( $_POST['form_layout'] ) && !empty( $_POST['form_layout'] ) ? $_POST['form_layout'] : 'image';
 		switch( $layout ) {
 			case 'post':
 				$result = $this->_upload_post();
 			break;
 			case 'post_image':
+			case 'post_media';
 				$response = $this->_upload_post();
 				if ( ! is_wp_error( $response['post_id'] ) ) {
 					$result = $this->_handle_files( $response['post_id'] );
@@ -301,13 +299,26 @@ class Frontend_Uploader {
 				}
 			break;
 			case 'image':
+			case 'media':
 				if ( isset( $_POST['post_ID'] ) && 0 !== $pid = (int) $_POST['post_ID'] ) {
 					$result = $this->_handle_files( $pid );
 				}
 			break;
 		}
-		var_dump( $result );
+		$this->_handle_result( $result );
 		exit;
+	}
+
+	function _handle_result( $result = array() ) {
+
+		// Redirect to referrer if repsonse is malformed
+		if ( empty( $result ) || !is_array( $result ) ) {
+			wp_safe_redirect( wp_get_referer() );
+			return;
+		}
+
+
+			
 	}
 
 	/**
@@ -353,7 +364,7 @@ class Frontend_Uploader {
 		// but only if it's the proper form layout
 		if ( $_POST['form_layout'] == "image" || $_POST['form_layout'] == "post_image" ) {
 
-			if ( $_POST['form_layout']=="image" )
+			if ( $_POST['form_layout'] == "image" )
 				$caption = sanitize_text_field( $_POST['caption'] );
 			else
 				$caption = sanitize_text_field( $_POST['post_content'] );
