@@ -216,6 +216,14 @@ class Frontend_Uploader {
 			// However, you can make additional changes on 'fu_after_upload' action
 			$caption = '';
 
+			// Try to set post caption if the field is set on request
+			// Fallback to post_content if the field is not set
+			// @todo remove this in v0.5 when automatic handling of shortcode attributes is implemented
+			if ( isset( $_POST['caption'] ) )
+				$caption = sanitize_text_field( $_POST['caption'] );
+			elseif( isset( $_POST['post_content'] ) )
+				$caption = sanitize_text_field( $_POST['post_content'] );
+
 			$post_overrides = array(
 				'post_status' => 'private',
 				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : 'Unnamed',
@@ -272,7 +280,6 @@ class Frontend_Uploader {
 			add_post_meta( $post_id, 'author_name', $author );
 		}
 
-
 		return array( 'success' => $success, 'post_id' => $post_id, 'errors' => $errors );
 	}
 
@@ -305,8 +312,23 @@ class Frontend_Uploader {
 			}
 			break;
 		}
+
+		$this->_notify_admin( $result );
 		$this->_handle_result( $result );
 		exit;
+	}
+
+	/**
+	 * 
+	 */
+	function _notify_admin( $result = array() ) {
+		// Notify site admins of new upload
+		if ( 'on' != $this->settings['notify_admin'] ) 
+			return;
+		$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
+		$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
+		wp_mail( $to, $subj, $this->settings['admin_notification_text'] );
+
 	}
 
 	function _handle_result( $result = array() ) {
@@ -317,6 +339,19 @@ class Frontend_Uploader {
 			return;
 		}
 
+		// Either redirect to success page if it's set and valid
+		// Or to referrer
+		$url = isset( $_POST['success_page'] ) && filter_var( $_POST['success_page'], FILTER_VALIDATE_URL ) ? $_POST['success_page'] :  wp_get_referer();
+
+		$query_args = array();
+
+		if ( ( isset( $result['success'] ) && $result['success'] ) || 0 < count( $result['media_ids'] ) )
+			$query_args['response'] = 'fu-sent';
+		// @todo verbose response messages
+		if ( !empty( $result['errors'] ) )
+			$query_args['errors'] = implode(',', $result['errors']  );
+
+		wp_safe_redirect( add_query_arg( array( $query_args ) , $url ) );
 
 
 	}
@@ -425,13 +460,6 @@ class Frontend_Uploader {
 
 		}
 
-
-		// Notify site admins of new upload
-		if ( 'on' == $this->settings['notify_admin'] ) {
-			$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
-			$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
-			wp_mail( $to, $subj, $this->settings['admin_notification_text'] );
-		}
 
 		// and can't believe we got this far, on to the success page (if we have one)
 
