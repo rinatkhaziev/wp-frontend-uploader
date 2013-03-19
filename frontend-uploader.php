@@ -796,11 +796,15 @@ class Frontend_Uploader {
 
 	// @todo
 	function _display_errors( $errors ) {
-		var_dump( $errors );
-		if ( isset( $errors['fu-disallowed-mime-type' ] ) ) {
+		$errors_arr = explode( ';', $errors );
+		$response = '';
+		foreach( $errors_arr as $error ) {
+			$split = explode( ':', $error );
+		}
+		/*if ( isset( $errors['fu-disallowed-mime-type' ] ) ) {
 			$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ) . "\n";
 			$response = sprintf( '<p class="ugc-notice failure>%1$s: %2$s</p>', $title, join( ',', $errors['fu-disallowed-mime-type'] ) );
-		}
+		}*/
 
 		return $response;
 	}
