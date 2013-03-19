@@ -210,7 +210,7 @@ class Frontend_Uploader {
 				continue;
 			// Add an error message
 			if ( !in_array( $k['type'], $this->allowed_mime_types ) ) {
-				$errors[] = array( 'file_name' => $k['name'], 'error' => 'fu-disallowed-mime-type' );
+				$errors['fu-disallowed-mime-type'][] = $k['name'];
 				//continue;
 			}
 
@@ -238,7 +238,7 @@ class Frontend_Uploader {
 			if ( !is_wp_error( $upload_id ) )
 				$media_ids[] = $upload_id;
 			else
-				$errors[] = array( 'file_name' => $k['name'], 'error' => 'fu-error-media' );
+				$errors['fu-error-media'][] = $k['name'];
 		}
 
 		// Allow additional setup
@@ -347,7 +347,7 @@ class Frontend_Uploader {
 			wp_safe_redirect( wp_get_referer() );
 			return;
 		}
-
+		$errors_formatted = array();
 		// Either redirect to success page if it's set and valid
 		// Or to referrer
 		$url = isset( $_POST['success_page'] ) && filter_var( $_POST['success_page'], FILTER_VALIDATE_URL ) ? $_POST['success_page'] :  wp_get_referer();
@@ -357,8 +357,18 @@ class Frontend_Uploader {
 		if ( ( isset( $result['success'] ) && $result['success'] ) || 0 < count( $result['media_ids'] ) )
 			$query_args['response'] = 'fu-sent';
 		// @todo verbose response messages
-		if ( !empty( $result['errors'] ) )
-			$query_args['errors'] = $result['errors'];
+		if ( !empty( $result['errors'] ) ) {
+			$_errors = array();
+			foreach( $result['errors'] as $key => $error ) {
+				$_errors[$key] = join(',', $error );
+			}
+
+			foreach( $_errors as $key => $value ) {
+				$errors_formatted[] = "{$key}:{$value}";
+			}
+
+		}
+			$query_args['errors'] = join( ';', $errors_formatted );
 
 		wp_safe_redirect( add_query_arg( array( $query_args ) , $url ) );
 
@@ -786,6 +796,13 @@ class Frontend_Uploader {
 
 	// @todo
 	function _display_errors( $errors ) {
+		var_dump( $errors );
+		if ( isset( $errors['fu-disallowed-mime-type' ] ) ) {
+			$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ) . "\n";
+			$response = sprintf( '<p class="ugc-notice failure>%1$s: %2$s</p>', $title, join( ',', $errors['fu-disallowed-mime-type'] ) );
+		}
+
+		return $response;
 	}
 	/**
 	 * Enqueue our assets
