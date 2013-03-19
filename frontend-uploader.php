@@ -284,25 +284,25 @@ class Frontend_Uploader {
 		if ( !wp_verify_nonce( $_POST['nonceugphoto'], 'upload_ugphoto' ) ) {
 			wp_safe_redirect( add_query_arg( array( 'errors' => array( 'nonce-failure' ) ), wp_get_referer() ) );
 			exit;
-	}
+		}
 		$layout = isset( $_POST['form_layout'] ) && !empty( $_POST['form_layout'] ) ? $_POST['form_layout'] : 'image';
-		switch( $layout ) {
-			case 'post':
-				$result = $this->_upload_post();
+		switch ( $layout ) {
+		case 'post':
+			$result = $this->_upload_post();
 			break;
-			case 'post_image':
-			case 'post_media';
-				$response = $this->_upload_post();
-				if ( ! is_wp_error( $response['post_id'] ) ) {
-					$result = $this->_handle_files( $response['post_id'] );
-					$result = array_merge( $response, $result );
-				}
+		case 'post_image':
+		case 'post_media';
+			$response = $this->_upload_post();
+			if ( ! is_wp_error( $response['post_id'] ) ) {
+				$result = $this->_handle_files( $response['post_id'] );
+				$result = array_merge( $response, $result );
+			}
 			break;
-			case 'image':
-			case 'media':
-				if ( isset( $_POST['post_ID'] ) && 0 !== $pid = (int) $_POST['post_ID'] ) {
-					$result = $this->_handle_files( $pid );
-				}
+		case 'image':
+		case 'media':
+			if ( isset( $_POST['post_ID'] ) && 0 !== $pid = (int) $_POST['post_ID'] ) {
+				$result = $this->_handle_files( $pid );
+			}
 			break;
 		}
 		$this->_handle_result( $result );
@@ -318,7 +318,7 @@ class Frontend_Uploader {
 		}
 
 
-			
+
 	}
 
 	/**
