@@ -30,7 +30,6 @@ define( 'UGC_ROOT' , dirname( __FILE__ ) );
 define( 'UGC_FILE_PATH' , UGC_ROOT . '/' . basename( __FILE__ ) );
 define( 'UGC_URL' , plugins_url( '/', __FILE__ ) );
 
-require_once ABSPATH . 'wp-admin/includes/screen.php';
 require_once UGC_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php';
 require_once UGC_ROOT . '/lib/php/class-frontend-uploader-wp-posts-list-table.php';
 require_once UGC_ROOT . '/lib/php/class-html-helper.php';
