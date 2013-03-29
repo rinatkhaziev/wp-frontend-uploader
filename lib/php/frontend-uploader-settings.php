@@ -64,6 +64,7 @@ class Frontend_Uploader_Settings {
 					'desc' => __( 'Message that admin will get on new file upload', 'frontend-uploader' ),
 					'type' => 'textarea',
 					'default' => 'Someone uploaded a new UGC file, please moderate at: ' . admin_url( 'upload.php?page=manage_frontend_uploader' ),
+					'sanitize_callback' => 'wp_filter_post_kses'
 				),
 				array(
 					'name' => 'notification_email',
@@ -71,6 +72,7 @@ class Frontend_Uploader_Settings {
 					'desc' => __( 'Leave blank to use site admin email', 'frontend-uploader' ),
 					'type' => 'text',
 					'default' => '',
+					'sanitize_callback' => 'sanitize_email',
 				),
 				array(
 					'name' => 'allowed_categories',
@@ -108,7 +110,6 @@ class Frontend_Uploader_Settings {
 
 	function plugin_page() {
 		echo '<div class="wrap">';
-		settings_errors();
 
 		$this->settings_api->show_navigation();
 		$this->settings_api->show_forms();
