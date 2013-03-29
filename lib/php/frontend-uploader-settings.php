@@ -81,13 +81,13 @@ class Frontend_Uploader_Settings {
 					'type' => 'text',
 					'default' => '',
 				),
-				array(
-					'name' => 'user_verification',
-					'label' => __( 'User Verification callback', 'frontend-uploader' ),
-					'desc' => __( 'Leave blank for none', 'frontend-uploader' ),
-					'type' => 'text',
-					'default' => '',
-				),
+				// array(
+				// 	'name' => 'user_verification',
+				// 	'label' => __( 'User Verification callback', 'frontend-uploader' ),
+				// 	'desc' => __( 'Leave blank for none', 'frontend-uploader' ),
+				// 	'type' => 'text',
+				// 	'default' => '',
+				// ),
 				array(
 					'name' => 'show_author',
 					'label' => __( 'Show author field', 'frontend-uploader' ),
