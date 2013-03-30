@@ -8,9 +8,6 @@ $wp_list_table = new FU_WP_Media_List_Table();
 $pagenum = $wp_list_table->get_pagenum();
 $doaction = $wp_list_table->current_action();
 $wp_list_table->prepare_items();
-wp_enqueue_script( 'wp-ajax-response' );
-wp_enqueue_script( 'jquery-ui-draggable' );
-wp_enqueue_script( 'media' );
 ?>
 <div class="wrap">
 <?php screen_icon(); ?>
