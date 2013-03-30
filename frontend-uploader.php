@@ -495,7 +495,7 @@ class Frontend_Uploader {
 				), $atts ) );
 		switch ( $tag ):
 		case 'textarea':
-			if ( 'on' == $this->settings['wysiwyg_enabled'] || $wysiwyg_enabled == true ) {
+			if ( ( isset( $this->settings['wysiwyg_enabled'] ) && 'on' == $this->settings['wysiwyg_enabled'] ) || $wysiwyg_enabled == true ) {
 				ob_start();
 				wp_editor( '', $id, array(
 						'textarea_name' => $name,
