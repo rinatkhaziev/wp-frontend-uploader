@@ -165,7 +165,7 @@ class Frontend_Uploader {
 	/**
 	 * Since WP 3.5-beta-1 WP Media interface shows private attachments as well
 	 * We don't want that, so we force WHERE statement to post_status = 'inherit'
-	 * 
+	 *
 	 * @since  0.3
 	 *
 	 * @param string  $where WHERE statement
@@ -185,7 +185,7 @@ class Frontend_Uploader {
 	 * Handle uploading of the files
 	 *
 	 * @since  0.4
-	 * 
+	 *
 	 * @param int     $post_id Parent post id
 	 * @return array Combined result of media ids and errors if any
 	 */
@@ -222,7 +222,7 @@ class Frontend_Uploader {
 			// @todo remove this in v0.5 when automatic handling of shortcode attributes is implemented
 			if ( isset( $_POST['caption'] ) )
 				$caption = sanitize_text_field( $_POST['caption'] );
-			elseif( isset( $_POST['post_content'] ) )
+			elseif ( isset( $_POST['post_content'] ) )
 				$caption = sanitize_text_field( $_POST['post_content'] );
 
 			// @todo remove or refactor
@@ -249,7 +249,7 @@ class Frontend_Uploader {
 
 	/**
 	 * Handle post uploads
-	 * 
+	 *
 	 * @since 0.4
 	 */
 	function _upload_post() {
@@ -289,6 +289,7 @@ class Frontend_Uploader {
 
 	/**
 	 * Handle post, post+media, or just media files
+	 *
 	 * @since  0.4
 	 */
 	function upload_content() {
@@ -328,7 +329,7 @@ class Frontend_Uploader {
 	 */
 	function _notify_admin( $result = array() ) {
 		// Notify site admins of new upload
-		if ( 'on' != $this->settings['notify_admin'] || $result['success'] === false ) 
+		if ( 'on' != $this->settings['notify_admin'] || $result['success'] === false )
 			return;
 		$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
 		$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
@@ -338,7 +339,7 @@ class Frontend_Uploader {
 
 	/**
 	 * Process response from upload logic
-	 * 
+	 *
 	 * @since  0.4
 	 */
 	function _handle_result( $result = array() ) {
@@ -356,7 +357,7 @@ class Frontend_Uploader {
 		// $query_args will hold everything that's needed for displaying notices to user
 		$query_args = array();
 
-		// Set the result to success 
+		// Set the result to success
 		if ( ( isset( $result['success'] ) && $result['success'] ) || 0 < count( $result['media_ids'] ) )
 			$query_args['response'] = 'fu-sent';
 
@@ -364,16 +365,16 @@ class Frontend_Uploader {
 		if ( !empty( $result['errors'] ) ) {
 			$query_args['response'] = 'fu-error';
 			$_errors = array();
-			foreach( $result['errors'] as $key => $error ) {
-				$_errors[$key] = join('|', $error );
+			foreach ( $result['errors'] as $key => $error ) {
+				$_errors[$key] = join( '|', $error );
 			}
 
-			foreach( $_errors as $key => $value ) {
+			foreach ( $_errors as $key => $value ) {
 				$errors_formatted[] = "{$key}:{$value}";
 			}
 			$query_args['errors'] = join( ';', $errors_formatted );
 		}
-		
+
 		wp_safe_redirect( add_query_arg( array( $query_args ) , $url ) );
 	}
 
@@ -713,31 +714,31 @@ class Frontend_Uploader {
 		// Or render default form
 		else:
 			$textarea_desc = __( 'Description', 'frontend-uploader' );
-			$file_desc = __( 'Your Photo', 'frontend-uploader' );
-			$submit_button = __( 'Submit', 'frontend-uploader' );
+		$file_desc = __( 'Your Photo', 'frontend-uploader' );
+		$submit_button = __( 'Submit', 'frontend-uploader' );
 
-			echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
+		echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
 
-			// here we select the different fields based on the form layout to allow for different types
-			// of uploads (only a file, only a post or a file and post)
+		// here we select the different fields based on the form layout to allow for different types
+		// of uploads (only a file, only a post or a file and post)
 
-			// @todo refactor
-			if ( $form_layout == "post_image" )
-				echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
+		// @todo refactor
+		if ( $form_layout == "post_image" )
+			echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
 							    [input type="file" name="photo" id="ug_photo" description="'. $file_desc .'" multiple=""]' );
-			elseif ( $form_layout == "post" )
-				echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
-			else
-				echo do_shortcode( '[textarea name="caption" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
+		elseif ( $form_layout == "post" )
+			echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
+		else
+			echo do_shortcode( '[textarea name="caption" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
 									[input type="file" name="photo" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
 
-			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
-				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
+		if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
+			echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
 
-			if ( $form_layout == "post_image" || $form_layout == "image" )
-				echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="' . __( 'Credit', 'frontend-uploader' ) . '" class=""]' );
+		if ( $form_layout == "post_image" || $form_layout == "image" )
+			echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="' . __( 'Credit', 'frontend-uploader' ) . '" class=""]' );
 
-			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
+		echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 		endif; ?>
 		  <input type="hidden" name="action" value="upload_ugpost" />
 		  <input type="hidden" value="<?php the_ID() ?>" name="post_ID" />
@@ -746,8 +747,8 @@ class Frontend_Uploader {
 		  <input type="hidden" value="<?php echo $form_layout; ?>" name="form_layout" />
 
 		  <?php
-			// Allow a little customization
-			do_action( 'fu_additional_html' );
+		// Allow a little customization
+		do_action( 'fu_additional_html' );
 ?>
 		  <?php wp_nonce_field( 'upload_ugphoto', 'nonceugphoto' ); ?>
 		  <div class="clear"></div>
@@ -758,7 +759,7 @@ class Frontend_Uploader {
 	}
 
 	function _notice_html( $message, $class ) {
-		if ( empty($message) || empty($class) )
+		if ( empty( $message ) || empty( $class ) )
 			return;
 		return sprintf( '<p class="ugc-notice %1$s">%2$s</p>', $class, $message );
 	}
@@ -767,20 +768,20 @@ class Frontend_Uploader {
 	function _display_response_notices( $res = array() ) {
 		if ( empty( $res ) )
 			return;
-		
+
 		$output = '';
 		$map = array(
 			'fu-sent' => array(
 				'text' => __( 'Your file was successfully uploaded!', 'frontend-uploader' ),
 				'class' => 'success',
-				),
+			),
 			'fu-error' => array(
 				'text' => __( 'There was an error with your submission', 'frontend-uploader' ),
 				'class' => 'failure',
-			),	
+			),
 		);
 
-		if (isset( $map[ $res['response'] ] ) )
+		if ( isset( $map[ $res['response'] ] ) )
 			$output .= $this->_notice_html( $map[ $res['response'] ]['text'] , $map[ $res['response'] ]['class'] );
 
 		if ( !empty( $res['errors' ] ) )
@@ -795,21 +796,21 @@ class Frontend_Uploader {
 		$map = array(
 			'nonce-failure' => array(
 				'text' => __( 'Security check failed!', 'frontend-uploader' ),
-				),
+			),
 			'fu-disallowed-mime-type' => array(
 				'text' => __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ),
 				'format' => '%1$s: <br/> %2$s',
 			),
 			'fu-invalid-post' => array(
-				'text' =>__( 'The content you are trying to post is invalid.', 'frontend-uploader' ), 
-				)
+				'text' =>__( 'The content you are trying to post is invalid.', 'frontend-uploader' ),
+			)
 		);
 
-		foreach( $errors_arr as $error ) {
+		foreach ( $errors_arr as $error ) {
 			$split = explode( ':', $error );
 			$slug = $split[0];
 			$details_array = explode( '|', $split[1] );
-			foreach( $details_array as $detail ) {
+			foreach ( $details_array as $detail ) {
 				// @todo add check for amount of sprintf vars
 				if ( isset( $map[ $slug ]['format'] ) )
 					$message = sprintf( $map[ $slug ]['format'], $map[ $slug ]['text'], $detail );
