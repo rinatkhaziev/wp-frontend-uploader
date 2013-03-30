@@ -230,8 +230,8 @@ class Frontend_Uploader {
 			$post_overrides = array(
 				'post_status' => 'private',
 				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : 'Unnamed',
-				'post_content' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
-				'post_excerpt' => empty( $caption ) ? __( 'Courtesy of', 'frontend-uploader' ) . filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
+				'post_content' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
+				'post_excerpt' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
 			);
 
 			// Trying to upload the file
@@ -531,6 +531,9 @@ class Frontend_Uploader {
 	 * @param string  $content content that is encloded in [fu-upload-form][/fu-upload-form]
 	 */
 	function upload_form( $atts, $content = null ) {
+
+		// Reset postdata in case it got polluted somewhere
+		wp_reset_postdata();
 		extract( shortcode_atts( array(
 					'description' => '',
 					'title' => __( 'Submit a new post', 'frontend-uploader' ),
@@ -538,10 +541,11 @@ class Frontend_Uploader {
 					'class' => 'validate',
 					'category' => '1',
 					'success_page' => '',
-					'form_layout' => ''
+					'form_layout' => '',
+					'post_id' => get_the_ID(),
 				), $atts ) );
-		// Reset postdata in case it got polluted somewhere
-		wp_reset_postdata();
+		$post_id = (int) $post_id;
+
 		if ( $form_layout != "post" && $form_layout != "post_image" )
 			$form_layout = "image";
 
@@ -590,7 +594,7 @@ class Frontend_Uploader {
 		echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 		endif; ?>
 		  <input type="hidden" name="action" value="upload_ugpost" />
-		  <input type="hidden" value="<?php the_ID() ?>" name="post_ID" />
+		  <input type="hidden" value="<?php echo $post_id ?>" name="post_ID" />
 		  <input type="hidden" value="<?php echo $category; ?>" name="post_category" />
 		  <input type="hidden" value="<?php echo $success_page; ?>" name="success_page" />
 		  <input type="hidden" value="<?php echo $form_layout; ?>" name="form_layout" />
