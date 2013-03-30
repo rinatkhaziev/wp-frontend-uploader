@@ -10,7 +10,12 @@ require_once ABSPATH . '/wp-admin/includes/class-wp-posts-list-table.php';
 class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 
 	function __construct() {
-		parent::__construct( array( 'screen' => get_current_screen() ) );
+		$screen = get_current_screen( 'page' );
+		if ( $screen->post_type == '' ) {
+			$screen->post_type ='post';
+		}
+		parent::__construct( array( 'screen' => $screen ) );
+
 	}
 
 	function prepare_items() {
@@ -45,9 +50,7 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 
 	function modify_post_status_to_private( $where ) {
 		global $wpdb;
-
-		//also making it posts only
-		return "AND $wpdb->posts.post_type = 'post' AND ($wpdb->posts.post_status = 'inherit' OR $wpdb->posts.post_status = 'private') ";
+		return "AND $wpdb->posts.post_type = '{$this->screen->post_type}' AND ($wpdb->posts.post_status = 'inherit' OR $wpdb->posts.post_status = 'private') ";
 
 	}
 
@@ -297,7 +300,7 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 			$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, true ) . '">' . __( 'Edit', 'frontend-uploader' ) . '</a>';
 
 		if ( $post->post_status == 'private' ) {
-			$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc_post&id=' . $post->ID . '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
+			$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc_post&id=' . $post->ID . '&post_type=' . $post->post_type . '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
 		}
 
 		if ( current_user_can( 'delete_post', $post->ID ) ) {

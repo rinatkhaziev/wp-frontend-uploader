@@ -408,7 +408,14 @@ class Frontend_Uploader {
 	}
 
 	function add_posts_menu_item() {
-		add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_posts_uploader', array( $this, 'admin_posts_list' ) );
+		foreach( (array) $this->settings['enabled_post_types'] as $cpt ) {
+			if ( $cpt == 'post' ) {
+				add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_posts_uploader', array( $this, 'admin_posts_list' ) );
+				continue;
+			}
+
+			add_submenu_page( "edit.php?post_type={$cpt}", __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', "manage_frontend_{$cpt}s_uploader", array( $this, 'admin_posts_list' ) );
+		}
 
 	}
 
@@ -430,15 +437,19 @@ class Frontend_Uploader {
 		exit;
 	}
 
-
+	/**
+	 * @todo refactor in 0.5
+	 * @return [type] [description]
+	 */
 	function approve_post() {
 		// check for permissions and id
-		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( 'nonceugphoto', 'upload_ugphoto' ) )
-			wp_safe_redirect( get_admin_url( null, 'edit.php?page=manage_frontend_posts_uploader&error=id_or_perm' ) );
+		$url = get_admin_url( null, 'edit.php?page=manage_frontend_posts_uploader&error=id_or_perm' );
+		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0  )
+			wp_safe_redirect( $url );
 
 		$post = get_post( $_GET['id'] );
 
-		$images =& get_children( 'post_type=attachment&post_mime_type=image&post_parent=' . $post->ID );
+		$images = get_children( 'post_type=attachment&post_mime_type=image&post_parent=' . $post->ID );
 
 		foreach ( $images as $imageID => $imagePost ) {
 			$current_image = array();
@@ -446,14 +457,19 @@ class Frontend_Uploader {
 			$current_image['post_status'] = "publish";
 			wp_update_post( $current_image );
 		}
-
-		if ( is_object( $post ) && $post->post_status == 'private' ) {
+		if ( !is_wp_error( $post ) ) {
 			$post->post_status = 'publish';
 			wp_update_post( $post );
-			wp_safe_redirect( get_admin_url( null, 'edit.php?page=manage_frontend_posts_uploader&approved=1' ) );
+			$post_type = $post->post_type == 'post' ? array() : array( 'post_type' => $post->post_type );
+			$url = add_query_arg(
+				array_merge( array(
+					'page' => "manage_frontend_{$post->post_type}s_uploader",
+					'approved' => 1,
+				), $post_type ), get_admin_url( null, "edit.php" ) );
+
 		}
 
-		wp_safe_redirect( get_admin_url( null, 'edit.php?page=manage_frontend_posts_uploader' ) );
+		wp_safe_redirect( $url );
 		exit;
 
 	}
@@ -525,7 +541,7 @@ class Frontend_Uploader {
 	/**
 	 * Display the upload post form
 	 *
-	 * @todo refactor this. Too ugly
+	 * @todo Major refactoring for this before releasing 0.5
 	 *
 	 * @param array   $atts    shortcode attributes
 	 * @param string  $content content that is encloded in [fu-upload-form][/fu-upload-form]
@@ -754,5 +770,4 @@ class Frontend_Uploader {
 
 }
 
-global $frontend_uploader;
 $frontend_uploader = new Frontend_Uploader;
