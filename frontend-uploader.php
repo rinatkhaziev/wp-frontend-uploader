@@ -210,7 +210,7 @@ class Frontend_Uploader {
 			// Add an error message
 			if ( !in_array( $k['type'], $this->allowed_mime_types ) ) {
 				$errors['fu-disallowed-mime-type'][] = $k['name'];
-				//continue;
+				continue;
 			}
 
 			// Setup some default values
@@ -225,6 +225,7 @@ class Frontend_Uploader {
 			elseif( isset( $_POST['post_content'] ) )
 				$caption = sanitize_text_field( $_POST['post_content'] );
 
+			// @todo remove or refactor
 			$post_overrides = array(
 				'post_status' => 'private',
 				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : 'Unnamed',
@@ -239,11 +240,11 @@ class Frontend_Uploader {
 			else
 				$errors['fu-error-media'][] = $k['name'];
 		}
-
+		$success = empty( $errors ) && !empty( $media_ids ) ? true : false;
 		// Allow additional setup
 		// Pass array of attachment ids
 		do_action( 'fu_after_upload', $media_ids );
-		return array( 'media_ids' => $media_ids, 'errors' => $errors );
+		return array( 'success' => $success, 'media_ids' => $media_ids, 'errors' => $errors );
 	}
 
 	/**
@@ -316,7 +317,7 @@ class Frontend_Uploader {
 			}
 			break;
 		}
-
+		//var_dump( $result ); exit;
 		$this->_notify_admin( $result );
 		$this->_handle_result( $result );
 		exit;
@@ -327,7 +328,7 @@ class Frontend_Uploader {
 	 */
 	function _notify_admin( $result = array() ) {
 		// Notify site admins of new upload
-		if ( 'on' != $this->settings['notify_admin'] ) 
+		if ( 'on' != $this->settings['notify_admin'] || $result['success'] === false ) 
 			return;
 		$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
 		$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
@@ -346,32 +347,34 @@ class Frontend_Uploader {
 			wp_safe_redirect( wp_get_referer() );
 			return;
 		}
+
 		$errors_formatted = array();
 		// Either redirect to success page if it's set and valid
 		// Or to referrer
-		$url = isset( $_POST['success_page'] ) && filter_var( $_POST['success_page'], FILTER_VALIDATE_URL ) ? $_POST['success_page'] :  wp_get_referer();
+		$url = isset( $_POST['success_page'] ) && filter_var( $_POST['success_page'], FILTER_VALIDATE_URL ) ? $_POST['success_page'] :  strtok( wp_get_referer(), '?' );
 
+		// $query_args will hold everything that's needed for displaying notices to user
 		$query_args = array();
 
+		// Set the result to success 
 		if ( ( isset( $result['success'] ) && $result['success'] ) || 0 < count( $result['media_ids'] ) )
 			$query_args['response'] = 'fu-sent';
+
 		// @todo verbose response messages
 		if ( !empty( $result['errors'] ) ) {
+			$query_args['response'] = 'fu-error';
 			$_errors = array();
 			foreach( $result['errors'] as $key => $error ) {
-				$_errors[$key] = join(',', $error );
+				$_errors[$key] = join('|', $error );
 			}
 
 			foreach( $_errors as $key => $value ) {
 				$errors_formatted[] = "{$key}:{$value}";
 			}
-
-		}
 			$query_args['errors'] = join( ';', $errors_formatted );
-
+		}
+		
 		wp_safe_redirect( add_query_arg( array( $query_args ) , $url ) );
-
-
 	}
 
 	function admin_list() {
@@ -675,7 +678,7 @@ class Frontend_Uploader {
 	 * @todo refactor this. Too ugly
 	 *
 	 * @param array   $atts    shortcode attributes
-	 * @param string  $content content that is encloded in [fe-upload-form][/fe-upload-form]
+	 * @param string  $content content that is encloded in [fu-upload-form][/fu-upload-form]
 	 */
 	function upload_form( $atts, $content = null ) {
 		extract( shortcode_atts( array(
@@ -687,7 +690,8 @@ class Frontend_Uploader {
 					'success_page' => '',
 					'form_layout' => ''
 				), $atts ) );
-		global $post;
+		// Reset postdata in case it got polluted somewhere
+		wp_reset_postdata();
 		if ( $form_layout != "post" && $form_layout != "post_image" )
 			$form_layout = "image";
 
@@ -700,10 +704,8 @@ class Frontend_Uploader {
 	  <div class="ugc-inner-wrapper">
 		  <h2><?php echo esc_html( $title ) ?></h2>
 <?php
-		if ( isset( $_GET['response'] ) && !empty( $_GET['response'] ) )
-			echo $this->_display_notice( $_GET['response'] );
-		if ( isset( $_GET['errors'] ) && !empty( $_GET['errors'] ) )
-			echo $this->_display_errors( $_GET['errors'] );
+		if ( !empty( $_GET ) )
+			$this->_display_response_notices( $_GET );
 
 		// Parse nested shortcodes
 		if ( $content ):
@@ -738,11 +740,10 @@ class Frontend_Uploader {
 			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 		endif; ?>
 		  <input type="hidden" name="action" value="upload_ugpost" />
-		  <input type="hidden" value="<?php echo $post->ID ?>" name="post_ID" />
+		  <input type="hidden" value="<?php the_ID() ?>" name="post_ID" />
 		  <input type="hidden" value="<?php echo $category; ?>" name="post_category" />
 		  <input type="hidden" value="<?php echo $success_page; ?>" name="success_page" />
 		  <input type="hidden" value="<?php echo $form_layout; ?>" name="form_layout" />
-		  <input type="hidden" value="" name="session_id" />
 
 		  <?php
 			// Allow a little customization
@@ -756,56 +757,70 @@ class Frontend_Uploader {
 		return ob_get_clean();
 	}
 
-	/**
-	 * Render notice for user
-	 * 
-	 * @todo  refactor
-	 */
-	function _display_notice( $response ) {
-		if ( empty( $response ) )
+	function _notice_html( $message, $class ) {
+		if ( empty($message) || empty($class) )
 			return;
-		switch ( $response ) {
-		case 'fu-sent':
-			$title = __( 'Your file was successfully uploaded!', 'frontend-uploader' );
-			$class = 'success';
-			break;
-		case 'fu-post-sent':
-			$title = __( 'Your post was successfully sent!', 'frontend-uploader' );
-			$class = 'success';
-			break;
-		case 'nonce-failure':
-			$title = __( 'Security check failed', 'frontend-uploader' );
-			$class = 'failure';
-			break;
-		case 'fu-disallowed-mime-type':
-			$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ) . "\n";
-			if ( isset( $_GET['mime'] ) )
-				$title .= __( 'The file has following MIME-type:', 'frontend-uploader' ) . esc_attr( $_GET['mime'] );
-			$class = 'failure';
-			break;
-		case 'fu-invalid-post':
-			$title = __( 'The content you are trying to post is invalid.', 'frontend-uploader' );
-			$class = 'failure';
-			break;
-		default:
-			$title = '';
-		}
-		return "<p class='ugc-notice {$class}'>$title</p>";
+		return sprintf( '<p class="ugc-notice %1$s">%2$s</p>', $class, $message );
 	}
 
-	// @todo
+
+	function _display_response_notices( $res = array() ) {
+		if ( empty( $res ) )
+			return;
+		
+		$output = '';
+		$map = array(
+			'fu-sent' => array(
+				'text' => __( 'Your file was successfully uploaded!', 'frontend-uploader' ),
+				'class' => 'success',
+				),
+			'fu-error' => array(
+				'text' => __( 'There was an error with your submission', 'frontend-uploader' ),
+				'class' => 'failure',
+			),	
+		);
+
+		if (isset( $map[ $res['response'] ] ) )
+			$output .= $this->_notice_html( $map[ $res['response'] ]['text'] , $map[ $res['response'] ]['class'] );
+
+		if ( !empty( $res['errors' ] ) )
+			$output .= $this->_display_errors( $res['errors' ] );
+
+		echo $output;
+	}
+
 	function _display_errors( $errors ) {
 		$errors_arr = explode( ';', $errors );
-		$response = '';
+		$output = '';
+		$map = array(
+			'nonce-failure' => array(
+				'text' => __( 'Security check failed!', 'frontend-uploader' ),
+				),
+			'fu-disallowed-mime-type' => array(
+				'text' => __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ),
+				'format' => '%1$s: <br/> %2$s',
+			),
+			'fu-invalid-post' => array(
+				'text' =>__( 'The content you are trying to post is invalid.', 'frontend-uploader' ), 
+				)
+		);
+
 		foreach( $errors_arr as $error ) {
 			$split = explode( ':', $error );
-		}
-		/*if ( isset( $errors['fu-disallowed-mime-type' ] ) ) {
-			$title = __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ) . "\n";
-			$response = sprintf( '<p class="ugc-notice failure>%1$s: %2$s</p>', $title, join( ',', $errors['fu-disallowed-mime-type'] ) );
-		}*/
+			$slug = $split[0];
+			$details_array = explode( '|', $split[1] );
+			foreach( $details_array as $detail ) {
+				// @todo add check for amount of sprintf vars
+				if ( isset( $map[ $slug ]['format'] ) )
+					$message = sprintf( $map[ $slug ]['format'], $map[ $slug ]['text'], $detail );
+				else
+					$message = $map[ $slug ]['text'];
 
-		return $response;
+				$output .= $this->_notice_html( $message, 'failure' );
+			}
+		}
+
+		return $output;
 	}
 	/**
 	 * Enqueue our assets
