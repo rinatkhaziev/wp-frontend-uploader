@@ -90,7 +90,7 @@ function my_fu_additional_html() {
 
 == Changelog ==
 
-= 0.4 =
+= 0.4 (Mar 30, 2013) =
 
 * Ability to submit posts+files via [fu-upload-form form_layout="post_image|post|image"] where form_layout might be "post_image", "post", or "image". Defaults to "image". /props rfzappala
 * Ability to submit and manage custom post types
