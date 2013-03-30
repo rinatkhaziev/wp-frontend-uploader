@@ -119,6 +119,7 @@ class Frontend_Uploader {
 		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		// Preventing wpautop going crazy on
 		add_filter( 'the_content', 'shortcode_unautop', 100 );
 		// Hiding not approved attachments from Media Gallery
@@ -702,7 +703,6 @@ class Frontend_Uploader {
 		wp_enqueue_style( 'frontend-uploader', UGC_URL . 'lib/css/frontend-uploader.css' );
 		wp_enqueue_script( 'jquery-validate', '//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js', array( 'jquery' ) );
 		wp_enqueue_script( 'frontend-uploader-js', UGC_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
-
 		// Include localization strings for default messages of validation plugin
 		$wplang = apply_filters( 'fu_wplang', WPLANG );
 		if ( $wplang ) {
@@ -711,6 +711,12 @@ class Frontend_Uploader {
 			wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
 		}
 
+	}
+
+	function admin_enqueue_scripts() {
+		wp_enqueue_script( 'wp-ajax-response' );
+		wp_enqueue_script( 'jquery-ui-draggable' );
+		wp_enqueue_script( 'media' );
 	}
 
 	/**
