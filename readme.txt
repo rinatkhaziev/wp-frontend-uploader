@@ -25,7 +25,7 @@ By default plugin allows all MIME-types that are whitelisted in WordPress. Howev
 
 = New in v0.4 =
 
-Now your visitors are able to upload not only media, but guest posts as well! 
+Now your visitors are able to upload not only media, but guest posts as well!
 Use [fu-upload-form form_layout="post_image"] to get default form to upload post content and images
 Use [fu-upload-form form_layout="post"] to get default form to upload post content
 
@@ -37,6 +37,7 @@ You can also manage UGC for selected custom post types (Please refer to the plug
 * Мы говорим по-русски (Russian)
 * Nous parlons français (French) (props dapickboy)
 * Nous parlons français (Canadian French) (props rfzappala)
+
 [Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
 
 == Installation ==
