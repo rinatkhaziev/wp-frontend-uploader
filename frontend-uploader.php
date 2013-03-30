@@ -361,7 +361,8 @@ class Frontend_Uploader {
 		if ( ( isset( $result['success'] ) && $result['success'] ) || 0 < count( $result['media_ids'] ) )
 			$query_args['response'] = 'fu-sent';
 
-		// @todo verbose response messages
+		// Some errors happened
+		// Format a string to be passed as GET value
 		if ( !empty( $result['errors'] ) ) {
 			$query_args['response'] = 'fu-error';
 			$_errors = array();
@@ -758,13 +759,29 @@ class Frontend_Uploader {
 		return ob_get_clean();
 	}
 
+	/**
+	 * Returns html chunk of single notice
+	 *
+	 * @since 0.4
+	 *
+	 * @param  string $message Text of the message
+	 * @param  string $class   Class of container
+	 * @return string          [description]
+	 */
 	function _notice_html( $message, $class ) {
 		if ( empty( $message ) || empty( $class ) )
 			return;
 		return sprintf( '<p class="ugc-notice %1$s">%2$s</p>', $class, $message );
 	}
 
-
+	/**
+	 * Handle response notices
+	 *
+	 * @since 0.4
+	 *
+	 * @param  array  $res [description]
+	 * @return [type]      [description]
+	 */
 	function _display_response_notices( $res = array() ) {
 		if ( empty( $res ) )
 			return;
@@ -789,7 +806,13 @@ class Frontend_Uploader {
 
 		echo $output;
 	}
-
+	/**
+	 * Handle errors
+	 *
+	 * @since 0.4
+	 * @param  string $errors [description]
+	 * @return string HTML
+	 */
 	function _display_errors( $errors ) {
 		$errors_arr = explode( ';', $errors );
 		$output = '';
