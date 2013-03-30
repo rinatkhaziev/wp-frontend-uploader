@@ -27,6 +27,7 @@ By default plugin allows all MIME-types that are whitelisted in WordPress. Howev
 
 Now your visitors are able to upload not only media, but guest posts as well! 
 Use [fu-upload-form form_layout="post_image"] to get default form to upload post content and images
+Use [fu-upload-form form_layout="post"] to get default form to upload post content
 
 = Translations: =
 

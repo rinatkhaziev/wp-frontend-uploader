@@ -559,6 +559,7 @@ class Frontend_Uploader {
 					'success_page' => '',
 					'form_layout' => '',
 					'post_id' => get_the_ID(),
+					'post_type' => 'post',
 				), $atts ) );
 		$post_id = (int) $post_id;
 
@@ -616,6 +617,9 @@ class Frontend_Uploader {
 		  <input type="hidden" value="<?php echo $form_layout; ?>" name="form_layout" />
 
 		  <?php
+		  if ( in_array( $form_layout, array( "post_image", "post" ) ) ): ?>
+		  <input type="hidden" value="<?php echo $post_type; ?>" name="post_type" />
+		<?php endif;
 		// Allow a little customization
 		do_action( 'fu_additional_html' );
 ?>
