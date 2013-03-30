@@ -1,9 +1,9 @@
 === Frontend Uploader ===
 Contributors: rinatkhaziev, rfzappala, danielbachhuber
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
-Requires at least: 3.1
-Tested up to: 3.6- beta1
-Stable tag: 0.3.1
+Requires at least: 3.3
+Tested up to: 3.6-alpha-23879
+Stable tag: 0.4
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
 
@@ -28,6 +28,8 @@ By default plugin allows all MIME-types that are whitelisted in WordPress. Howev
 Now your visitors are able to upload not only media, but guest posts as well! 
 Use [fu-upload-form form_layout="post_image"] to get default form to upload post content and images
 Use [fu-upload-form form_layout="post"] to get default form to upload post content
+
+You can also manage UGC for selected custom post types (Please refer to the plugin's settings page). By default, UGC is enabled for posts and attachments. If you want to be able to get any other post types UGC submissions just select desired post types at the plugin's settings page, and pass post_type='my_post_type' to the [fu-upload-form] shortcode
 
 = Translations: =
 
@@ -88,11 +90,13 @@ function my_fu_additional_html() {
 
 == Changelog ==
 
-= 0.4 = 
+= 0.4 =
 
-* Ability to upload posts+files via [fu-upload-form form_layout="post_image|post|image"] where form_layout might be "post_image", "post", or "image". Defaults to "image". /props rfzappala
+* Ability to submit posts+files via [fu-upload-form form_layout="post_image|post|image"] where form_layout might be "post_image", "post", or "image". Defaults to "image". /props rfzappala
+* Ability to submit and manage custom post types
 * Ability to use visual editor for textareas
 * Bugfixes /props danielbachhuber
+* Under the hood improvements
 
 = 0.3.1 (Jan 3, 2013) =
 
