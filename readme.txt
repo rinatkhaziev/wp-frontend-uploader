@@ -56,11 +56,16 @@ You can also manage UGC for selected custom post types (Please refer to the plug
 
 = fu_allowed_mime_types =
 
-Allows you to add your custom MIME-types
+Allows you to add your custom MIME-types. Please note that there might be multiple MIME types per file extension.
 
 `add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );
 function my_fu_allowed_mime_types( $mime_types ) {
-	$mime_types['wd|wrd'] = 'weird/mime-type';
+	$mp3_mimes = array( 'audio/mpeg', 'audio/x-mpeg', 'audio/mp3', 'audio/x-mp3', 'audio/mpeg3', 'audio/x-mpeg3', 'audio/mpg', 'audio/x-mpg', 'audio/x-mpegaudio' );
+	foreach( $mp3_mimes as $mp3_mime ) {
+		$mime = $mp3_mime;
+		preg_replace("/[^0-9a-zA-Z ]/", "", $mp3_mime );
+		$mime_types['mp3|mp3_' . $mp3_mime ] = $mime;
+	}
 	return $mime_types;
 }`
 
