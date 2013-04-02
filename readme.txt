@@ -93,6 +93,42 @@ function my_fu_additional_html() {
 
 == Frequently Asked Questions ==
 
+= I want to be able to upload mp3, psd, or any other file restricted by default. =
+
+WordPress restricts files that users can upload to certain file extension/MIME-type combinations.
+The trick is that the same file might have several different mime-types based on setup.
+So for any type of file you want to allow you need to look up all possible MIME-types.
+[FileExt](http://filext.com/) is a good place to find MIME-types for specific file extension.
+
+Let's say we want to be able to upload mp3 files.
+
+First we look up all MIME-types for mp3: http://filext.com/file-extension/MP3
+
+Now that we have all possible MIME-types for mp3, we can allow mp3s to be uploaded.
+
+Following code whitelists mp3s, if it makes sense to you, you can modify it for your needs.
+If it confuses you, please don't hesitate to post on support forum.
+Put this in your theme's functions.php
+`add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );
+function my_fu_allowed_mime_types( $mime_types ) {
+	// Array of all possible mp3 mime types
+	// From http://filext.com
+	$mimes = array( 'audio/mpeg', 'audio/x-mpeg', 'audio/mp3', 'audio/x-mp3', 'audio/mpeg3', 'audio/x-mpeg3', 'audio/mpg', 'audio/x-mpg', 'audio/x-mpegaudio' );
+	// Iterate through all mime types and add this specific mime to allow it
+	foreach( $mimes as $mime ) {
+		// Preserve the mime_type
+		$orig_mime = $mime;
+		// Leave only alphanumeric characters (needed for unique array key)
+		preg_replace("/[^0-9a-zA-Z ]/", "", $mime );
+		// Workaround for unique array keys
+		// If you-re going to modify it for your files
+		// Don't forget to change extension in array key
+		// E.g. $mime_types['pdf|pdf_' . $mime ] = $orig_mime
+		$mime_types['mp3|mp3_' . $mime ] = $orig_mime;
+	}
+	return $mime_types;
+}`
+
 
 == Changelog ==
 
