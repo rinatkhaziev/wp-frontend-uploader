@@ -3,7 +3,7 @@
 Plugin Name: UGC Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev, Daniel Bachhuber, Ricardo Zappala
-Version: 0.4
+Version: 0.4.1
 Author URI: http://digitallyconscious.com
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
@@ -25,7 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 // Define our paths and urls and bootstrap
-define( 'UGC_VERSION', '0.4' );
+
+define( 'UGC_VERSION', '0.4.1' );
 define( 'UGC_ROOT' , dirname( __FILE__ ) );
 define( 'UGC_FILE_PATH' , UGC_ROOT . '/' . basename( __FILE__ ) );
 define( 'UGC_URL' , plugins_url( '/', __FILE__ ) );
@@ -72,7 +73,7 @@ class Frontend_Uploader {
 	 */
 	function mime_types() {
 		$this->ugc_mimes = apply_filters( 'fu_allowed_mime_types', $this->fix_ie_mime_types( get_allowed_mime_types() ) );
-		add_filter( 'upload_mimes', array( $this, 'filter_upload_mimes' ) );
+		add_filter( 'upload_mimes', array( $this, 'filter_upload_mimes' ), -10 );
 		return $this->ugc_mimes;
 	}
 
