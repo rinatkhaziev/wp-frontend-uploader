@@ -34,13 +34,13 @@ class Frontend_Uploader_Settings {
 	}
 
 	function get_post_types() {
-		$fu_public_post_types = get_post_types( array( 'public' => true ) );
-		foreach( $fu_public_post_types as $slug => $title ) {
+		$fu_public_post_types = get_post_types( array( 'public' => true ), 'objects' );
+		foreach( $fu_public_post_types as $slug => $post_object ) {
 			if ( $slug == 'attachment' ) {
 				unset( $fu_public_post_types[$slug] );
 				continue;
 			}
-			$fu_public_post_types[$slug] = ucfirst( $title );
+			$fu_public_post_types[$slug] = $post_object->labels->name;
 		}
 		return $fu_public_post_types;
 	}
@@ -65,7 +65,7 @@ class Frontend_Uploader_Settings {
 	 * @return array settings fields
 	 */
 	function get_settings_fields() {;
-		$default_post_type = array( 'post' => 'post' );
+		$default_post_type = array( 'post' => 'Posts' );
 		$settings_fields = array(
 			'frontend_uploader_settings' => array(
 				array(
