@@ -257,8 +257,8 @@ class Frontend_Uploader {
 			$post_overrides = array(
 				'post_status' => 'private',
 				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : 'Unnamed',
-				'post_content' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
-				'post_excerpt' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : filter_var( $caption, FILTER_SANITIZE_STRING ),
+				'post_content' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : $caption,
+				'post_excerpt' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) :  $caption,
 			);
 
 			// Trying to upload the file
@@ -272,7 +272,7 @@ class Frontend_Uploader {
 		$success = empty( $errors ) && !empty( $media_ids ) ? true : false;
 		// Allow additional setup
 		// Pass array of attachment ids
-		do_action( 'fu_after_upload', $media_ids );
+		do_action( 'fu_after_upload', $media_ids, $success );
 		return array( 'success' => $success, 'media_ids' => $media_ids, 'errors' => $errors );
 	}
 
