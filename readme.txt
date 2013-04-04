@@ -132,6 +132,11 @@ function my_fu_allowed_mime_types( $mime_types ) {
 
 == Changelog ==
 
+= 0.4.2 (Apr 3, 2013) =
+
+* Minor updates
+* Better readme on how to allow various media files
+
 = 0.4 (Mar 30, 2013) =
 
 * Ability to submit posts+files via [fu-upload-form form_layout="post_image|post|image"] where form_layout might be "post_image", "post", or "image". Defaults to "image". /props rfzappala
