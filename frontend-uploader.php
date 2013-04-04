@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-// Define our paths and urls and bootstrap
+// Define consts and bootstrap and dependencies
 
 define( 'FU_VERSION', '0.4.1' );
 define( 'FU_ROOT' , dirname( __FILE__ ) );
@@ -415,6 +415,12 @@ class Frontend_Uploader {
 
 	}
 
+	/**
+	 * Approve a media file
+	 *
+	 * @todo refactor in 0.5
+	 * @return [type] [description]
+	 */
 	function approve_photo() {
 		// Check permissions, attachment ID, and nonce
 		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( $_GET['nonceugphoto'], 'upload_ugphoto' ) )
@@ -733,6 +739,9 @@ class Frontend_Uploader {
 
 	}
 
+	/**
+	 * Enqueue scripts for admin
+	 */
 	function admin_enqueue_scripts() {
 		wp_enqueue_script( 'wp-ajax-response' );
 		wp_enqueue_script( 'jquery-ui-draggable' );
