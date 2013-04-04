@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: UGC Frontend Uploader
+Plugin Name: Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev, Daniel Bachhuber, Ricardo Zappala
 Version: 0.4.1
