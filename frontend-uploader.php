@@ -172,6 +172,38 @@ class Frontend_Uploader {
 	}
 
 	/**
+	 * Check if the file could be uploaded
+	 *
+	 * @since 0.5
+	 *
+	 * @param  string  $ext  File Extension
+	 * @param  string  $type MIME-type
+	 *
+	 * @return boolean       is the file allowed or not
+	 */
+	function _is_allowed( $ext, $type ) {
+		$allowed_types = fu_get_mime_types();
+		$conditions = array(
+			(bool) array_search( $ext, $this->settings['enabled_files'] ),
+			in_array( $ext, $allowed_types ),
+			(bool)  in_array( $type, $this->allowed_mime_types ) || in_array( $type, $allowed_types[$ext] ),
+		);
+		// var_dump( $ext );
+		// var_dump( $this->settings['enabled_files'] );
+		// var_dump( $type );
+		// var_dump( $conditions );
+		// var_dump( $allowed_types );
+
+//		 exit;
+
+		foreach( $conditions as $condition )
+			if ( false === $condition )
+				return false;
+
+		return true;
+	}
+
+	/**
 	 * Handle uploading of the files
 	 *
 	 * @since  0.4
@@ -197,12 +229,14 @@ class Frontend_Uploader {
 			}
 
 			// Skip to the next file if upload went wrong
-			// @todo Handle error for this case
-			if ( $k['tmp_name'] == "" )
+			if ( $k['tmp_name'] == "" ) {
+				$errors['fu-upload-error'][] = $k['name'];
 				continue;
+			}
 
+			preg_match( '/.(?P<ext>[a-zA-Z0-9]+)$/', $k['name'], $ext_match );
 			// Add an error message
-			if ( !in_array( $k['type'], $this->allowed_mime_types ) ) {
+			if ( !isset( $ext_match['ext'] ) || ! $this->_is_allowed( $ext_match['ext'], $k['type'] ) ) {
 				$errors['fu-disallowed-mime-type'][] = $k['name'];
 				continue;
 			}
