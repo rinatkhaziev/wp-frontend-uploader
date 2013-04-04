@@ -183,18 +183,18 @@ class Frontend_Uploader {
 	 */
 	function _is_allowed( $ext, $type ) {
 		$allowed_types = fu_get_mime_types();
+		$allowed_type_keys = array();
+		$is_ext_allowed = false;
+		foreach( $this->allowed_mime_types as $exts => $mime ) {
+			foreach(  (array) explode('|', $exts ) as $ext );
+				array_push( $allowed_type_keys, $ext );
+		}
+
 		$conditions = array(
-			(bool) array_search( $ext, $this->settings['enabled_files'] ),
-			in_array( $ext, $allowed_types ),
+			(bool)  ( in_array( $ext, $allowed_type_keys ) ),
 			(bool)  in_array( $type, $this->allowed_mime_types ) || in_array( $type, $allowed_types[$ext] ),
 		);
-		// var_dump( $ext );
-		// var_dump( $this->settings['enabled_files'] );
-		// var_dump( $type );
-		// var_dump( $conditions );
-		// var_dump( $allowed_types );
 
-//		 exit;
 
 		foreach( $conditions as $condition )
 			if ( false === $condition )
