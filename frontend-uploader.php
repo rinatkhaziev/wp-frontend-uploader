@@ -43,15 +43,16 @@ class Frontend_Uploader {
 	public $allowed_mime_types;
 	public $html;
 	public $settings;
-	public $ugc_mimes;
-	public $settings_slug;
+	public $settings_slug = 'frontend_uploader_settings';
 
 	/**
 	 * Here we go
+	 *
+	 * Instantiating the plugin, adding actions, filters, and shortcodes
 	 */
 	function __construct() {
-		$this->settings_slug = 'frontend_uploader_settings';
 		// Hooking to wp_ajax
+		// @todo refactor in 0.5
 		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_content' ) );
 		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_content' ) );
 		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
@@ -63,15 +64,15 @@ class Frontend_Uploader {
 		// Adding media submenu
 		add_action( 'admin_menu', array( $this, 'add_menu_item' ) );
 
-		// Adding the posts submenu
+		// Adding posts/custom  post types submenu
 		add_action( 'admin_menu', array( $this, 'add_posts_menu_item' ) );
 
-		// Adding our shortcodes
+		// Currently supported shortcodes
 		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
 		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
 
-		// Scripts
+		// Static assets
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
@@ -138,8 +139,8 @@ class Frontend_Uploader {
 	 * @return [type] [description]
 	 */
 	function fix_ie_mime_types( $mime_types ) {
-		$mime_types['jpg|jpe|jpeg'] = 'image/pjpeg';
-		$mime_types['png|pngg'] = 'image/x-png';
+		$mime_types['jpg|jpe|jpeg|pjpg'] = 'image/pjpeg';
+		$mime_types['png|xpng'] = 'image/x-png';
 		return $mime_types;
 	}
 
@@ -196,7 +197,7 @@ class Frontend_Uploader {
 		if ( empty( $_FILES ) )
 			return false;
 
-		// File field name could be user defined, so we just pick
+		// File field name could be user defined, so we just get the first file
 		$files = current( $_FILES );
 
 		for ( $i = 0; $i < count( $_FILES['photo']['name'] ); $i++ ) {
@@ -206,8 +207,10 @@ class Frontend_Uploader {
 			}
 
 			// Skip to the next file if upload went wrong
+			// @todo Handle error for this case
 			if ( $k['tmp_name'] == "" )
 				continue;
+
 			// Add an error message
 			if ( !in_array( $k['type'], $this->allowed_mime_types ) ) {
 				$errors['fu-disallowed-mime-type'][] = $k['name'];
@@ -241,6 +244,7 @@ class Frontend_Uploader {
 			else
 				$errors['fu-error-media'][] = $k['name'];
 		}
+
 		$success = empty( $errors ) && !empty( $media_ids ) ? true : false;
 		// Allow additional setup
 		// Pass array of attachment ids
@@ -270,19 +274,21 @@ class Frontend_Uploader {
 			$post_array = array_merge( $post_array, array( 'post_category' => array( (int) $_POST['post_category'] ) ) );
 		}
 
-		$post_id = wp_insert_post ( $post_array, true );
-		// Add the error
+		$post_id = wp_insert_post( $post_array, true );
+		// Something went wrong
 		if ( is_wp_error( $post_id ) ) {
 			$errors[] = 'fu-error-post';
 			$success = false;
+		} else {
+			do_action( 'fu_after_create_post', $post_id );
+			// Save the author name if it was filled and post was created successfully
+			$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
+			if ( $author )
+				add_post_meta( $post_id, 'author_name', $author );
 		}
 
-
-		do_action( 'fu_after_create_post', $post_id );
-		// Save the author name if it was filled and post was created successfully
 		if ( !is_wp_error( $post_id )  ) {
-			$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
-			add_post_meta( $post_id, 'author_name', $author );
+
 		}
 
 		return array( 'success' => $success, 'post_id' => $post_id, 'errors' => $errors );
