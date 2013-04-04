@@ -35,6 +35,7 @@ require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php
 require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-posts-list-table.php';
 require_once FU_ROOT . '/lib/php/class-html-helper.php';
 require_once FU_ROOT . '/lib/php/settings-api/class.settings-api.php';
+require_once FU_ROOT . '/lib/php/functions.php';
 require_once FU_ROOT . '/lib/php/frontend-uploader-settings.php';
 
 class Frontend_Uploader {

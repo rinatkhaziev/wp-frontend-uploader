@@ -113,6 +113,14 @@ class Frontend_Uploader_Settings {
                     'default' => $default_post_type,
                     'options' => self::get_post_types(),
 				),
+				array(
+					'name' => 'enabled_files',
+					'label' => __( 'Allow following files to be uploaded', 'frontend-uploader' ),
+					'desc' => __( '', 'frontend-uploader' ),
+                    'type' => 'multicheck',
+                    'default' => array( 'mp3' => 'mp3'),
+                    'options' => fu_get_exts_descs(),
+				),
 			),
 		);
 		return $settings_fields;
