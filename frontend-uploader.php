@@ -488,7 +488,7 @@ class Frontend_Uploader {
 	 * @param string  $tag
 	 */
 	function shortcode_content_parser( $atts, $content = null, $tag ) {
-		extract( shortcode_atts( array(
+		$atts = shortcode_atts( array(
 					'id' => '',
 					'name' => '',
 					'description' => '',
@@ -497,51 +497,67 @@ class Frontend_Uploader {
 					'class' => '',
 					'multiple' => 'false',
 					'wysiwyg_enabled' => false,
-				), $atts ) );
-		switch ( $tag ):
-			case 'textarea':
-				if ( ( isset( $this->settings['wysiwyg_enabled'] ) && 'on' == $this->settings['wysiwyg_enabled'] ) || $wysiwyg_enabled == true ) {
-					ob_start();
-					wp_editor( '', $id, array(
-							'textarea_name' => $name,
-							'media_buttons' => false,
-							'teeny' => true,
-							'quicktags' => false
-						) );
-					$tiny = ob_get_clean();
-					$label =  $this->html->element( 'label', $description , array( 'for' => $id ), false );
-					return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
-				} else {
-				$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array(
-							'name' => $name,
-							'id' => $id,
-							'class' => $class
-						) ), array( 'for' => $id ), false );
+				), $atts );
+		$callback = array( $this, "_render_{$tag}" );
+		if ( is_callable( $callback ) )
+			return call_user_func( $callback, $atts );
+	}
 
-				return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
-			}
-			break;
+	function _render_input( $atts ) {
+		extract( $atts );
+		$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
+		// Workaround for HTML5 multiple attribute
+		if ( $multiple == 'false' )
+			unset( $atts['multiple'] );
 
-			case 'input':
-				$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
-				// Workaround for HTML5 multiple attribute
-				if ( $multiple == 'false' )
-					unset( $atts['multiple'] );
+		// Allow multiple file upload by default.
+		// To do so, we need to add array notation to name field: []
+		if ( !strpos( $name, '[]' ) && $type == 'file' )
+			$name = $name . '[]';
 
-				// Allow multiple file upload by default.
-				// To do so, we need to add array notation to name field: []
-				if ( !strpos( $name, '[]' ) && $type == 'file' )
-					$name = $name . '[]';
+		$element = $this->html->element( 'label', $description . $this->html->input( $type, $name, $value, $atts ) , array( 'for' => $id ), false );
 
-				$element = $this->html->element( 'label', $description . $this->html->input( $type, $name, $value, $atts ) , array( 'for' => $id ), false );
+		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+	}
 
-				return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
-				// @todo implement select and checkboxes
-				// For now additional customization is available via do_action( 'fu_additional_html' );
-			case 'select':
-				break;
-			default:
-		endswitch;
+	function _render_textarea( $atts ) {
+		extract( $atts );
+		// Render WYSIWYG textara
+		if ( ( isset( $this->settings['wysiwyg_enabled'] ) && 'on' == $this->settings['wysiwyg_enabled'] ) || $wysiwyg_enabled == true ) {
+			ob_start();
+			wp_editor( '', $id, array(
+					'textarea_name' => $name,
+					'media_buttons' => false,
+					'teeny' => true,
+					'quicktags' => false
+				) );
+			$tiny = ob_get_clean();
+			$label =  $this->html->element( 'label', $description , array( 'for' => $id ), false );
+			return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
+		}
+		// Render plain textarea
+		$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array(
+			'name' => $name,
+			'id' => $id,
+			'class' => $class
+		) ), array( 'for' => $id ), false );
+
+		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+	}
+
+	function _render_checkboxes( $atts ) {
+		extract( $atts );
+		return;
+	}
+
+	function _render_radio( $atts ) {
+		extract( $atts );
+		return;
+	}
+
+	function _render_select( $atts ) {
+		extract( $atts );
+		return;
 	}
 
 	/**
@@ -760,7 +776,7 @@ class Frontend_Uploader {
 	 *
 	 * This method will search a parent post with a regular expression, and update gallery shortcode with freshly approved attachment ID
 	 *
-	 * @return [type] [description]
+	 * @return post id/wp_error
 	 */
 	function update_35_gallery_shortcode( $post_id, $attachment_id ) {
 		global $wp_version;
@@ -775,7 +791,7 @@ class Frontend_Uploader {
 					'ID' => (int) $post_id,
 					'post_content' => $matches['before'] . $gallery . $matches['after']
 				);
-				wp_update_post( $post_to_update );
+				return wp_update_post( $post_to_update );
 			}
 
 		}
