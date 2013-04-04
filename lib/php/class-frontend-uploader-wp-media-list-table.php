@@ -2,8 +2,7 @@
 /**
  * Media Library List Table class.
  *
- * @todo refactor display_rows() using single row and callbacks
- *  
+ * @todo Unhack
  */
 require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
 require_once ABSPATH . '/wp-admin/includes/class-wp-media-list-table.php';

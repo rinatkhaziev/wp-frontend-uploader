@@ -25,7 +25,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 // Define consts and bootstrap and dependencies
-
 define( 'FU_VERSION', '0.4.2' );
 define( 'FU_ROOT' , dirname( __FILE__ ) );
 define( 'FU_FILE_PATH' , FU_ROOT . '/' . basename( __FILE__ ) );
@@ -62,10 +61,7 @@ class Frontend_Uploader {
 		add_action( 'wp_ajax_approve_ugc_post', array( $this, 'approve_post' ) );
 
 		// Adding media submenu
-		add_action( 'admin_menu', array( $this, 'add_menu_item' ) );
-
-		// Adding posts/custom  post types submenu
-		add_action( 'admin_menu', array( $this, 'add_posts_menu_item' ) );
+		add_action( 'admin_menu', array( $this, 'add_menu_items' ) );
 
 		// Currently supported shortcodes
 		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
@@ -111,24 +107,15 @@ class Frontend_Uploader {
 		// Configuration filter:
 		// fu_allowed_mime_types should return array of allowed mime types (see readme)
 		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', $this->fix_ie_mime_types( get_allowed_mime_types() ) );
-		$this->mime_paranoia();
-		add_filter( 'upload_mimes', create_function( '', 'return $this->allowed_mime_types;' ), -10 );
-		return $this->allowed_mime_types;
-	}
-
-	/**
-	 * Disallow PHP files just in case
-	 * @param  [type] $mimes [description]
-	 * @return [type]        [description]
-	 */
-	function mime_paranoia() {
+		// Disallow PHP files just in case
 		$no_pasaran = array( 'application/x-php', 'text/x-php', 'text/php', 'application/php', 'application/x-httpd-php', 'application/x-httpd-php-source' );
 		// THEY SHALL NOT PASS
-		foreach ( $no_pasaran as $np ) {
-			if ( false !== ( $key = array_search( $np, $this->allowed_mime_types ) ) ) {
+		foreach ( $no_pasaran as $np )
+			if ( false !== ( $key = array_search( $np, $this->allowed_mime_types ) ) )
 				unset( $this->allowed_mime_types[$key] );
-			}
-		}
+
+		apply_filters( 'upload_mimes', $this->allowed_mime_types );
+		return $this->allowed_mime_types;
 	}
 
 	/**
@@ -176,6 +163,7 @@ class Frontend_Uploader {
 	function filter_posts_where( $where ) {
 		if ( !is_admin() )
 			return $where;
+
 		$screen = get_current_screen();
 		if ( ! defined( 'DOING_AJAX' ) && $screen->base == 'upload' && ( !isset( $_GET['page'] ) || $_GET['page'] != 'manage_frontend_uploader' ) ) {
 			$where = str_replace( "post_status = 'private'", "post_status = 'inherit'", $where );
@@ -187,6 +175,8 @@ class Frontend_Uploader {
 	 * Handle uploading of the files
 	 *
 	 * @since  0.4
+	 *
+	 * @uses media_handle_sideload Don't even know why
 	 *
 	 * @param int     $post_id Parent post id
 	 * @return array Combined result of media ids and errors if any
@@ -287,10 +277,6 @@ class Frontend_Uploader {
 				add_post_meta( $post_id, 'author_name', $author );
 		}
 
-		if ( !is_wp_error( $post_id )  ) {
-
-		}
-
 		return array( 'success' => $success, 'post_id' => $post_id, 'errors' => $errors );
 	}
 
@@ -387,11 +373,12 @@ class Frontend_Uploader {
 
 	/**
 	 * Render various admin template files
-	 * @param  string $view file slug
+	 *
+	 * @param string  $view file slug
 	 * @since 0.4
 	 */
 	function render( $view = '' ) {
-		if ( empty($view ) )
+		if ( empty( $view ) )
 			return;
 
 		$file = FU_ROOT . "/lib/views/{$view}.tpl.php";
@@ -399,22 +386,28 @@ class Frontend_Uploader {
 			require $file;
 	}
 
+	/**
+	 * Display media list table
+	 * @return [type] [description]
+	 */
 	function admin_list() {
 		$this->render( 'manage-ugc-media' );
 	}
 
-
+	/**
+	 * Display posts/custom post types table
+	 * @return [type] [description]
+	 */
 	function admin_posts_list() {
 		$this->render( 'manage-ugc-posts' );
 	}
 
-
-	function add_menu_item() {
+	/**
+	 * Add submenu items
+	 */
+	function add_menu_items() {
 		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_uploader', array( $this, 'admin_list' ) );
-	}
-
-	function add_posts_menu_item() {
-		foreach( (array) $this->settings['enabled_post_types'] as $cpt ) {
+		foreach ( (array) $this->settings['enabled_post_types'] as $cpt ) {
 			if ( $cpt == 'post' ) {
 				add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_posts_uploader', array( $this, 'admin_posts_list' ) );
 				continue;
@@ -422,7 +415,6 @@ class Frontend_Uploader {
 
 			add_submenu_page( "edit.php?post_type={$cpt}", __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', "manage_frontend_{$cpt}s_uploader", array( $this, 'admin_posts_list' ) );
 		}
-
 	}
 
 	/**
@@ -450,6 +442,8 @@ class Frontend_Uploader {
 	}
 
 	/**
+	 *
+	 *
 	 * @todo refactor in 0.5
 	 * @return [type] [description]
 	 */
@@ -475,15 +469,14 @@ class Frontend_Uploader {
 			$post_type = $post->post_type == 'post' ? array() : array( 'post_type' => $post->post_type );
 			$url = add_query_arg(
 				array_merge( array(
-					'page' => "manage_frontend_{$post->post_type}s_uploader",
-					'approved' => 1,
-				), $post_type ), get_admin_url( null, "edit.php" ) );
+						'page' => "manage_frontend_{$post->post_type}s_uploader",
+						'approved' => 1,
+					), $post_type ), get_admin_url( null, "edit.php" ) );
 
 		}
 
 		wp_safe_redirect( $url );
 		exit;
-
 	}
 
 
@@ -506,47 +499,48 @@ class Frontend_Uploader {
 					'wysiwyg_enabled' => false,
 				), $atts ) );
 		switch ( $tag ):
-		case 'textarea':
-			if ( ( isset( $this->settings['wysiwyg_enabled'] ) && 'on' == $this->settings['wysiwyg_enabled'] ) || $wysiwyg_enabled == true ) {
-				ob_start();
-				wp_editor( '', $id, array(
-						'textarea_name' => $name,
-						'media_buttons' => false,
-						'teeny' => true,
-						'quicktags' => false
-					) );
-				$tiny = ob_get_clean();
-				$label =  $this->html->element( 'label', $description , array( 'for' => $id ), false );
-				return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
-			} else {
-			$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array(
-						'name' => $name,
-						'id' => $id,
-						'class' => $class
-					) ), array( 'for' => $id ), false );
+			case 'textarea':
+				if ( ( isset( $this->settings['wysiwyg_enabled'] ) && 'on' == $this->settings['wysiwyg_enabled'] ) || $wysiwyg_enabled == true ) {
+					ob_start();
+					wp_editor( '', $id, array(
+							'textarea_name' => $name,
+							'media_buttons' => false,
+							'teeny' => true,
+							'quicktags' => false
+						) );
+					$tiny = ob_get_clean();
+					$label =  $this->html->element( 'label', $description , array( 'for' => $id ), false );
+					return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
+				} else {
+				$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array(
+							'name' => $name,
+							'id' => $id,
+							'class' => $class
+						) ), array( 'for' => $id ), false );
 
-			return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
-		}
-		break;
-	case 'input':
-		$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
-		// Workaround for HTML5 multiple attribute
-		if ( $multiple == 'false' )
-			unset( $atts['multiple'] );
+				return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+			}
+			break;
 
-		// Allow multiple file upload by default.
-		// To do so, we need to add array notation to name field: []
-		if ( !strpos( $name, '[]' ) && $type == 'file' )
-			$name = $name . '[]';
+			case 'input':
+				$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
+				// Workaround for HTML5 multiple attribute
+				if ( $multiple == 'false' )
+					unset( $atts['multiple'] );
 
-		$element = $this->html->element( 'label', $description . $this->html->input( $type, $name, $value, $atts ) , array( 'for' => $id ), false );
+				// Allow multiple file upload by default.
+				// To do so, we need to add array notation to name field: []
+				if ( !strpos( $name, '[]' ) && $type == 'file' )
+					$name = $name . '[]';
 
-		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
-		// @todo implement select and checkboxes
-		// For now additional customization is available via do_action( 'fu_additional_html' );
-	case 'select':
-		break;
-	default:
+				$element = $this->html->element( 'label', $description . $this->html->input( $type, $name, $value, $atts ) , array( 'for' => $id ), false );
+
+				return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+				// @todo implement select and checkboxes
+				// For now additional customization is available via do_action( 'fu_additional_html' );
+			case 'select':
+				break;
+			default:
 		endswitch;
 	}
 
@@ -629,7 +623,7 @@ class Frontend_Uploader {
 		  <input type="hidden" value="<?php echo $form_layout; ?>" name="form_layout" />
 
 		  <?php
-		  if ( in_array( $form_layout, array( "post_image", "post" ) ) ): ?>
+		if ( in_array( $form_layout, array( "post_image", "post" ) ) ): ?>
 		  <input type="hidden" value="<?php echo $post_type; ?>" name="post_type" />
 		<?php endif;
 		// Allow a little customization
@@ -648,8 +642,8 @@ class Frontend_Uploader {
 	 *
 	 * @since 0.4
 	 *
-	 * @param  string $message Text of the message
-	 * @param  string $class   Class of container
+	 * @param string  $message Text of the message
+	 * @param string  $class   Class of container
 	 * @return string          [description]
 	 */
 	function _notice_html( $message, $class ) {
@@ -663,7 +657,7 @@ class Frontend_Uploader {
 	 *
 	 * @since 0.4
 	 *
-	 * @param  array  $res [description]
+	 * @param array   $res [description]
 	 * @return [type]      [description]
 	 */
 	function _display_response_notices( $res = array() ) {
@@ -694,7 +688,7 @@ class Frontend_Uploader {
 	 * Handle errors
 	 *
 	 * @since 0.4
-	 * @param  string $errors [description]
+	 * @param string  $errors [description]
 	 * @return string HTML
 	 */
 	function _display_errors( $errors ) {
@@ -720,7 +714,7 @@ class Frontend_Uploader {
 
 			$details_array = explode( '|', $detail );
 			foreach ( $details_array as $detail ) {
-				// @todo add check for amount of sprintf vars
+				// @todo add check for the number of sprintf vars
 				if ( isset( $map[ $slug ]['format'] ) )
 					$message = sprintf( $map[ $slug ]['format'], $map[ $slug ]['text'], $detail );
 				else
@@ -732,6 +726,7 @@ class Frontend_Uploader {
 
 		return $output;
 	}
+
 	/**
 	 * Enqueue our assets
 	 */

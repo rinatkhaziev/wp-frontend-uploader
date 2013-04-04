@@ -1,9 +1,7 @@
 <?php
 /**
- *
+ * Frontend Uploader Settings
  */
-
-
 class Frontend_Uploader_Settings {
 
 	private $settings_api, $public_post_types = array();
@@ -27,12 +25,15 @@ class Frontend_Uploader_Settings {
 		if ( in_array( $screen->base, array( 'settings_page_fu_settings', 'options' ) ) ) {
 			$this->settings_api->set_sections( $this->get_settings_sections() );
 			$this->settings_api->set_fields( $this->get_settings_fields() );
-			//initialize settings
+			// Initialize settings
 			$this->settings_api->admin_init();
 		}
-		//set the settings
 	}
 
+	/**
+	 * Get post types for checkbox option
+	 * @return array of slug => label for registered post types
+	 */
 	function get_post_types() {
 		$fu_public_post_types = get_post_types( array( 'public' => true ), 'objects' );
 		foreach( $fu_public_post_types as $slug => $post_object ) {
@@ -126,32 +127,16 @@ class Frontend_Uploader_Settings {
 		return $settings_fields;
 	}
 
+	/**
+	 * Render the UI
+	 */
 	function plugin_page() {
 		echo '<div class="wrap">';
-
 		$this->settings_api->show_navigation();
 		$this->settings_api->show_forms();
-
 		echo '</div>';
 	}
-
-	/**
-	 * Get all the pages
-	 *
-	 * @return array page names with key value pairs
-	 */
-	function get_pages() {
-		$pages = get_pages();
-		$pages_options = array();
-		if ( $pages ) {
-			foreach ( $pages as $page ) {
-				$pages_options[$page->ID] = $page->post_title;
-			}
-		}
-
-		return $pages_options;
-	}
-
 }
 
+// Instantiate
 $frontend_uploader_settings = new Frontend_Uploader_Settings;
