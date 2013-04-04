@@ -47,56 +47,6 @@ class Frontend_Uploader {
 	public $settings_slug;
 
 	/**
-	 *  Load languages and a bit of paranoia
-	 */
-	function action_init() {
-		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-		$this->allowed_mime_types = $this->mime_types();
-
-		// Disallow php files no matter what (this is a full list of possible mime types for php scripts)
-		// @todo may be add other executables
-		// WP allows any mime-type that's specified within upload_mimes filter
-		// I strongly believe in fail-safe devices
-		// So lets just don't take any chances with php files (at least)
-		$no_pasaran = array( 'application/x-php', 'text/x-php', 'text/php', 'application/php', 'application/x-httpd-php', 'application/x-httpd-php-source' );
-		// THEY SHALL NOT PASS
-		foreach ( $no_pasaran as $np ) {
-			if ( false !== ( $key = array_search( $np, $this->allowed_mime_types ) ) ) {
-				unset( $this->allowed_mime_types[$key] );
-			}
-		}
-	}
-
-	/**
-	 * Workaround for allowed mime-types
-	 *
-	 * @return allowed mime-types
-	 */
-	function mime_types() {
-		$this->ugc_mimes = apply_filters( 'fu_allowed_mime_types', $this->fix_ie_mime_types( get_allowed_mime_types() ) );
-		add_filter( 'upload_mimes', array( $this, 'filter_upload_mimes' ), -10 );
-		return $this->ugc_mimes;
-	}
-
-	function filter_upload_mimes( $mimes ) {
-		return $this->ugc_mimes;
-	}
-
-
-	/**
-	 * Add IE-specific MIME types
-	 * /props mcnasby
-	 *
-	 * @param array   $mime_types [description]
-	 * @return [type] [description]
-	 */
-	function fix_ie_mime_types( $mime_types ) {
-		$mime_types['jpg|jpe|jpeg'] = 'image/pjpeg';
-		$mime_types['png|pngg'] = 'image/x-png';
-		return $mime_types;
-	}
-
-	/**
 	 * Here we go
 	 */
 	function __construct() {
@@ -120,24 +70,77 @@ class Frontend_Uploader {
 		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
 		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
+
+		// Scripts
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		// Preventing wpautop going crazy on
+
+		// Unautop the shortcode
 		add_filter( 'the_content', 'shortcode_unautop', 100 );
 		// Hiding not approved attachments from Media Gallery
 		// @since core 3.5-beta-1
 		add_filter( 'posts_where', array( $this, 'filter_posts_where' ) );
 
-		// Localization
+		// Init
 		add_action( 'init', array( $this, 'action_init' ) );
-		// Configuration filter:
-		// fu_allowed_mime_types should return array of allowed mime types
+
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
 		// Either use default settings if no setting set, or try to merge defaults with existing settings
 		// Needed if new options were added in upgraded version of the plugin
 		$this->settings = array_merge( $this->settings_defaults(), (array) get_option( $this->settings_slug, $this->settings_defaults() ) );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
+	}
+
+	/**
+	 *  Load languages and a bit of paranoia
+	 */
+	function action_init() {
+		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		$this->mime_types();
+
+	}
+
+	/**
+	 * Workaround for allowed mime-types
+	 *
+	 * @return allowed mime-types
+	 */
+	function mime_types() {
+		// Configuration filter:
+		// fu_allowed_mime_types should return array of allowed mime types (see readme)
+		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', $this->fix_ie_mime_types( get_allowed_mime_types() ) );
+		$this->mime_paranoia();
+		add_filter( 'upload_mimes', create_function( '', 'return $this->allowed_mime_types;' ), -10 );
+		return $this->allowed_mime_types;
+	}
+
+	/**
+	 * Disallow PHP files just in case
+	 * @param  [type] $mimes [description]
+	 * @return [type]        [description]
+	 */
+	function mime_paranoia() {
+		$no_pasaran = array( 'application/x-php', 'text/x-php', 'text/php', 'application/php', 'application/x-httpd-php', 'application/x-httpd-php-source' );
+		// THEY SHALL NOT PASS
+		foreach ( $no_pasaran as $np ) {
+			if ( false !== ( $key = array_search( $np, $this->allowed_mime_types ) ) ) {
+				unset( $this->allowed_mime_types[$key] );
+			}
+		}
+	}
+
+	/**
+	 * Add IE-specific MIME types
+	 * /props mcnasby
+	 *
+	 * @param array   $mime_types [description]
+	 * @return [type] [description]
+	 */
+	function fix_ie_mime_types( $mime_types ) {
+		$mime_types['jpg|jpe|jpeg'] = 'image/pjpeg';
+		$mime_types['png|pngg'] = 'image/x-png';
+		return $mime_types;
 	}
 
 	/**
