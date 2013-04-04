@@ -1,15 +1,16 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: UGC Frontend Uploader v0.4-working\n"
+"Project-Id-Version: Frontend Uploader v0.4.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
 "POT-Creation-Date: 2012-08-30 05:30:59+00:00\n"
-"PO-Revision-Date: 2013-03-30 05:32:00+0000\n"
+"PO-Revision-Date: 2013-04-04 01:22:41+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: CSL v1.x\n"
 "X-Poedit-Language: \n"
 "X-Poedit-Country: \n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -19,9 +20,9 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: frontend-uploader.php:407
+#: frontend-uploader.php:403
+#: frontend-uploader.php:409
 #: frontend-uploader.php:413
-#: frontend-uploader.php:417
 #: lib/views/manage-ugc-media.tpl.php:2
 #@ frontend-uploader
 msgid "Manage UGC"
@@ -127,22 +128,22 @@ msgstr "Fichier média récupéré depuis la corbeille."
 msgid "Search Media"
 msgstr "Rechercher un fichier média"
 
-#: frontend-uploader.php:587
+#: frontend-uploader.php:589
 #@ frontend-uploader
 msgid "Your Photo"
 msgstr "Votre image"
 
-#: frontend-uploader.php:588
+#: frontend-uploader.php:590
 #@ frontend-uploader
 msgid "Submit"
 msgstr "Envoyer"
 
-#: frontend-uploader.php:664
+#: frontend-uploader.php:666
 #@ frontend-uploader
 msgid "Your file was successfully uploaded!"
 msgstr "Votre fichier a été envoyé avec succès !"
 
-#: frontend-uploader.php:696
+#: frontend-uploader.php:698
 #@ frontend-uploader
 msgid "This kind of file is not allowed. Please, try again selecting other file."
 msgstr "Ce type de fichier n'est pas autorisé. Merci d'essayer avec un autre fichier."
@@ -204,7 +205,7 @@ msgctxt "column name"
 msgid "File"
 msgstr "Fichier"
 
-#: frontend-uploader.php:606
+#: frontend-uploader.php:608
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:117
 #@ frontend-uploader
 msgid "Author"
@@ -511,18 +512,18 @@ msgstr ""
 msgid "Leave blank to use site admin email"
 msgstr ""
 
-#: frontend-uploader.php:609
+#: frontend-uploader.php:611
 #@ frontend-uploader
 msgid "Credit"
 msgstr "Crédit photo"
 
-#: frontend-uploader.php:335
+#: frontend-uploader.php:331
 #@ frontend-uploader
 msgid "New content was uploaded on your site"
 msgstr ""
 
+#: frontend-uploader.php:409
 #: frontend-uploader.php:413
-#: frontend-uploader.php:417
 #: lib/views/manage-ugc-posts.tpl.php:2
 #@ frontend-uploader
 msgid "Manage UGC Posts"
@@ -538,17 +539,17 @@ msgstr "Vous n'avez pas la permission de publier des messages."
 msgid "Search Posts"
 msgstr "Chercher des messages"
 
-#: frontend-uploader.php:586
+#: frontend-uploader.php:588
 #@ frontend-uploader
 msgid "Description"
 msgstr "Description"
 
-#: frontend-uploader.php:590
+#: frontend-uploader.php:592
 #@ frontend-uploader
 msgid "Title"
 msgstr "Titre"
 
-#: frontend-uploader.php:700
+#: frontend-uploader.php:702
 #@ frontend-uploader
 msgid "The content you are trying to post is invalid."
 msgstr "contenu que vous essayez d'afficher n’est pas valide."
@@ -595,28 +596,28 @@ msgstr "Numéros d'identification séparés par des virgules (laisser vide)"
 msgid "Show author field"
 msgstr "Afficher le champ de l’auteur"
 
-#: frontend-uploader.php:233
-#: frontend-uploader.php:234
+#: frontend-uploader.php:229
+#: frontend-uploader.php:230
 #@ frontend-uploader
 msgid "Unnamed"
 msgstr ""
 
-#: frontend-uploader.php:555
+#: frontend-uploader.php:557
 #@ frontend-uploader
 msgid "Submit a new post"
 msgstr ""
 
-#: frontend-uploader.php:570
+#: frontend-uploader.php:572
 #@ frontend-uploader
 msgid "Submit a media file"
 msgstr ""
 
-#: frontend-uploader.php:668
+#: frontend-uploader.php:670
 #@ frontend-uploader
 msgid "There was an error with your submission"
 msgstr ""
 
-#: frontend-uploader.php:693
+#: frontend-uploader.php:695
 #@ frontend-uploader
 msgid "Security check failed!"
 msgstr ""

@@ -1,10 +1,10 @@
-# Copyright (C) 2013 UGC Frontend Uploader
-# This file is distributed under the same license as the UGC Frontend Uploader package.
+# Copyright (C) 2013 Frontend Uploader
+# This file is distributed under the same license as the Frontend Uploader package.
 msgid ""
 msgstr ""
-"Project-Id-Version: UGC Frontend Uploader 0.4-working\n"
+"Project-Id-Version: Frontend Uploader 0.4.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
-"POT-Creation-Date: 2013-03-30 05:30:33+00:00\n"
+"POT-Creation-Date: 2013-04-04 01:20:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,75 +12,75 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: frontend-uploader.php:233 frontend-uploader.php:234
+#: frontend-uploader.php:229 frontend-uploader.php:230
 msgid "Unnamed"
 msgstr ""
 
-#: frontend-uploader.php:335
+#: frontend-uploader.php:331
 msgid "New content was uploaded on your site"
 msgstr ""
 
-#: frontend-uploader.php:407 frontend-uploader.php:413
-#: frontend-uploader.php:417 lib/views/manage-ugc-media.tpl.php:2
+#: frontend-uploader.php:403 frontend-uploader.php:409
+#: frontend-uploader.php:413 lib/views/manage-ugc-media.tpl.php:2
 msgid "Manage UGC"
 msgstr ""
 
-#: frontend-uploader.php:413 frontend-uploader.php:417
+#: frontend-uploader.php:409 frontend-uploader.php:413
 #: lib/views/manage-ugc-posts.tpl.php:2
 msgid "Manage UGC Posts"
 msgstr ""
 
-#: frontend-uploader.php:555
+#: frontend-uploader.php:557
 msgid "Submit a new post"
 msgstr ""
 
-#: frontend-uploader.php:570
+#: frontend-uploader.php:572
 msgid "Submit a media file"
 msgstr ""
 
-#: frontend-uploader.php:586
+#: frontend-uploader.php:588
 msgid "Description"
 msgstr ""
 
-#: frontend-uploader.php:587
+#: frontend-uploader.php:589
 msgid "Your Photo"
 msgstr ""
 
-#: frontend-uploader.php:588
+#: frontend-uploader.php:590
 msgid "Submit"
 msgstr ""
 
-#: frontend-uploader.php:590
+#: frontend-uploader.php:592
 msgid "Title"
 msgstr ""
 
-#: frontend-uploader.php:606
+#: frontend-uploader.php:608
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:117
 msgid "Author"
 msgstr ""
 
-#: frontend-uploader.php:609
+#: frontend-uploader.php:611
 msgid "Credit"
 msgstr ""
 
-#: frontend-uploader.php:664
+#: frontend-uploader.php:666
 msgid "Your file was successfully uploaded!"
 msgstr ""
 
-#: frontend-uploader.php:668
+#: frontend-uploader.php:670
 msgid "There was an error with your submission"
 msgstr ""
 
-#: frontend-uploader.php:693
+#: frontend-uploader.php:695
 msgid "Security check failed!"
 msgstr ""
 
-#: frontend-uploader.php:696
+#: frontend-uploader.php:698
 msgid ""
 "This kind of file is not allowed. Please, try again selecting other file."
 msgstr ""
 
-#: frontend-uploader.php:700
+#: frontend-uploader.php:702
 msgid "The content you are trying to post is invalid."
 msgstr ""
 
@@ -538,7 +538,7 @@ msgid "Search Posts"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "UGC Frontend Uploader"
+msgid "Frontend Uploader"
 msgstr ""
 
 #. Description of the plugin/theme
