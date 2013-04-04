@@ -160,8 +160,14 @@ function fu_get_mime_types() {
 			array (
 				0 => 'video/mp4v-es',
 				1 => ' audio/mp4',
+				2 => 'application/mp4',
 			),
 		),
+		'm4a' => array(
+			'label' => 'MPEG-4 Audio File',
+			'mimes' => array(
+				'audio/aac', 'audio/aacp', 'audio/3gpp', 'audio/3gpp2', 'audio/mp4', 'audio/MP4A-LATM','audio/mpeg4-generic', 'audio/x-m4a', 'audio/m4a'
+			) ),
 		'mov' =>
 		array (
 			'label' => 'Apple QuickTime Movie',

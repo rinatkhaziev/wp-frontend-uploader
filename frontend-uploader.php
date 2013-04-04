@@ -43,6 +43,7 @@ class Frontend_Uploader {
 	public $html;
 	public $settings;
 	public $settings_slug = 'frontend_uploader_settings';
+	public $is_debug = false;
 
 	/**
 	 * Here we go
@@ -83,6 +84,8 @@ class Frontend_Uploader {
 
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
+
+		$this->is_debug =  defined( 'WP_DEBUG' ) && WP_DEBUG;
 		// Either use default settings if no setting set, or try to merge defaults with existing settings
 		// Needed if new options were added in upgraded version of the plugin
 		$this->settings = array_merge( $this->settings_defaults(), (array) get_option( $this->settings_slug, $this->settings_defaults() ) );
@@ -236,8 +239,9 @@ class Frontend_Uploader {
 
 			preg_match( '/.(?P<ext>[a-zA-Z0-9]+)$/', $k['name'], $ext_match );
 			// Add an error message
+			$k['type'] = 'my/weird';
 			if ( !isset( $ext_match['ext'] ) || ! $this->_is_allowed( $ext_match['ext'], $k['type'] ) ) {
-				$errors['fu-disallowed-mime-type'][] = $k['name'];
+				$errors['fu-disallowed-mime-type'][] = array( 'name' => $k['name'], 'mime' => $k['type'] );
 				continue;
 			}
 
@@ -392,13 +396,20 @@ class Frontend_Uploader {
 		if ( !empty( $result['errors'] ) ) {
 			$query_args['response'] = 'fu-error';
 			$_errors = array();
-			foreach ( $result['errors'] as $key => $error ) {
-				$_errors[$key] = join( '|', $error );
-			}
 
+			// Iterate through key=>value pairs of errors
+			foreach ( $result['errors'] as $key => $error ) {
+				// Do not display mime-types in production
+				
+				if ( !$this->is_debug )
+					unset( $error[0]['mime'] );
+				$_errors[$key] = join( ',,,', $error[0] );
+			}
+			//var_dump( $_errors ); exit;
 			foreach ( $_errors as $key => $value ) {
 				$errors_formatted[] = "{$key}:{$value}";
 			}
+
 			$query_args['errors'] = join( ';', $errors_formatted );
 		}
 
@@ -750,7 +761,7 @@ class Frontend_Uploader {
 			),
 			'fu-disallowed-mime-type' => array(
 				'text' => __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ),
-				'format' => '%1$s: <br/> %2$s',
+				'format' => $this->is_debug ? '%1$s: <br/> File name: %2$s <br/> MIME-TYPE: %3$s' : '%1$s: <br/> %2$s',
 			),
 			'fu-invalid-post' => array(
 				'text' =>__( 'The content you are trying to post is invalid.', 'frontend-uploader' ),
@@ -758,20 +769,23 @@ class Frontend_Uploader {
 		);
 
 		foreach ( $errors_arr as $error ) {
-			$split = explode( ':', $error );
-			$slug = $split[0];
-			$detail = isset( $split[1] ) ? $split[1] : $error;
+			$error_type = explode( ':', $error );
+			$error_details = explode( '|', $error_type[1] );
+			// Iterate over different errors
+			foreach ( $error_details as $single_error ) {
 
-			$details_array = explode( '|', $detail );
-			foreach ( $details_array as $detail ) {
-				// @todo add check for the number of sprintf vars
-				if ( isset( $map[ $slug ]['format'] ) )
-					$message = sprintf( $map[ $slug ]['format'], $map[ $slug ]['text'], $detail );
+				// And see if there's any additional details
+				$details = isset( $single_error ) ? explode( ',,,', $single_error ) : explode( ',,,', $single_error );
+				// Add a description to our details array
+				array_unshift( $details, $map[ $error_type[0] ]['text']  );
+				// If we have a format, let's format an error
+				// If not, just display the message
+				if ( isset( $map[ $error_type[0] ]['format'] ) )
+					$message = vsprintf( $map[ $error_type[0] ]['format'], $details );
 				else
-					$message = $map[ $slug ]['text'];
-
-				$output .= $this->_notice_html( $message, 'failure' );
+					$message = $map[ $error_type[0] ]['text'];
 			}
+			$output .= $this->_notice_html( $message, 'failure' );
 		}
 
 		return $output;
