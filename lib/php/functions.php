@@ -15,7 +15,7 @@ function fu_get_mime_types() {
 			'label' => 'Microsoft Word Document',
 			'mimes' =>
 			array (
-				0 => 'application/msword [official]',
+				0 => 'application/msword',
 			),
 		),
 		'docx' =>
@@ -31,7 +31,7 @@ function fu_get_mime_types() {
 			'label' => 'Excel Spreadsheet',
 			'mimes' =>
 			array (
-				0 => 'application/vnd.ms-excel [official]',
+				0 => 'application/vnd.ms-excel',
 				1 => ' application/msexcel',
 				2 => ' application/x-msexcel',
 				3 => ' application/x-ms-excel',
@@ -107,7 +107,7 @@ function fu_get_mime_types() {
 			'label' => 'PowerPoint Presentation',
 			'mimes' =>
 			array (
-				0 => 'application/vnd.ms-powerpoint [official]',
+				0 => 'application/vnd.ms-powerpoint',
 				1 => ' application/mspowerpoint',
 				2 => ' application/ms-powerpoint',
 				3 => ' application/mspowerpnt',

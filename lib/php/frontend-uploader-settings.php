@@ -13,9 +13,6 @@ class Frontend_Uploader_Settings {
 		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
 	}
 
-	function action_admin_init() {
-
-	}
 	/**
 	 * Only run if current screen is plugin settings or options.php
 	 * @return [type] [description]
@@ -119,7 +116,7 @@ class Frontend_Uploader_Settings {
 					'label' => __( 'Allow following files to be uploaded', 'frontend-uploader' ),
 					'desc' => __( '', 'frontend-uploader' ),
                     'type' => 'multicheck',
-                    'default' => array( 'mp3' => 'mp3'),
+                    'default' => array( 'mp3' => 'mp3', 'doc' => 'doc', 'docx' => 'docx' ),
                     'options' => fu_get_exts_descs(),
 				),
 			),
