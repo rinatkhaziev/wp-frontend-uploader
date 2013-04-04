@@ -133,7 +133,9 @@ class Frontend_Uploader {
 		// fu_allowed_mime_types should return array of allowed mime types
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
-		$this->settings = get_option( $this->settings_slug, $this->settings_defaults() );
+		// Either use default settings if no setting set, or try to merge defaults with existing settings
+		// Needed if new options were added in upgraded version of the plugin
+		$this->settings = array_merge( $this->settings_defaults(), (array) get_option( $this->settings_slug, $this->settings_defaults() ) );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 	}
 
@@ -152,16 +154,9 @@ class Frontend_Uploader {
 	}
 
 	function activate_plugin() {
-		$defaults = array();
-		$settings = Frontend_Uploader_Settings::get_settings_fields();
-		foreach ( $settings[$this->settings_slug] as $setting ) {
-			$defaults[ $setting['name'] ] = $setting['default'];
-		}
-		if ( ! $existing_settings = get_option( $this->settings_slug ) ) {
-			update_option( $this->settings_slug, $defaults );
-		} else {
-			update_option( $this->settings_slug, array_merge( $defaults, (array) $existing_settings ) );
-		}
+		$defaults = $this->settings_defaults();
+		$existing_settings = (array) get_option( $this->settings_slug, $this->settings_defaults() );
+		update_option( $this->settings_slug, array_merge( $defaults, (array) $existing_settings ) );
 	}
 
 	/**

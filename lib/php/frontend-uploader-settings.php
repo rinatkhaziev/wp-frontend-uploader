@@ -65,7 +65,7 @@ class Frontend_Uploader_Settings {
 	 * @return array settings fields
 	 */
 	function get_settings_fields() {;
-		$default_post_type = array( 'post' => 'Posts' );
+		$default_post_type = array( 'post' => 'Posts', 'post' => 'post' );
 		$settings_fields = array(
 			'frontend_uploader_settings' => array(
 				array(
