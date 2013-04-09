@@ -796,13 +796,13 @@ class Frontend_Uploader {
 	 */
 	function enqueue_scripts() {
 		wp_enqueue_style( 'frontend-uploader', FU_URL . 'lib/css/frontend-uploader.css' );
-		wp_enqueue_script( 'jquery-validate', '//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js', array( 'jquery' ) );
+		wp_enqueue_script( 'jquery-validate', FU_URL .' lib/js/validate/jquery.validate.js ', array( 'jquery' ) );
 		wp_enqueue_script( 'frontend-uploader-js', FU_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 		// Include localization strings for default messages of validation plugin
 		$wplang = apply_filters( 'fu_wplang', WPLANG );
 		if ( $wplang ) {
 			$lang = explode( '_', $wplang );
-			$url = "//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/localization/messages_{$lang[0]}.js";
+			$url = FU_URL . "lib/js/validate/localization/messages_{$lang[0]}.js";
 			wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
 		}
 
