@@ -358,8 +358,9 @@ class Frontend_Uploader {
 	 */
 	function _notify_admin( $result = array() ) {
 		// Notify site admins of new upload
-		if ( 'on' != $this->settings['notify_admin'] || $result['success'] === false )
+		if ( ! ( 'on' == $this->settings['notify_admin'] && $result['success'] ) )
 			return;
+		// @todo It'd be nice to add the list of upload files
 		$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
 		$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
 		wp_mail( $to, $subj, $this->settings['admin_notification_text'] );
