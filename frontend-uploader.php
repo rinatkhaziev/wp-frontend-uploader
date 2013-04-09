@@ -57,8 +57,8 @@ class Frontend_Uploader {
 		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_content' ) );
 		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
 
-		add_action( 'wp_ajax_upload_ugpost', array( $this, 'upload_content' ) );
-		add_action( 'wp_ajax_nopriv_upload_ugpost', array( $this, 'upload_content' ) );
+		add_action( 'wp_ajax_upload_ugc', array( $this, 'upload_content' ) );
+		add_action( 'wp_ajax_nopriv_upload_ugc', array( $this, 'upload_content' ) );
 		add_action( 'wp_ajax_approve_ugc_post', array( $this, 'approve_post' ) );
 
 		// Adding media submenu
@@ -239,7 +239,6 @@ class Frontend_Uploader {
 
 			preg_match( '/.(?P<ext>[a-zA-Z0-9]+)$/', $k['name'], $ext_match );
 			// Add an error message
-			$k['type'] = 'my/weird';
 			if ( !isset( $ext_match['ext'] ) || ! $this->_is_allowed( $ext_match['ext'], $k['type'] ) ) {
 				$errors['fu-disallowed-mime-type'][] = array( 'name' => $k['name'], 'mime' => $k['type'] );
 				continue;
@@ -359,8 +358,9 @@ class Frontend_Uploader {
 	 */
 	function _notify_admin( $result = array() ) {
 		// Notify site admins of new upload
-		if ( 'on' != $this->settings['notify_admin'] || $result['success'] === false )
+		if ( ! ( 'on' == $this->settings['notify_admin'] && $result['success'] ) )
 			return;
+		// @todo It'd be nice to add the list of upload files
 		$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
 		$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
 		wp_mail( $to, $subj, $this->settings['admin_notification_text'] );
@@ -677,7 +677,7 @@ class Frontend_Uploader {
 
 		echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 		endif; ?>
-		  <input type="hidden" name="action" value="upload_ugpost" />
+		  <input type="hidden" name="action" value="upload_ugc" />
 		  <input type="hidden" value="<?php echo $post_id ?>" name="post_ID" />
 		  <input type="hidden" value="<?php echo $category; ?>" name="post_category" />
 		  <input type="hidden" value="<?php echo $success_page; ?>" name="success_page" />
