@@ -97,14 +97,13 @@ function my_fu_additional_html() {
 
 == Frequently Asked Questions ==
 
-= I want to be able to upload mp3, psd, or any other file restricted by default. =
+= I want to be allow users to upload mp3, psd, or any other file restricted by default. =
 
-You are able to do that within Frontend Uploader Settings admin page. The settings there cover most of the popular extensions/MIME-types.
+You are able to do that within Frontend Uploader Settings admin page. The settings there cover the most popular extensions/MIME-types.
 The trick is that the same file might have several different mime-types based on setup of server/client.
-If you're experiencing any issues you can set WP_DEBUG to true in your wp-config.php or put
+If you're experiencing any issues, you can set WP_DEBUG to true in your wp-config.php or put
 `add_filter( 'fu_is_debug', '__return_true' )` in your theme's functions.php to see what MIME-types you are having troubles with.
 
-So for any type of file you want to allow you need to look up all possible MIME-types.
 [FileExt](http://filext.com/) is a good place to find MIME-types for specific file extension.
 
 Let's say we want to be able to upload 3gp media files.
