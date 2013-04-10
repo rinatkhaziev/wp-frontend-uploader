@@ -99,25 +99,28 @@ function my_fu_additional_html() {
 
 = I want to be able to upload mp3, psd, or any other file restricted by default. =
 
-WordPress restricts files that users can upload to certain file extension/MIME-type combinations.
-The trick is that the same file might have several different mime-types based on setup.
+You are able to do that within Frontend Uploader Settings admin page. The settings there cover most of the popular extensions/MIME-types.
+The trick is that the same file might have several different mime-types based on setup of server/client.
+If you're experiencing any issues you can set WP_DEBUG to true in your wp-config.php or put
+`add_filter( 'fu_is_debug', '__return_true' )` in your theme's functions.php to see what MIME-types you are having troubles with.
+
 So for any type of file you want to allow you need to look up all possible MIME-types.
 [FileExt](http://filext.com/) is a good place to find MIME-types for specific file extension.
 
-Let's say we want to be able to upload mp3 files.
+Let's say we want to be able to upload 3gp media files.
 
-First we look up all MIME-types for mp3: http://filext.com/file-extension/MP3
+First we look up all MIME-types for 3gp: http://filext.com/file-extension/3gp
 
-Now that we have all possible MIME-types for mp3, we can allow mp3s to be uploaded.
+Now that we have all possible MIME-types for .3gp, we can allow the files to be uploaded.
 
-Following code whitelists mp3s, if it makes sense to you, you can modify it for your needs.
+Following code whitelists 3gp files, if it makes sense to you, you can modify it for other extensions/mime-types.
 If it confuses you, please don't hesitate to post on support forum.
 Put this in your theme's functions.php
-`add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );
+`add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );`
 function my_fu_allowed_mime_types( $mime_types ) {
-	// Array of all possible mp3 mime types
-	// From http://filext.com
-	$mimes = array( 'audio/mpeg', 'audio/x-mpeg', 'audio/mp3', 'audio/x-mp3', 'audio/mpeg3', 'audio/x-mpeg3', 'audio/mpg', 'audio/x-mpg', 'audio/x-mpegaudio' );
+	// Array of 3gp mime types
+	// From http://filext.com (there might be more)
+	$mimes = array( 'audio/3gpp', 'video/3gpp' );
 	// Iterate through all mime types and add this specific mime to allow it
 	foreach( $mimes as $mime ) {
 		// Preserve the mime_type
@@ -128,7 +131,7 @@ function my_fu_allowed_mime_types( $mime_types ) {
 		// If you-re going to modify it for your files
 		// Don't forget to change extension in array key
 		// E.g. $mime_types['pdf|pdf_' . $mime ] = $orig_mime
-		$mime_types['mp3|mp3_' . $mime ] = $orig_mime;
+		$mime_types['3gp|3gp_' . $mime ] = $orig_mime;
 	}
 	return $mime_types;
 }`
