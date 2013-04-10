@@ -119,6 +119,20 @@ class Frontend_Uploader_Settings {
                     'default' => array( 'mp3' => 'mp3', 'doc' => 'doc', 'docx' => 'docx' ),
                     'options' => fu_get_exts_descs(),
 				),
+				array(
+					'name' => 'auto_approve_user_files',
+					'label' => __( 'Auto-approve registered users files', 'frontend-uploader' ),
+					'desc' => __( 'Yes', 'frontend-uploader' ),
+					'type' => 'checkbox',
+					'default' => '',
+				),
+				array(
+					'name' => 'auto_approve_any_files',
+					'label' => __( 'Auto-approve registered users files', 'frontend-uploader' ),
+					'desc' => __( 'Yes', 'frontend-uploader' ),
+					'type' => 'checkbox',
+					'default' => '',
+				),
 			),
 		);
 		return $settings_fields;

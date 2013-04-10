@@ -174,6 +174,10 @@ class Frontend_Uploader {
 		return $where;
 	}
 
+	function _is_public() {
+		return  ( current_user_can( 'read' ) && 'on' == $this->settings['auto_approve_user_files'] ) ||  ( 'on' == $this->settings['auto_approve_any_files'] );
+	}
+
 	/**
 	 * Check if the file could be uploaded
 	 *
@@ -255,10 +259,9 @@ class Frontend_Uploader {
 				$caption = sanitize_text_field( $_POST['caption'] );
 			elseif ( isset( $_POST['post_content'] ) )
 				$caption = sanitize_text_field( $_POST['post_content'] );
-
 			// @todo remove or refactor
 			$post_overrides = array(
-				'post_status' => 'private',
+				'post_status' => $this->_is_public() ? 'publish' : 'private',
 				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : 'Unnamed',
 				'post_content' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : $caption,
 				'post_excerpt' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) :  $caption,
@@ -291,7 +294,7 @@ class Frontend_Uploader {
 			'post_type' =>  isset( $_POST['post_type'] ) && in_array( $_POST['post_type'], get_post_types() ) ? $_POST['post_type'] : 'post',
 			'post_title'    => sanitize_text_field( $_POST['post_title'] ),
 			'post_content'  => wp_filter_post_kses( $_POST['post_content'] ),
-			'post_status'   => 'private',
+			'post_status'   => $this->_is_public() ? 'publish' : 'private',
 		);
 
 		// Determine if we have a whitelisted category
