@@ -199,7 +199,7 @@ class Frontend_Uploader {
 
 		$conditions = array(
 			(bool)  ( in_array( $ext, $allowed_type_keys ) ),
-			(bool)  in_array( $type, $this->allowed_mime_types ) || in_array( $type, $allowed_types[$ext] ),
+			(bool)  in_array( $type, $this->allowed_mime_types ) || ( isset( $allowed_types[$ext] ) && in_array( $type, (array) $allowed_types[$ext] ) ),
 		);
 
 
