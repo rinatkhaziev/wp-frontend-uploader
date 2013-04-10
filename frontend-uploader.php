@@ -52,7 +52,7 @@ class Frontend_Uploader {
 	 */
 	function __construct() {
 		// Hooking to wp_ajax
-		// @todo refactor in 0.5
+		// @todo refactor in 0.6
 		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_content' ) );
 		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_content' ) );
 		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
@@ -465,7 +465,7 @@ class Frontend_Uploader {
 	/**
 	 * Approve a media file
 	 *
-	 * @todo refactor in 0.5
+	 * @todo refactor in 0.6
 	 * @return [type] [description]
 	 */
 	function approve_photo() {
@@ -489,7 +489,7 @@ class Frontend_Uploader {
 	/**
 	 *
 	 *
-	 * @todo refactor in 0.5
+	 * @todo refactor in 0.6
 	 * @return [type] [description]
 	 */
 	function approve_post() {
