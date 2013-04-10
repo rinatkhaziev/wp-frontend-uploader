@@ -23,6 +23,10 @@ Here's example of default form (you don't need to enter all that if you want to 
 
 By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Refer to Other notes -> Configuration filters.
 
+= New in v0.5 =
+
+You can choose what type of files you allow your visitors to upload from Frontend Uploader Settings
+
 = New in v0.4 =
 
 Now your visitors are able to upload not only media, but guest posts as well!
@@ -131,6 +135,11 @@ function my_fu_allowed_mime_types( $mime_types ) {
 
 
 == Changelog ==
+
+= 0.5 (Aprt 10, 2013) =
+
+* Ability to pick files allowed for uploading from the plugin's settings
+* Bugfix: admins won't get any notifications on unsuccessful upload any more
 
 = 0.4.2 (Apr 3, 2013) =
 
