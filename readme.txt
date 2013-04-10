@@ -138,6 +138,11 @@ function my_fu_allowed_mime_types( $mime_types ) {
 
 == Changelog ==
 
+= 0.5.1 (Apr 11, 2013) =
+
+* Ability to autoapprove files( See settings )
+* Bugfix: ensure that there's no PHP errors in some certain cases
+
 = 0.5 (Apr 10, 2013) =
 
 * Ability to pick files allowed for uploading from the plugin's settings
