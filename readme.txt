@@ -136,7 +136,7 @@ function my_fu_allowed_mime_types( $mime_types ) {
 
 == Changelog ==
 
-= 0.5 (Aprt 10, 2013) =
+= 0.5 (Apr 10, 2013) =
 
 * Ability to pick files allowed for uploading from the plugin's settings
 * Bugfix: admins won't get any notifications on unsuccessful upload any more
