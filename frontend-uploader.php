@@ -174,6 +174,10 @@ class Frontend_Uploader {
 		return $where;
 	}
 
+	/**
+	 * Determine if we should autoapprove the submission or not
+	 * @return boolean [description]
+	 */
 	function _is_public() {
 		return  ( current_user_can( 'read' ) && 'on' == $this->settings['auto_approve_user_files'] ) ||  ( 'on' == $this->settings['auto_approve_any_files'] );
 	}

@@ -128,7 +128,7 @@ class Frontend_Uploader_Settings {
 				),
 				array(
 					'name' => 'auto_approve_any_files',
-					'label' => __( 'Auto-approve registered users files', 'frontend-uploader' ),
+					'label' => __( 'Auto-approve any files', 'frontend-uploader' ),
 					'desc' => __( 'Yes', 'frontend-uploader' ),
 					'type' => 'checkbox',
 					'default' => '',
