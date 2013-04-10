@@ -737,7 +737,7 @@ class Frontend_Uploader {
 			),
 		);
 
-		if ( isset( $map[ $res['response'] ] ) )
+		if ( isset( $res['response'] ) && isset( $map[ $res['response'] ] ) )
 			$output .= $this->_notice_html( $map[ $res['response'] ]['text'] , $map[ $res['response'] ]['class'] );
 
 		if ( !empty( $res['errors' ] ) )
