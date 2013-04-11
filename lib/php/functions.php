@@ -76,19 +76,6 @@ function fu_get_mime_types() {
 				'image/vnd.adobe.photoshop',
 			),
 		),
-		'txt'=>
-		array(
-			'label'=> 'Plain Text File',
-			'mimes'=>
-			array(
-				'text/plain',
-				'application/txt',
-				'browser/internal',
-				'text/anytext',
-				'widetext/plain',
-				'widetext/paragraph',
-			),
-		),
 		'csv'=>
 		array(
 			'label'=> 'Comma Separated Values File',
