@@ -116,14 +116,19 @@ class Frontend_Uploader {
 
 			// Iterate through mime-types for this extension
 			foreach( $details['mimes'] as $ext_mime ) {
-				if ( false !== strpos( $ext_mime, 'php') )
-					continue;
+
 				$mime_types[ $extension . '|' . $extension . sanitize_title_with_dashes( $ext_mime ) ] = $ext_mime;
 			}
 		}
-
 		// Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme)
 		$mime_types = apply_filters( 'fu_allowed_mime_types', $mime_types );
+
+		foreach( $mime_types as $ext_key => $mime ) {
+			// Check for php just in case
+			if ( false !== strpos( $mime, 'php') )
+				unset( $mime_types[$ext_key] );
+		}
+
 		return $mime_types;
 	}
 
