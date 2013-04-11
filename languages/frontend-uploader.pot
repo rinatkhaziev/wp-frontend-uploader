@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Frontend Uploader package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Frontend Uploader 0.5-working\n"
+"Project-Id-Version: Frontend Uploader 0.5.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
-"POT-Creation-Date: 2013-04-10 07:21:02+00:00\n"
+"POT-Creation-Date: 2013-04-11 08:22:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,75 +12,75 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: frontend-uploader.php:263 frontend-uploader.php:264
+#: frontend-uploader.php:229 frontend-uploader.php:230
 msgid "Unnamed"
 msgstr ""
 
-#: frontend-uploader.php:365
+#: frontend-uploader.php:331
 msgid "New content was uploaded on your site"
 msgstr ""
 
-#: frontend-uploader.php:454 frontend-uploader.php:457
-#: frontend-uploader.php:461 lib/views/manage-ugc-media.tpl.php:2
+#: frontend-uploader.php:420 frontend-uploader.php:423
+#: frontend-uploader.php:427 lib/views/manage-ugc-media.tpl.php:2
 msgid "Manage UGC"
 msgstr ""
 
-#: frontend-uploader.php:457 frontend-uploader.php:461
+#: frontend-uploader.php:423 frontend-uploader.php:427
 #: lib/views/manage-ugc-posts.tpl.php:2
 msgid "Manage UGC Posts"
 msgstr ""
 
-#: frontend-uploader.php:622
+#: frontend-uploader.php:588
 msgid "Submit a new post"
 msgstr ""
 
-#: frontend-uploader.php:637
+#: frontend-uploader.php:603
 msgid "Submit a media file"
 msgstr ""
 
-#: frontend-uploader.php:653
+#: frontend-uploader.php:619
 msgid "Description"
 msgstr ""
 
-#: frontend-uploader.php:654
+#: frontend-uploader.php:620
 msgid "Your Photo"
 msgstr ""
 
-#: frontend-uploader.php:655
+#: frontend-uploader.php:621
 msgid "Submit"
 msgstr ""
 
-#: frontend-uploader.php:657
+#: frontend-uploader.php:623
 msgid "Title"
 msgstr ""
 
-#: frontend-uploader.php:673
+#: frontend-uploader.php:639
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:116
 msgid "Author"
 msgstr ""
 
-#: frontend-uploader.php:676
+#: frontend-uploader.php:642
 msgid "Credit"
 msgstr ""
 
-#: frontend-uploader.php:731
+#: frontend-uploader.php:698
 msgid "Your file was successfully uploaded!"
 msgstr ""
 
-#: frontend-uploader.php:735
+#: frontend-uploader.php:702
 msgid "There was an error with your submission"
 msgstr ""
 
-#: frontend-uploader.php:760
+#: frontend-uploader.php:727
 msgid "Security check failed!"
 msgstr ""
 
-#: frontend-uploader.php:763
+#: frontend-uploader.php:730
 msgid ""
 "This kind of file is not allowed. Please, try again selecting other file."
 msgstr ""
 
-#: frontend-uploader.php:767
+#: frontend-uploader.php:734
 msgid "The content you are trying to post is invalid."
 msgstr ""
 
@@ -270,6 +270,8 @@ msgstr ""
 
 #: lib/php/frontend-uploader-settings.php:72
 #: lib/php/frontend-uploader-settings.php:102
+#: lib/php/frontend-uploader-settings.php:125
+#: lib/php/frontend-uploader-settings.php:132
 msgid "Yes"
 msgstr ""
 
@@ -307,6 +309,14 @@ msgstr ""
 
 #: lib/php/frontend-uploader-settings.php:116
 msgid "Allow following files to be uploaded"
+msgstr ""
+
+#: lib/php/frontend-uploader-settings.php:124
+msgid "Auto-approve registered users files"
+msgstr ""
+
+#: lib/php/frontend-uploader-settings.php:131
+msgid "Auto-approve any files"
 msgstr ""
 
 #: lib/php/settings-api/procedural-example.php:24

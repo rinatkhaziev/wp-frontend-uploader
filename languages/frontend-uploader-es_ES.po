@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Frontend Uploader v0.5-working\n"
+"Project-Id-Version: Frontend Uploader v0.5.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-04-10 07:25:40+0000\n"
+"PO-Revision-Date: 2013-04-11 08:24:41+0000\n"
 "Last-Translator: admin <gastonbesada@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,9 +20,9 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: frontend-uploader.php:454
-#: frontend-uploader.php:457
-#: frontend-uploader.php:461
+#: frontend-uploader.php:420
+#: frontend-uploader.php:423
+#: frontend-uploader.php:427
 #: lib/views/manage-ugc-media.tpl.php:2
 #@ frontend-uploader
 msgid "Manage UGC"
@@ -128,7 +128,7 @@ msgstr "Media restaurado de la papelera."
 msgid "Search Media"
 msgstr "Buscar Media"
 
-#: frontend-uploader.php:731
+#: frontend-uploader.php:698
 #@ frontend-uploader
 msgid "Your file was successfully uploaded!"
 msgstr "Su archivo fue subido satisfactoriamente!"
@@ -190,7 +190,7 @@ msgctxt "column name"
 msgid "File"
 msgstr ""
 
-#: frontend-uploader.php:673
+#: frontend-uploader.php:639
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:116
 #@ frontend-uploader
 msgid "Author"
@@ -299,12 +299,12 @@ msgstr "Restaurar"
 msgid "Re-Attach"
 msgstr "Re-Adjuntar"
 
-#: frontend-uploader.php:654
+#: frontend-uploader.php:620
 #@ frontend-uploader
 msgid "Your Photo"
 msgstr "Su imagen"
 
-#: frontend-uploader.php:655
+#: frontend-uploader.php:621
 #@ frontend-uploader
 msgid "Submit"
 msgstr "Enviar"
@@ -332,7 +332,7 @@ msgstr "Ver \"%s\""
 msgid "Approve"
 msgstr "Aprobar"
 
-#: frontend-uploader.php:763
+#: frontend-uploader.php:730
 #@ frontend-uploader
 msgid "This kind of file is not allowed. Please, try again selecting other file."
 msgstr ""
@@ -357,6 +357,8 @@ msgstr ""
 
 #: lib/php/frontend-uploader-settings.php:72
 #: lib/php/frontend-uploader-settings.php:102
+#: lib/php/frontend-uploader-settings.php:125
+#: lib/php/frontend-uploader-settings.php:132
 #@ frontend-uploader
 msgid "Yes"
 msgstr ""
@@ -512,13 +514,13 @@ msgstr ""
 msgid "Leave blank to use site admin email"
 msgstr ""
 
-#: frontend-uploader.php:365
+#: frontend-uploader.php:331
 #@ frontend-uploader
 msgid "New content was uploaded on your site"
 msgstr ""
 
-#: frontend-uploader.php:457
-#: frontend-uploader.php:461
+#: frontend-uploader.php:423
+#: frontend-uploader.php:427
 #: lib/views/manage-ugc-posts.tpl.php:2
 #@ frontend-uploader
 msgid "Manage UGC Posts"
@@ -534,22 +536,22 @@ msgstr ""
 msgid "Search Posts"
 msgstr ""
 
-#: frontend-uploader.php:653
+#: frontend-uploader.php:619
 #@ frontend-uploader
 msgid "Description"
 msgstr ""
 
-#: frontend-uploader.php:657
+#: frontend-uploader.php:623
 #@ frontend-uploader
 msgid "Title"
 msgstr ""
 
-#: frontend-uploader.php:676
+#: frontend-uploader.php:642
 #@ frontend-uploader
 msgid "Credit"
 msgstr ""
 
-#: frontend-uploader.php:767
+#: frontend-uploader.php:734
 #@ frontend-uploader
 msgid "The content you are trying to post is invalid."
 msgstr ""
@@ -596,28 +598,28 @@ msgstr ""
 msgid "Show author field"
 msgstr ""
 
-#: frontend-uploader.php:263
-#: frontend-uploader.php:264
+#: frontend-uploader.php:229
+#: frontend-uploader.php:230
 #@ frontend-uploader
 msgid "Unnamed"
 msgstr ""
 
-#: frontend-uploader.php:622
+#: frontend-uploader.php:588
 #@ frontend-uploader
 msgid "Submit a new post"
 msgstr ""
 
-#: frontend-uploader.php:637
+#: frontend-uploader.php:603
 #@ frontend-uploader
 msgid "Submit a media file"
 msgstr ""
 
-#: frontend-uploader.php:735
+#: frontend-uploader.php:702
 #@ frontend-uploader
 msgid "There was an error with your submission"
 msgstr ""
 
-#: frontend-uploader.php:760
+#: frontend-uploader.php:727
 #@ frontend-uploader
 msgid "Security check failed!"
 msgstr ""
@@ -675,5 +677,15 @@ msgstr ""
 #: lib/php/frontend-uploader-settings.php:116
 #@ frontend-uploader
 msgid "Allow following files to be uploaded"
+msgstr ""
+
+#: lib/php/frontend-uploader-settings.php:124
+#@ frontend-uploader
+msgid "Auto-approve registered users files"
+msgstr ""
+
+#: lib/php/frontend-uploader-settings.php:131
+#@ frontend-uploader
+msgid "Auto-approve any files"
 msgstr ""
 
