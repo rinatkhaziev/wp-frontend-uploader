@@ -98,7 +98,7 @@ class Frontend_Uploader {
 	function action_init() {
 		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		$this->mime_types();
-
+		add_filter( 'upload_mimes', array( $this, 'return_mime_types' ), 999 );
 	}
 
 	/**
@@ -109,7 +109,64 @@ class Frontend_Uploader {
 	function mime_types() {
 		// Configuration filter:
 		// fu_allowed_mime_types should return array of allowed mime types (see readme)
-		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', $this->fix_ie_mime_types( get_allowed_mime_types() ) );
+		$this->allowed_mime_types = apply_filters( 'fu_allowed_mime_types', $this->fix_ie_mime_types( wp_get_mime_types() ) );
+		$this->return_mime_types();
+	}
+
+	/**
+	 * Check if the file could be uploaded
+	 *
+	 * @since 0.5
+	 *
+	 * @param  string  $ext  File Extension
+	 * @param  string  $type MIME-type
+	 *
+	 * @return boolean       is the file allowed or not
+	 */
+	function _is_allowed( $ext, $type ) {
+		$allowed_type_keys = array();
+
+		$settings = $this->settings['enabled_files'];
+
+		foreach( $this->allowed_mime_types as $exts => $mime ) {
+			$extensions = explode('|', $exts );
+			if ( isset( $extensions[0] ) ) {
+				array_push( $allowed_type_keys, $extensions[0] );
+			}
+		}
+
+		$conditions = array(
+			(bool)  ( in_array( $ext, $allowed_type_keys ) ),
+			(bool)  in_array( $type, $this->allowed_mime_types ) && in_array( $ext, $settings ) ,
+		);
+
+		// var_dump( $allowed_type_keys ); 
+		// var_dump( $this->allowed_mime_types );  var_dump( $conditions); exit;
+
+
+		foreach( $conditions as $condition )
+			if ( false === $condition )
+				return false;
+			//var_dump( $conditions ); exit;
+		return true;
+	}
+
+	function return_mime_types() {
+		$registered_mimes = fu_get_mime_types();
+
+
+		foreach( $registered_mimes as $ext => $details ) {
+			if ( !in_array( $ext, (array) $this->settings['enabled_files'] ) )
+				continue;
+
+			foreach( $details['mimes'] as $file_mime ) {
+				$this->allowed_mime_types["{$ext}|{$ext}_{$file_mime}"] = $file_mime;
+			}
+
+		}
+		// var_dump( $this->settings['enabled_files']); 
+		//var_dump( $registered_mimes );
+		// var_dump( $this->allowed_mime_types ); exit;
 		// Disallow PHP files just in case
 		$no_pasaran = array( 'application/x-php', 'text/x-php', 'text/php', 'application/php', 'application/x-httpd-php', 'application/x-httpd-php-source' );
 		// THEY SHALL NOT PASS
@@ -117,10 +174,8 @@ class Frontend_Uploader {
 			if ( false !== ( $key = array_search( $np, $this->allowed_mime_types ) ) )
 				unset( $this->allowed_mime_types[$key] );
 
-		apply_filters( 'upload_mimes', $this->allowed_mime_types );
 		return $this->allowed_mime_types;
 	}
-
 	/**
 	 * Add IE-specific MIME types
 	 * /props mcnasby
@@ -182,37 +237,7 @@ class Frontend_Uploader {
 		return  ( current_user_can( 'read' ) && 'on' == $this->settings['auto_approve_user_files'] ) ||  ( 'on' == $this->settings['auto_approve_any_files'] );
 	}
 
-	/**
-	 * Check if the file could be uploaded
-	 *
-	 * @since 0.5
-	 *
-	 * @param  string  $ext  File Extension
-	 * @param  string  $type MIME-type
-	 *
-	 * @return boolean       is the file allowed or not
-	 */
-	function _is_allowed( $ext, $type ) {
-		$allowed_types = fu_get_mime_types();
-		$allowed_type_keys = array();
-		$is_ext_allowed = false;
-		foreach( $this->allowed_mime_types as $exts => $mime ) {
-			foreach(  (array) explode('|', $exts ) as $ext );
-				array_push( $allowed_type_keys, $ext );
-		}
 
-		$conditions = array(
-			(bool)  ( in_array( $ext, $allowed_type_keys ) ),
-			(bool)  in_array( $type, $this->allowed_mime_types ) || ( isset( $allowed_types[$ext] ) && in_array( $type, (array) $allowed_types[$ext] ) ),
-		);
-
-
-		foreach( $conditions as $condition )
-			if ( false === $condition )
-				return false;
-
-		return true;
-	}
 
 	/**
 	 * Handle uploading of the files

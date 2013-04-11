@@ -9,158 +9,159 @@
  */
 function fu_get_mime_types() {
 	// Generated with dyn_php class: http://www.phpclasses.org/package/2923-PHP-Generate-PHP-code-programmatically.html
-	$mimes_exts = array (
+	$mimes_exts = array(
 		'doc'=>
-		array (
+		array(
 			'label'=> 'Microsoft Word Document',
 			'mimes'=>
-			array (
-				0 => 'application/msword',
+			array(
+				'application/msword',
 			),
 		),
 		'docx'=>
-		array (
+		array(
 			'label'=> 'Microsoft Word Open XML Document',
 			'mimes'=>
-			array (
-				0 => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+			array(
+				'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 			),
 		),
 		'xls'=>
-		array (
+		array(
 			'label'=> 'Excel Spreadsheet',
 			'mimes'=>
-			array (
-				0 => 'application/vnd.ms-excel',
-				1 => 'application/msexcel',
-				2 => 'application/x-msexcel',
-				3 => 'application/x-ms-excel',
-				4 => 'application/vnd.ms-excel',
-				5 => 'application/x-excel',
-				6 => 'application/x-dos_ms_excel',
-				7 => 'application/xls',
+			array(
+				'application/vnd.ms-excel',
+				'application/msexcel',
+				'application/x-msexcel',
+				'application/x-ms-excel',
+				'application/vnd.ms-excel',
+				'application/x-excel',
+				'application/x-dos_ms_excel',
+				'application/xls',
 			),
 		),
 		'xlsx'=>
-		array (
+		array(
 			'label'=> 'Microsoft Excel Open XML Spreadsheet',
 			'mimes'=>
-			array (
-				0 => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+			array(
+				'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 			),
 		),
 		'pdf'=>
-		array (
+		array(
 			'label'=> 'Portable Document Format File',
 			'mimes'=>
-			array (
-				0 => 'application/pdf',
-				1 => 'application/x-pdf',
-				2 => 'application/acrobat',
-				3 => 'applications/vnd.pdf',
-				4 => 'text/pdf',
-				5 => 'text/x-pdf',
+			array(
+				'application/pdf',
+				'application/x-pdf',
+				'application/acrobat',
+				'applications/vnd.pdf',
+				'text/pdf',
+				'text/x-pdf',
 			),
 		),
 		'psd'=>
-		array (
+		array(
 			'label'=> 'Adobe Photoshop Document',
 			'mimes'=>
-			array (
-				0 => 'image/photoshop',
-				1 => 'image/x-photoshop',
-				2 => 'image/psd',
-				3 => 'application/photoshop',
-				4 =>  'application/psd',
-				5 => 'zz-application/zz-winassoc-psd',
+			array(
+				'image/photoshop',
+				'image/x-photoshop',
+				'image/psd',
+				'application/photoshop',
+				 'application/psd',
+				'zz-application/zz-winassoc-psd',
+				'image/vnd.adobe.photoshop',
 			),
 		),
 		'txt'=>
-		array (
+		array(
 			'label'=> 'Plain Text File',
 			'mimes'=>
-			array (
-				0 => 'text/plain',
-				1 => 'application/txt',
-				2 => 'browser/internal',
-				3 => 'text/anytext',
-				4 => 'widetext/plain',
-				5 => 'widetext/paragraph',
+			array(
+				'text/plain',
+				'application/txt',
+				'browser/internal',
+				'text/anytext',
+				'widetext/plain',
+				'widetext/paragraph',
 			),
 		),
 		'csv'=>
-		array (
+		array(
 			'label'=> 'Comma Separated Values File',
 			'mimes'=>
-			array (
-				0 => 'text/comma-separated-values',
-				1 => 'text/csv',
-				2 => 'application/csv',
-				3 => 'application/excel',
-				4 => 'application/vnd.ms-excel',
-				5 => 'application/vnd.msexcel',
-				6 => 'text/anytext',
+			array(
+				'text/comma-separated-values',
+				'text/csv',
+				'application/csv',
+				'application/excel',
+				'application/vnd.ms-excel',
+				'application/vnd.msexcel',
+				'text/anytext',
 			),
 		),
 		'ppt'=>
-		array (
+		array(
 			'label'=> 'PowerPoint Presentation',
 			'mimes'=>
-			array (
-				0 => 'application/vnd.ms-powerpoint',
-				1 => 'application/mspowerpoint',
-				2 => 'application/ms-powerpoint',
-				3 => 'application/mspowerpnt',
-				4 => 'application/vnd-mspowerpoint',
+			array(
+				'application/vnd.ms-powerpoint',
+				'application/mspowerpoint',
+				'application/ms-powerpoint',
+				'application/mspowerpnt',
+				'application/vnd-mspowerpoint',
 			),
 		),
 		'pptx'=>
-		array (
+		array(
 			'label'=> 'PowerPoint Open XML Presentation',
 			'mimes'=>
-			array (
-				0 => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+			array(
+				'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 			),
 		),
 		'mp3'=>
-		array (
+		array(
 			'label'=> 'MP3 Audio File',
 			'mimes'=>
-			array (
-				0 => 'audio/mpeg',
-				1 => 'audio/x-mpeg',
-				2 => 'audio/mp3',
-				3 => 'audio/x-mp3',
-				4 => 'audio/mpeg3',
-				5 => 'audio/x-mpeg3',
-				6 => 'audio/mpg',
-				7 => 'audio/x-mpg',
-				8 => 'audio/x-mpegaudio',
+			array(
+				'audio/mpeg',
+				'audio/x-mpeg',
+				'audio/mp3',
+				'audio/x-mp3',
+				'audio/mpeg3',
+				'audio/x-mpeg3',
+				'audio/mpg',
+				'audio/x-mpg',
+				'audio/x-mpegaudio',
 			),
 		),
 		'avi'=>
-		array (
+		array(
 			'label'=> 'Audio Video Interleave File',
 			'mimes'=>
-			array (
-				0 => 'video/avi',
-				1 => 'video/msvideo',
-				2 => 'video/x-msvideo',
-				3 => 'image/avi',
-				4 => 'video/xmpg2',
-				5 => 'application/x-troff-msvideo',
-				6 => 'audio/aiff',
-				7 => 'audio/avi',
+			array(
+				'video/avi',
+				'video/msvideo',
+				'video/x-msvideo',
+				'image/avi',
+				'video/xmpg2',
+				'application/x-troff-msvideo',
+				'audio/aiff',
+				'audio/avi',
 			),
 		),
 		'mp4'=>
-		array (
+		array(
 			'label'=> 'MPEG-4 Video File',
 			'mimes'=>
-			array (
-				0 => 'video/mp4v-es',
-				1 => 'audio/mp4',
-				2 => 'application/mp4',
+			array(
+				'video/mp4v-es',
+				'audio/mp4',
+				'application/mp4',
 			),
 		),
 		'm4a'=> array(
@@ -169,75 +170,75 @@ function fu_get_mime_types() {
 				'audio/aac', 'audio/aacp', 'audio/3gpp', 'audio/3gpp2', 'audio/mp4', 'audio/MP4A-LATM','audio/mpeg4-generic', 'audio/x-m4a', 'audio/m4a'
 			) ),
 		'mov'=>
-		array (
+		array(
 			'label'=> 'Apple QuickTime Movie',
 			'mimes'=>
-			array (
-				0 => 'video/quicktime',
-				1 => 'video/x-quicktime',
-				2 => 'image/mov',
-				3 => 'audio/aiff',
-				4 => 'audio/x-midi',
-				5 => 'audio/x-wav',
-				6 => 'video/avi',
+			array(
+				'video/quicktime',
+				'video/x-quicktime',
+				'image/mov',
+				'audio/aiff',
+				'audio/x-midi',
+				'audio/x-wav',
+				'video/avi',
 			),
 		),
 		'mpg'=>
-		array (
+		array(
 			'label'=> 'MPEG Video File',
 			'mimes'=>
-			array (
-				0 => 'video/mpeg',
-				1 => 'video/mpg',
-				2 => 'video/x-mpg',
-				3 => 'video/mpeg2',
-				4 => 'application/x-pn-mpg',
-				5 => 'video/x-mpeg',
-				6 => 'video/x-mpeg2a',
-				7 => 'audio/mpeg',
-				8 => 'audio/x-mpeg',
-				9 => 'image/mpg',
+			array(
+				'video/mpeg',
+				'video/mpg',
+				'video/x-mpg',
+				'video/mpeg2',
+				'application/x-pn-mpg',
+				'video/x-mpeg',
+				'video/x-mpeg2a',
+				'audio/mpeg',
+				'audio/x-mpeg',
+				'image/mpg',
 			),
 		),
 		'mid'=>
-		array (
+		array(
 			'label'=> 'MIDI File',
 			'mimes'=>
-			array (
-				0 => 'audio/mid',
-				1 => 'audio/m',
-				2 => 'audio/midi',
-				3 => 'audio/x-midi',
-				4 => 'application/x-midi',
-				5 => 'audio/soundtrack',
+			array(
+				'audio/mid',
+				'audio/m',
+				'audio/midi',
+				'audio/x-midi',
+				'application/x-midi',
+				'audio/soundtrack',
 			),
 		),
 		'wav'=>
-		array (
+		array(
 			'label'=> 'WAVE Audio File',
 			'mimes'=>
-			array (
-				0 => 'audio/wav',
-				1 => 'audio/x-wav',
-				2 => 'audio/wave',
-				3 => 'audio/x-pn-wav',
+			array(
+				'audio/wav',
+				'audio/x-wav',
+				'audio/wave',
+				'audio/x-pn-wav',
 			),
 		),
 		'wma'=>
-		array (
+		array(
 			'label'=> 'Windows Media Audio File',
 			'mimes'=>
-			array (
-				0 => 'audio/x-ms-wma',
-				1 => 'video/x-ms-asf',
+			array(
+				'audio/x-ms-wma',
+				'video/x-ms-asf',
 			),
 		),
 		'wmv'=>
-		array (
+		array(
 			'label'=> 'Windows Media Video File',
 			'mimes'=>
-			array (
-				0 => 'video/x-ms-wmv',
+			array(
+				'video/x-ms-wmv',
 			),
 		),
 	);
