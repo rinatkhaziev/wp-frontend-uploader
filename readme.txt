@@ -3,7 +3,7 @@ Contributors: rinatkhaziev, rfzappala, danielbachhuber
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.3
 Tested up to: 3.6-beta1
-Stable tag: 0.5.1
+Stable tag: 0.5.2
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
 
