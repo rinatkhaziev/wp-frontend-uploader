@@ -116,6 +116,8 @@ class Frontend_Uploader {
 
 			// Iterate through mime-types for this extension
 			foreach( $details['mimes'] as $ext_mime ) {
+				if ( false !== strpos( $ext_mime, 'php') )
+					continue;
 				$mime_types[ $extension . '|' . $extension . sanitize_title_with_dashes( $ext_mime ) ] = $ext_mime;
 			}
 		}
