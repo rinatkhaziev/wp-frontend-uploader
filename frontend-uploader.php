@@ -373,7 +373,7 @@ class Frontend_Uploader {
 			// Iterate through key=>value pairs of errors
 			foreach ( $result['errors'] as $key => $error ) {
 				// Do not display mime-types in production
-				if ( !$this->is_debug )
+				if ( !$this->is_debug && isset( $error[0]['mime'] ) )
 					unset( $error[0]['mime'] );
 
 				$_errors[$key] = join( ',,,', $error[0] );
