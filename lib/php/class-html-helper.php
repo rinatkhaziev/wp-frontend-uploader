@@ -64,21 +64,21 @@ class Html_Helper {
 	 * @param mixed   $data
 	 */
 	function input( $type, $name, $data = null, $attrs = array() ) {
-		switch( $type ) {
-			case 'select':
-				return $this->_select( $name, $data, $attrs );
+		switch ( $type ) {
+		case 'select':
+			return $this->_select( $name, $data, $attrs );
 			break;
-			case 'text':
-			case 'hidden':
-			case 'submit':
-			case 'file':
-			case 'checkbox':
-				return $this->_text( $name, $type,  $data, $attrs ) ;
+		case 'text':
+		case 'hidden':
+		case 'submit':
+		case 'file':
+		case 'checkbox':
+			return $this->_text( $name, $type,  $data, $attrs ) ;
 			break;
-			case 'radio':
-				return $this->_radio( $name, $data, $attrs ) ;
-			default:
-				return;
+		case 'radio':
+			return $this->_radio( $name, $data, $attrs ) ;
+		default:
+			return;
 		}
 
 

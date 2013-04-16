@@ -32,8 +32,8 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 		/* -- Register the Columns -- */
 		$columns = $this->get_columns();
 		$hidden = array(
-				'id',
-			);
+			'id',
+		);
 		$this->_column_headers = array( $columns, $hidden, $this->get_sortable_columns() ) ;
 
 		remove_filter( 'posts_where', array( &$this, 'modify_post_status_to_private' ) );
@@ -131,8 +131,8 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 		$alt = '';
 
 		while ( have_posts() ) : the_post();
-			if ( $this->is_trash && $post->post_status != 'trash' || !$this->is_trash && $post->post_status == 'trash' )
-                continue;
+		if ( $this->is_trash && $post->post_status != 'trash' || !$this->is_trash && $post->post_status == 'trash' )
+			continue;
 
 		$alt = ( 'alternate' == $alt ) ? '' : 'alternate';
 		$post_owner = ( get_current_user_id() == $post->post_author ) ? 'self' : 'other' ;
@@ -140,7 +140,7 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 ?>
 	<tr id='post-<?php echo $id; ?>' class='<?php echo trim( $alt . ' author-' . $post_owner . ' status-' . $post->post_status ); ?>' valign="top">
 <?php
-		
+
 		list( $columns, $hidden ) = $this->get_column_info();
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$class = "class='$column_name column-$column_name'";
