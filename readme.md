@@ -12,6 +12,13 @@ This plugin gives you an ability to easily accept, moderate and publish user gen
 1. Set the settings
 1. Enjoy
 
+## Upgrade instructions
+
+1. Pull as usual
+2. Do `git submodule -q foreach git pull -q origin master` to update submodules
+3. ...
+4. Profit
+
 ## Developers
 
 Miss a feature? Pull requests are welcome.
