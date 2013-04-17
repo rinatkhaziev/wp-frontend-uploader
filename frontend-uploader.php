@@ -207,7 +207,6 @@ class Frontend_Uploader {
 
 			// Skip to the next file if upload went wrong
 			if ( $k['tmp_name'] == "" ) {
-				$errors['fu-upload-error'][] = $k['name'];
 				continue;
 			}
 
@@ -372,6 +371,7 @@ class Frontend_Uploader {
 
 			// Iterate through key=>value pairs of errors
 			foreach ( $result['errors'] as $key => $error ) {
+
 				// Do not display mime-types in production
 				if ( !$this->is_debug && isset( $error[0]['mime'] ) )
 					unset( $error[0]['mime'] );
