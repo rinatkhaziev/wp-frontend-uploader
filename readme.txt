@@ -139,7 +139,8 @@ function my_fu_allowed_mime_types( $mime_types ) {
 == Changelog ==
 
 = 0.5.3 (Apr 17, 2013) =
-= Fixed potential fatal error =
+
+* Fixed potential fatal error *
 
 = 0.5.1 (Apr 11, 2013) =
 
