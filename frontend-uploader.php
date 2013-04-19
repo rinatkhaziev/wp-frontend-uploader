@@ -802,22 +802,42 @@ class Frontend_Uploader {
 	 */
 	function update_35_gallery_shortcode( $post_id, $attachment_id ) {
 		global $wp_version;
+		// Bail of wp is older than 3.5
+		if ( version_compare( $wp_version, '3.5', '<' ) )
+			return;
 
-		if ( version_compare( $wp_version, '3.5', '>=' )  && (int) $post_id != 0 ) {
-			$parent = get_post( $post_id );
-			preg_match( '#(?<before>(.*))\[gallery(.*)ids=(\'|")(?<ids>[0-9,]*)(\'|")](?<after>(.*))#ims', $parent->post_content, $matches ) ;
-			if ( isset( $matches['ids'] ) ) {
-				// @todo account for other possible shortcode atts
-				$gallery = '[gallery ids="' . $matches['ids'] . ',' . (int) $attachment_id .'"]';
-				$post_to_update = array(
-					'ID' => (int) $post_id,
-					'post_content' => $matches['before'] . $gallery . $matches['after']
-				);
-				return wp_update_post( $post_to_update );
+		$parent = get_post( $post_id );
+
+		/**
+		 * Parse the post content:
+		 * Before the shorcode,
+		 * Before ids,
+		 * Ids,
+		 * After ids
+		 */
+		preg_match( '#(?<way_before>.*)(?<before>\[gallery(.*))ids=(\'|")(?<ids>[0-9,]*)(\'|")(?<after>.*)#ims', $parent->post_content, $matches ) ;
+
+		// No gallery shortcode, no problem
+		if ( !isset( $matches['ids'] ) )
+			return;
+
+		$content = '';
+		// Replace ids element with actual string of ids, adding the new att id at the end
+		$matches['ids'] = "ids=\"{$matches['ids']},{$attachment_id}\"";
+		$deconstructed = array( 'way_before', 'before', 'ids', 'after' );
+		// Iterate through match elements and reconstruct the post
+		foreach( $deconstructed as $match_key ) {
+			if ( isset( $matches[$match_key] ) ) {
+				$content .= $matches[$match_key];
 			}
-
 		}
-		return;
+
+		// Update the post
+		$post_to_update = array(
+			'ID' => (int) $post_id,
+			'post_content' => $content,
+		);
+		return wp_update_post( $post_to_update );
 	}
 
 }
