@@ -15,11 +15,11 @@ This plugin supports multiple uploads for modern browsers (sorry, no IE). Multip
 
 Here's example of default form (you don't need to enter all that if you want to use default form, just use [fu-upload-form]):
 
-[fu-upload-form class="your-class" title="Upload your media"]
+`[fu-upload-form class="your-class" title="Upload your media"]
 [textarea name="caption" class="textarea" id="ug_caption" description="Description (optional)"]
 [input type="file" name="photo" id="ug_photo" class="required" description="Your Photo" multiple=""]
 [input type="submit" class="btn" value="Submit"]
-[/fu-upload-form]
+[/fu-upload-form]`
 
 By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Refer to Other notes -> Configuration filters.
 
