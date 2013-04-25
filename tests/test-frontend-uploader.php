@@ -20,7 +20,7 @@ class Frontend_Uploader_UnitTestCase extends WP_UnitTestCase {
 	}
 
 	// Check if settings get set up on activation
-	function test_default_settings() {);
+	function test_default_settings() {
 		$this->assertNotEmpty( $this->fu->settings );
 	}
 
