@@ -1,7 +1,9 @@
 <?php
 /**
  *
- * Test case for Frontend Uploader
+ * Test Suite for Frontend Uploader
+ *
+ * @since 0.5
  *
  */
 class Frontend_Uploader_UnitTestCase extends WP_UnitTestCase {
@@ -31,6 +33,26 @@ class Frontend_Uploader_UnitTestCase extends WP_UnitTestCase {
 
 	// Check if errors are handled properly
 	function test_error_handling() {
+
+	}
+
+	function test_mime_types() {
+		$this->assertNotEmpty( $this->fu->_get_mime_types() );
+	}
+
+	function test_successful_file_upload() {
+
+	}
+
+	function test_failed_file_upload() {
+
+	}
+
+	function test_successful_post_submit() {
+
+	}
+
+	function test_failed_post_submit() {
 
 	}
 }
