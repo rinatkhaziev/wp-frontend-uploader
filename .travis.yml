@@ -1,11 +1,11 @@
-l# Specify versions of WordPress to test against
+# Specify versions of WordPress to test against
 # WP_VERSION = WordPress version number (use "master" for SVN trunk)
 # WP_MULTISITE = whether to test multisite (use either "0" or "1")
 language: php
 
 php:
-    - 5.3
-    - 5.4
+  - 5.3
+  - 5.4
 
 env:
   - WP_VERSION=master WP_MULTISITE=0
