@@ -1,8 +1,6 @@
 # Frontend Uploader
-Travis CI
-[![Build Status Travis](https://travis-ci.org/rinatkhaziev/wp-frontend-uploader.png?branch=master)](https://travis-ci.org/rinatkhaziev/wp-frontend-uploader)
 
-Magnum CI
+[![Build Status Travis](https://travis-ci.org/rinatkhaziev/wp-frontend-uploader.png?branch=master)](https://travis-ci.org/rinatkhaziev/wp-frontend-uploader)
 [![Build Status Magnum](https://magnum-ci.com/status/c411301568676ba1f8108599b63a1dcf.png)](https://github.com/rinatkhaziev/wp-frontend-uploader)
 
 ## Description
