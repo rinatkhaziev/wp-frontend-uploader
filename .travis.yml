@@ -4,15 +4,11 @@ l# Specify versions of WordPress to test against
 language: php
 
 php:
-    - 5.3
-    - 5.4
+  - 5.3
+  - 5.4
 
 env:
-    - WP_VERSION=master WP_MULTISITE=0
-
-matrix:
-  exclude:
-    - php: 5.4
+  - WP_VERSION=master WP_MULTISITE=0
 
 # Grab the setup script and execute
 before_script:
