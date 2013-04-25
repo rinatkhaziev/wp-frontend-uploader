@@ -597,17 +597,23 @@ class Frontend_Uploader {
 					'class' => 'validate',
 					'category' => '1',
 					'success_page' => '',
-					'form_layout' => '',
+					'form_layout' => 'image',
 					'post_id' => get_the_ID(),
 					'post_type' => 'post',
 				), $atts ) );
 		$post_id = (int) $post_id;
 
-		if ( $form_layout != "post" && $form_layout != "post_image" )
-			$form_layout = "image";
-
-		if ( $form_layout == 'image' )
-			$title = __( 'Submit a media file', 'frontend-uploader' );
+		switch( $form_layout ) {
+			case 'image':
+			case 'media':
+				$title = __( 'Submit a media file', 'frontend-uploader' );
+			break;
+			case 'post':
+			case 'post_media':
+			break;
+			default:
+				$form_layout = "image";
+		}
 
 		ob_start();
 ?>
@@ -645,12 +651,9 @@ class Frontend_Uploader {
 			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
 				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
 
-			if ( $form_layout == "post_image" || $form_layout == "image" )
-				echo do_shortcode ( '[input type="text" name="post_credit" id="ug_post_credit" description="' . __( 'Credit', 'frontend-uploader' ) . '" class=""]' );
-
 			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 			}
-			?>
+?>
 		  <input type="hidden" name="action" value="upload_ugc" />
 		  <input type="hidden" value="<?php echo $post_id ?>" name="post_ID" />
 		  <input type="hidden" value="<?php echo $category; ?>" name="post_category" />
@@ -773,6 +776,7 @@ class Frontend_Uploader {
 		wp_enqueue_script( 'jquery-validate', FU_URL .' lib/js/validate/jquery.validate.js ', array( 'jquery' ) );
 		wp_enqueue_script( 'frontend-uploader-js', FU_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 		// Include localization strings for default messages of validation plugin
+		// Filter is needed for wordpress.com
 		$wplang = apply_filters( 'fu_wplang', WPLANG );
 		if ( $wplang ) {
 			$lang = explode( '_', $wplang );
