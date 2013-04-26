@@ -68,6 +68,7 @@ class Frontend_Uploader {
 		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
 		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
+		add_shortcode( 'select', array( $this, 'shortcode_content_parser' ) );
 
 		// Static assets
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -514,6 +515,7 @@ class Frontend_Uploader {
 					'type' => '',
 					'class' => '',
 					'multiple' => 'false',
+					'values' => '',
 					'wysiwyg_enabled' => false,
 				), $atts );
 		$callback = array( $this, "_render_{$tag}" );
@@ -575,7 +577,15 @@ class Frontend_Uploader {
 
 	function _render_select( $atts ) {
 		extract( $atts );
-		return;
+		$atts = array( 'values' => $values );
+		$values = explode( ',', $values );
+		$options = '';
+		foreach( $values as $option ) {
+			$options .= $this->html->element( 'option', $option, array(), false );
+		}
+		//Render select field
+		$element = $this->html->element( 'label', $description . $this->html->element( 'select', $options, array(), false ), array( 'class' => 'ugc-input-wrapper' ), false );
+		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
 	/**
