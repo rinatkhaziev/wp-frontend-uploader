@@ -153,7 +153,7 @@ class Html_Helper {
 	 * @return string rendered html tag
 	 */
 	function element( $tag, $content, $params = array(), $escape = true ) {
-		$allowed = apply_filters( 'hh_allowed_html_elements' , array( 'div', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'td', 'option', 'label', 'textarea' ) );
+		$allowed = apply_filters( 'hh_allowed_html_elements' , array( 'div', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'td', 'option', 'label', 'textarea', 'select', 'option' ) );
 		$attr_string = $this->_format_attributes( $params );
 		if ( in_array( $tag, $allowed ) )
 			return "<{$tag} {$attr_string}>" . ( $escape ? esc_html ( $content ) : $content ) . "</{$tag}>";
