@@ -580,6 +580,7 @@ class Frontend_Uploader {
 		$atts = array( 'values' => $values );
 		$values = explode( ',', $values );
 		$options = '';
+		//Build options for the list
 		foreach( $values as $option ) {
 			$options .= $this->html->element( 'option', $option, array(), false );
 		}
