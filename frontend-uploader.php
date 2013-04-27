@@ -540,6 +540,11 @@ class Frontend_Uploader {
 		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
+	/**
+	 * Textarea shortcode
+	 * @param  array shortcode attributes
+	 * @return [type]       [description]
+	 */
 	function _render_textarea( $atts ) {
 		extract( $atts );
 		// Render WYSIWYG textara
@@ -565,16 +570,31 @@ class Frontend_Uploader {
 		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
+	/**
+	 * Checkboxes shortcode
+	 * @param  array shortcode attributes
+	 * @return [type]       [description]
+	 */
 	function _render_checkboxes( $atts ) {
 		extract( $atts );
 		return;
 	}
 
+	/**
+	 * Radio buttons shortcode
+	 * @param  array shortcode attributes
+	 * @return [type]       [description]
+	 */
 	function _render_radio( $atts ) {
 		extract( $atts );
 		return;
 	}
 
+	/**
+	 * Select shortcode
+	 * @param  array shortcode attributes
+	 * @return [type]       [description]
+	 */
 	function _render_select( $atts ) {
 		extract( $atts );
 		$atts = array( 'values' => $values );
