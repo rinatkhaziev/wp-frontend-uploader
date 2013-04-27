@@ -523,6 +523,11 @@ class Frontend_Uploader {
 			return call_user_func( $callback, $atts );
 	}
 
+	/**
+	 * Input shortcode
+	 * @param  array shortcode attributes
+	 * @return [type]       [description]
+	 */
 	function _render_input( $atts ) {
 		extract( $atts );
 		$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
