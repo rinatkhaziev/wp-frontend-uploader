@@ -224,7 +224,7 @@ class Frontend_Uploader {
 
 			// Try to set post caption if the field is set on request
 			// Fallback to post_content if the field is not set
-			// @todo remove this in v0.5 when automatic handling of shortcode attributes is implemented
+			// @todo remove this in v0.6 when automatic handling of shortcode attributes is implemented
 			if ( isset( $_POST['caption'] ) )
 				$caption = sanitize_text_field( $_POST['caption'] );
 			elseif ( isset( $_POST['post_content'] ) )
@@ -616,7 +616,7 @@ class Frontend_Uploader {
 	/**
 	 * Display the upload post form
 	 *
-	 * @todo Major refactoring for this before releasing 0.5
+	 * @todo Major refactoring for this before releasing 0.6
 	 *
 	 * @param array   $atts    shortcode attributes
 	 * @param string  $content content that is encloded in [fu-upload-form][/fu-upload-form]
