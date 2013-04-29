@@ -8,6 +8,9 @@
 .ugc-inner-wrapper .ugc-input-wrapper input {
 	display: block;
 }
+.ugc-inner-wrapper .ugc-input-wrapper select {
+	display: block;
+}
 .ugc-inner-wrapper .ugc-input-wrapper label {
 	font-weight: bold;
 }
