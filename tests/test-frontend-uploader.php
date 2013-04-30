@@ -15,8 +15,8 @@ class Frontend_Uploader_UnitTestCase extends WP_UnitTestCase {
 	 */
 	function setup() {
 		parent::setup();
-		$this->fu = new Frontend_Uploader;
-		$this->fu->action_init();
+		global $frontend_uploader;
+		$this->fu = $frontend_uploader;
 	}
 
 	function teardown() {
@@ -29,7 +29,6 @@ class Frontend_Uploader_UnitTestCase extends WP_UnitTestCase {
 
 	// Test if the post has gallery shortcode and needs to be updated with the new att id
 	function test_gallery_shortcode_update() {
-
 	}
 
 	// Check if errors are handled properly
@@ -42,7 +41,7 @@ class Frontend_Uploader_UnitTestCase extends WP_UnitTestCase {
 		$this->assertNotEmpty( $mimes );
 		$this->assertInternalType( 'array', $mimes );
 
-		$this->assertGreaterThan( 0, has_filter( 'upload_mimes',  array( &$this->fu, '_get_mime_types' ) ) );
+		$this->assertGreaterThan( 0, has_filter( 'upload_mimes',  array( $this->fu, '_get_mime_types' ) ) );
 	}
 
 	function test_successful_file_upload() {

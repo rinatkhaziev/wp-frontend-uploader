@@ -885,5 +885,5 @@ class Frontend_Uploader {
 	}
 
 }
-
+global $frontend_uploader;
 $frontend_uploader = new Frontend_Uploader;
