@@ -37,7 +37,9 @@ class Frontend_Uploader_UnitTestCase extends WP_UnitTestCase {
 	}
 
 	function test_mime_types() {
-		$this->assertNotEmpty( $this->fu->_get_mime_types() );
+		$mimes =  $this->fu->_get_mime_types();
+		$this->assertNotEmpty( $mimes );
+		$this->assertInternalType( 'array', $mimes );
 	}
 
 	function test_successful_file_upload() {
