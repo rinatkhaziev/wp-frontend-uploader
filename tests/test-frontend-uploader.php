@@ -14,8 +14,9 @@ class Frontend_Uploader_UnitTestCase extends WP_UnitTestCase {
 	 * @return [type] [description]
 	 */
 	function setup() {
-		$this->fu = new Frontend_Uploader;
 		parent::setup();
+		$this->fu = new Frontend_Uploader;
+		$this->fu->action_init();
 	}
 
 	function teardown() {
@@ -40,6 +41,8 @@ class Frontend_Uploader_UnitTestCase extends WP_UnitTestCase {
 		$mimes =  $this->fu->_get_mime_types();
 		$this->assertNotEmpty( $mimes );
 		$this->assertInternalType( 'array', $mimes );
+
+		$this->assertGreaterThan( 0, has_filter( 'upload_mimes',  array( &$this->fu, '_get_mime_types' ) ) );
 	}
 
 	function test_successful_file_upload() {
