@@ -652,7 +652,6 @@ class Frontend_Uploader {
 			case 'post_media':
 			break;
 			default:
-				$form_layout = "image";
 		}
 
 		ob_start();
