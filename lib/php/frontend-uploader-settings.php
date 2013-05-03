@@ -112,6 +112,13 @@ class Frontend_Uploader_Settings {
                     'options' => self::get_post_types(),
 				),
 				array(
+					'name' => 'wysiwyg_enabled',
+					'label' => __( 'Enable visual editor for textareas', 'frontend-uploader' ),
+					'desc' => __( 'Yes', 'frontend-uploader' ),
+					'type' => 'checkbox',
+					'default' => '',
+				),
+				array(
 					'name' => 'enabled_files',
 					'label' => __( 'Allow following files to be uploaded', 'frontend-uploader' ),
 					'desc' => __( '', 'frontend-uploader' ),
