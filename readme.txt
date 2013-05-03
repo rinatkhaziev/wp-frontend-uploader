@@ -101,6 +101,8 @@ function my_fu_additional_html() {
 
 == Frequently Asked Questions ==
 
+= I want to customize my form =
+
 = I want to be allow users to upload mp3, psd, or any other file restricted by default. =
 
 You are able to do that within Frontend Uploader Settings admin page. The settings there cover the most popular extensions/MIME-types.
@@ -119,7 +121,7 @@ Now that we have all possible MIME-types for .3gp, we can allow the files to be 
 Following code whitelists 3gp files, if it makes sense to you, you can modify it for other extensions/mime-types.
 If it confuses you, please don't hesitate to post on support forum.
 Put this in your theme's functions.php
-`add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );`
+`add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );
 function my_fu_allowed_mime_types( $mime_types ) {
 	// Array of 3gp mime types
 	// From http://filext.com (there might be more)
