@@ -102,6 +102,11 @@ function my_fu_additional_html() {
 == Frequently Asked Questions ==
 
 = I want to customize my form =
+You can include additional elements with a set of shortcodes
+[input]
+[select]
+[textarea]
+
 
 = I want to be allow users to upload mp3, psd, or any other file restricted by default. =
 
