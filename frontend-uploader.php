@@ -44,7 +44,7 @@ class Frontend_Uploader {
 	public $settings;
 	public $settings_slug = 'frontend_uploader_settings';
 	public $is_debug = false;
-	public $fields = array();
+	public $form_fields = array();
 
 	/**
 	 * Here we go
@@ -105,7 +105,7 @@ class Frontend_Uploader {
 		 *  'context' => {title|description|file|meta} )
 		 * @var array
 		 */
-		$this->fields = array();
+		$this->form_fields = array();
 	}
 
 	/**
@@ -529,10 +529,19 @@ class Frontend_Uploader {
 					'value' => '',
 					'type' => '',
 					'class' => '',
-					'multiple' => 'false',
+					'multiple' => false,
 					'values' => '',
 					'wysiwyg_enabled' => false,
+					'context' => 'meta'
 				), $atts );
+		$this->fields[] = array(
+			'name' => $name,
+			'context' => $context,
+			'tag' => $tag,
+			'type' => $type,
+			'value' => $value
+		);
+
 		$callback = array( $this, "_render_{$tag}" );
 		if ( is_callable( $callback ) )
 			return call_user_func( $callback, $atts );
