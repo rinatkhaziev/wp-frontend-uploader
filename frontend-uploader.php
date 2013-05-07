@@ -523,17 +523,17 @@ class Frontend_Uploader {
 	 */
 	function shortcode_content_parser( $atts, $content = null, $tag ) {
 		$atts = shortcode_atts( array(
-					'id' => '',
-					'name' => '',
-					'description' => '',
-					'value' => '',
-					'type' => '',
-					'class' => '',
-					'multiple' => false,
-					'values' => '',
-					'wysiwyg_enabled' => false,
-					'context' => 'meta'
-				), $atts );
+			'id' => '',
+			'name' => '',
+			'description' => '',
+			'value' => '',
+			'type' => '',
+			'class' => '',
+			'multiple' => false,
+			'values' => '',
+			'wysiwyg_enabled' => false,
+			'context' => 'meta'
+		), $atts );
 		$this->fields[] = array(
 			'name' => $name,
 			'context' => $context,
