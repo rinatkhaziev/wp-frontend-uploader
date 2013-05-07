@@ -44,6 +44,7 @@ class Frontend_Uploader {
 	public $settings;
 	public $settings_slug = 'frontend_uploader_settings';
 	public $is_debug = false;
+	public $fields = array();
 
 	/**
 	 * Here we go
@@ -91,6 +92,20 @@ class Frontend_Uploader {
 		// Needed if new options were added in upgraded version of the plugin
 		$this->settings = array_merge( $this->settings_defaults(), (array) get_option( $this->settings_slug, $this->settings_defaults() ) );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
+
+		/**
+		 * Should consist of fields to be proccessed automatically on content submission
+		 *
+		 * @todo this is just a pass one
+		 *
+		 * Example field:
+		 *  array(
+		 *  'name' => '{form name}',
+		 *  'element' => HTML element,
+		 *  'context' => {title|description|file|meta} )
+		 * @var array
+		 */
+		$this->fields = array();
 	}
 
 	/**
