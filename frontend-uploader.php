@@ -312,7 +312,7 @@ class Frontend_Uploader {
 	 */
 	function upload_content() {
 		// Bail if something fishy is going on
-		if ( !wp_verify_nonce( $_POST['fu_nonce'], 'upload_ugphoto' ) ) {
+		if ( !wp_verify_nonce( $_POST['fu_nonce'], __FILE__ ) ) {
 			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  'nonce-failure' ), wp_get_referer() ) );
 			exit;
 		}
@@ -459,7 +459,7 @@ class Frontend_Uploader {
 	 */
 	function approve_photo() {
 		// Check permissions, attachment ID, and nonce
-		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( $_GET['fu_nonce'], 'upload_ugphoto' ) )
+		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( $_GET['fu_nonce'], __FILE__ ) )
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
 
 		$post = get_post( $_GET['id'] );
@@ -730,7 +730,7 @@ class Frontend_Uploader {
 		// Allow a little customization
 		do_action( 'fu_additional_html' );
 ?>
-		  <?php wp_nonce_field( 'upload_ugphoto', 'fu_nonce' ); ?>
+		  <?php wp_nonce_field( __FILE__, 'fu_nonce' ); ?>
 		  <div class="clear"></div>
 	  </div>
 	  </form>
