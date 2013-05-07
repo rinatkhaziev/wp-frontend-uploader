@@ -310,6 +310,16 @@ class Frontend_Uploader {
 	 * @since  0.4
 	 */
 	function upload_content() {
+		$fields = array();
+		// @todo sanity check
+		$time = $_POST['request_time'];
+
+		// @todo finish the mapping
+		$cached_fields = wp_cache_get( "fu_upload:{$time}" , 'frontend-uploader' );
+		$fields = !empty ( $cached_fields ) ? $cached_fields : get_transient( "fu_upload:{$time}" );
+
+		// @todo bail if request is malformed somehow
+
 		// Bail if something fishy is going on
 		if ( !wp_verify_nonce( $_POST['fu_nonce'], __FILE__ ) ) {
 			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  'nonce-failure' ), wp_get_referer() ) );
@@ -533,7 +543,10 @@ class Frontend_Uploader {
 			'wysiwyg_enabled' => false,
 			'context' => 'meta'
 		), $atts );
-		$this->fields[] = array(
+
+		extract( $atts );
+
+		$this->form_fields[] = array(
 			'name' => $name,
 			'context' => $context,
 			'tag' => $tag,
@@ -714,21 +727,25 @@ class Frontend_Uploader {
 				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
 
 			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
-			}
-?>
-		  <input type="hidden" name="action" value="upload_ugc" />
-		  <input type="hidden" value="<?php echo $post_id ?>" name="post_ID" />
-		  <input type="hidden" value="<?php echo $category; ?>" name="post_category" />
-		  <input type="hidden" value="<?php echo $success_page; ?>" name="success_page" />
-		  <input type="hidden" value="<?php echo $form_layout; ?>" name="form_layout" />
+		}
 
-		  <?php
-		if ( in_array( $form_layout, array( "post_image", "post" ) ) ): ?>
-		  <input type="hidden" value="<?php echo $post_type; ?>" name="post_type" />
-		<?php endif;
+		echo do_shortcode ( '[input type="hidden" name="action" value="upload_ugc" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="post_ID" value="' . $post_id . '" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $post_category . '" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="success_page" value="' . $success_page . '" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="form_layout" value="' . $form_layout . '" context="hidden"]' );
+
+		if ( in_array( $form_layout, array( "post_image", "post" ) ) )
+			echo do_shortcode ( '[input type="hidden" name="post_type" value="' . $post_type . '" context="hidden"]' );
+
 		// Allow a little customization
 		do_action( 'fu_additional_html' );
+		$time = time();
+
+		wp_cache_add( "fu_upload:{$time}", $this->form_fields, 'frontend-uploader', 600 );
+		set_transient( "fu_upload:{$time}", $this->form_fields, 3600 );
 ?>
+<input type="hidden" name="request_time" value="<?php echo $time ?>" />
 		  <?php wp_nonce_field( __FILE__, 'fu_nonce' ); ?>
 		  <div class="clear"></div>
 	  </div>
