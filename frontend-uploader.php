@@ -54,33 +54,34 @@ class Frontend_Uploader {
 	function __construct() {
 		// Hooking to wp_ajax
 
-		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
-		add_action( 'wp_ajax_approve_ugc_post', array( $this, 'approve_post' ) );
+		add_action( 'wp_ajax_approve_ugc', $this->_a(  'approve_photo' ) );
+		add_action( 'wp_ajax_approve_ugc_post', $this->_a(  'approve_post' ) );
 
-		add_action( 'wp_ajax_upload_ugc', array( $this, 'upload_content' ) );
-		add_action( 'wp_ajax_nopriv_upload_ugc', array( $this, 'upload_content' ) );
+		add_action( 'wp_ajax_upload_ugc', $this->_a(  'upload_content' ) );
+		add_action( 'wp_ajax_nopriv_upload_ugc', $this->_a(  'upload_content' ) );
 
 		// Adding media submenu
-		add_action( 'admin_menu', array( $this, 'add_menu_items' ) );
+		add_action( 'admin_menu', $this->_a(  'add_menu_items' ) );
 
 		// Currently supported shortcodes
-		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
-		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
-		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
-		add_shortcode( 'select', array( $this, 'shortcode_content_parser' ) );
+		add_shortcode( 'fu-upload-form', $this->_a(  'upload_form' ) );
+		add_shortcode( 'input', $this->_a(  'shortcode_content_parser' ) );
+		add_shortcode( 'textarea', $this->_a(  'shortcode_content_parser' ) );
+		add_shortcode( 'select', $this->_a(  'shortcode_content_parser' ) );
 
 		// Static assets
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', $this->_a(  'enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', $this->_a(  'admin_enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', $this->_a(  'admin_enqueue_scripts' ) );
 
 		// Unautop the shortcode
 		add_filter( 'the_content', 'shortcode_unautop', 100 );
 		// Hiding not approved attachments from Media Gallery
 		// @since core 3.5-beta-1
-		add_filter( 'posts_where', array( $this, 'filter_posts_where' ) );
+		add_filter( 'posts_where', $this->_a(  'filter_posts_where' ) );
 
 		// Init
-		add_action( 'init', array( $this, 'action_init' ) );
+		add_action( 'init', $this->_a(  'action_init' ) );
 
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
@@ -89,7 +90,7 @@ class Frontend_Uploader {
 		// Either use default settings if no setting set, or try to merge defaults with existing settings
 		// Needed if new options were added in upgraded version of the plugin
 		$this->settings = array_merge( $this->settings_defaults(), (array) get_option( $this->settings_slug, $this->settings_defaults() ) );
-		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
+		register_activation_hook( __FILE__, $this->_a(  'activate_plugin' ) );
 
 		/**
 		 * Should consist of fields to be proccessed automatically on content submission
@@ -112,7 +113,7 @@ class Frontend_Uploader {
 	function action_init() {
 		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		$this->allowed_mime_types = $this->_get_mime_types();
-		add_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
+		add_filter( 'upload_mimes', $this->_a(  '_get_mime_types' ), 999 );
 	}
 
 	function _get_mime_types() {
@@ -438,14 +439,14 @@ class Frontend_Uploader {
 	 * Add submenu items
 	 */
 	function add_menu_items() {
-		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_uploader', array( $this, 'admin_list' ) );
+		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_uploader', $this->_a(  'admin_list' ) );
 		foreach ( (array) $this->settings['enabled_post_types'] as $cpt ) {
 			if ( $cpt == 'post' ) {
-				add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_posts_uploader', array( $this, 'admin_posts_list' ) );
+				add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_posts_uploader', $this->_a(  'admin_posts_list' ) );
 				continue;
 			}
 
-			add_submenu_page( "edit.php?post_type={$cpt}", __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', "manage_frontend_{$cpt}s_uploader", array( $this, 'admin_posts_list' ) );
+			add_submenu_page( "edit.php?post_type={$cpt}", __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', "manage_frontend_{$cpt}s_uploader", $this->_a(  'admin_posts_list' ) );
 		}
 	}
 
@@ -540,7 +541,7 @@ class Frontend_Uploader {
 			'value' => $value
 		);
 
-		$callback = array( $this, "_render_{$tag}" );
+		$callback = $this->_a(  "_render_{$tag}" );
 		if ( is_callable( $callback ) )
 			return call_user_func( $callback, $atts );
 	}
@@ -909,6 +910,10 @@ class Frontend_Uploader {
 			'post_content' => $content,
 		);
 		return wp_update_post( $post_to_update );
+	}
+
+	function _a( $method ) {
+		return array( $this, $method );
 	}
 
 }
