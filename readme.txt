@@ -72,7 +72,7 @@ The form has several parameters that can modify its behavior:
 1. 'title' => Headline that will be displayed before the form
 1. 'class' => HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class
 1. 'category' => ID of category the post should be attached (only in post or post+image mode). The category should be whitelisted in the settings
-1. 'success_page' => URL to redirect on successful submission
+1. 'success_page' => URL to redirect on successful submission, defaults to the URL where the form is being displayed
 1. 'form_layout' => There are three different modes: post, post_image, image. Default is image
 1. 'post_id' => ID of the post the image should be attached to. Defaults to current post id
 1. 'post_type' => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
@@ -165,6 +165,9 @@ function my_fu_allowed_mime_types( $mime_types ) {
 
 
 == Changelog ==
+
+
+= 0.6. =
 
 = 0.5.3 (Apr 17, 2013) =
 
