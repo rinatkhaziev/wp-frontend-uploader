@@ -53,14 +53,12 @@ class Frontend_Uploader {
 	 */
 	function __construct() {
 		// Hooking to wp_ajax
-		// @todo refactor in 0.6
-		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_content' ) );
-		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_content' ) );
+
 		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
+		add_action( 'wp_ajax_approve_ugc_post', array( $this, 'approve_post' ) );
 
 		add_action( 'wp_ajax_upload_ugc', array( $this, 'upload_content' ) );
 		add_action( 'wp_ajax_nopriv_upload_ugc', array( $this, 'upload_content' ) );
-		add_action( 'wp_ajax_approve_ugc_post', array( $this, 'approve_post' ) );
 
 		// Adding media submenu
 		add_action( 'admin_menu', array( $this, 'add_menu_items' ) );
