@@ -871,8 +871,9 @@ class Frontend_Uploader {
 			return;
 
 		$content = '';
-		// Replace ids element with actual string of ids, adding the new att id at the end
-		$matches['ids'] = "ids=\"{$matches['ids']},{$attachment_id}\"";
+		$if_prepend = apply_filters( 'fu_update_gallery_shortcode_prepend', false );
+		// Replace ids element with actual string of ids, adding the new att id
+		$matches['ids'] = $if_prepend ? "ids=\"{$attachment_id},{$matches['ids']}\"" : "ids=\"{$matches['ids']},{$attachment_id}\"";
 		$deconstructed = array( 'way_before', 'before', 'ids', 'after' );
 		// Iterate through match elements and reconstruct the post
 		foreach( $deconstructed as $match_key ) {
