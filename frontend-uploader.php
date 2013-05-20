@@ -731,7 +731,7 @@ class Frontend_Uploader {
 
 		echo do_shortcode ( '[input type="hidden" name="action" value="upload_ugc" context="hidden"]' );
 		echo do_shortcode ( '[input type="hidden" name="post_ID" value="' . $post_id . '" context="hidden"]' );
-		echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $post_category . '" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $category . '" context="hidden"]' );
 		echo do_shortcode ( '[input type="hidden" name="success_page" value="' . $success_page . '" context="hidden"]' );
 		echo do_shortcode ( '[input type="hidden" name="form_layout" value="' . $form_layout . '" context="hidden"]' );
 
