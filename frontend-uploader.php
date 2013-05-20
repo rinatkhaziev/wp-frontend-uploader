@@ -742,8 +742,8 @@ class Frontend_Uploader {
 		do_action( 'fu_additional_html' );
 		$time = time();
 
+		// @todo this probably won't work
 		wp_cache_add( "fu_upload:{$time}", $this->form_fields, 'frontend-uploader', 600 );
-		set_transient( "fu_upload:{$time}", $this->form_fields, 3600 );
 ?>
 <input type="hidden" name="request_time" value="<?php echo $time ?>" />
 		  <?php wp_nonce_field( __FILE__, 'fu_nonce' ); ?>
