@@ -865,8 +865,10 @@ class Frontend_Uploader {
 		$wplang = apply_filters( 'fu_wplang', WPLANG );
 		if ( $wplang ) {
 			$lang = explode( '_', $wplang );
-			$url = FU_URL . "lib/js/validate/localization/messages_{$lang[0]}.js";
-			wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
+			$relative_path = "lib/js/validate/localization/messages_{$lang[0]}.js";
+			$url = FU_URL . $relative_path;
+			if ( file_exists(  FU_ROOT . "/{$relative_path}" ) )
+				wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
 		}
 
 	}
