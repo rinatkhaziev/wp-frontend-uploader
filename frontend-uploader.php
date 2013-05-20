@@ -44,6 +44,7 @@ class Frontend_Uploader {
 	public $settings;
 	public $settings_slug = 'frontend_uploader_settings';
 	public $is_debug = false;
+	public $form_fields = array();
 
 	/**
 	 * Here we go
@@ -52,36 +53,35 @@ class Frontend_Uploader {
 	 */
 	function __construct() {
 		// Hooking to wp_ajax
-		// @todo refactor in 0.6
-		add_action( 'wp_ajax_upload_ugphoto', array( $this, 'upload_content' ) );
-		add_action( 'wp_ajax_nopriv_upload_ugphoto', array( $this, 'upload_content' ) );
-		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
 
-		add_action( 'wp_ajax_upload_ugc', array( $this, 'upload_content' ) );
-		add_action( 'wp_ajax_nopriv_upload_ugc', array( $this, 'upload_content' ) );
-		add_action( 'wp_ajax_approve_ugc_post', array( $this, 'approve_post' ) );
+		add_action( 'wp_ajax_approve_ugc', $this->_a(  'approve_photo' ) );
+		add_action( 'wp_ajax_approve_ugc_post', $this->_a(  'approve_post' ) );
+
+		add_action( 'wp_ajax_upload_ugc', $this->_a(  'upload_content' ) );
+		add_action( 'wp_ajax_nopriv_upload_ugc', $this->_a(  'upload_content' ) );
 
 		// Adding media submenu
-		add_action( 'admin_menu', array( $this, 'add_menu_items' ) );
+		add_action( 'admin_menu', $this->_a(  'add_menu_items' ) );
 
 		// Currently supported shortcodes
-		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
-		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
-		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
-		add_shortcode( 'select', array( $this, 'shortcode_content_parser' ) );
+		add_shortcode( 'fu-upload-form', $this->_a(  'upload_form' ) );
+		add_shortcode( 'input', $this->_a(  'shortcode_content_parser' ) );
+		add_shortcode( 'textarea', $this->_a(  'shortcode_content_parser' ) );
+		add_shortcode( 'select', $this->_a(  'shortcode_content_parser' ) );
 
 		// Static assets
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', $this->_a(  'enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', $this->_a(  'admin_enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', $this->_a(  'admin_enqueue_scripts' ) );
 
 		// Unautop the shortcode
 		add_filter( 'the_content', 'shortcode_unautop', 100 );
 		// Hiding not approved attachments from Media Gallery
 		// @since core 3.5-beta-1
-		add_filter( 'posts_where', array( $this, 'filter_posts_where' ) );
+		add_filter( 'posts_where', $this->_a(  'filter_posts_where' ) );
 
 		// Init
-		add_action( 'init', array( $this, 'action_init' ) );
+		add_action( 'init', $this->_a(  'action_init' ) );
 
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
@@ -90,7 +90,21 @@ class Frontend_Uploader {
 		// Either use default settings if no setting set, or try to merge defaults with existing settings
 		// Needed if new options were added in upgraded version of the plugin
 		$this->settings = array_merge( $this->settings_defaults(), (array) get_option( $this->settings_slug, $this->settings_defaults() ) );
-		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
+		register_activation_hook( __FILE__, $this->_a(  'activate_plugin' ) );
+
+		/**
+		 * Should consist of fields to be proccessed automatically on content submission
+		 *
+		 * @todo this is just a pass one
+		 *
+		 * Example field:
+		 *  array(
+		 *  'name' => '{form name}',
+		 *  'element' => HTML element,
+		 *  'context' => {title|description|file|meta} )
+		 * @var array
+		 */
+		$this->form_fields = array();
 	}
 
 	/**
@@ -99,7 +113,7 @@ class Frontend_Uploader {
 	function action_init() {
 		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		$this->allowed_mime_types = $this->_get_mime_types();
-		add_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
+		add_filter( 'upload_mimes', $this->_a(  '_get_mime_types' ), 999 );
 	}
 
 	function _get_mime_types() {
@@ -296,8 +310,18 @@ class Frontend_Uploader {
 	 * @since  0.4
 	 */
 	function upload_content() {
+		$fields = array();
+		// @todo sanity check
+		$time = $_POST['request_time'];
+
+		// @todo finish the mapping
+		$cached_fields = wp_cache_get( "fu_upload:{$time}" , 'frontend-uploader' );
+		$fields = !empty ( $cached_fields ) ? $cached_fields : get_transient( "fu_upload:{$time}" );
+
+		// @todo bail if request is malformed somehow
+
 		// Bail if something fishy is going on
-		if ( !wp_verify_nonce( $_POST['nonceugphoto'], 'upload_ugphoto' ) ) {
+		if ( !wp_verify_nonce( $_POST['fu_nonce'], __FILE__ ) ) {
 			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  'nonce-failure' ), wp_get_referer() ) );
 			exit;
 		}
@@ -425,14 +449,14 @@ class Frontend_Uploader {
 	 * Add submenu items
 	 */
 	function add_menu_items() {
-		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_uploader', array( $this, 'admin_list' ) );
+		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_uploader', $this->_a(  'admin_list' ) );
 		foreach ( (array) $this->settings['enabled_post_types'] as $cpt ) {
 			if ( $cpt == 'post' ) {
-				add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_posts_uploader', array( $this, 'admin_posts_list' ) );
+				add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_posts_uploader', $this->_a(  'admin_posts_list' ) );
 				continue;
 			}
 
-			add_submenu_page( "edit.php?post_type={$cpt}", __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', "manage_frontend_{$cpt}s_uploader", array( $this, 'admin_posts_list' ) );
+			add_submenu_page( "edit.php?post_type={$cpt}", __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', "manage_frontend_{$cpt}s_uploader", $this->_a(  'admin_posts_list' ) );
 		}
 	}
 
@@ -444,7 +468,7 @@ class Frontend_Uploader {
 	 */
 	function approve_photo() {
 		// Check permissions, attachment ID, and nonce
-		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( $_GET['nonceugphoto'], 'upload_ugphoto' ) )
+		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( $_GET['fu_nonce'], __FILE__ ) )
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
 
 		$post = get_post( $_GET['id'] );
@@ -508,17 +532,29 @@ class Frontend_Uploader {
 	 */
 	function shortcode_content_parser( $atts, $content = null, $tag ) {
 		$atts = shortcode_atts( array(
-					'id' => '',
-					'name' => '',
-					'description' => '',
-					'value' => '',
-					'type' => '',
-					'class' => '',
-					'multiple' => 'false',
-					'values' => '',
-					'wysiwyg_enabled' => false,
-				), $atts );
-		$callback = array( $this, "_render_{$tag}" );
+			'id' => '',
+			'name' => '',
+			'description' => '',
+			'value' => '',
+			'type' => '',
+			'class' => '',
+			'multiple' => false,
+			'values' => '',
+			'wysiwyg_enabled' => false,
+			'context' => 'meta'
+		), $atts );
+
+		extract( $atts );
+
+		$this->form_fields[] = array(
+			'name' => $name,
+			'context' => $context,
+			'tag' => $tag,
+			'type' => $type,
+			'value' => $value
+		);
+
+		$callback = $this->_a(  "_render_{$tag}" );
 		if ( is_callable( $callback ) )
 			return call_user_func( $callback, $atts );
 	}
@@ -691,22 +727,26 @@ class Frontend_Uploader {
 				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
 
 			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
-			}
-?>
-		  <input type="hidden" name="action" value="upload_ugc" />
-		  <input type="hidden" value="<?php echo $post_id ?>" name="post_ID" />
-		  <input type="hidden" value="<?php echo $category; ?>" name="post_category" />
-		  <input type="hidden" value="<?php echo $success_page; ?>" name="success_page" />
-		  <input type="hidden" value="<?php echo $form_layout; ?>" name="form_layout" />
+		}
 
-		  <?php
-		if ( in_array( $form_layout, array( "post_image", "post" ) ) ): ?>
-		  <input type="hidden" value="<?php echo $post_type; ?>" name="post_type" />
-		<?php endif;
+		echo do_shortcode ( '[input type="hidden" name="action" value="upload_ugc" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="post_ID" value="' . $post_id . '" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $category . '" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="success_page" value="' . $success_page . '" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="form_layout" value="' . $form_layout . '" context="hidden"]' );
+
+		if ( in_array( $form_layout, array( "post_image", "post" ) ) )
+			echo do_shortcode ( '[input type="hidden" name="post_type" value="' . $post_type . '" context="hidden"]' );
+
 		// Allow a little customization
 		do_action( 'fu_additional_html' );
+		$time = time();
+
+		// @todo this probably won't work
+		wp_cache_add( "fu_upload:{$time}", $this->form_fields, 'frontend-uploader', 600 );
 ?>
-		  <?php wp_nonce_field( 'upload_ugphoto', 'nonceugphoto' ); ?>
+<input type="hidden" name="request_time" value="<?php echo $time ?>" />
+		  <?php wp_nonce_field( __FILE__, 'fu_nonce' ); ?>
 		  <div class="clear"></div>
 	  </div>
 	  </form>
@@ -825,8 +865,10 @@ class Frontend_Uploader {
 		$wplang = apply_filters( 'fu_wplang', WPLANG );
 		if ( $wplang ) {
 			$lang = explode( '_', $wplang );
-			$url = FU_URL . "lib/js/validate/localization/messages_{$lang[0]}.js";
-			wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
+			$relative_path = "lib/js/validate/localization/messages_{$lang[0]}.js";
+			$url = FU_URL . $relative_path;
+			if ( file_exists(  FU_ROOT . "/{$relative_path}" ) )
+				wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
 		}
 
 	}
@@ -888,6 +930,10 @@ class Frontend_Uploader {
 			'post_content' => $content,
 		);
 		return wp_update_post( $post_to_update );
+	}
+
+	function _a( $method ) {
+		return array( $this, $method );
 	}
 
 }
