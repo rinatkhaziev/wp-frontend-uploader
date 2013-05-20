@@ -3,7 +3,7 @@
 Plugin Name: Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev, Daniel Bachhuber, Ricardo Zappala
-Version: 0.6-working
+Version: 0.5.4
 Author URI: http://digitallyconscious.com
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
@@ -911,8 +911,9 @@ class Frontend_Uploader {
 			return;
 
 		$content = '';
-		// Replace ids element with actual string of ids, adding the new att id at the end
-		$matches['ids'] = "ids=\"{$matches['ids']},{$attachment_id}\"";
+		$if_prepend = apply_filters( 'fu_update_gallery_shortcode_prepend', false );
+		// Replace ids element with actual string of ids, adding the new att id
+		$matches['ids'] = $if_prepend ? "ids=\"{$attachment_id},{$matches['ids']}\"" : "ids=\"{$matches['ids']},{$attachment_id}\"";
 		$deconstructed = array( 'way_before', 'before', 'ids', 'after' );
 		// Iterate through match elements and reconstruct the post
 		foreach( $deconstructed as $match_key ) {
