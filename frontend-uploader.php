@@ -45,6 +45,7 @@ class Frontend_Uploader {
 	public $settings_slug = 'frontend_uploader_settings';
 	public $is_debug = false;
 	public $form_fields = array();
+	public $request_form_fields = array();
 
 	/**
 	 * Here we go
@@ -314,11 +315,7 @@ class Frontend_Uploader {
 		// @todo sanity check
 		$time = $_POST['request_time'];
 
-		// @todo finish the mapping
-		$cached_fields = wp_cache_get( "fu_upload:{$time}" , 'frontend-uploader' );
-		$fields = !empty ( $cached_fields ) ? $cached_fields : get_transient( "fu_upload:{$time}" );
-
-		// @todo bail if request is malformed somehow
+		$this->request_form_fields =  json_decode( urldecode( stripslashes( $_POST['form_fields'] ) ) );
 
 		// Bail if something fishy is going on
 		if ( !wp_verify_nonce( $_POST['fu_nonce'], __FILE__ ) ) {
@@ -734,6 +731,8 @@ class Frontend_Uploader {
 		echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $category . '" context="hidden"]' );
 		echo do_shortcode ( '[input type="hidden" name="success_page" value="' . $success_page . '" context="hidden"]' );
 		echo do_shortcode ( '[input type="hidden" name="form_layout" value="' . $form_layout . '" context="hidden"]' );
+		// @todo 0.6
+		?> <input type="hidden" name="form_fields" value="<?php echo esc_attr( json_encode( $this->form_fields ) ) ?>" /> <?php
 
 		if ( in_array( $form_layout, array( "post_image", "post" ) ) )
 			echo do_shortcode ( '[input type="hidden" name="post_type" value="' . $post_type . '" context="hidden"]' );
