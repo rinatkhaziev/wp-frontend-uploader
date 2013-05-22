@@ -215,7 +215,7 @@ class Frontend_Uploader {
 		// File field name could be user defined, so we just get the first file
 		$files = current( $_FILES );
 
-		for ( $i = 0; $i < count( $_FILES['photo']['name'] ); $i++ ) {
+		for ( $i = 0; $i < count( $files['name'] ); $i++ ) {
 			$fields = array( 'name', 'type', 'tmp_name', 'error', 'size' );
 			foreach ( $fields as $field ) {
 				$k[$field] = $files[$field][$i];
@@ -324,9 +324,13 @@ class Frontend_Uploader {
 			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  'nonce-failure' ), wp_get_referer() ) );
 			exit;
 		}
+
+
+
 		$layout = isset( $_POST['form_layout'] ) && !empty( $_POST['form_layout'] ) ? $_POST['form_layout'] : 'image';
 		switch ( $layout ) {
 		case 'post':
+
 			$result = $this->_upload_post();
 			break;
 		case 'post_image':
@@ -339,11 +343,14 @@ class Frontend_Uploader {
 			break;
 		case 'image':
 		case 'media':
+
 			if ( isset( $_POST['post_ID'] ) && 0 !== $pid = (int) $_POST['post_ID'] ) {
 				$result = $this->_handle_files( $pid );
 			}
+
 			break;
 		}
+
 		$this->_notify_admin( $result );
 		$this->_handle_result( $result );
 		exit;
@@ -722,7 +729,7 @@ class Frontend_Uploader {
 				echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
 			else
 				echo do_shortcode( '[textarea name="caption" context="content" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
-										[input type="file" name="photo" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
+										[input type="file" name="files" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
 
 			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
 				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
