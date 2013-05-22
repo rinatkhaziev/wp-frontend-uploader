@@ -221,6 +221,8 @@ class Frontend_Uploader {
 				$k[$field] = $files[$field][$i];
 			}
 
+			$k['name'] = sanitize_file_name( $k['name'] );
+
 			// Skip to the next file if upload went wrong
 			if ( $k['tmp_name'] == "" ) {
 				continue;
@@ -571,7 +573,7 @@ class Frontend_Uploader {
 		// Allow multiple file upload by default.
 		// To do so, we need to add array notation to name field: []
 		if ( !strpos( $name, '[]' ) && $type == 'file' )
-			$name = $name . '[]';
+			$name = 'files' . '[]';
 
 		$element = $this->html->element( 'label', $description . $this->html->input( $type, $name, $value, $atts ) , array( 'for' => $id ), false );
 
@@ -705,19 +707,21 @@ class Frontend_Uploader {
 			$file_desc = __( 'Your Photo', 'frontend-uploader' );
 			$submit_button = __( 'Submit', 'frontend-uploader' );
 
-			echo do_shortcode ( '[input type="text" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
+			echo do_shortcode ( '[input type="text" context="title" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
 
 			// here we select the different fields based on the form layout to allow for different types
 			// of uploads (only a file, only a post or a file and post)
 
 			// @todo refactor
 			if ( $form_layout == "post_image" )
-				echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
-								    [input type="file" name="photo" id="ug_photo" description="'. $file_desc .'" multiple=""]' );
+				echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
+								    [input type="file" name="photo" id="ug_photo" description="'. $file_desc .'" multiple=""]
+								[input type="file" name="files" id="ug_files" description="'. $file_desc .'" multiple=""]
+								    ' );
 			elseif ( $form_layout == "post" )
-				echo do_shortcode( '[textarea name="post_content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
+				echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
 			else
-				echo do_shortcode( '[textarea name="caption" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
+				echo do_shortcode( '[textarea name="caption" context="content" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
 										[input type="file" name="photo" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
 
 			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
@@ -726,11 +730,11 @@ class Frontend_Uploader {
 			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 		}
 
-		echo do_shortcode ( '[input type="hidden" name="action" value="upload_ugc" context="hidden"]' );
-		echo do_shortcode ( '[input type="hidden" name="post_ID" value="' . $post_id . '" context="hidden"]' );
-		echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $category . '" context="hidden"]' );
-		echo do_shortcode ( '[input type="hidden" name="success_page" value="' . $success_page . '" context="hidden"]' );
-		echo do_shortcode ( '[input type="hidden" name="form_layout" value="' . $form_layout . '" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="action" value="upload_ugc" context="internal"]' );
+		echo do_shortcode ( '[input type="hidden" name="post_ID" value="' . $post_id . '" context="internal"]' );
+		echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $category . '" context="internal"]' );
+		echo do_shortcode ( '[input type="hidden" name="success_page" value="' . $success_page . '" context="internal"]' );
+		echo do_shortcode ( '[input type="hidden" name="form_layout" value="' . $form_layout . '" context="internal"]' );
 		// @todo 0.6
 		?> <input type="hidden" name="form_fields" value="<?php echo esc_attr( json_encode( $this->form_fields ) ) ?>" /> <?php
 
