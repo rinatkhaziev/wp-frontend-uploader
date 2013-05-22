@@ -730,8 +730,7 @@ class Frontend_Uploader {
 			// @todo refactor
 			if ( $form_layout == "post_image" )
 				echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]
-								    [input type="file" name="photo" id="ug_photo" description="'. $file_desc .'" multiple=""]
-								[input type="file" name="files" id="ug_files" description="'. $file_desc .'" multiple=""]
+								    [input type="file" name="files" id="ug_photo" description="'. $file_desc .'" multiple=""]
 								    ' );
 			elseif ( $form_layout == "post" )
 				echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. $textarea_desc .'"]' );
