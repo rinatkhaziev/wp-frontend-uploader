@@ -125,13 +125,13 @@ class Frontend_Uploader {
 		$mime_types['jpg|jpe|jpeg|pjpg'] = 'image/pjpeg';
 		$mime_types['png|xpng'] = 'image/x-png';
 		// Iterate through default extensions
-		foreach( $fu_mime_types as $extension => $details ) {
+		foreach ( $fu_mime_types as $extension => $details ) {
 			// Skip if it's not in the settings
 			if ( !in_array( $extension, $this->settings['enabled_files'] ) )
 				continue;
 
 			// Iterate through mime-types for this extension
-			foreach( $details['mimes'] as $ext_mime ) {
+			foreach ( $details['mimes'] as $ext_mime ) {
 
 				$mime_types[ $extension . '|' . $extension . sanitize_title_with_dashes( $ext_mime ) ] = $ext_mime;
 			}
@@ -139,9 +139,9 @@ class Frontend_Uploader {
 		// Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme)
 		$mime_types = apply_filters( 'fu_allowed_mime_types', $mime_types );
 
-		foreach( $mime_types as $ext_key => $mime ) {
+		foreach ( $mime_types as $ext_key => $mime ) {
 			// Check for php just in case
-			if ( false !== strpos( $mime, 'php') )
+			if ( false !== strpos( $mime, 'php' ) )
 				unset( $mime_types[$ext_key] );
 		}
 
@@ -190,6 +190,7 @@ class Frontend_Uploader {
 
 	/**
 	 * Determine if we should autoapprove the submission or not
+	 *
 	 * @return boolean [description]
 	 */
 	function _is_public() {
@@ -231,7 +232,7 @@ class Frontend_Uploader {
 			preg_match( '/.(?P<ext>[a-zA-Z0-9]+)$/', $k['name'], $ext_match );
 			// Add an error message if MIME-type is not allowed
 			if ( ! in_array( $k['type'], (array) $this->allowed_mime_types ) ) {
-					$errors['fu-disallowed-mime-type'][] = array( 'name' => $k['name'], 'mime' => $k['type'] );
+				$errors['fu-disallowed-mime-type'][] = array( 'name' => $k['name'], 'mime' => $k['type'] );
 				continue;
 			}
 
@@ -437,6 +438,7 @@ class Frontend_Uploader {
 
 	/**
 	 * Display media list table
+	 *
 	 * @return [type] [description]
 	 */
 	function admin_list() {
@@ -445,6 +447,7 @@ class Frontend_Uploader {
 
 	/**
 	 * Display posts/custom post types table
+	 *
 	 * @return [type] [description]
 	 */
 	function admin_posts_list() {
@@ -538,17 +541,17 @@ class Frontend_Uploader {
 	 */
 	function shortcode_content_parser( $atts, $content = null, $tag ) {
 		$atts = shortcode_atts( array(
-			'id' => '',
-			'name' => '',
-			'description' => '',
-			'value' => '',
-			'type' => '',
-			'class' => '',
-			'multiple' => false,
-			'values' => '',
-			'wysiwyg_enabled' => false,
-			'context' => 'meta'
-		), $atts );
+				'id' => '',
+				'name' => '',
+				'description' => '',
+				'value' => '',
+				'type' => '',
+				'class' => '',
+				'multiple' => false,
+				'values' => '',
+				'wysiwyg_enabled' => false,
+				'context' => 'meta'
+			), $atts );
 
 		extract( $atts );
 
@@ -567,7 +570,8 @@ class Frontend_Uploader {
 
 	/**
 	 * Input shortcode
-	 * @param  array shortcode attributes
+	 *
+	 * @param array   shortcode attributes
 	 * @return [type]       [description]
 	 */
 	function _render_input( $atts ) {
@@ -589,7 +593,8 @@ class Frontend_Uploader {
 
 	/**
 	 * Textarea shortcode
-	 * @param  array shortcode attributes
+	 *
+	 * @param array   shortcode attributes
 	 * @return [type]       [description]
 	 */
 	function _render_textarea( $atts ) {
@@ -609,17 +614,18 @@ class Frontend_Uploader {
 		}
 		// Render plain textarea
 		$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array(
-			'name' => $name,
-			'id' => $id,
-			'class' => $class
-		) ), array( 'for' => $id ), false );
+					'name' => $name,
+					'id' => $id,
+					'class' => $class
+				) ), array( 'for' => $id ), false );
 
 		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
 	/**
 	 * Checkboxes shortcode
-	 * @param  array shortcode attributes
+	 *
+	 * @param array   shortcode attributes
 	 * @return [type]       [description]
 	 */
 	function _render_checkboxes( $atts ) {
@@ -629,7 +635,8 @@ class Frontend_Uploader {
 
 	/**
 	 * Radio buttons shortcode
-	 * @param  array shortcode attributes
+	 *
+	 * @param array   shortcode attributes
 	 * @return [type]       [description]
 	 */
 	function _render_radio( $atts ) {
@@ -639,7 +646,8 @@ class Frontend_Uploader {
 
 	/**
 	 * Select shortcode
-	 * @param  array shortcode attributes
+	 *
+	 * @param array   shortcode attributes
 	 * @return [type]       [description]
 	 */
 	function _render_select( $atts ) {
@@ -648,15 +656,15 @@ class Frontend_Uploader {
 		$values = explode( ',', $values );
 		$options = '';
 		//Build options for the list
-		foreach( $values as $option ) {
+		foreach ( $values as $option ) {
 			$options .= $this->html->element( 'option', $option, array( 'value' => $option ), false );
 		}
 		//Render select field
 		$element = $this->html->element( 'label', $description . $this->html->element( 'select', $options, array(
-			'name' => $name,
-			'id' => $id,
-			'class' => $class
-		), false ), array( 'for' => $id ), false );
+					'name' => $name,
+					'id' => $id,
+					'class' => $class
+				), false ), array( 'for' => $id ), false );
 		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
@@ -685,15 +693,15 @@ class Frontend_Uploader {
 				), $atts ) );
 		$post_id = (int) $post_id;
 
-		switch( $form_layout ) {
-			case 'image':
-			case 'media':
-				$title = __( 'Submit a media file', 'frontend-uploader' );
+		switch ( $form_layout ) {
+		case 'image':
+		case 'media':
+			$title = __( 'Submit a media file', 'frontend-uploader' );
 			break;
-			case 'post':
-			case 'post_media':
+		case 'post':
+		case 'post_media':
 			break;
-			default:
+		default:
 		}
 
 		ob_start();
@@ -708,7 +716,7 @@ class Frontend_Uploader {
 		// Parse nested shortcodes
 		if ( $content ) {
 			echo do_shortcode( $content );
-		// Or render default form
+			// Or render default form
 		} else {
 			$textarea_desc = __( 'Description', 'frontend-uploader' );
 			$file_desc = __( 'Your Photo', 'frontend-uploader' );
@@ -928,7 +936,7 @@ class Frontend_Uploader {
 		$matches['ids'] = $if_prepend ? "ids=\"{$attachment_id},{$matches['ids']}\"" : "ids=\"{$matches['ids']},{$attachment_id}\"";
 		$deconstructed = array( 'way_before', 'before', 'ids', 'after' );
 		// Iterate through match elements and reconstruct the post
-		foreach( $deconstructed as $match_key ) {
+		foreach ( $deconstructed as $match_key ) {
 			if ( isset( $matches[$match_key] ) ) {
 				$content .= $matches[$match_key];
 			}
