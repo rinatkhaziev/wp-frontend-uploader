@@ -2,8 +2,8 @@
 Contributors: rinatkhaziev, rfzappala, danielbachhuber
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.3
-Tested up to: 3.6-beta2
-Stable tag: 0.5.3
+Tested up to: 3.6-beta3
+Stable tag: 0.5.4
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
 
@@ -27,7 +27,7 @@ You can also add select elements to your form like so:
 
 [select name="foo" class="select" id="ug_select" description="Pick a fruit" values="Apple,Banana,Cherry"]
 
-By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Refer to Other notes -> Configuration filters.
+By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Refer to Other notes -> Configuration filters. Be sure to check out Other notes -> Form Customization to get a grasp on how to customize the upload form.
 
 = New in v0.5 =
 
@@ -167,7 +167,11 @@ function my_fu_allowed_mime_types( $mime_types ) {
 == Changelog ==
 
 
-= 0.6. =
+= 0.6 (Work in progress) =
+
+= 0.5.4 (May 19, 2013) =
+* Fixed bugs with form layouts
+* Better readme and FAQ section
 
 = 0.5.3 (Apr 17, 2013) =
 

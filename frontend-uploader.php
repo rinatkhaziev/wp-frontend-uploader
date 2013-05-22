@@ -3,7 +3,7 @@
 Plugin Name: Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev, Daniel Bachhuber, Ricardo Zappala
-Version: 0.6-working
+Version: 0.5.4
 Author URI: http://digitallyconscious.com
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
@@ -731,7 +731,7 @@ class Frontend_Uploader {
 
 		echo do_shortcode ( '[input type="hidden" name="action" value="upload_ugc" context="hidden"]' );
 		echo do_shortcode ( '[input type="hidden" name="post_ID" value="' . $post_id . '" context="hidden"]' );
-		echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $post_category . '" context="hidden"]' );
+		echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $category . '" context="hidden"]' );
 		echo do_shortcode ( '[input type="hidden" name="success_page" value="' . $success_page . '" context="hidden"]' );
 		echo do_shortcode ( '[input type="hidden" name="form_layout" value="' . $form_layout . '" context="hidden"]' );
 
@@ -742,8 +742,8 @@ class Frontend_Uploader {
 		do_action( 'fu_additional_html' );
 		$time = time();
 
+		// @todo this probably won't work
 		wp_cache_add( "fu_upload:{$time}", $this->form_fields, 'frontend-uploader', 600 );
-		set_transient( "fu_upload:{$time}", $this->form_fields, 3600 );
 ?>
 <input type="hidden" name="request_time" value="<?php echo $time ?>" />
 		  <?php wp_nonce_field( __FILE__, 'fu_nonce' ); ?>
@@ -865,8 +865,10 @@ class Frontend_Uploader {
 		$wplang = apply_filters( 'fu_wplang', WPLANG );
 		if ( $wplang ) {
 			$lang = explode( '_', $wplang );
-			$url = FU_URL . "lib/js/validate/localization/messages_{$lang[0]}.js";
-			wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
+			$relative_path = "lib/js/validate/localization/messages_{$lang[0]}.js";
+			$url = FU_URL . $relative_path;
+			if ( file_exists(  FU_ROOT . "/{$relative_path}" ) )
+				wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
 		}
 
 	}
