@@ -408,8 +408,8 @@ class Frontend_Uploader {
 				// Do not display mime-types in production
 				if ( !$this->is_debug && isset( $error[0]['mime'] ) )
 					unset( $error[0]['mime'] );
-
-				$_errors[$key] = join( ',,,', $error[0] );
+				if ( isset( $error[0] ) )
+					$_errors[$key] = join( ',,,', (array) $error[0] );
 			}
 
 			foreach ( $_errors as $key => $value ) {
