@@ -880,7 +880,7 @@ class Frontend_Uploader {
 		wp_enqueue_script( 'frontend-uploader-js', FU_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 		// Include localization strings for default messages of validation plugin
 		// Filter is needed for wordpress.com
-		$wplang = apply_filters( 'fu_wplang', WPLANG );
+		$wplang = apply_filters( 'fu_wplang', defined( 'WPLANG' ) ? WPLANG : '' );
 		if ( $wplang ) {
 			$lang = explode( '_', $wplang );
 			$relative_path = "lib/js/validate/localization/messages_{$lang[0]}.js";
