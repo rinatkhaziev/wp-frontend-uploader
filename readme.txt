@@ -169,6 +169,9 @@ function my_fu_allowed_mime_types( $mime_types ) {
 
 = 0.6 (Work in progress) =
 
+= 0.5.5 (June 5, 2013 ) =
+* Added German translation
+
 = 0.5.4 (May 19, 2013) =
 * Fixed bugs with form layouts
 * Better readme and FAQ section
