@@ -3,7 +3,7 @@
 Plugin Name: Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev, Daniel Bachhuber, Ricardo Zappala
-Version: 0.5.4
+Version: 0.5.5
 Author URI: http://digitallyconscious.com
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
@@ -417,8 +417,7 @@ class Frontend_Uploader {
 			}
 
 			$query_args['errors'] = join( ';', $errors_formatted );
-		}
-
+		
 		wp_safe_redirect( add_query_arg( array( $query_args ) , $url ) );
 	}
 
@@ -863,7 +862,7 @@ class Frontend_Uploader {
 				if ( isset( $map[ $error_type[0] ]['format'] ) )
 					$message = vsprintf( $map[ $error_type[0] ]['format'], $details );
 				else
-					$message = $map[ $error_type[0] ]['text'];
+					$message = $map[ $error_type[0] ]['text'];	
 			}
 			$output .= $this->_notice_html( $message, 'failure' );
 		}
