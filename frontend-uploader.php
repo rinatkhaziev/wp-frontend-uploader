@@ -417,7 +417,8 @@ class Frontend_Uploader {
 			}
 
 			$query_args['errors'] = join( ';', $errors_formatted );
-		
+			}
+
 		wp_safe_redirect( add_query_arg( array( $query_args ) , $url ) );
 	}
 
