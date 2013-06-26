@@ -1,5 +1,6 @@
 === Frontend Uploader ===
 Contributors: rinatkhaziev, rfzappala, danielbachhuber
+Donate link: http://digitallyconscious.com/my-wordpress-plugins/
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.3
 Tested up to: 3.6-beta3
