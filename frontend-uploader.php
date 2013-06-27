@@ -741,7 +741,7 @@ class Frontend_Uploader {
 				echo do_shortcode( '[textarea name="caption" context="content" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
 										[input type="file" name="files" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
 
-			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] )
+			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] == 'on' )
 				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
 
 			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );

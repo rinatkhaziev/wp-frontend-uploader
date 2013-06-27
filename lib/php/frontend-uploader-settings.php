@@ -31,7 +31,7 @@ class Frontend_Uploader_Settings {
 	 * Get post types for checkbox option
 	 * @return array of slug => label for registered post types
 	 */
-	function get_post_types() {
+	static function get_post_types() {
 		$fu_public_post_types = get_post_types( array( 'public' => true ), 'objects' );
 		foreach( $fu_public_post_types as $slug => $post_object ) {
 			if ( $slug == 'attachment' ) {
@@ -62,7 +62,7 @@ class Frontend_Uploader_Settings {
 	 *
 	 * @return array settings fields
 	 */
-	function get_settings_fields() {;
+	static function get_settings_fields() {;
 		$default_post_type = array( 'post' => 'Posts', 'post' => 'post' );
 		$settings_fields = array(
 			'frontend_uploader_settings' => array(
