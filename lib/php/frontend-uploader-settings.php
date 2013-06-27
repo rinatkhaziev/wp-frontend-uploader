@@ -106,7 +106,7 @@ class Frontend_Uploader_Settings {
 				array(
 					'name' => 'enabled_post_types',
 					'label' => __( 'Enable Frontend Uploader for the following post types', 'frontend-uploader' ),
-					'desc' => __( '', 'frontend-uploader' ),
+					'desc' => '',
                     'type' => 'multicheck',
                     'default' => $default_post_type,
                     'options' => self::get_post_types(),
@@ -121,7 +121,7 @@ class Frontend_Uploader_Settings {
 				array(
 					'name' => 'enabled_files',
 					'label' => __( 'Allow following files to be uploaded', 'frontend-uploader' ),
-					'desc' => __( '', 'frontend-uploader' ),
+					'desc' => '',
                     'type' => 'multicheck',
                     'default' => array( 'mp3' => 'mp3', 'doc' => 'doc', 'docx' => 'docx', 'pdf' => 'pdf', 'xls' => 'xls', 'xlsx' => 'xlsx' ),
                     'options' => fu_get_exts_descs(),
