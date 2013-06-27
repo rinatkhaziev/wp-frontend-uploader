@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Frontend Uploader v0.5.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-frontend-uploader\n"
 "POT-Creation-Date: 2012-09-01 23:44:34+00:00\n"
-"PO-Revision-Date: 2013-04-11 08:24:53+0000\n"
+"PO-Revision-Date: 2013-06-27 04:12:39+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -205,7 +205,7 @@ msgstr "Прикрепить к посту"
 msgid "No media attachments found."
 msgstr "Файлов не найдено"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:115
 #@ default
 msgctxt "column name"
@@ -218,14 +218,14 @@ msgstr "Файл"
 msgid "Author"
 msgstr "Автор"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:119
 #@ default
 msgctxt "column name"
 msgid "Attached to"
 msgstr "Прикреплен к"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:122
 #: lib/php/class-frontend-uploader-wp-posts-list-table.php:131
 #@ default
@@ -609,22 +609,22 @@ msgstr "Название"
 #: frontend-uploader.php:230
 #@ frontend-uploader
 msgid "Unnamed"
-msgstr ""
+msgstr "Без названия"
 
 #: frontend-uploader.php:588
 #@ frontend-uploader
 msgid "Submit a new post"
-msgstr ""
+msgstr "Отправить новый пост"
 
 #: frontend-uploader.php:603
 #@ frontend-uploader
 msgid "Submit a media file"
-msgstr ""
+msgstr "Загрузить файл"
 
 #: frontend-uploader.php:702
 #@ frontend-uploader
 msgid "There was an error with your submission"
-msgstr ""
+msgstr "Произошла ошибка при обработке вашего запроса"
 
 #: frontend-uploader.php:727
 #@ frontend-uploader
@@ -684,15 +684,15 @@ msgstr ""
 #: lib/php/frontend-uploader-settings.php:116
 #@ frontend-uploader
 msgid "Allow following files to be uploaded"
-msgstr ""
+msgstr "Разрешить эти типы файлов для загрузки"
 
 #: lib/php/frontend-uploader-settings.php:124
 #@ frontend-uploader
 msgid "Auto-approve registered users files"
-msgstr ""
+msgstr "Автоматически публиковать файлы, загруженные зарегистрированными пользователями"
 
 #: lib/php/frontend-uploader-settings.php:131
 #@ frontend-uploader
 msgid "Auto-approve any files"
-msgstr ""
+msgstr "Автоматически публиковать все загружаемые файлы"
 
