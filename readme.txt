@@ -40,7 +40,7 @@ Now your visitors are able to upload not only media, but guest posts as well!
 Use [fu-upload-form form_layout="post_image"] to get default form to upload post content and images
 Use [fu-upload-form form_layout="post"] to get default form to upload post content
 
-You can also manage UGC for selected custom post types (Please refer to the plugin's settings page). By default, UGC is enabled for posts and attachments. If you want to be able to get any other post types UGC submissions just select desired post types at the plugin's settings page, and pass post_type='my_post_type' to the [fu-upload-form] shortcode
+You can also manage UGC for selected custom post types (Please refer to the plugin's settings page). By default, UGC is enabled for posts and attachments. If you want to be able to get any other post types UGC submissions just select desired post types at the plugin's settings page, and pass post_type='my_post_type' to the [fu-upload-form] shortcode.
 
 = Translations: =
 
@@ -166,6 +166,9 @@ function my_fu_additional_html() {
 
 
 = 0.6 (Work in progress) =
+
+= 0.5.6 (June 26, 2013) =
+* Prevent plugin activation if WP is older than 3.3
 
 = 0.5.5 (June 5, 2013 ) =
 * Added German translation
