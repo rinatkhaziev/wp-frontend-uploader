@@ -118,8 +118,8 @@ class Frontend_Uploader {
 	}
 
 	function _get_mime_types() {
-		// Grab default mime-types
-		$mime_types = wp_get_mime_types();
+		// Use wp_get_mime_types if available, fallback to get_allowed_mime_types()
+		$mime_types = function_exists( 'wp_get_mime_types' ) ? wp_get_mime_types() : get_allowed_mime_types() ;
 		$fu_mime_types = fu_get_mime_types();
 		// Workaround for IE
 		$mime_types['jpg|jpe|jpeg|pjpg'] = 'image/pjpeg';
@@ -132,7 +132,6 @@ class Frontend_Uploader {
 
 			// Iterate through mime-types for this extension
 			foreach ( $details['mimes'] as $ext_mime ) {
-
 				$mime_types[ $extension . '|' . $extension . sanitize_title_with_dashes( $ext_mime ) ] = $ext_mime;
 			}
 		}
@@ -144,7 +143,6 @@ class Frontend_Uploader {
 			if ( false !== strpos( $mime, 'php' ) )
 				unset( $mime_types[$ext_key] );
 		}
-
 		return $mime_types;
 	}
 
@@ -163,6 +161,10 @@ class Frontend_Uploader {
 	}
 
 	function activate_plugin() {
+		global $wp_version;
+		if ( version_compare( $wp_version, '3.3', '<' ) ) {
+			wp_die( __( 'Frontend Uploader requires WordPress 3.3 or newer. Please upgrade.', 'frontend-uploader' ) );
+		}
 		$defaults = $this->settings_defaults();
 		$existing_settings = (array) get_option( $this->settings_slug, $this->settings_defaults() );
 		update_option( $this->settings_slug, array_merge( $defaults, (array) $existing_settings ) );
