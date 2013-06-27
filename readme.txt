@@ -78,45 +78,6 @@ The form has several parameters that can modify its behavior:
 1. 'post_id' => ID of the post the image should be attached to. Defaults to current post id
 1. 'post_type' => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
 
-
-== Configuration Filters ==
-
-= fu_allowed_mime_types =
-
-Allows you to add your custom MIME-types. Please note that there might be multiple MIME types per file extension.
-
-`add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );
-function my_fu_allowed_mime_types( $mime_types ) {
-	$mp3_mimes = array( 'audio/mpeg', 'audio/x-mpeg', 'audio/mp3', 'audio/x-mp3', 'audio/mpeg3', 'audio/x-mpeg3', 'audio/mpg', 'audio/x-mpg', 'audio/x-mpegaudio' );
-	foreach( $mp3_mimes as $mp3_mime ) {
-		$mime = $mp3_mime;
-		preg_replace("/[^0-9a-zA-Z ]/", "", $mp3_mime );
-		$mime_types['mp3|mp3_' . $mp3_mime ] = $mime;
-	}
-	return $mime_types;
-}`
-
-= fu_after_upload =
-
-`add_action( 'fu_after_upload', 'my_fu_after_upload' );
-
-function my_fu_after_upload( $attachment_ids ) {
-	// do something with freshly uploaded files
-	// This happens on POST request, so $_POST will also be available for you
-}`
-
-= fu_additional_html =
-
-Allows you to add additional HTML to form
-
-`add_action('fu_additional_html', 'my_fu_additional_html' );
-
-function my_fu_additional_html() {
-?>
-<input type="hidden" name="my_custom_param" value="something" />
-<?php
-}`
-
 == Frequently Asked Questions ==
 
 = I want to customize my form =
@@ -124,7 +85,6 @@ You can include additional elements with a set of shortcodes
 [input]
 [select]
 [textarea]
-
 
 = I want to be allow users to upload mp3, psd, or any other file restricted by default. =
 
@@ -164,6 +124,43 @@ function my_fu_allowed_mime_types( $mime_types ) {
 	return $mime_types;
 }`
 
+= Configuration Filters =
+
+= fu_allowed_mime_types =
+
+Allows you to add your custom MIME-types. Please note that there might be multiple MIME types per file extension.
+
+`add_filter( 'fu_allowed_mime_types', 'my_fu_allowed_mime_types' );
+function my_fu_allowed_mime_types( $mime_types ) {
+	$mp3_mimes = array( 'audio/mpeg', 'audio/x-mpeg', 'audio/mp3', 'audio/x-mp3', 'audio/mpeg3', 'audio/x-mpeg3', 'audio/mpg', 'audio/x-mpg', 'audio/x-mpegaudio' );
+	foreach( $mp3_mimes as $mp3_mime ) {
+		$mime = $mp3_mime;
+		preg_replace("/[^0-9a-zA-Z ]/", "", $mp3_mime );
+		$mime_types['mp3|mp3_' . $mp3_mime ] = $mime;
+	}
+	return $mime_types;
+}`
+
+= fu_after_upload =
+
+`add_action( 'fu_after_upload', 'my_fu_after_upload' );
+
+function my_fu_after_upload( $attachment_ids ) {
+	// do something with freshly uploaded files
+	// This happens on POST request, so $_POST will also be available for you
+}`
+
+= fu_additional_html =
+
+Allows you to add additional HTML to form
+
+`add_action('fu_additional_html', 'my_fu_additional_html' );
+
+function my_fu_additional_html() {
+?>
+<input type="hidden" name="my_custom_param" value="something" />
+<?php
+}`
 
 == Changelog ==
 
