@@ -389,7 +389,7 @@ class Frontend_Uploader {
 		$errors_formatted = array();
 		// Either redirect to success page if it's set and valid
 		// Or to referrer
-		$url = isset( $_POST['success_page'] ) && filter_var( $_POST['success_page'], FILTER_VALIDATE_URL ) ? $_POST['success_page'] :  strtok( wp_get_referer(), '?' );
+		$url = isset( $_POST['success_page'] ) && filter_var( $_POST['success_page'], FILTER_VALIDATE_URL ) ? $_POST['success_page'] : wp_get_referer();
 
 		// $query_args will hold everything that's needed for displaying notices to user
 		$query_args = array();
