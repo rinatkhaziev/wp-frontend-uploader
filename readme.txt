@@ -64,11 +64,11 @@ You can also manage UGC for selected custom post types (Please refer to the plug
 
 1. Screenshot of plugin's UI (It's looks like standard media list table, with slightly better Parent column and additional row action: "Approve")
 
-== Form Customization ==
+== Frequently Asked Questions ==
 
-= [fu-upload-form] parameters =
+= Shortcode parameters =
 
-The form has several parameters that can modify its behavior:
+The [fu-upload-form] shortcode has several parameters that can modify its behavior:
 
 1. 'title' => Headline that will be displayed before the form
 1. 'class' => HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class
@@ -78,7 +78,6 @@ The form has several parameters that can modify its behavior:
 1. 'post_id' => ID of the post the image should be attached to. Defaults to current post id
 1. 'post_type' => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
 
-== Frequently Asked Questions ==
 
 = I want to customize my form =
 You can include additional elements with a set of shortcodes
