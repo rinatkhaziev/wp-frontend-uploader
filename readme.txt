@@ -22,13 +22,13 @@ Here's example of default form (you don't need to enter all that if you want to 
 [input type="submit" class="btn" value="Submit"]
 [/fu-upload-form]`
 
-If you want to customize your form, please refer to Form Customization section.
+If you want to customize your form, please refer to FAQ section.
 
 You can also add select elements to your form like so:
 
 [select name="foo" class="select" id="ug_select" description="Pick a fruit" values="Apple,Banana,Cherry"]
 
-By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Refer to Other notes -> Configuration filters. Be sure to check out Other notes -> Form Customization to get a grasp on how to customize the upload form.
+By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Refer to Other notes -> Configuration filters. Be sure to check out FAQ to get a grasp on how to customize the upload form.
 
 = New in v0.5 =
 

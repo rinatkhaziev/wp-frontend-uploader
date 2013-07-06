@@ -733,36 +733,38 @@ class Frontend_Uploader {
 		if ( !empty( $_GET ) )
 			$this->_display_response_notices( $_GET );
 
-		// Parse nested shortcodes
-		if ( $content ) {
-			echo do_shortcode( $content );
-			// Or render default form
-		} else {
-			$textarea_desc = __( 'Description', 'frontend-uploader' );
-			$file_desc = __( 'Your Media Files', 'frontend-uploader' );
-			$submit_button = __( 'Submit', 'frontend-uploader' );
+		$textarea_desc = __( 'Description', 'frontend-uploader' );
+		$file_desc = __( 'Your Media Files', 'frontend-uploader' );
+		$submit_button = __( 'Submit', 'frontend-uploader' );
+		// Display title field
+		echo do_shortcode ( '[input type="text" context="title" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
 
-			echo do_shortcode ( '[input type="text" context="title" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
-
-			// here we select the different fields based on the form layout to allow for different types
-			// of uploads (only a file, only a post or a file and post)
-
-			// @todo refactor
-			if ( $form_layout == "post_image" )
-				echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. __( 'Post content', 'frontend-uploader' ) .'"]
-								    [input type="file" name="files" id="ug_photo" description="'. $file_desc .'" multiple=""]
-								    ' );
-			elseif ( $form_layout == "post" )
+		// Display default form fields
+		switch( $form_layout ) {
+			case 'post_image':
+			case 'post_media':
+			case 'image':
+			case 'media':
+				echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. __( 'Post content or file description', 'frontend-uploader' ) .'"]
+							    [input type="file" name="files" id="ug_photo" description="'. $file_desc .'" multiple=""]
+							    ' );
+			break;
+			case 'post':
 				echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. __( 'Post content', 'frontend-uploader' ) .'"]' );
-			else
-				echo do_shortcode( '[textarea name="caption" context="content" class="textarea tinymce-enabled" id="ugcaption" description="'. $textarea_desc .'"]
-										[input type="file" name="files" id="ug_photo" class="required" description="'. $file_desc .'" multiple=""]' );
-
-			if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] == 'on' )
-				echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
-
-			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
+			break;
+			break;
 		}
+
+		// Show author field
+		if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] == 'on' )
+			echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
+
+		// Parse nested shortcodes
+		if ( $content )
+			echo do_shortcode( $content );
+
+
+		echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 
 		echo do_shortcode ( '[input type="hidden" name="action" value="upload_ugc" context="internal"]' );
 		echo do_shortcode ( '[input type="hidden" name="post_ID" value="' . $post_id . '" context="internal"]' );
