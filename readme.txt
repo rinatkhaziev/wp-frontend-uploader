@@ -89,7 +89,7 @@ Here's example of default form (you don't need to enter all that if you want to 
 You can include additional elements with a set of shortcodes
 [input type="text" name="post_title" id="title" class="required" description="Title" multiple=""]
 [select name="foo" class="select" id="ug_select" description="Pick a fruit" values="Apple,Banana,Cherry"]
-[textarea]
+[textarea name="post_content" class="textarea" id="ug_caption" description="Description (optional)"]
 
 
 
