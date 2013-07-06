@@ -14,17 +14,9 @@ This plugin gives you an ability to easily accept, moderate and publish user gen
 
 This plugin supports multiple uploads for modern browsers. Multiple file uploads are enabled for default form. To use it in your custom shortcode add multiple="" attribute to file shortcode.
 
-Here's example of default form (you don't need to enter all that if you want to use default form, just use [fu-upload-form]):
-
-`[fu-upload-form class="your-class" title="Upload your media"]
-[textarea name="caption" class="textarea" id="ug_caption" description="Description (optional)"]
-[input type="file" name="photo" id="ug_photo" class="required" description="Your Photo" multiple=""]
-[input type="submit" class="btn" value="Submit"]
-[/fu-upload-form]`
-
 If you want to customize your form, please refer to FAQ section.
 
-By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Refer to Other notes -> Configuration filters. Be sure to check out FAQ to get a grasp on how to customize the upload form.
+By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Be sure to check out FAQ to get a grasp on how to customize the upload form with actions and filters.
 
 = New in v0.5 =
 
