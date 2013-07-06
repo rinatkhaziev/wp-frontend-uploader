@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Frontend Uploader v0.5.1\n"
+"Project-Id-Version: Frontend Uploader v0.5.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-frontend-uploader\n"
 "POT-Creation-Date: 2012-09-01 23:44:34+00:00\n"
-"PO-Revision-Date: 2013-06-27 04:12:39+0000\n"
+"PO-Revision-Date: 2013-07-06 02:45:54+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,9 +20,9 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: frontend-uploader.php:420
-#: frontend-uploader.php:423
-#: frontend-uploader.php:427
+#: frontend-uploader.php:482
+#: frontend-uploader.php:485
+#: frontend-uploader.php:489
 #: lib/views/manage-ugc-media.tpl.php:2
 #@ frontend-uploader
 msgid "Manage UGC"
@@ -132,22 +132,17 @@ msgstr "Файл восстановлен из корзины"
 msgid "Search Media"
 msgstr "Поиск файла"
 
-#: frontend-uploader.php:620
-#@ frontend-uploader
-msgid "Your Photo"
-msgstr "Ваш файл"
-
-#: frontend-uploader.php:621
+#: frontend-uploader.php:738
 #@ frontend-uploader
 msgid "Submit"
 msgstr "Загрузить"
 
-#: frontend-uploader.php:698
+#: frontend-uploader.php:826
 #@ frontend-uploader
 msgid "Your file was successfully uploaded!"
 msgstr "Файл был загружен"
 
-#: frontend-uploader.php:730
+#: frontend-uploader.php:862
 #@ frontend-uploader
 msgid "This kind of file is not allowed. Please, try again selecting other file."
 msgstr "Файл данного типа не разрешено загружать. Попробуйте другой файл"
@@ -188,7 +183,7 @@ msgstr[2] "Корзина <span class=\"count\">(%s)</span>"
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:296
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:312
 #: lib/php/class-frontend-uploader-wp-posts-list-table.php:94
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:312
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:155
 #@ frontend-uploader
 #@ default
 msgid "Delete Permanently"
@@ -205,27 +200,27 @@ msgstr "Прикрепить к посту"
 msgid "No media attachments found."
 msgstr "Файлов не найдено"
 
-#. translators: column name
+#. translators: column name 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:115
 #@ default
 msgctxt "column name"
 msgid "File"
 msgstr "Файл"
 
-#: frontend-uploader.php:639
+#: frontend-uploader.php:760
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:116
 #@ frontend-uploader
 msgid "Author"
 msgstr "Автор"
 
-#. translators: column name
+#. translators: column name 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:119
 #@ default
 msgctxt "column name"
 msgid "Attached to"
 msgstr "Прикреплен к"
 
-#. translators: column name
+#. translators: column name 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:122
 #: lib/php/class-frontend-uploader-wp-posts-list-table.php:131
 #@ default
@@ -235,40 +230,33 @@ msgstr "Дата"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:171
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:184
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:182
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:195
 #, php-format
 #@ frontend-uploader
 msgid "Edit \"%s\""
 msgstr "Редактировать"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:216
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:227
 #@ frontend-uploader
 msgid "No Tags"
 msgstr "Нет тэгов"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:231
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:242
 #@ frontend-uploader
 msgid "Unpublished"
 msgstr "Не прикреплен"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:233
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:244
 #@ frontend-uploader
 msgid "Y/m/d g:i:s A"
 msgstr "Y/m/d g:i:s A"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:238
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:249
 #, php-format
 #@ frontend-uploader
 msgid "%s from now"
 msgstr "%s спустя"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:240
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:251
 #, php-format
 #@ frontend-uploader
 msgid "%s ago"
@@ -277,29 +265,26 @@ msgstr "%s назад"
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:242
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:258
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:356
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:253
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:269
 #@ frontend-uploader
 msgid "Y/m/d"
 msgstr "Y/m/d"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:263
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:363
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:274
 #@ frontend-uploader
 msgid "(Unattached)"
 msgstr "(Не прикреплен)"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:290
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:304
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:300
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:143
 #@ frontend-uploader
 msgid "Edit"
 msgstr "Редактировать"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:293
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:309
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:310
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:153
 #@ frontend-uploader
 #@ default
 msgid "Trash"
@@ -307,7 +292,7 @@ msgstr "Корзина"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:298
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:321
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:315
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:158
 #, php-format
 #@ frontend-uploader
 msgid "View \"%s\""
@@ -315,7 +300,7 @@ msgstr "Просмотреть \"%s\""
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:298
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:321
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:315
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:158
 #@ frontend-uploader
 msgid "View"
 msgstr "Просмотреть"
@@ -327,14 +312,14 @@ msgid "Attach"
 msgstr "Прикрепить"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:307
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:308
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:151
 #@ frontend-uploader
 #@ default
 msgid "Restore"
 msgstr "Восстановить"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:316
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:303
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:146
 #@ frontend-uploader
 msgid "Approve"
 msgstr "Подтвердить"
@@ -364,8 +349,9 @@ msgstr "Уведомлять администратора"
 
 #: lib/php/frontend-uploader-settings.php:72
 #: lib/php/frontend-uploader-settings.php:102
-#: lib/php/frontend-uploader-settings.php:125
+#: lib/php/frontend-uploader-settings.php:117
 #: lib/php/frontend-uploader-settings.php:132
+#: lib/php/frontend-uploader-settings.php:139
 #@ frontend-uploader
 msgid "Yes"
 msgstr "Да"
@@ -521,13 +507,13 @@ msgstr "Email для Уведомления"
 msgid "Leave blank to use site admin email"
 msgstr "Оставьте пустым, чтобы использовать email администратора сайта"
 
-#: frontend-uploader.php:331
+#: frontend-uploader.php:383
 #@ frontend-uploader
 msgid "New content was uploaded on your site"
 msgstr "Новый контент был загружен на сайт"
 
-#: frontend-uploader.php:423
-#: frontend-uploader.php:427
+#: frontend-uploader.php:485
+#: frontend-uploader.php:489
 #: lib/views/manage-ugc-posts.tpl.php:2
 #@ frontend-uploader
 msgid "Manage UGC Posts"
@@ -543,17 +529,12 @@ msgstr "У Вас нет права публиковать посты"
 msgid "Search Posts"
 msgstr "Найти пост"
 
-#: frontend-uploader.php:619
+#: frontend-uploader.php:736
 #@ frontend-uploader
 msgid "Description"
 msgstr "Описание"
 
-#: frontend-uploader.php:642
-#@ frontend-uploader
-msgid "Credit"
-msgstr "Автор"
-
-#: frontend-uploader.php:734
+#: frontend-uploader.php:866
 #@ frontend-uploader
 msgid "The content you are trying to post is invalid."
 msgstr "Контент, который Вы пытаетесь опубликовать не может быть опубликован"
@@ -570,17 +551,17 @@ msgctxt "column name"
 msgid "Categories"
 msgstr ""
 
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:308
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:151
 #@ default
 msgid "Restore this item from the Trash"
 msgstr ""
 
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:310
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:153
 #@ default
 msgid "Move this item to the Trash"
 msgstr ""
 
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:312
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:155
 #@ default
 msgid "Delete this item permanently"
 msgstr ""
@@ -600,33 +581,33 @@ msgstr "Разделенные запятыми ID (оставьте пусты�
 msgid "Show author field"
 msgstr "Показывать автора"
 
-#: frontend-uploader.php:623
+#: frontend-uploader.php:740
 #@ frontend-uploader
 msgid "Title"
 msgstr "Название"
 
-#: frontend-uploader.php:229
-#: frontend-uploader.php:230
+#: frontend-uploader.php:256
+#: frontend-uploader.php:257
 #@ frontend-uploader
 msgid "Unnamed"
 msgstr "Без названия"
 
-#: frontend-uploader.php:588
+#: frontend-uploader.php:705
 #@ frontend-uploader
 msgid "Submit a new post"
 msgstr "Отправить новый пост"
 
-#: frontend-uploader.php:603
+#: frontend-uploader.php:719
 #@ frontend-uploader
 msgid "Submit a media file"
 msgstr "Загрузить файл"
 
-#: frontend-uploader.php:702
+#: frontend-uploader.php:834
 #@ frontend-uploader
 msgid "There was an error with your submission"
 msgstr "Произошла ошибка при обработке вашего запроса"
 
-#: frontend-uploader.php:727
+#: frontend-uploader.php:859
 #@ frontend-uploader
 msgid "Security check failed!"
 msgstr ""
@@ -681,18 +662,58 @@ msgstr ""
 msgid "Text Input (integer validation)"
 msgstr ""
 
-#: lib/php/frontend-uploader-settings.php:116
+#: lib/php/frontend-uploader-settings.php:123
 #@ frontend-uploader
 msgid "Allow following files to be uploaded"
 msgstr "Разрешить эти типы файлов для загрузки"
 
-#: lib/php/frontend-uploader-settings.php:124
+#: lib/php/frontend-uploader-settings.php:131
 #@ frontend-uploader
 msgid "Auto-approve registered users files"
 msgstr "Автоматически публиковать файлы, загруженные зарегистрированными пользователями"
 
-#: lib/php/frontend-uploader-settings.php:131
+#: lib/php/frontend-uploader-settings.php:138
 #@ frontend-uploader
 msgid "Auto-approve any files"
 msgstr "Автоматически публиковать все загружаемые файлы"
+
+#: frontend-uploader.php:166
+#@ frontend-uploader
+msgid "Frontend Uploader requires WordPress 3.3 or newer. Please upgrade."
+msgstr ""
+
+#: frontend-uploader.php:737
+#@ frontend-uploader
+msgid "Your Media Files"
+msgstr ""
+
+#: frontend-uploader.php:748
+#@ frontend-uploader
+msgid "Post content or file description"
+msgstr ""
+
+#: frontend-uploader.php:753
+#@ frontend-uploader
+msgid "Post content"
+msgstr ""
+
+#: frontend-uploader.php:830
+#@ frontend-uploader
+msgid "Your post was successfully uploaded!"
+msgstr ""
+
+#: frontend-uploader.php:869
+#@ frontend-uploader
+msgid "Couldn't upload the file"
+msgstr ""
+
+#: frontend-uploader.php:872
+#@ frontend-uploader
+msgid "Couldn't create the post"
+msgstr ""
+
+#: lib/php/frontend-uploader-settings.php:116
+#@ frontend-uploader
+msgid "Enable visual editor for textareas"
+msgstr ""
 

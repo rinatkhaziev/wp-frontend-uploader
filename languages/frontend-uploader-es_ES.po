@@ -1,15 +1,16 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Frontend Uploader v0.5.5\n"
+"Project-Id-Version: Frontend Uploader v0.5.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-06-05 20:32:45+0000\n"
+"PO-Revision-Date: 2013-07-06 02:45:31+0000\n"
 "Last-Translator: admin <gastonbesada@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: CSL v1.x\n"
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-Country: SPAIN\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -19,9 +20,9 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: frontend-uploader.php:462
-#: frontend-uploader.php:465
-#: frontend-uploader.php:469
+#: frontend-uploader.php:482
+#: frontend-uploader.php:485
+#: frontend-uploader.php:489
 #: lib/views/manage-ugc-media.tpl.php:2
 #@ frontend-uploader
 msgid "Manage UGC"
@@ -127,7 +128,7 @@ msgstr "Media restaurado de la papelera."
 msgid "Search Media"
 msgstr "Buscar Media"
 
-#: frontend-uploader.php:805
+#: frontend-uploader.php:826
 #@ frontend-uploader
 msgid "Your file was successfully uploaded!"
 msgstr "Su archivo fue subido satisfactoriamente!"
@@ -165,7 +166,7 @@ msgstr[1] ""
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:296
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:312
 #: lib/php/class-frontend-uploader-wp-posts-list-table.php:94
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:312
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:155
 #@ frontend-uploader
 #@ default
 msgid "Delete Permanently"
@@ -189,7 +190,7 @@ msgctxt "column name"
 msgid "File"
 msgstr ""
 
-#: frontend-uploader.php:743
+#: frontend-uploader.php:760
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:116
 #@ frontend-uploader
 msgid "Author"
@@ -211,32 +212,27 @@ msgid "Date"
 msgstr ""
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:216
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:227
 #@ frontend-uploader
 msgid "No Tags"
 msgstr "Sin Etiquetas"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:231
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:242
 #@ frontend-uploader
 msgid "Unpublished"
 msgstr "No publicado"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:233
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:244
 #@ frontend-uploader
 msgid "Y/m/d g:i:s A"
 msgstr "Y/m/d g:i:s A"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:238
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:249
 #, php-format
 #@ frontend-uploader
 msgid "%s from now"
 msgstr "%s a partir de ahora"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:240
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:251
 #, php-format
 #@ frontend-uploader
 msgid "%s ago"
@@ -245,15 +241,12 @@ msgstr "hace %s"
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:242
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:258
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:356
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:253
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:269
 #@ frontend-uploader
 msgid "Y/m/d"
 msgstr "Y/m/d"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:263
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:363
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:274
 #@ frontend-uploader
 msgid "(Unattached)"
 msgstr "(No adjunto)"
@@ -266,14 +259,14 @@ msgstr "Adjuntar"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:290
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:304
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:300
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:143
 #@ frontend-uploader
 msgid "Edit"
 msgstr "Editar"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:293
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:309
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:310
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:153
 #@ frontend-uploader
 #@ default
 msgid "Trash"
@@ -281,13 +274,13 @@ msgstr "Papelera"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:298
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:321
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:315
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:158
 #@ frontend-uploader
 msgid "View"
 msgstr "Ver"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:307
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:308
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:151
 #@ frontend-uploader
 #@ default
 msgid "Restore"
@@ -298,20 +291,13 @@ msgstr "Restaurar"
 msgid "Re-Attach"
 msgstr "Re-Adjuntar"
 
-#: frontend-uploader.php:723
-#@ frontend-uploader
-msgid "Your Photo"
-msgstr "Su imagen"
-
-#: frontend-uploader.php:724
+#: frontend-uploader.php:738
 #@ frontend-uploader
 msgid "Submit"
 msgstr "Enviar"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:171
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:184
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:182
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:195
 #, php-format
 #@ frontend-uploader
 msgid "Edit \"%s\""
@@ -319,19 +305,19 @@ msgstr "Editar \"%s\""
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:298
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:321
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:315
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:158
 #, php-format
 #@ frontend-uploader
 msgid "View \"%s\""
 msgstr "Ver \"%s\""
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:316
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:303
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:146
 #@ frontend-uploader
 msgid "Approve"
 msgstr "Aprobar"
 
-#: frontend-uploader.php:837
+#: frontend-uploader.php:862
 #@ frontend-uploader
 msgid "This kind of file is not allowed. Please, try again selecting other file."
 msgstr ""
@@ -514,13 +500,13 @@ msgstr ""
 msgid "Leave blank to use site admin email"
 msgstr ""
 
-#: frontend-uploader.php:370
+#: frontend-uploader.php:383
 #@ frontend-uploader
 msgid "New content was uploaded on your site"
 msgstr ""
 
-#: frontend-uploader.php:465
-#: frontend-uploader.php:469
+#: frontend-uploader.php:485
+#: frontend-uploader.php:489
 #: lib/views/manage-ugc-posts.tpl.php:2
 #@ frontend-uploader
 msgid "Manage UGC Posts"
@@ -536,17 +522,17 @@ msgstr ""
 msgid "Search Posts"
 msgstr ""
 
-#: frontend-uploader.php:722
+#: frontend-uploader.php:736
 #@ frontend-uploader
 msgid "Description"
 msgstr ""
 
-#: frontend-uploader.php:726
+#: frontend-uploader.php:740
 #@ frontend-uploader
 msgid "Title"
 msgstr ""
 
-#: frontend-uploader.php:841
+#: frontend-uploader.php:866
 #@ frontend-uploader
 msgid "The content you are trying to post is invalid."
 msgstr ""
@@ -563,17 +549,17 @@ msgctxt "column name"
 msgid "Categories"
 msgstr ""
 
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:308
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:151
 #@ default
 msgid "Restore this item from the Trash"
 msgstr ""
 
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:310
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:153
 #@ default
 msgid "Move this item to the Trash"
 msgstr ""
 
-#: lib/php/class-frontend-uploader-wp-posts-list-table.php:312
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:155
 #@ default
 msgid "Delete this item permanently"
 msgstr ""
@@ -593,28 +579,28 @@ msgstr ""
 msgid "Show author field"
 msgstr ""
 
-#: frontend-uploader.php:254
-#: frontend-uploader.php:255
+#: frontend-uploader.php:256
+#: frontend-uploader.php:257
 #@ frontend-uploader
 msgid "Unnamed"
 msgstr ""
 
-#: frontend-uploader.php:686
+#: frontend-uploader.php:705
 #@ frontend-uploader
 msgid "Submit a new post"
 msgstr ""
 
-#: frontend-uploader.php:700
+#: frontend-uploader.php:719
 #@ frontend-uploader
 msgid "Submit a media file"
 msgstr ""
 
-#: frontend-uploader.php:809
+#: frontend-uploader.php:834
 #@ frontend-uploader
 msgid "There was an error with your submission"
 msgstr ""
 
-#: frontend-uploader.php:834
+#: frontend-uploader.php:859
 #@ frontend-uploader
 msgid "Security check failed!"
 msgstr ""
@@ -684,12 +670,12 @@ msgstr ""
 msgid "Auto-approve any files"
 msgstr ""
 
-#: frontend-uploader.php:844
+#: frontend-uploader.php:869
 #@ frontend-uploader
 msgid "Couldn't upload the file"
 msgstr ""
 
-#: frontend-uploader.php:847
+#: frontend-uploader.php:872
 #@ frontend-uploader
 msgid "Couldn't create the post"
 msgstr ""
@@ -697,5 +683,30 @@ msgstr ""
 #: lib/php/frontend-uploader-settings.php:116
 #@ frontend-uploader
 msgid "Enable visual editor for textareas"
+msgstr ""
+
+#: frontend-uploader.php:166
+#@ frontend-uploader
+msgid "Frontend Uploader requires WordPress 3.3 or newer. Please upgrade."
+msgstr ""
+
+#: frontend-uploader.php:737
+#@ frontend-uploader
+msgid "Your Media Files"
+msgstr ""
+
+#: frontend-uploader.php:748
+#@ frontend-uploader
+msgid "Post content or file description"
+msgstr ""
+
+#: frontend-uploader.php:753
+#@ frontend-uploader
+msgid "Post content"
+msgstr ""
+
+#: frontend-uploader.php:830
+#@ frontend-uploader
+msgid "Your post was successfully uploaded!"
 msgstr ""
 
