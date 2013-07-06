@@ -300,7 +300,7 @@ class Frontend_Uploader {
 		$users = get_users( array(
 				'search' => $author,
 				'fields' => 'ID'
-		) );
+			) );
 
 		if ( isset( $users[0] ) ) {
 			$post_array['post_author'] = (int) $users[0];
@@ -437,7 +437,7 @@ class Frontend_Uploader {
 			}
 
 			$query_args['errors'] = join( ';', $errors_formatted );
-			}
+		}
 
 		wp_safe_redirect( add_query_arg( array( $query_args ) , $url ) );
 	}
@@ -740,17 +740,17 @@ class Frontend_Uploader {
 		echo do_shortcode ( '[input type="text" context="title" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
 
 		// Display default form fields
-		switch( $form_layout ) {
-			case 'post_image':
-			case 'post_media':
-			case 'image':
-			case 'media':
-				echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. __( 'Post content or file description', 'frontend-uploader' ) .'"]
+		switch ( $form_layout ) {
+		case 'post_image':
+		case 'post_media':
+		case 'image':
+		case 'media':
+			echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. __( 'Post content or file description', 'frontend-uploader' ) .'"]
 							    [input type="file" name="files" id="ug_photo" description="'. $file_desc .'" multiple=""]
 							    ' );
 			break;
-			case 'post':
-				echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. __( 'Post content', 'frontend-uploader' ) .'"]' );
+		case 'post':
+			echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. __( 'Post content', 'frontend-uploader' ) .'"]' );
 			break;
 			break;
 		}
@@ -888,7 +888,7 @@ class Frontend_Uploader {
 				if ( isset( $map[ $error_type[0] ]['format'] ) )
 					$message = vsprintf( $map[ $error_type[0] ]['format'], $details );
 				else
-					$message = $map[ $error_type[0] ]['text'];	
+					$message = $map[ $error_type[0] ]['text'];
 			}
 			$output .= $this->_notice_html( $message, 'failure' );
 		}
