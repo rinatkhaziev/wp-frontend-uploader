@@ -1,5 +1,5 @@
 === Frontend Uploader ===
-Contributors: rinatkhaziev, rfzappala, danielbachhuber
+Contributors: rinatkhaziev, danielbachhuber
 Donate link: http://digitallyconscious.com/my-wordpress-plugins/
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.3
@@ -84,18 +84,13 @@ Here's example of default form (you don't need to enter all that if you want to 
 [input type="submit" class="btn" value="Submit"]
 [/fu-upload-form]`
 
-
 = I want to customize my form =
 You can include additional elements with a set of shortcodes
 [input type="text" name="post_title" id="title" class="required" description="Title" multiple=""]
 [select name="foo" class="select" id="ug_select" description="Pick a fruit" values="Apple,Banana,Cherry"]
 [textarea name="post_content" class="textarea" id="ug_caption" description="Description (optional)"]
 
-
-
-
 = I want to be allow users to upload mp3, psd, or any other file restricted by default. =
-
 You are able to do that within Frontend Uploader Settings admin page. The settings there cover the most popular extensions/MIME-types.
 The trick is that the same file might have several different mime-types based on setup of server/client.
 If you're experiencing any issues, you can set WP_DEBUG to true in your wp-config.php or put
@@ -174,6 +169,14 @@ function my_fu_additional_html() {
 
 
 = 0.6 (Work in progress) =
+
+= 0.5.7 (July 5th, 2013 =
+* Determine if post type of uploaded post is allowed in the plugin's settings rather than than in all registered post types
+* If uploadeded post has author set and it's one of the registered users of the blog, post_author is set to that user, otherwise saved as meta
+* Set success value to true if no files were uploaded but post was uplaoded succesfully
+* Add nested shortcodes after default fields, instead of replacing them
+
+
 
 = 0.5.6 (June 26, 2013) =
 * Prevent plugin activation if WP is older than 3.3
