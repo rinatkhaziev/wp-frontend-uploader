@@ -24,10 +24,6 @@ Here's example of default form (you don't need to enter all that if you want to 
 
 If you want to customize your form, please refer to FAQ section.
 
-You can also add select elements to your form like so:
-
-[select name="foo" class="select" id="ug_select" description="Pick a fruit" values="Apple,Banana,Cherry"]
-
 By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Refer to Other notes -> Configuration filters. Be sure to check out FAQ to get a grasp on how to customize the upload form.
 
 = New in v0.5 =
@@ -78,12 +74,24 @@ The [fu-upload-form] shortcode has several parameters that can modify its behavi
 1. 'post_id' => ID of the post the image should be attached to. Defaults to current post id
 1. 'post_type' => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
 
+= Example of default media upload form =
+Here's example of default form (you don't need to enter all that if you want to use default form, just use [fu-upload-form]):
+
+`[fu-upload-form class="your-class" title="Upload your media"]
+[textarea name="caption" class="textarea" id="ug_caption" description="Description (optional)"]
+[input type="file" name="photo" id="ug_photo" class="required" description="Your Photo" multiple=""]
+[input type="submit" class="btn" value="Submit"]
+[/fu-upload-form]`
+
 
 = I want to customize my form =
 You can include additional elements with a set of shortcodes
 [input]
-[select]
+[select name="foo" class="select" id="ug_select" description="Pick a fruit" values="Apple,Banana,Cherry"]
 [textarea]
+
+
+
 
 = I want to be allow users to upload mp3, psd, or any other file restricted by default. =
 
