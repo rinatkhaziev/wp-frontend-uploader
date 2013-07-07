@@ -9,11 +9,16 @@ require_once ABSPATH . '/wp-admin/includes/class-wp-posts-list-table.php';
 class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 
 	function __construct() {
+		global $frontend_uploader;
 		$screen = get_current_screen();
 		if ( $screen->post_type == '' ) {
 			$screen->post_type ='post';
 		}
-		add_filter( 'post_row_actions', array( $this, '_add_approve_action' ), 10, 2 );
+
+		foreach( (array) $frontend_uploader->settings['enabled_post_types'] as $post_type ) {
+			add_filter( "{$post_type}_row_actions", array( $this, '_add_approve_action' ), 10, 2 );
+		}
+
 		parent::__construct( array( 'screen' => $screen ) );
 
 	}
