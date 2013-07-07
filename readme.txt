@@ -4,7 +4,7 @@ Donate link: http://digitallyconscious.com/my-wordpress-plugins/
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.3
 Tested up to: 3.6-beta4
-Stable tag: 0.5.6
+Stable tag: 0.5.7
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
 
