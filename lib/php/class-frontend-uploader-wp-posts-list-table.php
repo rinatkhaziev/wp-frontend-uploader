@@ -5,17 +5,25 @@
  * @todo Unhack
  *
  */
-require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
 require_once ABSPATH . '/wp-admin/includes/class-wp-posts-list-table.php';
 class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 
 	function __construct() {
-		$screen = get_current_screen( 'page' );
+		$screen = get_current_screen();
 		if ( $screen->post_type == '' ) {
 			$screen->post_type ='post';
 		}
+		add_filter( 'post_row_actions', array( $this, '_add_approve_action' ), 10, 2 );
 		parent::__construct( array( 'screen' => $screen ) );
 
+	}
+
+	function _add_approve_action( $actions, $post ) {
+		unset( $actions['inline hide-if-no-js'] );
+		if ( $post->post_status == 'private' ) {
+			$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc_post&id=' . $post->ID . '&post_type=' . $post->post_type . '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
+		}
+		return $actions;
 	}
 
 	function prepare_items() {
@@ -92,24 +100,7 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 	function get_bulk_actions() {
 		$actions = array();
 		$actions['delete'] = __( 'Delete Permanently', 'frontend-uploader' );
-		//if ( $this->detached )
-		// $actions['attach'] = __( 'Attach to a post', 'frontend-uploader' );
-
 		return $actions;
-	}
-
-	function current_action() {
-
-		if ( isset( $_REQUEST['find_detached'] ) )
-			return 'find_detached';
-
-		if ( isset( $_REQUEST['found_post_id'] ) )
-			return 'attach';
-
-		if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) )
-			return 'delete_all';
-
-		return parent::current_action();
 	}
 
 	function has_items() {
@@ -117,7 +108,7 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 	}
 
 	function no_items() {
-		__( 'No media attachments found.', 'frontend-uploader' );
+		__( 'No posts found.', 'frontend-uploader' );
 	}
 
 	function get_columns() {
@@ -132,31 +123,6 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 		$posts_columns = apply_filters( 'manage_fu_posts_columns', $posts_columns );
 
 		return $posts_columns;
-
 	}
 
-
-	function _get_row_actions( $post, $att_title ) {
-		$actions = array();
-
-		if ( current_user_can( 'edit_post', $post->ID ) )
-			$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, true ) . '">' . __( 'Edit', 'frontend-uploader' ) . '</a>';
-
-		if ( $post->post_status == 'private' ) {
-			$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc_post&id=' . $post->ID . '&post_type=' . $post->post_type . '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
-		}
-
-		if ( current_user_can( 'delete_post', $post->ID ) ) {
-			if ( 'trash' == $post->post_status )
-				$actions['untrash'] = "<a title='" . esc_attr( __( 'Restore this item from the Trash' ) ) . "' href='" . wp_nonce_url( admin_url( sprintf( $post_type_object->_edit_link . '&amp;action=untrash', $post->ID ) ), 'untrash-post_' . $post->ID ) . "'>" . __( 'Restore' ) . "</a>";
-			elseif ( EMPTY_TRASH_DAYS )
-				$actions['trash'] = "<a class='submitdelete' title='" . esc_attr( __( 'Move this item to the Trash' ) ) . "' href='" . get_delete_post_link( $post->ID ) . "'>" . __( 'Trash' ) . "</a>";
-			if ( 'trash' == $post->post_status || !EMPTY_TRASH_DAYS )
-				$actions['delete'] = "<a class='submitdelete' title='" . esc_attr( __( 'Delete this item permanently' ) ) . "' href='" . get_delete_post_link( $post->ID, '', true ) . "'>" . __( 'Delete Permanently' ) . "</a>";
-		}
-
-		$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( sprintf( __( 'View "%s"', 'frontend-uploader' ), $att_title ) ) . '" rel="permalink">' . __( 'View', 'frontend-uploader' ) . '</a>';
-
-		return $actions;
-	}
 }
