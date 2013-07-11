@@ -36,6 +36,7 @@ You can also manage UGC for selected custom post types (Please refer to the plug
 * Мы говорим по-русски (Russian)
 * Nous parlons français (French) (props dapickboy)
 * Nous parlons français (Canadian French) (props rfzappala)
+* Vi snakker norsk (Norwegian) (props André Langseth)
 
 [Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
 
