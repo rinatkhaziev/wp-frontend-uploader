@@ -532,24 +532,25 @@ class Frontend_Uploader {
 
 		$post = get_post( $_GET['id'] );
 
-		$images = get_children( 'post_type=attachment&post_parent=' . $post->ID );
-
-		foreach ( $images as $imageID => $imagePost ) {
-			$current_image = array();
-			$current_image['ID'] = $imageID;
-			$current_image['post_status'] = "publish";
-			wp_update_post( $current_image );
-		}
 		if ( !is_wp_error( $post ) ) {
 			$post->post_status = 'publish';
 			wp_update_post( $post );
-			$post_type = $post->post_type == 'post' ? array() : array( 'post_type' => $post->post_type );
-			$url = add_query_arg(
-				array_merge( array(
-						'page' => "manage_frontend_uploader_{$post->post_type}s",
-						'approved' => 1,
-					), $post_type ), get_admin_url( null, "edit.php" ) );
 
+			// Check if there's any UGC attachments
+			$attachments = get_children( 'post_type=attachment&post_parent=' . $post->ID );
+			foreach ( (array) $attachments as $image_id => $attachment ) {
+				$attachment->post_status = "inherit";
+				wp_update_post( $attachment );
+			}
+
+			// Override query args
+			$qa = array(
+				'page' => "manage_frontend_uploader_{$post->post_type}s",
+				'approved' => 1,
+				'post_type' => $post->post_type != 'post' ? $post->post_type : '',
+			);
+
+			$url = add_query_arg( $qa, get_admin_url( null, "edit.php" ) );
 		}
 
 		wp_safe_redirect( $url );
