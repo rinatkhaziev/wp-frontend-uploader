@@ -3,7 +3,7 @@ Contributors: rinatkhaziev, danielbachhuber
 Donate link: http://digitallyconscious.com/my-wordpress-plugins/
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.3
-Tested up to: 3.6-beta4
+Tested up to: 3.6-RC2
 Stable tag: 0.5.7
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
@@ -122,6 +122,11 @@ function my_fu_allowed_mime_types( $mime_types ) {
 
 = Configuration Filters =
 
+= fu_manage_permissions =
+
+By default Frontend Uploader could be managed with 'edit_posts' capability, if you want to change permissions, this is the right filter
+`add_filter( 'fu_manage_permissions', create_function( '$cap', 'return "edit_others_posts"; ) );`
+
 = fu_allowed_mime_types =
 
 Allows you to add your custom MIME-types. Please note that there might be multiple MIME types per file extension.
@@ -160,10 +165,13 @@ function my_fu_additional_html() {
 
 == Changelog ==
 
-
 = 0.6 (Work in progress) =
 
-= 0.5.7 (July 5th, 2013 =
+= 0.5.8 (July 25th, 2013) =
+* Fixed bug with failing nonce check upon single item deletion
+* Introduced 'fu_manage_permissions' filter to alter default permissions for managing UGC
+
+= 0.5.7 (July 5th, 2013) =
 * Determine if post type of uploaded post is allowed in the plugin's settings rather than than in all registered post types
 * If uploadeded post has author set and it's one of the registered users of the blog, post_author is set to that user, otherwise saved as meta
 * Set success value to true if no files were uploaded but post was uplaoded succesfully
