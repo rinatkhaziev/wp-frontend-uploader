@@ -16,17 +16,18 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 		}
 
 		foreach( (array) $frontend_uploader->settings['enabled_post_types'] as $post_type ) {
-			add_filter( "{$post_type}_row_actions", array( $this, '_add_approve_action' ), 10, 2 );
+			add_filter( "{$post_type}_row_actions", array( $this, '_add_row_actions' ), 10, 2 );
 		}
 
 		parent::__construct( array( 'screen' => $screen ) );
 
 	}
 
-	function _add_approve_action( $actions, $post ) {
+	function _add_row_actions( $actions, $post ) {
 		unset( $actions['inline hide-if-no-js'] );
 		if ( $post->post_status == 'private' ) {
 			$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc_post&id=' . $post->ID . '&post_type=' . $post->post_type . '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
+			$actions['delete'] = '<a onclick="return showNotice.warn();" href="'.admin_url( 'admin-ajax.php' ).'?action=delete_ugc&id=' . $post->ID . '&post_type=' . $post->post_type . '&fu_nonce=' . wp_create_nonce( FU_FILE_PATH ). '">'. __( 'Delete Permanently', 'frontend-uploader' ) .'</a>';
 		}
 		return $actions;
 	}

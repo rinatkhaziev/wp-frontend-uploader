@@ -282,6 +282,12 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 <?php endwhile;
 	}
 
+	/**
+	 * [_get_row_actions description]
+	 * @param  [type] $post      [description]
+	 * @param  [type] $att_title [description]
+	 * @return [type]            [description]
+	 */
 	function _get_row_actions( $post, $att_title ) {
 		$actions = array();
 
@@ -293,7 +299,8 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 					$actions['trash'] = "<a class='submitdelete' href='" . wp_nonce_url( "post.php?action=trash&amp;post=$post->ID", 'trash-attachment_' . $post->ID ) . "'>" . __( 'Trash', 'frontend-uploader' ) . "</a>";
 				} else {
 				$delete_ays = !MEDIA_TRASH ? " onclick='return showNotice.warn();'" : '';
-				$actions['delete'] = "<a class='submitdelete'$delete_ays href='" . wp_nonce_url( "post.php?action=delete&amp;post=$post->ID", 'delete-attachment_' . $post->ID ) . "'>" . __( 'Delete Permanently', 'frontend-uploader' ) . "</a>";
+				// $actions['delete'] = "<a class='submitdelete'$delete_ays href='" . wp_nonce_url( "post.php?action=delete&amp;post=$post->ID", 'delete-attachment_' . $post->ID ) . "'>" . __( 'Delete Permanently', 'frontend-uploader' ) . "</a>";
+				$actions['delete'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=delete_ugc&id=' . $post->ID . '&fu_nonce=' . wp_create_nonce( FU_FILE_PATH ). '">'. __( 'Delete Permanently', 'frontend-uploader' ) .'</a>';
 			}
 			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( sprintf( __( 'View "%s"', 'frontend-uploader' ), $att_title ) ) . '" rel="permalink">' . __( 'View', 'frontend-uploader' ) . '</a>';
 			if ( current_user_can( 'edit_post', $post->ID ) )
@@ -313,7 +320,9 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 				}
 
 				if ( $post->post_status == 'private' ) {
+					$delete_ays = !MEDIA_TRASH ? " onclick='return showNotice.warn();'" : '';
 					$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc&id=' . $post->ID . '&fu_nonce=' . wp_create_nonce( FU_FILE_PATH ). '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
+					$actions['delete'] = '<a ' .  $delete_ays . ' href="'.admin_url( 'admin-ajax.php' ).'?action=delete_ugc&id=' . $post->ID . '&fu_nonce=' . wp_create_nonce( FU_FILE_PATH ). '">'. __( 'Delete Permanently', 'frontend-uploader' ) .'</a>';
 				}
 			}
 			if ( !$this->is_trash ) {

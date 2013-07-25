@@ -46,6 +46,7 @@ class Frontend_Uploader {
 	public $is_debug = false;
 	public $form_fields = array();
 	public $request_form_fields = array();
+	protected $manage_permissions = array();
 
 	/**
 	 * Here we go
@@ -57,6 +58,7 @@ class Frontend_Uploader {
 
 		add_action( 'wp_ajax_approve_ugc', $this->_a(  'approve_photo' ) );
 		add_action( 'wp_ajax_approve_ugc_post', $this->_a(  'approve_post' ) );
+		add_action( 'wp_ajax_delete_ugc', $this->_a(  'delete_post' ) );
 
 		add_action( 'wp_ajax_upload_ugc', $this->_a(  'upload_content' ) );
 		add_action( 'wp_ajax_nopriv_upload_ugc', $this->_a(  'upload_content' ) );
@@ -73,7 +75,6 @@ class Frontend_Uploader {
 		// Static assets
 		add_action( 'wp_enqueue_scripts', $this->_a(  'enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', $this->_a(  'admin_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', $this->_a(  'admin_enqueue_scripts' ) );
 
 		// Unautop the shortcode
 		add_filter( 'the_content', 'shortcode_unautop', 100 );
@@ -86,6 +87,9 @@ class Frontend_Uploader {
 
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
+
+		// Configuration filter to change manage permissions
+		$this->manage_permissions = apply_filters( 'fu_manage_permissions', 'edit_posts' );
 
 		$this->is_debug = (bool) apply_filters( 'fu_is_debug', defined( 'WP_DEBUG' ) && WP_DEBUG );
 		// Either use default settings if no setting set, or try to merge defaults with existing settings
@@ -479,14 +483,14 @@ class Frontend_Uploader {
 	 * Add submenu items
 	 */
 	function add_menu_items() {
-		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_uploader', $this->_a(  'admin_list' ) );
+		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), $this->manage_permissions, 'manage_frontend_uploader', $this->_a(  'admin_list' ) );
 		foreach ( (array) $this->settings['enabled_post_types'] as $cpt ) {
 			if ( $cpt == 'post' ) {
-				add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', 'manage_frontend_posts_uploader', $this->_a(  'admin_posts_list' ) );
+				add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), $this->manage_permissions, 'manage_frontend_uploader_posts', $this->_a(  'admin_posts_list' ) );
 				continue;
 			}
 
-			add_submenu_page( "edit.php?post_type={$cpt}", __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), 'edit_posts', "manage_frontend_{$cpt}s_uploader", $this->_a(  'admin_posts_list' ) );
+			add_submenu_page( "edit.php?post_type={$cpt}", __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), $this->manage_permissions, "manage_frontend_uploader_{$cpt}s", $this->_a(  'admin_posts_list' ) );
 		}
 	}
 
@@ -498,7 +502,7 @@ class Frontend_Uploader {
 	 */
 	function approve_photo() {
 		// Check permissions, attachment ID, and nonce
-		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0 || !wp_verify_nonce( $_GET['fu_nonce'], FU_FILE_PATH ) )
+		if ( ! $this->_check_perms_and_nonce() || 0 !== (int) $_GET['id'] )
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
 
 		$post = get_post( $_GET['id'] );
@@ -522,8 +526,8 @@ class Frontend_Uploader {
 	 */
 	function approve_post() {
 		// check for permissions and id
-		$url = get_admin_url( null, 'edit.php?page=manage_frontend_posts_uploader&error=id_or_perm' );
-		if ( !current_user_can( 'edit_posts' ) || intval( $_GET['id'] ) == 0  )
+		$url = get_admin_url( null, 'edit.php?page=manage_frontend_uploader_posts&error=id_or_perm' );
+		if ( !current_user_can( $this->manage_permissions ) || intval( $_GET['id'] ) == 0  )
 			wp_safe_redirect( $url );
 
 		$post = get_post( $_GET['id'] );
@@ -542,7 +546,7 @@ class Frontend_Uploader {
 			$post_type = $post->post_type == 'post' ? array() : array( 'post_type' => $post->post_type );
 			$url = add_query_arg(
 				array_merge( array(
-						'page' => "manage_frontend_{$post->post_type}s_uploader",
+						'page' => "manage_frontend_uploader_{$post->post_type}s",
 						'approved' => 1,
 					), $post_type ), get_admin_url( null, "edit.php" ) );
 
@@ -550,6 +554,28 @@ class Frontend_Uploader {
 
 		wp_safe_redirect( $url );
 		exit;
+	}
+
+	/**
+	 * Delete post and redirect to referrer
+	 * @return [type] [description]
+	 */
+	function delete_post() {
+		if ( $this->_check_perms_and_nonce() && 0 !== (int) $_GET['id'] ) {
+						if ( wp_delete_post( (int) $_GET['id'], true ) )
+							$args['deleted'] = 1;
+		}
+
+		wp_safe_redirect( add_query_arg( $args, wp_get_referer() ) );
+		exit;
+	}
+
+	/**
+	 * Handles security checks
+	 * @return bool
+	 */
+	function _check_perms_and_nonce() {
+		return current_user_can( $this->manage_permissions ) && wp_verify_nonce( $_REQUEST['fu_nonce'], FU_FILE_PATH );
 	}
 
 	/**

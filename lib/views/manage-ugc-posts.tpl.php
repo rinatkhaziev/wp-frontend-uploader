@@ -20,7 +20,7 @@ if ( isset( $_REQUEST['s'] ) && $_REQUEST['s'] )
 <?php
 $message = '';
 if ( isset( $_GET['posted'] ) && (int) $_GET['posted'] ) {
-	$message = __( 'Media attachment updated.', 'frontend-uploader' );
+	$message = __( 'Post updated.', 'frontend-uploader' );
 	$_SERVER['REQUEST_URI'] = remove_query_arg( array( 'posted' ), $_SERVER['REQUEST_URI'] );
 }
 
@@ -31,18 +31,18 @@ if ( isset( $_GET['attached'] ) && (int) $_GET['attached'] ) {
 }
 
 if ( isset( $_GET['deleted'] ) && (int) $_GET['deleted'] ) {
-	$message = sprintf( _n( 'Media attachment permanently deleted.', '%d media attachments permanently deleted.', $_GET['deleted'] ), number_format_i18n( $_GET['deleted'] ) );
+	$message = sprintf( _n( 'Post permanently deleted.', '%d Posts permanently deleted.', $_GET['deleted'] ), number_format_i18n( $_GET['deleted'] ) );
 	$_SERVER['REQUEST_URI'] = remove_query_arg( array( 'deleted' ), $_SERVER['REQUEST_URI'] );
 }
 
 if ( isset( $_GET['trashed'] ) && (int) $_GET['trashed'] ) {
-	$message = sprintf( _n( 'Media attachment moved to the trash.', '%d media attachments moved to the trash.', $_GET['trashed'] ), number_format_i18n( $_GET['trashed'] ) );
+	$message = sprintf( _n( 'Post moved to the trash.', '%d Posts moved to the trash.', $_GET['trashed'] ), number_format_i18n( $_GET['trashed'] ) );
 	$message .= ' <a href="' . esc_url( wp_nonce_url( 'upload.php?doaction=undo&action=untrash&ids='.( isset( $_GET['ids'] ) ? $_GET['ids'] : '' ), "bulk-media" ) ) . '">' . __( 'Undo', 'frontend-uploader' ) . '</a>';
 	$_SERVER['REQUEST_URI'] = remove_query_arg( array( 'trashed' ), $_SERVER['REQUEST_URI'] );
 }
 
 if ( isset( $_GET['untrashed'] ) && (int) $_GET['untrashed'] ) {
-	$message = sprintf( _n( 'Media attachment restored from the trash.', '%d media attachments restored from the trash.', $_GET['untrashed'] ), number_format_i18n( $_GET['untrashed'] ) );
+	$message = sprintf( _n( 'Post restored from the trash.', '%d Posts restored from the trash.', $_GET['untrashed'] ), number_format_i18n( $_GET['untrashed'] ) );
 	$_SERVER['REQUEST_URI'] = remove_query_arg( array( 'untrashed' ), $_SERVER['REQUEST_URI'] );
 }
 
@@ -50,9 +50,9 @@ if ( isset( $_GET['approved'] ) ) {
 	$message = 'The post was approved';
 }
 
-$messages[1] = __( 'Media attachment updated.', 'frontend-uploader' );
+$messages[1] = __( 'Post updated.', 'frontend-uploader' );
 $messages[2] = __( 'Media permanently deleted.', 'frontend-uploader' );
-$messages[3] = __( 'Error saving media attachment.', 'frontend-uploader' );
+$messages[3] = __( 'Error saving Post.', 'frontend-uploader' );
 $messages[4] = __( 'Media moved to the trash.', 'frontend-uploader' ) . ' <a href="' . esc_url( wp_nonce_url( 'upload.php?doaction=undo&action=untrash&ids='.( isset( $_GET['ids'] ) ? $_GET['ids'] : '' ), "bulk-media" ) ) . '">' . __( 'Undo', 'frontend-uploader' ) . '</a>';
 $messages[5] = __( 'Media restored from the trash.', 'frontend-uploader' );
 
