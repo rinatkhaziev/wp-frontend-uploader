@@ -54,34 +54,6 @@ class Frontend_Uploader {
 	 * Instantiating the plugin, adding actions, filters, and shortcodes
 	 */
 	function __construct() {
-		// Hooking to wp_ajax
-
-		add_action( 'wp_ajax_approve_ugc', $this->_a(  'approve_photo' ) );
-		add_action( 'wp_ajax_approve_ugc_post', $this->_a(  'approve_post' ) );
-		add_action( 'wp_ajax_delete_ugc', $this->_a(  'delete_post' ) );
-
-		add_action( 'wp_ajax_upload_ugc', $this->_a(  'upload_content' ) );
-		add_action( 'wp_ajax_nopriv_upload_ugc', $this->_a(  'upload_content' ) );
-
-		// Adding media submenu
-		add_action( 'admin_menu', $this->_a(  'add_menu_items' ) );
-
-		// Currently supported shortcodes
-		add_shortcode( 'fu-upload-form', $this->_a(  'upload_form' ) );
-		add_shortcode( 'input', $this->_a(  'shortcode_content_parser' ) );
-		add_shortcode( 'textarea', $this->_a(  'shortcode_content_parser' ) );
-		add_shortcode( 'select', $this->_a(  'shortcode_content_parser' ) );
-
-		// Static assets
-		add_action( 'wp_enqueue_scripts', $this->_a(  'enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', $this->_a(  'admin_enqueue_scripts' ) );
-
-		// Unautop the shortcode
-		add_filter( 'the_content', 'shortcode_unautop', 100 );
-		// Hiding not approved attachments from Media Gallery
-		// @since core 3.5-beta-1
-		add_filter( 'posts_where', $this->_a(  'filter_posts_where' ) );
-
 		// Init
 		add_action( 'init', $this->_a(  'action_init' ) );
 
@@ -112,14 +84,44 @@ class Frontend_Uploader {
 	 *  Load languages and a bit of paranoia
 	 */
 	function action_init() {
+
 		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		// Hooking to wp_ajax
+
+		add_action( 'wp_ajax_approve_ugc', $this->_a(  'approve_photo' ) );
+		add_action( 'wp_ajax_approve_ugc_post', $this->_a(  'approve_post' ) );
+		add_action( 'wp_ajax_delete_ugc', $this->_a(  'delete_post' ) );
+
+		add_action( 'wp_ajax_upload_ugc', $this->_a(  'upload_content' ) );
+		add_action( 'wp_ajax_nopriv_upload_ugc', $this->_a(  'upload_content' ) );
+
+		// Adding media submenu
+		add_action( 'admin_menu', $this->_a(  'add_menu_items' ) );
+
+		// Currently supported shortcodes
+		add_shortcode( 'fu-upload-form', $this->_a(  'upload_form' ) );
+		add_shortcode( 'input', $this->_a(  'shortcode_content_parser' ) );
+		add_shortcode( 'textarea', $this->_a(  'shortcode_content_parser' ) );
+		add_shortcode( 'select', $this->_a(  'shortcode_content_parser' ) );
+
+		// Static assets
+		add_action( 'wp_enqueue_scripts', $this->_a(  'enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', $this->_a(  'admin_enqueue_scripts' ) );
+
+		// Unautop the shortcode
+		add_filter( 'the_content', 'shortcode_unautop', 100 );
+		// Hiding not approved attachments from Media Gallery
+		// @since core 3.5-beta-1
+		add_filter( 'posts_where', $this->_a(  'filter_posts_where' ) );
+
+
 		$this->allowed_mime_types = $this->_get_mime_types();
 		// Configuration filter to change manage permissions
 		$this->manage_permissions = apply_filters( 'fu_manage_permissions', 'edit_posts' );
 		// Debug mode filter
 		$this->is_debug = (bool) apply_filters( 'fu_is_debug', defined( 'WP_DEBUG' ) && WP_DEBUG );
 
-		add_filter( 'upload_mimes', $this->_a(  '_get_mime_types' ), 999 );
+		add_filter( 'upload_mimes', $this->_a( '_get_mime_types' ), 999 );
 	}
 
 	function _get_mime_types() {
@@ -185,7 +187,7 @@ class Frontend_Uploader {
 	 * @return string WHERE statement
 	 */
 	function filter_posts_where( $where ) {
-		if ( !is_admin() )
+		if ( !is_admin() || !function_exists( 'get_current_screen' ) )
 			return $where;
 
 		$screen = get_current_screen();
