@@ -732,6 +732,7 @@ class Frontend_Uploader {
 
 		// Reset postdata in case it got polluted somewhere
 		wp_reset_postdata();
+		// @todo unfuck category and post_id part
 		extract( shortcode_atts( array(
 					'description' => '',
 					'title' => __( 'Submit a new post', 'frontend-uploader' ),
