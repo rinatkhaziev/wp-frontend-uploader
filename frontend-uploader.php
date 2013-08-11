@@ -768,21 +768,55 @@ class Frontend_Uploader {
 		$textarea_desc = __( 'Description', 'frontend-uploader' );
 		$file_desc = __( 'Your Media Files', 'frontend-uploader' );
 		$submit_button = __( 'Submit', 'frontend-uploader' );
-		// Display title field
-		echo do_shortcode ( '[input type="text" context="title" name="post_title" id="ug_post_title" description="' . __( 'Title', 'frontend-uploader' ) . '" class="required"]' );
 
-		// Display default form fields
+		// Display title field
+		echo $this->shortcode_content_parser( array(
+			'type' => 'text',
+			'context' => 'title',
+			'name' => 'post_title',
+			'id' => 'ug_post_title',
+			'class' => 'required',
+			'description' =>  __( 'Title', 'frontend-uploader' ),
+			), null, 'input' );
+
+	   /**
+		* Render default fields
+		* 
+		*/
 		switch ( $form_layout ) {
 		case 'post_image':
 		case 'post_media':
 		case 'image':
 		case 'media':
-			echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. __( 'Post content or file description', 'frontend-uploader' ) .'"]
-							    [input type="file" name="files" id="ug_photo" description="'. $file_desc .'" multiple=""]
-							    ' );
+
+			// post_content
+			echo $this->shortcode_content_parser( array(
+				'context' => 'content',
+				'name' => 'post_content',
+				'id' => 'ug_content',
+				'class' => 'required',
+				'description' =>  __( 'Post content or file description', 'frontend-uploader' ),
+				), null, 'textarea' );
+
+			echo $this->shortcode_content_parser( array(
+				'type' => 'file',
+				'context' => 'file',
+				'name' => 'files',
+				'id' => 'ug_photo',
+				'multiple' => '',
+				'description' =>  $file_desc,
+				), null, 'input' );
+
 			break;
 		case 'post':
-			echo do_shortcode( '[textarea name="post_content" context="content" class="textarea" id="ug_content" class="required" description="'. __( 'Post content', 'frontend-uploader' ) .'"]' );
+			// post_content
+			echo $this->shortcode_content_parser( array(
+				'context' => 'content',
+				'name' => 'post_content',
+				'id' => 'ug_content',
+				'class' => 'required',
+				'description' =>  __( 'Post content', 'frontend-uploader' ),
+				), null, 'textarea' );
 			break;
 			break;
 		}
