@@ -738,7 +738,6 @@ class Frontend_Uploader {
 					'title' => __( 'Submit a new post', 'frontend-uploader' ),
 					'type' => '',
 					'class' => 'validate',
-					'category' => '1',
 					'success_page' => '',
 					'form_layout' => 'image',
 					'post_id' => get_the_ID(),
@@ -801,7 +800,10 @@ class Frontend_Uploader {
 
 		echo do_shortcode ( '[input type="hidden" name="action" value="upload_ugc" context="internal"]' );
 		echo do_shortcode ( '[input type="hidden" name="post_ID" value="' . $post_id . '" context="internal"]' );
-		echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $category . '" context="internal"]' );
+
+		if ( isset( $category ) && 0 !== (int) $category )
+			echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $category . '" context="internal"]' );
+
 		echo do_shortcode ( '[input type="hidden" name="success_page" value="' . $success_page . '" context="internal"]' );
 		echo do_shortcode ( '[input type="hidden" name="form_layout" value="' . $form_layout . '" context="internal"]' );
 		// @todo 0.6
