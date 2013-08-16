@@ -123,7 +123,7 @@ class Frontend_Uploader_Settings {
 					'label' => __( 'Allow following files to be uploaded', 'frontend-uploader' ),
 					'desc' => '',
                     'type' => 'multicheck',
-                    'default' => array( 'mp3' => 'mp3', 'doc' => 'doc', 'docx' => 'docx', 'pdf' => 'pdf', 'xls' => 'xls', 'xlsx' => 'xlsx' ),
+                    'default' => array(),
                     'options' => fu_get_exts_descs(),
 				),
 				array(
