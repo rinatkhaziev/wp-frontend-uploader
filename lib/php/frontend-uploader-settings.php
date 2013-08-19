@@ -140,6 +140,13 @@ class Frontend_Uploader_Settings {
 					'type' => 'checkbox',
 					'default' => '',
 				),
+				array(
+					'name' => 'suppress_default_fields',
+					'label' => __('Suppress default fields', 'frontend-uploader' ),
+					'desc' => __( 'Yes', 'frontend-uploader' ),
+					'type' => 'checkbox',
+					'default' => '',
+				),
 			),
 		);
 		return $settings_fields;

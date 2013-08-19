@@ -768,57 +768,60 @@ class Frontend_Uploader {
 		$textarea_desc = __( 'Description', 'frontend-uploader' );
 		$file_desc = __( 'Your Media Files', 'frontend-uploader' );
 		$submit_button = __( 'Submit', 'frontend-uploader' );
-
-		// Display title field
-		echo $this->shortcode_content_parser( array(
-			'type' => 'text',
-			'context' => 'title',
-			'name' => 'post_title',
-			'id' => 'ug_post_title',
-			'class' => 'required',
-			'description' =>  __( 'Title', 'frontend-uploader' ),
-			), null, 'input' );
+		
+		if( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) ) {
+		
+			// Display title field
+			echo $this->shortcode_content_parser( array(
+				'type' => 'text',
+				'context' => 'title',
+				'name' => 'post_title',
+				'id' => 'ug_post_title',
+				'class' => 'required',
+				'description' =>  __( 'Title', 'frontend-uploader' ),
+				), null, 'input' );
 
 	   /**
 		* Render default fields
 		* 
 		*/
-		switch ( $form_layout ) {
-		case 'post_image':
-		case 'post_media':
-		case 'image':
-		case 'media':
+			switch ( $form_layout ) {
+			case 'post_image':
+			case 'post_media':
+			case 'image':
+			case 'media':
 
-			// post_content
-			echo $this->shortcode_content_parser( array(
-				'context' => 'content',
-				'name' => 'post_content',
-				'id' => 'ug_content',
-				'class' => 'required',
-				'description' =>  __( 'Post content or file description', 'frontend-uploader' ),
-				), null, 'textarea' );
+				// post_content
+				echo $this->shortcode_content_parser( array(
+					'context' => 'content',
+					'name' => 'post_content',
+					'id' => 'ug_content',
+					'class' => 'required',
+					'description' =>  __( 'Post content or file description', 'frontend-uploader' ),
+					), null, 'textarea' );
 
-			echo $this->shortcode_content_parser( array(
-				'type' => 'file',
-				'context' => 'file',
-				'name' => 'files',
-				'id' => 'ug_photo',
-				'multiple' => '',
-				'description' =>  $file_desc,
-				), null, 'input' );
+				echo $this->shortcode_content_parser( array(
+					'type' => 'file',
+					'context' => 'file',
+					'name' => 'files',
+					'id' => 'ug_photo',
+					'multiple' => '',
+					'description' =>  $file_desc,
+					), null, 'input' );
 
-			break;
-		case 'post':
-			// post_content
-			echo $this->shortcode_content_parser( array(
-				'context' => 'content',
-				'name' => 'post_content',
-				'id' => 'ug_content',
-				'class' => 'required',
-				'description' =>  __( 'Post content', 'frontend-uploader' ),
-				), null, 'textarea' );
-			break;
-			break;
+				break;
+			case 'post':
+				// post_content
+				echo $this->shortcode_content_parser( array(
+					'context' => 'content',
+					'name' => 'post_content',
+					'id' => 'ug_content',
+					'class' => 'required',
+					'description' =>  __( 'Post content', 'frontend-uploader' ),
+					), null, 'textarea' );
+				break;
+				break;
+			}
 		}
 
 		// Show author field
@@ -829,8 +832,8 @@ class Frontend_Uploader {
 		if ( $content )
 			echo do_shortcode( $content );
 
-
-		echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
+		if( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) )
+			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
 
 		echo do_shortcode ( '[input type="hidden" name="action" value="upload_ugc" context="internal"]' );
 		echo do_shortcode ( '[input type="hidden" name="post_ID" value="' . $post_id . '" context="internal"]' );
