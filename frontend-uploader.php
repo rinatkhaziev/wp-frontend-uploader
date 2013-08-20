@@ -73,7 +73,7 @@ class Frontend_Uploader {
 		 *  array(
 		 *  'name' => '{form name}',
 		 *  'element' => HTML element,
-		 *  'context' => {title|description|file|meta} )
+		 *  'role' => {title|description|content|file|meta|internal} )
 		 * @var array
 		 */
 		$this->form_fields = array();
@@ -276,6 +276,10 @@ class Frontend_Uploader {
 		// Pass array of attachment ids
 		do_action( 'fu_after_upload', $media_ids, $success );
 		return array( 'success' => $success, 'media_ids' => $media_ids, 'errors' => $errors );
+	}
+
+	function get_value_for_role( $role = 'meta' ) {
+
 	}
 
 	/**
@@ -600,7 +604,7 @@ class Frontend_Uploader {
 				'multiple' => false,
 				'values' => '',
 				'wysiwyg_enabled' => false,
-				'context' => 'meta'
+				'role' => 'meta'
 			), $atts );
 
 		extract( $atts );
@@ -608,7 +612,7 @@ class Frontend_Uploader {
 		// Add the field to fields map
 		$this->form_fields[] = array(
 			'name' => sanitize_text_field( $name ),
-			'context' => in_array( $context, array( 'meta', 'title', 'description', 'author', 'internal', 'content' ) ) ? $context : 'meta',
+			'role' => in_array( $role, array( 'meta', 'title', 'description', 'author', 'internal', 'content' ) ) ? $role : 'meta',
 		);
 
 		// Render the element if render callback is available
@@ -774,7 +778,7 @@ class Frontend_Uploader {
 			// Display title field
 			echo $this->shortcode_content_parser( array(
 				'type' => 'text',
-				'context' => 'title',
+				'role' => 'title',
 				'name' => 'post_title',
 				'id' => 'ug_post_title',
 				'class' => 'required',
@@ -793,7 +797,7 @@ class Frontend_Uploader {
 
 				// post_content
 				echo $this->shortcode_content_parser( array(
-					'context' => 'content',
+					'role' => 'content',
 					'name' => 'post_content',
 					'id' => 'ug_content',
 					'class' => 'required',
@@ -802,7 +806,7 @@ class Frontend_Uploader {
 
 				echo $this->shortcode_content_parser( array(
 					'type' => 'file',
-					'context' => 'file',
+					'role' => 'file',
 					'name' => 'files',
 					'id' => 'ug_photo',
 					'multiple' => '',
@@ -813,7 +817,7 @@ class Frontend_Uploader {
 			case 'post':
 				// post_content
 				echo $this->shortcode_content_parser( array(
-					'context' => 'content',
+					'role' => 'content',
 					'name' => 'post_content',
 					'id' => 'ug_content',
 					'class' => 'required',
@@ -827,7 +831,7 @@ class Frontend_Uploader {
 		if ( isset( $this->settings['show_author'] ) && $this->settings['show_author'] == 'on' ) {
 			echo $this->shortcode_content_parser( array(
 				'type' => 'text',
-				'context' => 'author',
+				'role' => 'author',
 				'name' => 'post_author',
 				'id' => 'ug_post_author',
 				'class' => '',
@@ -842,7 +846,7 @@ class Frontend_Uploader {
 		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) ) {
 			echo $this->shortcode_content_parser( array(
 				'type' => 'submit',
-				'context' => 'internal',
+				'role' => 'internal',
 				'id' => 'ug_submit_button',
 				'class' => 'btn',
 				'value' =>  $submit_button,
@@ -852,14 +856,14 @@ class Frontend_Uploader {
 		// wp_ajax_ hook
 		echo $this->shortcode_content_parser( array(
 			'type' => 'hidden',
-			'context' => 'internal',
+			'role' => 'internal',
 			'name' => 'action',
 			'value' => 'upload_ugc'
 		), null, 'input' );
 
 		echo $this->shortcode_content_parser( array(
 			'type' => 'hidden',
-			'context' => 'internal',
+			'role' => 'internal',
 			'name' => 'post_ID',
 			'value' => $post_id
 		), null, 'input' );
@@ -867,7 +871,7 @@ class Frontend_Uploader {
 		if ( isset( $category ) && 0 !== (int) $category ) {
 			echo $this->shortcode_content_parser( array(
 				'type' => 'hidden',
-				'context' => 'internal',
+				'role' => 'internal',
 				'name' => 'post_category',
 				'value' => (int) $category
 			), null, 'input' );
@@ -877,7 +881,7 @@ class Frontend_Uploader {
 		if ( !empty( $success_page ) && filter_var( $success_page, FILTER_VALIDATE_URL ) ) {
 			echo $this->shortcode_content_parser( array(
 				'type' => 'hidden',
-				'context' => 'internal',
+				'role' => 'internal',
 				'name' => 'success_page',
 				'value' =>  $success_page
 			), null, 'input' );			
@@ -886,13 +890,13 @@ class Frontend_Uploader {
 		// One of supported form layouts 
 		echo $this->shortcode_content_parser( array(
 			'type' => 'hidden',
-			'context' => 'internal',
+			'role' => 'internal',
 			'name' => 'form_layout',
 			'value' =>  $form_layout
 		), null, 'input' );
 
 		// @todo 0.6
-		// Mapping of form fields and their corresponding contexts
+		// Mapping of form fields and their corresponding roles
 		// Should help to get rid of hardcoded logic of content upload
 		// Thus giving users more flexibility without requiring PHP knowledge
 		?> <input type="hidden" name="form_fields" value="<?php echo esc_attr( json_encode( $this->form_fields ) ) ?>" /> <?php
@@ -901,7 +905,7 @@ class Frontend_Uploader {
 		if ( in_array( $form_layout, array( "post_media", "post_image", "post" ) ) ) {
 			echo $this->shortcode_content_parser( array(
 				'type' => 'hidden',
-				'context' => 'internal',
+				'role' => 'internal',
 				'name' => 'post_type',
 				'value' =>  $post_type
 			), null, 'input' );
