@@ -609,7 +609,7 @@ class Frontend_Uploader {
 		// Add the field to fields map
 		$this->form_fields[] = array(
 			'name' => sanitize_text_field( $name ),
-			'context' => in_array( $context, array( 'meta', 'title', 'description', 'author' ) ) ? $context : 'meta',
+			'context' => in_array( $context, array( 'meta', 'title', 'description', 'author', 'internal', 'content' ) ) ? $context : 'meta',
 		);
 
 		// Render the element if render callback is available
@@ -730,7 +730,7 @@ class Frontend_Uploader {
 
 		// Reset postdata in case it got polluted somewhere
 		wp_reset_postdata();
-		// @todo unfuck category and post_id part
+
 		extract( shortcode_atts( array(
 					'description' => '',
 					'title' => __( 'Submit a new post', 'frontend-uploader' ),
@@ -741,7 +741,10 @@ class Frontend_Uploader {
 					'post_id' => get_the_ID(),
 					'post_type' => 'post',
 				), $atts ) );
+
 		$post_id = (int) $post_id;
+
+		$form_layout = in_array( $form_layout, array( 'post', 'image', 'media', 'post_image', 'post_media' ) ) ? $form_layout : 'media';
 
 		switch ( $form_layout ) {
 		case 'image':
@@ -818,45 +821,98 @@ class Frontend_Uploader {
 					'description' =>  __( 'Post content', 'frontend-uploader' ),
 					), null, 'textarea' );
 				break;
-				break;
 			}
 		}
 
 		// Show author field
-		if ( isset( $this->settings['show_author'] )  && $this->settings['show_author'] == 'on' )
-			echo do_shortcode ( '[input type="text" name="post_author" id="ug_post_author" description="' . __( 'Author', 'frontend-uploader' ) . '" class=""]' );
+		if ( isset( $this->settings['show_author'] ) && $this->settings['show_author'] == 'on' ) {
+			echo $this->shortcode_content_parser( array(
+				'type' => 'text',
+				'context' => 'author',
+				'name' => 'post_author',
+				'id' => 'ug_post_author',
+				'class' => '',
+				'description' =>  __( 'Author', 'frontend-uploader' ),
+				), null, 'input' );
+		}
 
 		// Parse nested shortcodes
 		if ( $content )
 			echo do_shortcode( $content );
 
-		if( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) )
-			echo do_shortcode ( '[input type="submit" class="btn" value="'. $submit_button .'"]' );
+		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) ) {
+			echo $this->shortcode_content_parser( array(
+				'type' => 'submit',
+				'context' => 'internal',
+				'id' => 'ug_submit_button',
+				'class' => 'btn',
+				'value' =>  $submit_button,
+			), null, 'input' );
+		}
 
-		echo do_shortcode ( '[input type="hidden" name="action" value="upload_ugc" context="internal"]' );
-		echo do_shortcode ( '[input type="hidden" name="post_ID" value="' . $post_id . '" context="internal"]' );
+		// wp_ajax_ hook
+		echo $this->shortcode_content_parser( array(
+			'type' => 'hidden',
+			'context' => 'internal',
+			'name' => 'action',
+			'value' => 'upload_ugc'
+		), null, 'input' );
 
-		if ( isset( $category ) && 0 !== (int) $category )
-			echo do_shortcode ( '[input type="hidden" name="post_category" value="' . $category . '" context="internal"]' );
+		echo $this->shortcode_content_parser( array(
+			'type' => 'hidden',
+			'context' => 'internal',
+			'name' => 'post_ID',
+			'value' => $post_id
+		), null, 'input' );
 
-		echo do_shortcode ( '[input type="hidden" name="success_page" value="' . $success_page . '" context="internal"]' );
-		echo do_shortcode ( '[input type="hidden" name="form_layout" value="' . $form_layout . '" context="internal"]' );
+		if ( isset( $category ) && 0 !== (int) $category ) {
+			echo $this->shortcode_content_parser( array(
+				'type' => 'hidden',
+				'context' => 'internal',
+				'name' => 'post_category',
+				'value' => (int) $category
+			), null, 'input' );
+		}
+
+		// Redirect to specified url if valid
+		if ( !empty( $success_page ) && filter_var( $success_page, FILTER_VALIDATE_URL ) ) {
+			echo $this->shortcode_content_parser( array(
+				'type' => 'hidden',
+				'context' => 'internal',
+				'name' => 'success_page',
+				'value' =>  $success_page
+			), null, 'input' );			
+		}
+
+		// One of supported form layouts 
+		echo $this->shortcode_content_parser( array(
+			'type' => 'hidden',
+			'context' => 'internal',
+			'name' => 'form_layout',
+			'value' =>  $form_layout
+		), null, 'input' );
+
 		// @todo 0.6
+		// Mapping of form fields and their corresponding contexts
+		// Should help to get rid of hardcoded logic of content upload
+		// Thus giving users more flexibility without requiring PHP knowledge
 		?> <input type="hidden" name="form_fields" value="<?php echo esc_attr( json_encode( $this->form_fields ) ) ?>" /> <?php
 
-		if ( in_array( $form_layout, array( "post_image", "post" ) ) )
-			echo do_shortcode ( '[input type="hidden" name="post_type" value="' . $post_type . '" context="hidden"]' );
+		// Set post type for the content submission
+		if ( in_array( $form_layout, array( "post_media", "post_image", "post" ) ) ) {
+			echo $this->shortcode_content_parser( array(
+				'type' => 'hidden',
+				'context' => 'internal',
+				'name' => 'post_type',
+				'value' =>  $post_type
+			), null, 'input' );
+		}
 
 		// Allow a little customization
 		do_action( 'fu_additional_html' );
-		$time = time();
-
-		// @todo this probably won't work
-		wp_cache_add( "fu_upload:{$time}", $this->form_fields, 'frontend-uploader', 600 );
-?>
-<input type="hidden" name="request_time" value="<?php echo $time ?>" />
-		  <?php wp_nonce_field( FU_FILE_PATH, 'fu_nonce' ); ?>
-		  <div class="clear"></div>
+		?>
+		<?php wp_nonce_field( FU_FILE_PATH, 'fu_nonce' ); ?>
+		<div class="clear"></div>
 	  </div>
 	  </form>
 <?php
@@ -1014,7 +1070,7 @@ class Frontend_Uploader {
 
 		/**
 		 * Parse the post content:
-		 * Before the shorcode,
+		 * Before the shortcode,
 		 * Before ids,
 		 * Ids,
 		 * After ids

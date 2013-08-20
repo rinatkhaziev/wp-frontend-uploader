@@ -167,6 +167,10 @@ function my_fu_additional_html() {
 
 = 0.6 (Work in progress) =
 
+= 0.5.9 (Aug 19th, 2013) =
+* Introduced setting to disable default fields
+* Fixed bug with inability to uncheck all extra file types
+
 = 0.5.8 (July 25th, 2013) =
 * Fixed bug with failing nonce check upon single item deletion
 * Introduced 'fu_manage_permissions' filter to alter default permissions for managing UGC
@@ -176,8 +180,6 @@ function my_fu_additional_html() {
 * If uploadeded post has author set and it's one of the registered users of the blog, post_author is set to that user, otherwise saved as meta
 * Set success value to true if no files were uploaded but post was uplaoded succesfully
 * Add nested shortcodes after default fields, instead of replacing them
-
-
 
 = 0.5.6 (June 26, 2013) =
 * Prevent plugin activation if WP is older than 3.3
