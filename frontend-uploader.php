@@ -45,7 +45,6 @@ class Frontend_Uploader {
 	public $settings_slug = 'frontend_uploader_settings';
 	public $is_debug = false;
 	public $form_fields = array();
-	public $request_form_fields = array();
 	protected $manage_permissions = array();
 
 	/**
@@ -340,22 +339,20 @@ class Frontend_Uploader {
 		// @todo sanity check
 		$time = $_POST['request_time'];
 
-		$this->request_form_fields =  json_decode( urldecode( stripslashes( $_POST['form_fields'] ) ) );
-
 		// Bail if something fishy is going on
 		if ( !wp_verify_nonce( $_POST['fu_nonce'], FU_FILE_PATH ) ) {
 			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  'nonce-failure' ), wp_get_referer() ) );
 			exit;
 		}
 
-
-
 		$layout = isset( $_POST['form_layout'] ) && !empty( $_POST['form_layout'] ) ? $_POST['form_layout'] : 'image';
 		switch ( $layout ) {
-		case 'post':
 
+		// Upload the post
+		case 'post':
 			$result = $this->_upload_post();
 			break;
+		// Upload the post first, and then upload media and attach to the post
 		case 'post_image':
 		case 'post_media';
 			$response = $this->_upload_post();
@@ -364,6 +361,7 @@ class Frontend_Uploader {
 				$result = array_merge( $result, $response );
 			}
 			break;
+		// Upload media 
 		case 'image':
 		case 'media':
 
@@ -373,8 +371,10 @@ class Frontend_Uploader {
 
 			break;
 		}
-
+		// Notify the admin via email 
 		$this->_notify_admin( $result );
+
+		// Handle error and success messages, and redirect
 		$this->_handle_result( $result );
 		exit;
 	}
@@ -606,25 +606,23 @@ class Frontend_Uploader {
 
 		extract( $atts );
 
-		// @todo Validate
+		// Add the field to fields map
 		$this->form_fields[] = array(
-			'name' => $name,
-			'context' => $context,
-			'tag' => $tag,
-			'type' => $type,
-			'value' => $value
+			'name' => sanitize_text_field( $name ),
+			'context' => in_array( $context, array( 'meta', 'title', 'description', 'author' ) ) ? $context : 'meta',
 		);
 
+		// Render the element if render callback is available
 		$callback = array( $this, "_render_{$tag}" );
 		if ( is_callable( $callback ) )
 			return call_user_func( $callback, $atts );
 	}
 
 	/**
-	 * Input shortcode
+	 * Input element callback
 	 *
 	 * @param array   shortcode attributes
-	 * @return [type]       [description]
+	 * @return string formatted html element
 	 */
 	function _render_input( $atts ) {
 		extract( $atts );
@@ -644,14 +642,14 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Textarea shortcode
+	 * Textarea element callback
 	 *
 	 * @param array   shortcode attributes
-	 * @return [type]       [description]
+	 * @return string formatted html elemen
 	 */
 	function _render_textarea( $atts ) {
 		extract( $atts );
-		// Render WYSIWYG textara
+		// Render WYSIWYG textarea
 		if ( ( isset( $this->settings['wysiwyg_enabled'] ) && 'on' == $this->settings['wysiwyg_enabled'] ) || $wysiwyg_enabled == true ) {
 			ob_start();
 			wp_editor( '', $id, array(
@@ -675,7 +673,7 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Checkboxes shortcode
+	 * Checkboxes element callback
 	 *
 	 * @param array   shortcode attributes
 	 * @return [type]       [description]
@@ -686,7 +684,7 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Radio buttons shortcode
+	 * Radio buttons callback
 	 *
 	 * @param array   shortcode attributes
 	 * @return [type]       [description]
@@ -697,7 +695,7 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Select shortcode
+	 * Select element callback
 	 *
 	 * @param array   shortcode attributes
 	 * @return [type]       [description]
