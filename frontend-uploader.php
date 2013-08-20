@@ -278,7 +278,7 @@ class Frontend_Uploader {
 		return array( 'success' => $success, 'media_ids' => $media_ids, 'errors' => $errors );
 	}
 
-	function get_value_for_role( $role = 'meta' ) {
+	function get_value_for_role( $role = 'meta', $name = '', $fallback = '' ) {
 
 	}
 
