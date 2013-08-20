@@ -216,7 +216,7 @@ class Frontend_Uploader {
 	 * @param int     $post_id Parent post id
 	 * @return array Combined result of media ids and errors if any
 	 */
-	function _handle_files( $post_id ) {
+	function _upload_files( $post_id ) {
 		$media_ids = $errors = array();
 		// Bail if there are no files
 		if ( empty( $_FILES ) )
@@ -357,7 +357,7 @@ class Frontend_Uploader {
 		case 'post_media';
 			$response = $this->_upload_post();
 			if ( ! is_wp_error( $response['post_id'] ) ) {
-				$result = $this->_handle_files( $response['post_id'] );
+				$result = $this->_upload_files( $response['post_id'] );
 				$result = array_merge( $result, $response );
 			}
 			break;
@@ -366,7 +366,7 @@ class Frontend_Uploader {
 		case 'media':
 
 			if ( isset( $_POST['post_ID'] ) && 0 !== $pid = (int) $_POST['post_ID'] ) {
-				$result = $this->_handle_files( $pid );
+				$result = $this->_upload_files( $pid );
 			}
 
 			break;
