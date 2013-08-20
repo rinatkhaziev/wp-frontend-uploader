@@ -238,7 +238,6 @@ class Frontend_Uploader {
 				continue;
 			}
 
-			preg_match( '/.(?P<ext>[a-zA-Z0-9]+)$/', $k['name'], $ext_match );
 			// Add an error message if MIME-type is not allowed
 			if ( ! in_array( $k['type'], (array) $this->allowed_mime_types ) ) {
 				$errors['fu-disallowed-mime-type'][] = array( 'name' => $k['name'], 'mime' => $k['type'] );
