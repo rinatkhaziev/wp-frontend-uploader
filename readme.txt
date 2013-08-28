@@ -167,7 +167,7 @@ function my_fu_additional_html() {
 
 = 0.6 (Work in progress) =
 
-= 0.5.9 (Aug 19th, 2013) =
+= 0.5.9 (Aug 28th, 2013) =
 * Introduced setting to disable default fields
 * Fixed bug with inability to uncheck all extra file types
 
