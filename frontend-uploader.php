@@ -339,8 +339,8 @@ class Frontend_Uploader {
 	 */
 	function upload_content() {
 		$fields = array();
-		// @todo sanity check
-		$time = $_POST['request_time'];
+
+
 
 		// Bail if something fishy is going on
 		if ( !wp_verify_nonce( $_POST['fu_nonce'], FU_FILE_PATH ) ) {
