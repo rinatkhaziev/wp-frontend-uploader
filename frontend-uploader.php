@@ -743,6 +743,7 @@ class Frontend_Uploader {
 					'form_layout' => 'image',
 					'post_id' => get_the_ID(),
 					'post_type' => 'post',
+					'category' => '',
 				), $atts ) );
 
 		$post_id = (int) $post_id;
@@ -759,7 +760,6 @@ class Frontend_Uploader {
 			break;
 		default:
 		}
-
 		ob_start();
 ?>
 	<form action="<?php echo admin_url( 'admin-ajax.php' ) ?>" method="post" id="ugc-media-form" class="<?php echo esc_attr( $class )?>" enctype="multipart/form-data">
