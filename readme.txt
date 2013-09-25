@@ -32,7 +32,7 @@ You can also manage UGC for selected custom post types (Please refer to the plug
 
 = Translations: =
 
-* Se habla español (Spanish) (props gastonbesada)
+* Se habla español (Spanish) (props Rafael Calzada, gastonbesada)
 * Мы говорим по-русски (Russian)
 * Nous parlons français (French) (props dapickboy)
 * Nous parlons français (Canadian French) (props rfzappala)
