@@ -141,6 +141,14 @@ class Frontend_Uploader_Settings {
 					'default' => '',
 				),
 				array(
+					'name' => 'default_file_name',
+					'label' => __( 'Default file name', 'frontend-uploader' ),
+					'desc' => __( 'Leave blank to use original file name', 'frontend-uploader' ),
+					'type' => 'text',
+					'default' => 'Unnamed',
+					/* No need to set a sanitize callback. It is handled automagically. */
+				),
+				array(
 					'name' => 'suppress_default_fields',
 					'label' => __('Suppress default fields', 'frontend-uploader' ),
 					'desc' => __( 'Yes', 'frontend-uploader' ),
