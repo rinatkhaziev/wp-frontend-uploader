@@ -256,9 +256,10 @@ class Frontend_Uploader {
 			elseif ( isset( $_POST['post_content'] ) )
 				$caption = sanitize_text_field( $_POST['post_content'] );
 			// @todo remove or refactor
+			$filename = !empty( $this->settings['default_file_name'] ) ? $this->settings['default_file_name'] : pathinfo( $k['name'], PATHINFO_FILENAME );
 			$post_overrides = array(
 				'post_status' => $this->_is_public() ? 'publish' : 'private',
-				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : 'Unnamed',
+				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : $filename,
 				'post_content' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : $caption,
 				'post_excerpt' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) :  $caption,
 			);
@@ -666,13 +667,10 @@ class Frontend_Uploader {
 			return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
 		}
 		// Render plain textarea
-		$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array(
-					'name' => $name,
-					'id' => $id,
-					'class' => $class
-				) ), array( 'for' => $id ), false );
+		$element = $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) );
+		$label = $this->html->element( 'label', $description, array( 'for' => $id ), false );
 
-		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+		return $this->html->element( 'div', $label . $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
 	/**

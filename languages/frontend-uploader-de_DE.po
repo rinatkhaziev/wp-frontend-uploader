@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Frontend Uploader v0.5.8.1\n"
+"Project-Id-Version: Frontend Uploader v0.5.9.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
 "POT-Creation-Date: 2013-02-18 01:35:10+00:00\n"
-"PO-Revision-Date: 2013-08-28 18:16:39+0000\n"
-"Last-Translator: Serg <sergej@sulz.it>\n"
-"Language-Team: Serg <sergej@sulz.it>\n"
+"PO-Revision-Date: 2013-10-29 13:42:01+0000\n"
+"Last-Translator: Joshua Trees <josh@pxlart.de>\n"
+"Language-Team: Joshua Trees <josh@pxlart.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,14 +20,14 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: frontend-uploader.php:394
+#: frontend-uploader.php:395
 #@ frontend-uploader
 msgid "New content was uploaded on your site"
 msgstr "Neue Inhalte wurden auf Ihre Webseite hochgeladen!"
 
-#: frontend-uploader.php:493
-#: frontend-uploader.php:496
-#: frontend-uploader.php:500
+#: frontend-uploader.php:494
+#: frontend-uploader.php:497
+#: frontend-uploader.php:501
 #: lib/views/manage-ugc-media.tpl.php:2
 #@ frontend-uploader
 msgid "Manage UGC"
@@ -127,8 +127,8 @@ msgstr "Media aus Papierkorb wiederhergestellt."
 msgid "Search Media"
 msgstr "Media suchen"
 
-#: frontend-uploader.php:496
-#: frontend-uploader.php:500
+#: frontend-uploader.php:497
+#: frontend-uploader.php:501
 #: lib/views/manage-ugc-posts.tpl.php:2
 #@ frontend-uploader
 msgid "Manage UGC Posts"
@@ -144,38 +144,38 @@ msgstr "Sie haben keine Berechtigung um Beiträge zu veröffentlichen."
 msgid "Search Posts"
 msgstr "Beitrag suchen"
 
-#: frontend-uploader.php:772
+#: frontend-uploader.php:770
 #@ frontend-uploader
 msgid "Description"
 msgstr "Beschreibung"
 
-#: frontend-uploader.php:774
+#: frontend-uploader.php:772
 #@ frontend-uploader
 msgid "Submit"
 msgstr "Einreichen"
 
-#: frontend-uploader.php:785
+#: frontend-uploader.php:783
 #@ frontend-uploader
 msgid "Title"
 msgstr "Titel"
 
-#: frontend-uploader.php:838
+#: frontend-uploader.php:836
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:116
 #@ frontend-uploader
 msgid "Author"
 msgstr "Author"
 
-#: frontend-uploader.php:955
+#: frontend-uploader.php:953
 #@ frontend-uploader
 msgid "Your file was successfully uploaded!"
 msgstr "Datei wurde erfolgreich hochgeladen!"
 
-#: frontend-uploader.php:991
+#: frontend-uploader.php:989
 #@ frontend-uploader
 msgid "This kind of file is not allowed. Please, try again selecting other file."
 msgstr "Dateityp ist nicht zugelassen. Bitte wählen Sie eine andere Datei!"
 
-#: frontend-uploader.php:995
+#: frontend-uploader.php:993
 #@ frontend-uploader
 msgid "The content you are trying to post is invalid."
 msgstr "Der eingereichte Inhalt ist nicht gültig!"
@@ -229,21 +229,21 @@ msgstr "An einen Beitrag heften"
 msgid "No media attachments found."
 msgstr "Keine Media-Anhänge gefunden."
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:115
 #@ default
 msgctxt "column name"
 msgid "File"
 msgstr "Datei"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:119
 #@ default
 msgctxt "column name"
 msgid "Attached to"
 msgstr "Angehängt an"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:122
 #: lib/php/class-frontend-uploader-wp-posts-list-table.php:128
 #@ default
@@ -321,7 +321,7 @@ msgstr "\"%s\" betrachten"
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:330
 #@ frontend-uploader
 msgid "View"
-msgstr "Betrachetn"
+msgstr "Betrachten"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:307
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:373
@@ -368,7 +368,7 @@ msgstr "Administratoren benachrichtigen"
 #: lib/php/frontend-uploader-settings.php:117
 #: lib/php/frontend-uploader-settings.php:132
 #: lib/php/frontend-uploader-settings.php:139
-#: lib/php/frontend-uploader-settings.php:146
+#: lib/php/frontend-uploader-settings.php:154
 #@ frontend-uploader
 msgid "Yes"
 msgstr "Ja"
@@ -408,28 +408,28 @@ msgstr "Komma separierte IDs (für alle leer lassen)"
 msgid "Show author field"
 msgstr "Feld für Author anzeigen"
 
-#: frontend-uploader.php:262
 #: frontend-uploader.php:263
+#: frontend-uploader.php:264
 #@ frontend-uploader
 msgid "Unnamed"
 msgstr "Unbenannt"
 
-#: frontend-uploader.php:739
+#: frontend-uploader.php:737
 #@ frontend-uploader
 msgid "Submit a new post"
 msgstr "Einen Eintrag einreichen"
 
-#: frontend-uploader.php:755
+#: frontend-uploader.php:754
 #@ frontend-uploader
 msgid "Submit a media file"
 msgstr "Eine Datei einreichen"
 
-#: frontend-uploader.php:963
+#: frontend-uploader.php:961
 #@ frontend-uploader
 msgid "There was an error with your submission"
 msgstr "Beim Einreichen ist ein Fehler aufgetreten"
 
-#: frontend-uploader.php:988
+#: frontend-uploader.php:986
 #@ frontend-uploader
 msgid "Security check failed!"
 msgstr "Sicherheitsprüfung fehlgeschlagen!"
@@ -466,12 +466,12 @@ msgstr "Dateien registrierter Benutzer automatisch genehmigen"
 msgid "Auto-approve any files"
 msgstr "Alle Dateien automatisch genehmigen"
 
-#: frontend-uploader.php:998
+#: frontend-uploader.php:996
 #@ frontend-uploader
 msgid "Couldn't upload the file"
 msgstr ""
 
-#: frontend-uploader.php:1001
+#: frontend-uploader.php:999
 #@ frontend-uploader
 msgid "Couldn't create the post"
 msgstr ""
@@ -486,22 +486,22 @@ msgstr ""
 msgid "Frontend Uploader requires WordPress 3.3 or newer. Please upgrade."
 msgstr ""
 
-#: frontend-uploader.php:773
+#: frontend-uploader.php:771
 #@ frontend-uploader
 msgid "Your Media Files"
 msgstr ""
 
-#: frontend-uploader.php:804
+#: frontend-uploader.php:802
 #@ frontend-uploader
 msgid "Post content or file description"
 msgstr ""
 
-#: frontend-uploader.php:824
+#: frontend-uploader.php:822
 #@ frontend-uploader
 msgid "Post content"
 msgstr ""
 
-#: frontend-uploader.php:959
+#: frontend-uploader.php:957
 #@ frontend-uploader
 msgid "Your post was successfully uploaded!"
 msgstr ""
@@ -511,7 +511,7 @@ msgstr ""
 msgid "No posts found."
 msgstr ""
 
-#: lib/php/frontend-uploader-settings.php:145
+#: lib/php/frontend-uploader-settings.php:153
 #@ frontend-uploader
 msgid "Suppress default fields"
 msgstr ""
@@ -726,4 +726,14 @@ msgstr ""
 #@ wedevs
 msgid "Text Input (integer validation)"
 msgstr ""
+
+#: lib/php/frontend-uploader-settings.php:145
+#@ frontend-uploader
+msgid "Default file name"
+msgstr "Standard Dateiname"
+
+#: lib/php/frontend-uploader-settings.php:146
+#@ frontend-uploader
+msgid "Leave blank to use original file name"
+msgstr "Leer lassen um den Originaldateinamen zu nutzen"
 
