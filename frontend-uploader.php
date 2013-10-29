@@ -666,13 +666,10 @@ class Frontend_Uploader {
 			return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
 		}
 		// Render plain textarea
-		$element = $this->html->element( 'label', $description . $this->html->element( 'textarea', '', array(
-					'name' => $name,
-					'id' => $id,
-					'class' => $class
-				) ), array( 'for' => $id ), false );
+		$element = $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) );
+		$label = $this->html->element( 'label', $description, array( 'for' => $id ), false );
 
-		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+		return $this->html->element( 'div', $label . $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
 	/**
