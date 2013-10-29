@@ -1,7 +1,7 @@
 === Frontend Uploader ===
 Contributors: rinatkhaziev, danielbachhuber, jtrees
-Donate link: http://digitallyconscious.com/my-wordpress-plugins/
-Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=rinat%2ekhaziev%40gmail%2ecom
+Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content
 Requires at least: 3.3
 Tested up to: 3.8-alpha
 Stable tag: 0.5.9.2
@@ -10,13 +10,14 @@ This plugin allows your visitors to upload User Generated Content (media and pos
 
 == Description ==
 
-This plugin gives you an ability to easily accept, moderate and publish user generated content (currently, there are 3 modes: media, post, post + media). The plugin allows you to create a front end form with multiple fields (easily customizable with shortcodes). You can limit which MIME-types are supported for each field. All of the submissions are safely held for moderation in Media/Post/Custom Post Types menu under a special tab "Manage UGC". Review, moderate and publish. It's that easy!
+This plugin gives you an ability to easily accept, moderate and publish user generated content (currently, there are 3 modes: media, post, post + media). The plugin allows you to create a front end form with multiple fields (easily customizable with shortcodes, refer to FAQ). 
+All of the submissions are safely held for moderation in Media/Post/Custom Post Types menu under a special tab "Manage UGC". Review, moderate and publish. It's that easy!
 
 This plugin supports multiple uploads for modern browsers. Multiple file uploads are enabled for default form. To use it in your custom shortcode add multiple="" attribute to file shortcode.
 
 If you want to customize your form, please refer to FAQ section.
 
-By default plugin allows all MIME-types that are whitelisted in WordPress. However, there's a filter if you need to add some exotic MIME-type. Be sure to check out FAQ to get a grasp on how to customize the upload form with actions and filters.
+**By default the plugin allows all file types that are whitelisted in WordPress.** However, you can whitelist additional common file types on the settings page. If you're comfortable with theme development, there's a filter that'll allow you to add some exotic MIME-type. Be sure to check out FAQ to get a grasp on how to customize the upload form with actions and filters.
 
 = New in v0.5 =
 
@@ -69,7 +70,7 @@ The [fu-upload-form] shortcode has several parameters that can modify its behavi
 1. 'post_type' => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
 
 = Example of default media upload form =
-Here's example of default form (you don't need to enter all that if you want to use default form, just use [fu-upload-form]):
+Here's example of default form (*you don't need to enter all that if you want to use default form, just use [fu-upload-form]*):
 
 `[fu-upload-form class="your-class" title="Upload your media"]
 [input type="text" name="post_title" id="title" class="required" description="Title" multiple=""]
@@ -77,6 +78,11 @@ Here's example of default form (you don't need to enter all that if you want to 
 [input type="file" name="photo" id="ug_photo" class="required" description="Your Photo" multiple=""]
 [input type="submit" class="btn" value="Submit"]
 [/fu-upload-form]`
+
+= Help, I pasted in the above shortcode and now my fields are duplicated =
+As stated in previous answer, you don't need to put inner contents if you only need default form fields.
+E.g. `[fu-upload-form class="your-class" title="Upload your media"]` will be enough to render the default form.
+You can suppress rendering of default form fields with "Suppress default fields" checkbox in settings
 
 = I want to customize my form =
 You can include additional elements with a set of shortcodes
@@ -121,6 +127,10 @@ function my_fu_allowed_mime_types( $mime_types ) {
 	return $mime_types;
 }`
 
+= There's no captcha! =
+The plugin runs on multiple websites doing millions of pageviews daily. So far I haven't received a single report regarding spam. 
+If you do get spam, please report it in support forums.
+
 = Configuration Filters =
 
 = fu_manage_permissions =
@@ -163,6 +173,12 @@ function my_fu_additional_html() {
 <input type="hidden" name="my_custom_param" value="something" />
 <?php
 }`
+
+= fu_is_debug =
+
+If you're experiencing issues with upload it might be due to server misconfiguration, enabling debug mode will give you more detailed error messages
+
+`add_filter( 'fu_is_debug', '__return_true' );`
 
 == Changelog ==
 
