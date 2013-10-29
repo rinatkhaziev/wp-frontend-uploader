@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Frontend Uploader v0.5.9.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
 "POT-Creation-Date: 2013-02-18 01:35:10+00:00\n"
-"PO-Revision-Date: 2013-10-29 13:40:33+0000\n"
+"PO-Revision-Date: 2013-10-29 13:42:01+0000\n"
 "Last-Translator: Joshua Trees <josh@pxlart.de>\n"
 "Language-Team: Joshua Trees <josh@pxlart.de>\n"
 "MIME-Version: 1.0\n"
@@ -321,7 +321,7 @@ msgstr "\"%s\" betrachten"
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:330
 #@ frontend-uploader
 msgid "View"
-msgstr "Betrachetn"
+msgstr "Betrachten"
 
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:307
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:373
