@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Frontend Uploader package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Frontend Uploader 0.5.8.1\n"
+"Project-Id-Version: Frontend Uploader 0.5.9.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
-"POT-Creation-Date: 2013-08-28 18:13:27+00:00\n"
+"POT-Creation-Date: 2013-10-29 22:37:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,91 +16,91 @@ msgstr ""
 msgid "Frontend Uploader requires WordPress 3.3 or newer. Please upgrade."
 msgstr ""
 
-#: frontend-uploader.php:262 frontend-uploader.php:263
+#: frontend-uploader.php:263 frontend-uploader.php:264
 msgid "Unnamed"
 msgstr ""
 
-#: frontend-uploader.php:394
+#: frontend-uploader.php:395
 msgid "New content was uploaded on your site"
 msgstr ""
 
-#: frontend-uploader.php:493 frontend-uploader.php:496
-#: frontend-uploader.php:500 lib/views/manage-ugc-media.tpl.php:2
+#: frontend-uploader.php:494 frontend-uploader.php:497
+#: frontend-uploader.php:501 lib/views/manage-ugc-media.tpl.php:2
 msgid "Manage UGC"
 msgstr ""
 
-#: frontend-uploader.php:496 frontend-uploader.php:500
+#: frontend-uploader.php:497 frontend-uploader.php:501
 #: lib/views/manage-ugc-posts.tpl.php:2
 msgid "Manage UGC Posts"
 msgstr ""
 
-#: frontend-uploader.php:739
+#: frontend-uploader.php:743
 msgid "Submit a new post"
 msgstr ""
 
-#: frontend-uploader.php:755
+#: frontend-uploader.php:760
 msgid "Submit a media file"
 msgstr ""
 
-#: frontend-uploader.php:772
+#: frontend-uploader.php:776
 msgid "Description"
 msgstr ""
 
-#: frontend-uploader.php:773
+#: frontend-uploader.php:777
 msgid "Your Media Files"
 msgstr ""
 
-#: frontend-uploader.php:774
+#: frontend-uploader.php:778
 msgid "Submit"
 msgstr ""
 
-#: frontend-uploader.php:785
+#: frontend-uploader.php:789
 msgid "Title"
 msgstr ""
 
-#: frontend-uploader.php:804
+#: frontend-uploader.php:808
 msgid "Post content or file description"
 msgstr ""
 
-#: frontend-uploader.php:824
+#: frontend-uploader.php:828
 msgid "Post content"
 msgstr ""
 
-#: frontend-uploader.php:838
+#: frontend-uploader.php:842
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:116
 msgid "Author"
 msgstr ""
 
-#: frontend-uploader.php:955
+#: frontend-uploader.php:960
 msgid "Your file was successfully uploaded!"
 msgstr ""
 
-#: frontend-uploader.php:959
+#: frontend-uploader.php:964
 msgid "Your post was successfully uploaded!"
 msgstr ""
 
-#: frontend-uploader.php:963
+#: frontend-uploader.php:968
 msgid "There was an error with your submission"
 msgstr ""
 
-#: frontend-uploader.php:988
+#: frontend-uploader.php:993
 msgid "Security check failed!"
 msgstr ""
 
-#: frontend-uploader.php:991
+#: frontend-uploader.php:996
 msgid ""
 "This kind of file is not allowed. Please, try again selecting other file."
 msgstr ""
 
-#: frontend-uploader.php:995
+#: frontend-uploader.php:1000
 msgid "The content you are trying to post is invalid."
 msgstr ""
 
-#: frontend-uploader.php:998
+#: frontend-uploader.php:1003
 msgid "Couldn't upload the file"
 msgstr ""
 
-#: frontend-uploader.php:1001
+#: frontend-uploader.php:1006
 msgid "Couldn't create the post"
 msgstr ""
 
@@ -270,7 +270,7 @@ msgstr ""
 #: lib/php/frontend-uploader-settings.php:117
 #: lib/php/frontend-uploader-settings.php:132
 #: lib/php/frontend-uploader-settings.php:139
-#: lib/php/frontend-uploader-settings.php:146
+#: lib/php/frontend-uploader-settings.php:154
 msgid "Yes"
 msgstr ""
 
@@ -311,7 +311,9 @@ msgid "Enable visual editor for textareas"
 msgstr ""
 
 #: lib/php/frontend-uploader-settings.php:123
-msgid "Allow following files to be uploaded"
+msgid ""
+"Also allow to upload these files (in addition to the ones that WP allows by "
+"default)"
 msgstr ""
 
 #: lib/php/frontend-uploader-settings.php:131
@@ -323,6 +325,14 @@ msgid "Auto-approve any files"
 msgstr ""
 
 #: lib/php/frontend-uploader-settings.php:145
+msgid "Default file name"
+msgstr ""
+
+#: lib/php/frontend-uploader-settings.php:146
+msgid "Leave blank to use original file name"
+msgstr ""
+
+#: lib/php/frontend-uploader-settings.php:153
 msgid "Suppress default fields"
 msgstr ""
 
