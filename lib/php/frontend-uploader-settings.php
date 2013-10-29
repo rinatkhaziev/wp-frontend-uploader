@@ -120,7 +120,7 @@ class Frontend_Uploader_Settings {
 				),
 				array(
 					'name' => 'enabled_files',
-					'label' => __( 'Allow following files to be uploaded', 'frontend-uploader' ),
+					'label' => __( 'Also allow to upload these files (in addition to the ones that WP allows by default)', 'frontend-uploader' ),
 					'desc' => '',
                     'type' => 'multicheck',
                     'default' => array(),
