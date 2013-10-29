@@ -1,5 +1,5 @@
 === Frontend Uploader ===
-Contributors: rinatkhaziev, danielbachhuber
+Contributors: rinatkhaziev, danielbachhuber, jtrees
 Donate link: http://digitallyconscious.com/my-wordpress-plugins/
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file
 Requires at least: 3.3
