@@ -182,7 +182,12 @@ If you're experiencing issues with upload it might be due to server misconfigura
 
 == Changelog ==
 
-= 0.6 (Work in progress) =
+= 0.6 (Oct 29, 2013) =
+* Updated German translation
+* Updated Spanish translation
+* Hidden inputs are no longer getting wrapped in label and div
+* Added an option to set a default file name 
+* Fixed category attribute of shortcode
 
 = 0.5.9 (Aug 28th, 2013) =
 * Introduced setting to disable default fields
