@@ -339,7 +339,7 @@ class Frontend_Uploader {
 	 * @since  0.4
 	 */
 	function upload_content() {
-		$fields = array();
+		$fields = $result = array();
 
 
 
@@ -359,10 +359,10 @@ class Frontend_Uploader {
 		// Upload the post first, and then upload media and attach to the post
 		case 'post_image':
 		case 'post_media';
-			$response = $this->_upload_post();
-			if ( ! is_wp_error( $response['post_id'] ) ) {
-				$result = $this->_upload_files( $response['post_id'] );
-				$result = array_merge( $result, $response );
+			$result = $this->_upload_post();
+			if ( ! is_wp_error( $result['post_id'] ) ) {
+				$media_result = $this->_upload_files( $result['post_id'] );
+				$result = array_merge( $result, $media_result );
 			}
 			break;
 		// Upload media 
@@ -375,6 +375,15 @@ class Frontend_Uploader {
 
 			break;
 		}
+
+		/**
+		 * Process result with filter
+		 *
+		 * @param  string $layout form layout
+		 * @param  array  $result assoc array holding $post_id, $media_ids, bool $success, array $errors
+		 */
+		do_action( 'fu_upload_result', $layout, $result );
+
 		// Notify the admin via email 
 		$this->_notify_admin( $result );
 
