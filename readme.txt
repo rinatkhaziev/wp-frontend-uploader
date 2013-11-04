@@ -180,6 +180,15 @@ If you're experiencing issues with upload it might be due to server misconfigura
 
 `add_filter( 'fu_is_debug', '__return_true' );`
 
+= fu_upload_result = 
+
+This action runs after form was uploaded. Arguments are: (string) $layout (form layout), (array) $result - result of the upload.
+`add_action('fu_upload_result', 'my_fu_upload_result', 10, 2 );
+
+function my_fu_upload_result( $layout, $result ) {
+	// do something	
+}`
+
 == Changelog ==
 
 = 0.6 (Oct 29, 2013) =
