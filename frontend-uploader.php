@@ -757,6 +757,7 @@ class Frontend_Uploader {
 					'post_id' => get_the_ID(),
 					'post_type' => 'post',
 					'category' => '',
+					'suppress_default_fields' => false,
 				), $atts ) );
 
 		$post_id = (int) $post_id;
@@ -786,7 +787,7 @@ class Frontend_Uploader {
 		$file_desc = __( 'Your Media Files', 'frontend-uploader' );
 		$submit_button = __( 'Submit', 'frontend-uploader' );
 		
-		if( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) ) {
+		if( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
 		
 			// Display title field
 			echo $this->shortcode_content_parser( array(
@@ -856,7 +857,7 @@ class Frontend_Uploader {
 		if ( $content )
 			echo do_shortcode( $content );
 
-		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) ) {
+		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
 			echo $this->shortcode_content_parser( array(
 				'type' => 'submit',
 				'role' => 'internal',
