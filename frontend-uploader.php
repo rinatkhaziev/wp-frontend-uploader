@@ -104,7 +104,6 @@ class Frontend_Uploader {
 		add_shortcode( 'select', array( $this, 'shortcode_content_parser' ) );
 
 		// Static assets
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 		// Unautop the shortcode
@@ -761,6 +760,8 @@ class Frontend_Uploader {
 				), $atts ) );
 
 		$post_id = (int) $post_id;
+
+		$this->enqueue_scripts();
 
 		$form_layout = in_array( $form_layout, array( 'post', 'image', 'media', 'post_image', 'post_media' ) ) ? $form_layout : 'media';
 
