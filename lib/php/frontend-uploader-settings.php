@@ -90,13 +90,6 @@ class Frontend_Uploader_Settings {
 					'sanitize_callback' => 'sanitize_email',
 				),
 				array(
-					'name' => 'allowed_categories',
-					'label' => __( 'Allowed categories', 'frontend-uploader' ),
-					'desc' => __( 'Comma separated IDs (leave blank for all)', 'frontend-uploader' ),
-					'type' => 'text',
-					'default' => '',
-				),
-				array(
 					'name' => 'show_author',
 					'label' => __( 'Show author field', 'frontend-uploader' ),
 					'desc' => __( 'Yes', 'frontend-uploader' ),

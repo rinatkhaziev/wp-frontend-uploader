@@ -298,14 +298,8 @@ class Frontend_Uploader {
 			'post_title'    => isset( $_POST['caption'] ) ? sanitize_text_field( $_POST['caption'] )  : sanitize_text_field( $_POST['post_title'] ),
 			'post_content'  => wp_filter_post_kses( $_POST['post_content'] ),
 			'post_status'   => $this->_is_public() ? 'publish' : 'private',
+			'post_category' => isset( $_POST['post_category'] ) ? (int) $_POST['post_category'] : 0,
 		);
-
-		// Determine if we have a whitelisted category
-		$allowed_categories = array_filter( explode( ",", str_replace( " ", "",  $this->settings['allowed_categories'] ) ) );
-
-		if (  isset( $_POST['post_category'] ) && in_array( $_POST['post_category'], $allowed_categories ) ) {
-			$post_array = array_merge( $post_array, array( 'post_category' => array( (int) $_POST['post_category'] ) ) );
-		}
 
 		$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
 		$users = get_users( array(
