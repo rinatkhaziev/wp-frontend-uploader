@@ -87,7 +87,7 @@ class Frontend_Uploader {
 		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		// Hooking to wp_ajax
 
-		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_photo' ) );
+		add_action( 'wp_ajax_approve_ugc', array( $this, 'approve_media' ) );
 		add_action( 'wp_ajax_approve_ugc_post', array( $this, 'approve_post' ) );
 		add_action( 'wp_ajax_delete_ugc', array( $this, 'delete_post' ) );
 
@@ -518,7 +518,7 @@ class Frontend_Uploader {
 	 * @todo refactor in 0.6
 	 * @return [type] [description]
 	 */
-	function approve_photo() {
+	function approve_media() {
 		// Check permissions, attachment ID, and nonce
 		if ( ! $this->_check_perms_and_nonce() || 0 !== (int) $_GET['id'] )
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
