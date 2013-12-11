@@ -93,6 +93,7 @@ The [fu-upload-form] shortcode has several parameters that can modify its behavi
 1. 'category' => ID of category the post should be attached (only in post or post+image mode). The category should be whitelisted in the settings
 1.  'post_id' => ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on. 
 1. 'post_type' => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
+1. 'suppress_default_fields' => Override global setting for supressing default form fields (true or false).
 
 = Example of default media upload form =
 Here's example of default form (*you don't need to enter all that if you want to use default form, just use [fu-upload-form]*):
