@@ -964,19 +964,29 @@ class Frontend_Uploader {
 		return ob_get_clean();
 	}
 
+	/**
+	 * Save field map 
+	 * @param  integer $form_post_id [description]
+	 * @return [type]                [description]
+	 */
 	private function maybe_update_fields_map( $form_post_id = 0 ) {
+		dbgx_checkpoint( 'update field map' );
 		$form_post_id = (int) $form_post_id ?  (int) $form_post_id : get_the_id();
 		$key = 'fu_form:' . $this->_get_fields_hash();
 		
-		// See if we already have fields saved as meta
+		// See if we already have field map saved as meta
 		$fields = get_post_meta( $form_post_id, $key, true );
 		
-		// If not, update them
+		// If not, update it
 		if ( ! $fields ) {
 			update_post_meta( $form_post_id, $key, $this->form_fields );
 		}
 	}
 
+	/**
+	 * Get a key for a form (supposed to be unique to not conflict with multiple forms)
+	 * @return string hash
+	 */
 	function _get_fields_hash() {
 		$hash = md5( serialize( $this->form_fields ) );
 		return $hash;
