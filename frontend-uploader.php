@@ -67,8 +67,6 @@ class Frontend_Uploader {
 		/**
 		 * Should consist of fields to be proccessed automatically on content submission
 		 *
-		 * @todo this is just a pass one
-		 *
 		 * Example field:
 		 *  array(
 		 *  'name' => '{form name}',
@@ -273,6 +271,10 @@ class Frontend_Uploader {
 		}
 
 		$success = empty( $errors ) && !empty( $media_ids ) ? true : false;
+
+		if ( $success ) {
+			array_walk( $media_ids, function( $media_id ) { $this->_save_post_meta_fields( $media_id ); });
+		}
 		// Allow additional setup
 		// Pass array of attachment ids
 		do_action( 'fu_after_upload', $media_ids, $success );
@@ -314,6 +316,8 @@ class Frontend_Uploader {
 			$success = false;
 		} else {
 			do_action( 'fu_after_create_post', $post_id );
+
+			$this->_save_post_meta_fields( $post_id );
 			// If the author name is not in registered users
 			// Save the author name if it was filled and post was created successfully
 			if ( $author )
@@ -321,6 +325,32 @@ class Frontend_Uploader {
 		}
 
 		return array( 'success' => $success, 'post_id' => $post_id, 'errors' => $errors );
+	}
+
+	private function _save_post_meta_fields( $post_id = 0 ) {
+		// Post ID not set, bailing
+		if ( ! $post_id = (int) $post_id )
+			return false;
+
+		// No meta fields in field mapping, bailing
+		if ( !isset( $this->form_fields['meta'] ) || empty( $this->form_fields['meta'] ) )
+			return false;
+
+		foreach ( $this->form_fields['meta'] as $meta_field ) {
+			if ( !isset( $_POST[$meta_field] ) )
+				continue;
+
+			$value = $_POST[$meta_field];
+			// Sanitize array
+			if ( is_array( $value ) ) {
+				$value = array_map( function( $item ) { return sanitize_text_field( $item ); }, $value );
+			// Sanitize everything else
+			} else {
+				$value = sanitize_text_field( $value );
+			}
+
+			add_post_meta( $post_id, $meta_field, $value, true );
+		}
 	}
 
 	/**
@@ -341,7 +371,7 @@ class Frontend_Uploader {
 		$hash = sanitize_text_field( $_POST['ff'] );
 		$this->form_fields = !empty( $this->form_fields ) ? $this->form_fields : $this->_get_fields_for_form( $form_post_id, $hash );
 
-		// @todo handle form fields error
+		// @todo handle form fields error (false or empty)
 
 		$layout = isset( $_POST['form_layout'] ) && !empty( $_POST['form_layout'] ) ? $_POST['form_layout'] : 'image';
 		switch ( $layout ) {
@@ -397,7 +427,6 @@ class Frontend_Uploader {
 		$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
 		$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
 		wp_mail( $to, $subj, $this->settings['admin_notification_text'] );
-
 	}
 
 	/**
@@ -795,10 +824,10 @@ class Frontend_Uploader {
 				'description' =>  __( 'Title', 'frontend-uploader' ),
 				), null, 'input' );
 
-	   /**
-		* Render default fields
-		* 
-		*/
+			/**
+			* Render default fields
+			* Looks gross but somewhat faster than using do_shortcode 
+			*/
 			switch ( $form_layout ) {
 			case 'post_image':
 			case 'post_media':
@@ -813,15 +842,6 @@ class Frontend_Uploader {
 					'class' => 'required',
 					'description' =>  __( 'Post content or file description', 'frontend-uploader' ),
 					), null, 'textarea' );
-
-				echo $this->shortcode_content_parser( array(
-					'type' => 'file',
-					'role' => 'file',
-					'name' => 'files',
-					'id' => 'ug_photo',
-					'multiple' => '',
-					'description' =>  $file_desc,
-					), null, 'input' );
 
 				break;
 			case 'post':
@@ -838,6 +858,7 @@ class Frontend_Uploader {
 		}
 
 		// Show author field
+		// @todo remove
 		if ( isset( $this->settings['show_author'] ) && $this->settings['show_author'] == 'on' ) {
 			echo $this->shortcode_content_parser( array(
 				'type' => 'text',
@@ -854,6 +875,20 @@ class Frontend_Uploader {
 			echo do_shortcode( $content );
 
 		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
+
+			if  ( in_array( $form_layout, array( 'image', 'media', 'post_image', 'post_media' ) ) ) {
+				// Default upload field
+				echo $this->shortcode_content_parser( array(
+					'type' => 'file',
+					'role' => 'file',
+					'name' => 'files',
+					'id' => 'ug_photo',
+					'multiple' => '',
+					'description' =>  $file_desc,
+					), null, 'input' );				
+			}
+
+
 			echo $this->shortcode_content_parser( array(
 				'type' => 'submit',
 				'role' => 'internal',
@@ -905,16 +940,7 @@ class Frontend_Uploader {
 			'value' =>  $form_layout
 		), null, 'input' );
 
-		// @todo 0.6
-		// Mapping of form fields and their corresponding roles
-		// Should help to get rid of hardcoded logic of content upload
-		// Thus giving users more flexibility without requiring PHP knowledge
-		/*
-		 <input type="hidden" name="form_fields" value="<?php echo esc_attr( json_encode( $this->form_fields ) ) ?>" /> 
-		*/
-		// Set post type for the content submission
-		// 
-		var_dump( $this->form_fields );
+		// Set post type for layouts that include uploading of posts
 		if ( in_array( $form_layout, array( "post_media", "post_image", "post" ) ) ) {
 			echo $this->shortcode_content_parser( array(
 				'type' => 'hidden',
@@ -924,7 +950,7 @@ class Frontend_Uploader {
 			), null, 'input' );
 		}
 
-		// Allow a little customization
+		// Allow a little markup customization
 		do_action( 'fu_additional_html' );
 		?>
 		<?php wp_nonce_field( FU_FILE_PATH, 'fu_nonce' ); ?>
