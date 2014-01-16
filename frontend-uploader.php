@@ -279,10 +279,6 @@ class Frontend_Uploader {
 		return array( 'success' => $success, 'media_ids' => $media_ids, 'errors' => $errors );
 	}
 
-	function get_value_for_role( $role = 'meta', $name = '', $fallback = '' ) {
-
-	}
-
 	/**
 	 * Handle post uploads
 	 *
@@ -335,13 +331,17 @@ class Frontend_Uploader {
 	function upload_content() {
 		$fields = $result = array();
 
-
-
 		// Bail if something fishy is going on
 		if ( !wp_verify_nonce( $_POST['fu_nonce'], FU_FILE_PATH ) ) {
 			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  'nonce-failure' ), wp_get_referer() ) );
 			exit;
 		}
+
+		$form_post_id = isset( $_POST['form_post_id'] ) ? (int) $_POST['form_post_id'] : 0;
+		$hash = sanitize_text_field( $_POST['ff'] );
+		$this->form_fields = !empty( $this->form_fields ) ? $this->form_fields : $this->_get_fields_for_form( $form_post_id, $hash );
+
+		// @todo handle form fields error
 
 		$layout = isset( $_POST['form_layout'] ) && !empty( $_POST['form_layout'] ) ? $_POST['form_layout'] : 'image';
 		switch ( $layout ) {
@@ -613,11 +613,10 @@ class Frontend_Uploader {
 
 		extract( $atts );
 
+		$role = in_array( $role, array( 'meta', 'title', 'description', 'author', 'internal', 'content' ) ) ? $role : 'meta';
+		$name =  sanitize_text_field( $name );
 		// Add the field to fields map
-		$this->form_fields[] = array(
-			'name' => sanitize_text_field( $name ),
-			'role' => in_array( $role, array( 'meta', 'title', 'description', 'author', 'internal', 'content' ) ) ? $role : 'meta',
-		);
+		$this->form_fields[$role][] = $name;
 
 		// Render the element if render callback is available
 		$callback = array( $this, "_render_{$tag}" );
@@ -740,6 +739,7 @@ class Frontend_Uploader {
 
 		// Reset postdata in case it got polluted somewhere
 		wp_reset_postdata();
+		$form_post_id = get_the_id();
 
 		extract( shortcode_atts( array(
 					'description' => '',
@@ -913,6 +913,8 @@ class Frontend_Uploader {
 		 <input type="hidden" name="form_fields" value="<?php echo esc_attr( json_encode( $this->form_fields ) ) ?>" /> 
 		*/
 		// Set post type for the content submission
+		// 
+		var_dump( $this->form_fields );
 		if ( in_array( $form_layout, array( "post_media", "post_image", "post" ) ) ) {
 			echo $this->shortcode_content_parser( array(
 				'type' => 'hidden',
@@ -926,11 +928,40 @@ class Frontend_Uploader {
 		do_action( 'fu_additional_html' );
 		?>
 		<?php wp_nonce_field( FU_FILE_PATH, 'fu_nonce' ); ?>
+		<input type="hidden" name="ff" value="<?php echo esc_attr( $this->_get_fields_hash() ) ?>" />
+		<input type="hidden" name="form_post_id" value="<?php echo (int) $form_post_id ?>" />
 		<div class="clear"></div>
 	  </div>
 	  </form>
 <?php
+		$this->maybe_update_fields_map( $form_post_id );
 		return ob_get_clean();
+	}
+
+	private function maybe_update_fields_map( $form_post_id = 0 ) {
+		$form_post_id = (int) $form_post_id ?  (int) $form_post_id : get_the_id();
+		$key = 'fu_form:' . $this->_get_fields_hash();
+		
+		// See if we already have fields saved as meta
+		$fields = get_post_meta( $form_post_id, $key, true );
+		
+		// If not, update them
+		if ( ! $fields ) {
+			update_post_meta( $form_post_id, $key, $this->form_fields );
+		}
+	}
+
+	function _get_fields_hash() {
+		$hash = md5( serialize( $this->form_fields ) );
+		return $hash;
+	}
+
+	function _get_fields_for_form( $post_id, $hash ) {
+		$fields = get_post_meta( $post_id, "fu_form:{$hash}", true );
+		if ( $fields )
+			return $fields;
+
+		return false;
 	}
 
 	/**
