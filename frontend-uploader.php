@@ -274,7 +274,10 @@ class Frontend_Uploader {
 		$success = empty( $errors ) && !empty( $media_ids ) ? true : false;
 
 		if ( $success ) {
-			array_walk( $media_ids, function( $media_id ) { $this->_save_post_meta_fields( $media_id ); });
+			foreach( $media_ids as $media_id ) {
+				$this->_save_post_meta_fields( $media_id );
+			}
+			
 		}
 		// Allow additional setup
 		// Pass array of attachment ids
@@ -344,12 +347,11 @@ class Frontend_Uploader {
 			$value = $_POST[$meta_field];
 			// Sanitize array
 			if ( is_array( $value ) ) {
-				$value = array_map( function( $item ) { return sanitize_text_field( $item ); }, $value );
+				$value = array_map( array( $this, '_sanitize_array_element_callback', $value ) );
 			// Sanitize everything else
 			} else {
 				$value = sanitize_text_field( $value );
 			}
-
 			add_post_meta( $post_id, $meta_field, $value, true );
 		}
 	}
@@ -1192,6 +1194,10 @@ class Frontend_Uploader {
 			'post_content' => $content,
 		);
 		return wp_update_post( $post_to_update );
+	}
+
+	function _sanitize_array_element_callback( $el ) {
+		return sanitize_text_field( $el );
 	}
 }
 
