@@ -100,6 +100,7 @@ class Frontend_Uploader {
 		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'select', array( $this, 'shortcode_content_parser' ) );
+		add_shortcode( 'checkboxes', array( $this, 'shortcode_content_parser' ) );
 
 		// Static assets
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -718,7 +719,18 @@ class Frontend_Uploader {
 	 */
 	function _render_checkboxes( $atts ) {
 		extract( $atts );
-		return;
+		$atts = array( 'values' => $values );
+		$values = explode( ',', $values );
+		$options = '';
+		//Build options for the list
+		foreach ( $values as $option ) {
+			$kv = explode(":", $option );
+			$options .= $this->html->_checkbox( $name, isset( $kv[1] ) ? $kv[1] : $kv[0], $kv[0], $atts, array() );
+		}
+
+	// Render select field
+		$element = $this->html->element( 'label', $description . $options, array( 'for' => $id ), false );
+		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
 	/**

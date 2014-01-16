@@ -36,8 +36,8 @@ class Html_Helper {
 		}
 	}
 
-	function _checkbox( $name = '', $data = array(), $checked = array() ) {
-
+	function _checkbox( $name = '', $description = '', $value = '', $atts, $checked = array() ) {
+		return '<input type="checkbox" value="'. esc_attr( $value ) . '" name="' . esc_attr( $name ) . '" '.$this->_format_attributes( $atts ) . ' />' . esc_html ($description );
 	}
 
 	function _radio( $name = '', $data = array(), $checked = array() ) {
