@@ -97,10 +97,6 @@ class Frontend_Uploader {
 
 		// Currently supported shortcodes
 		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
-		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
-		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
-		add_shortcode( 'select', array( $this, 'shortcode_content_parser' ) );
-		add_shortcode( 'checkboxes', array( $this, 'shortcode_content_parser' ) );
 
 		// Static assets
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -779,6 +775,10 @@ class Frontend_Uploader {
 	 * @param string  $content content that is encloded in [fu-upload-form][/fu-upload-form]
 	 */
 	function upload_form( $atts, $content = null ) {
+		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
+		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
+		add_shortcode( 'select', array( $this, 'shortcode_content_parser' ) );
+		add_shortcode( 'checkboxes', array( $this, 'shortcode_content_parser' ) );
 
 		// Reset postdata in case it got polluted somewhere
 		wp_reset_postdata();
@@ -1094,6 +1094,8 @@ class Frontend_Uploader {
 			),
 		);
 
+
+		// @todo DAMN SON you should refactor this
 		foreach ( $errors_arr as $error ) {
 			$error_type = explode( ':', $error );
 			$error_details = explode( '|', $error_type[1] );
