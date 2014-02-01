@@ -803,16 +803,6 @@ class Frontend_Uploader {
 
 		$form_layout = in_array( $form_layout, array( 'post', 'image', 'media', 'post_image', 'post_media' ) ) ? $form_layout : 'media';
 
-		switch ( $form_layout ) {
-		case 'image':
-		case 'media':
-			$title = __( 'Submit a media file', 'frontend-uploader' );
-			break;
-		case 'post':
-		case 'post_media':
-			break;
-		default:
-		}
 		ob_start();
 ?>
 	<form action="<?php echo admin_url( 'admin-ajax.php' ) ?>" method="post" id="ugc-media-form" class="<?php echo esc_attr( $class )?> fu-upload-form" enctype="multipart/form-data">
