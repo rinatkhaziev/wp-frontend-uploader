@@ -29,6 +29,7 @@ define( 'FU_VERSION', '0.6.1-working' );
 define( 'FU_ROOT' , dirname( __FILE__ ) );
 define( 'FU_FILE_PATH' , FU_ROOT . '/' . basename( __FILE__ ) );
 define( 'FU_URL' , plugins_url( '/', __FILE__ ) );
+define( 'FU_NONCE', 'frontend-uploader-upload-media' );
 
 require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php';
 require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-posts-list-table.php';
@@ -361,7 +362,7 @@ class Frontend_Uploader {
 		$fields = $result = array();
 
 		// Bail if something fishy is going on
-		if ( !wp_verify_nonce( $_POST['fu_nonce'], FU_FILE_PATH ) ) {
+		if ( !wp_verify_nonce( $_POST['fu_nonce'], FU_NONCE ) ) {
 			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  'nonce-failure' ), wp_get_referer() ) );
 			exit;
 		}
@@ -615,7 +616,7 @@ class Frontend_Uploader {
 	 * @return bool
 	 */
 	function _check_perms_and_nonce() {
-		return current_user_can( $this->manage_permissions ) && wp_verify_nonce( $_REQUEST['fu_nonce'], FU_FILE_PATH );
+		return current_user_can( $this->manage_permissions ) && wp_verify_nonce( $_REQUEST['fu_nonce'], FU_NONCE );
 	}
 
 	/**
@@ -957,7 +958,7 @@ class Frontend_Uploader {
 		// Allow a little markup customization
 		do_action( 'fu_additional_html' );
 		?>
-		<?php wp_nonce_field( FU_FILE_PATH, 'fu_nonce' ); ?>
+		<?php wp_nonce_field( FU_NONCE, 'fu_nonce' ); ?>
 		<input type="hidden" name="ff" value="<?php echo esc_attr( $this->_get_fields_hash() ) ?>" />
 		<input type="hidden" name="form_post_id" value="<?php echo (int) $form_post_id ?>" />
 		<div class="clear"></div>
