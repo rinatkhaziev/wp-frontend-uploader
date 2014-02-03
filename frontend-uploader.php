@@ -342,9 +342,10 @@ class Frontend_Uploader {
 				continue;
 
 			$value = $_POST[$meta_field];
+
 			// Sanitize array
 			if ( is_array( $value ) ) {
-				$value = array_map( array( $this, '_sanitize_array_element_callback', $value ) );
+				$value = array_map( array( $this, '_sanitize_array_element_callback' ), $value );
 			// Sanitize everything else
 			} else {
 				$value = sanitize_text_field( $value );
@@ -721,6 +722,11 @@ class Frontend_Uploader {
 		$atts = array( 'values' => $values );
 		$values = explode( ',', $values );
 		$options = '';
+
+		// Making sure we're having array of values for checkboxes
+		if ( false === stristr( '[]', $name ) )
+			$name = $name . '[]';
+
 		//Build options for the list
 		foreach ( $values as $option ) {
 			$kv = explode(":", $option );
