@@ -37,6 +37,7 @@ class Html_Helper {
 	}
 
 	function _checkbox( $name = '', $description = '', $value = '', $atts, $checked = array() ) {
+		// Generate unique id to make label clickable
 		$rnd_id = uniqid( 'uniq-label-id-' );
 		return '<div class="checkbox-option-wrapper"><input type="checkbox" id="' . esc_attr( $rnd_id ) . '" value="'. esc_attr( $value ) . '" name="' . esc_attr( $name ) . '" '.$this->_format_attributes( $atts ) . ' /><label for="' . esc_attr( $rnd_id ) . '">' .  esc_html ($description ) . '</label></div>';
 	}
