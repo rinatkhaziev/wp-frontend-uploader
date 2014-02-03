@@ -34,3 +34,14 @@
 .ugc-notice.failure {
 	border-color: red;
 }
+
+.ugc-input-wrapper .checkbox-option-wrapper {
+	padding: 3px 0;
+	line-height: 14px;
+}
+
+.ugc-input-wrapper .checkbox-option-wrapper input[type="checkbox"] {
+	float: left; margin-right: 4px;
+}
+
+.ugc-input-wrapper .checkbox-option-wrapper label { font-weight: normal; }

@@ -727,8 +727,10 @@ class Frontend_Uploader {
 			$options .= $this->html->_checkbox( $name, isset( $kv[1] ) ? $kv[1] : $kv[0], $kv[0], $atts, array() );
 		}
 
-	// Render select field
-		$element = $this->html->element( 'label', $description . $options, array( 'for' => $id ), false );
+		$description = $label = $this->html->element( 'label', $description, array(), false );
+
+		// Render select field
+		$element = $this->html->element( 'div', $description . $options, array( 'class' => 'checkbox-wrapper' ), false );
 		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
