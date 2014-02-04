@@ -82,6 +82,8 @@ Within it, you can add various fields.
 1. [input type="text" name="post_title" => A text box for one line of text
 1. [textarea name="post_content"] => A text box for multiple lines of text
 1. [input type="file" name="photo"] => A file uploader
+1. [checkboxes name="foo" class="checkboxes" description="Pick a fruit" values="value:Description,124:Banana,cherry:Cherry"]
+1. [select name="foo" class="select" description="Pick a fruit" values="Apple,Banana,Cherry"]
 1. [input type="submit" class="btn" value="Submit"] => A submit button
 
 The [fu-upload-form] shortcode has several parameters that can modify its behavior:
@@ -90,7 +92,7 @@ The [fu-upload-form] shortcode has several parameters that can modify its behavi
 1. 'title' => Add this [fu-upload-form] shortcode, and this will be the Headline that will be displayed before the form. Example: [fu-upload-form class="your-class" title="Upload your media"]
 1. 'class' => HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’ Example: [input type="text" name="post_title" id="title" class="required"]
 1. 'success_page' => URL to redirect on successful submission, defaults to the URL where the form is being displayed. 
-1. 'category' => ID of category the post should be attached (only in post or post+image mode). The category should be whitelisted in the settings
+1. 'category' => ID of category the post should be attached (only in post or post+image mode). 
 1.  'post_id' => ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on. 
 1. 'post_type' => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
 1. 'suppress_default_fields' => Override global setting for supressing default form fields (true or false).
@@ -231,6 +233,11 @@ function my_fu_upload_result( $layout, $result ) {
 }`
 
 == Changelog ==
+
+= 0.7 = 
+* Meta fields get saved automatically
+* Bugfix: title param of fu-upload-form now actually changes the title
+* Better readme (props Steph Yiu)
 
 = 0.6 (Oct 29, 2013) =
 * Updated German translation
