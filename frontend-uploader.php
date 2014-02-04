@@ -997,7 +997,6 @@ class Frontend_Uploader {
 	 * @return [type]                [description]
 	 */
 	private function maybe_update_fields_map( $form_post_id = 0 ) {
-		dbgx_checkpoint( 'update field map' );
 		$form_post_id = (int) $form_post_id ?  (int) $form_post_id : get_the_id();
 		$key = 'fu_form:' . $this->_get_fields_hash();
 		
