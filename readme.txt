@@ -3,7 +3,7 @@ Contributors: rinatkhaziev, danielbachhuber, jtrees
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=rinat%2ekhaziev%40gmail%2ecom
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content
 Requires at least: 3.3
-Tested up to: 3.8-alpha
+Tested up to: 3.8.1
 Stable tag: 0.6
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
@@ -30,17 +30,6 @@ Step 5: Your user generated media is live.
 * This plugin can be applied to Posts, Pages, and Custom Post Types. You can enable this via Settings > Frontend Uploader Settings.
 * In addition to the WordPress whitelisted file types, this also supports uploading of Microsoft Office and Adobe files, as well as various video and audio files. You can enable these file types via Settings > Frontend Uploader Settings.
 * The plugin allows you to upload all filetypes that are whitelisted in WordPress. If you’d like to add more file types and are comfortable with theme development, there's a filter that'll allow you to add some exotic MIME-type.
-
-
-= New in v0.5 =
-
-You can choose what type of files you allow your visitors to upload from Frontend Uploader Settings
-
-= New in v0.4 =
-
-Now your visitors are able to upload not only media, but guest posts as well!
-Use [fu-upload-form form_layout="post_image"] to get default form to upload post content and images
-Use [fu-upload-form form_layout="post"] to get default form to upload post content
 
 You can also manage UGC for selected custom post types (Please refer to the plugin's settings page). By default, UGC is enabled for posts and attachments. If you want to be able to get any other post types UGC submissions just select desired post types at the plugin's settings page, and pass post_type='my_post_type' to the [fu-upload-form] shortcode.
 
@@ -132,6 +121,7 @@ You can include additional elements with a set of shortcodes
 [input type="text" name="post_title" id="title" class="required" description="Title" multiple=""]
 [select name="foo" class="select" id="ug_select" description="Pick a fruit" values="Apple,Banana,Cherry"]
 [textarea name="post_content" class="textarea" id="ug_caption" description="Description (optional)"]
+[checkboxes name="foo" class="checkboxes" description="Pick a fruit" values="value:Description,124:Banana,cherry:Cherry"]
 
 = I want to be allow users to upload mp3, psd, or any other file restricted by default. =
 You are able to do that within Frontend Uploader Settings admin page. The settings there cover the most popular extensions/MIME-types.
