@@ -56,12 +56,15 @@ You can also manage UGC for selected custom post types (Please refer to the plug
 == Screenshots ==
 
 1. Screenshot of plugin's UI (It's looks like standard media list table, with slightly better Parent column and additional row action: "Approve")
+1. Default media upload form
+1. Example of customized form
+1. WYSIWYG editor in upload form
 
 == Frequently Asked Questions ==
 
 = I get a white screen when trying to upload a file =
 The major cause of this is either request timeout or request exceeding maximum request size. That usually means that either the file was uploading for too long or it was too big. Two PHP settings to look at are: 
-[max_execution_time](http://us1.php.net/manual/en/info.configuration.php#ini.max-execution-time) and [upload_max_filesize](http://us3.php.net/manual/en/ini.core.php#ini.upload-max-filesize). If you don't have any ability to modify these settings, please contact your hosting support.
+[max_execution_time](http://us1.php.net/manual/en/info.configuration.php#ini.max-execution-time) and [upload_max_filesize](http://us3.php.net/manual/en/ini.core.php#ini.upload-max-filesize). If you don't have any ability to modify these settings, please contact your hosting company's support.
 
 = Shortcode parameters =
 
