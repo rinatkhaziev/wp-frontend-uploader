@@ -309,7 +309,9 @@ class Frontend_Uploader {
 		if ( isset( $users[0] ) ) {
 			$post_array['post_author'] = (int) $users[0];
 		}
-
+		
+		$post_array = do_action( 'fu_before_create_post', $post_array );
+		
 		$post_id = wp_insert_post( $post_array, true );
 		// Something went wrong
 		if ( is_wp_error( $post_id ) ) {
