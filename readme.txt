@@ -17,13 +17,13 @@ This plugin is a simple way for users to submit content to your site. The plugin
 
 Step 1: Install the plugin.
 
-Step 2: Insert the Frontend Uploader shortcode into a post. The basic form can be inserted using [fu-upload-form], please visit the FAQs for more complex forms. 
+Step 2: Insert the Frontend Uploader shortcode into a post. The basic form can be inserted using [fu-upload-form], please visit the FAQs for more complex forms.
 
 Step 3: Users submit content using the form.
 
 Step 4: Go to “Manage UGC” under the “Media” tab. Find the media item you’d like to approve, and click “Approve.”
 
-Step 5: Your user generated media is live. 
+Step 5: Your user generated media is live.
 
 **Exploring Customizations**
 * You can modify the submission form as needed, and have users submit posts. Please visit the FAQ page for more information.
@@ -63,7 +63,7 @@ You can also manage UGC for selected custom post types (Please refer to the plug
 == Frequently Asked Questions ==
 
 = I get a white screen when trying to upload a file =
-The major cause of this is either request timeout or request exceeding maximum request size. That usually means that either the file was uploading for too long or it was too big. Two PHP settings to look at are: 
+The major cause of this is either request timeout or request exceeding maximum request size. That usually means that either the file was uploading for too long or it was too big. Two PHP settings to look at are:
 [max_execution_time](http://us1.php.net/manual/en/info.configuration.php#ini.max-execution-time) and [upload_max_filesize](http://us3.php.net/manual/en/ini.core.php#ini.upload-max-filesize). If you don't have any ability to modify these settings, please contact your hosting company's support.
 
 = Shortcode parameters =
@@ -73,7 +73,7 @@ Frontend Uploader uses shortcodes to insert a form into a page or post. The defa
 
 If you would like to build a custom form, it must begin with [fu-upload-form] and end with [/fu-upload-form].
 
-Within it, you can add various fields. 
+Within it, you can add various fields.
 
 1. [input type="text" name="post_title" => A text box for one line of text
 1. [textarea name="post_content"] => A text box for multiple lines of text
@@ -87,9 +87,9 @@ The [fu-upload-form] shortcode has several parameters that can modify its behavi
 1. ‘form_layout' => This determines whether the form is saved as a post (‘post’), as a media file (‘image’), or as a post with images (‘post_image’). The default is ‘image.’  Example: [fu-upload-form class="your-class" title="Upload your media" form_layout=”post”]
 1. 'title' => Add this [fu-upload-form] shortcode, and this will be the Headline that will be displayed before the form. Example: [fu-upload-form class="your-class" title="Upload your media"]
 1. 'class' => HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’ Example: [input type="text" name="post_title" id="title" class="required"]
-1. 'success_page' => URL to redirect on successful submission, defaults to the URL where the form is being displayed. 
-1. 'category' => ID of category the post should be attached (only in post or post+image mode). 
-1.  'post_id' => ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on. 
+1. 'success_page' => URL to redirect on successful submission, defaults to the URL where the form is being displayed.
+1. 'category' => ID of category the post should be attached (only in post or post+image mode).
+1.  'post_id' => ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on.
 1. 'post_type' => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
 1. 'suppress_default_fields' => Override global setting for supressing default form fields (true or false).
 
@@ -104,15 +104,15 @@ Here's example of default form (*you don't need to enter all that if you want to
 [/fu-upload-form]`
 
 = Where are the plugin's settings? =
-You can find Frontend Uploader's settings under Settings > Frontend Uploader Settings. 
+You can find Frontend Uploader's settings under Settings > Frontend Uploader Settings.
 
 = Can I get email notifications? =
-Yes you can enable this in Settings > Frontend Uploader settings. By default the site admin will receive email notifications. If you’d like to change that to another email, you can also change that in settings. 
+Yes you can enable this in Settings > Frontend Uploader settings. By default the site admin will receive email notifications. If you’d like to change that to another email, you can also change that in settings.
 
 = How are authors determined? =
 If someone is logged in, their user profile is automatically linked to the post. Otherwise, you can enable an “Author Field” under Settings > Frontend Uploader that allows the users to write in their name.
 
-= Are other filetypes supported? = 
+= Are other filetypes supported? =
 In addition to the WordPress whitelisted file types, Frontend Uploader also supports uploading of Microsoft Office and Adobe files, as well as various video and audio files. You can enable these file types via Settings > Frontend Uploader Settings.
 
 = Where does the user submitted content go? =
@@ -168,7 +168,7 @@ function my_fu_allowed_mime_types( $mime_types ) {
 }`
 
 = There's no captcha! =
-The plugin runs on multiple websites doing millions of pageviews daily. So far I haven't received a single report regarding spam. 
+The plugin runs on multiple websites doing millions of pageviews daily. So far I haven't received a single report regarding spam.
 If you do get spam, please report it in support forums.
 
 = Configuration Filters =
@@ -220,18 +220,18 @@ If you're experiencing issues with upload it might be due to server misconfigura
 
 `add_filter( 'fu_is_debug', '__return_true' );`
 
-= fu_upload_result = 
+= fu_upload_result =
 
 This action runs after form was uploaded. Arguments are: (string) $layout (form layout), (array) $result - result of the upload.
 `add_action('fu_upload_result', 'my_fu_upload_result', 10, 2 );
 
 function my_fu_upload_result( $layout, $result ) {
-	// do something	
+	// do something
 }`
 
 == Changelog ==
 
-= 0.7 = 
+= 0.7 =
 * Meta fields get saved automatically
 * Bugfix: title param of fu-upload-form now actually changes the title
 * Better readme (props Steph Yiu)
@@ -240,7 +240,7 @@ function my_fu_upload_result( $layout, $result ) {
 * Updated German translation
 * Updated Spanish translation
 * Hidden inputs are no longer getting wrapped in label and div
-* Added an option to set a default file name 
+* Added an option to set a default file name
 * Fixed category attribute of shortcode
 
 = 0.5.9 (Aug 28th, 2013) =

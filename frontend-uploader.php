@@ -274,7 +274,7 @@ class Frontend_Uploader {
 			foreach( $media_ids as $media_id ) {
 				$this->_save_post_meta_fields( $media_id );
 			}
-			
+
 		}
 		// Allow additional setup
 		// Pass array of attachment ids
@@ -390,7 +390,7 @@ class Frontend_Uploader {
 				$result = array_merge( $result, $media_result );
 			}
 			break;
-		// Upload media 
+		// Upload media
 		case 'image':
 		case 'media':
 
@@ -409,7 +409,7 @@ class Frontend_Uploader {
 		 */
 		do_action( 'fu_upload_result', $layout, $result );
 
-		// Notify the admin via email 
+		// Notify the admin via email
 		$this->_notify_admin( $result );
 
 		// Handle error and success messages, and redirect
@@ -838,9 +838,9 @@ class Frontend_Uploader {
 		$textarea_desc = __( 'Description', 'frontend-uploader' );
 		$file_desc = __( 'Your Media Files', 'frontend-uploader' );
 		$submit_button = __( 'Submit', 'frontend-uploader' );
-		
+
 		if( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
-		
+
 			// Display title field
 			echo $this->shortcode_content_parser( array(
 				'type' => 'text',
@@ -853,7 +853,7 @@ class Frontend_Uploader {
 
 			/**
 			* Render default fields
-			* Looks gross but somewhat faster than using do_shortcode 
+			* Looks gross but somewhat faster than using do_shortcode
 			*/
 			switch ( $form_layout ) {
 			case 'post_image':
@@ -912,7 +912,7 @@ class Frontend_Uploader {
 					'id' => 'ug_photo',
 					'multiple' => '',
 					'description' =>  $file_desc,
-					), null, 'input' );				
+					), null, 'input' );
 			}
 
 
@@ -956,10 +956,10 @@ class Frontend_Uploader {
 				'role' => 'internal',
 				'name' => 'success_page',
 				'value' =>  $success_page
-			), null, 'input' );			
+			), null, 'input' );
 		}
 
-		// One of supported form layouts 
+		// One of supported form layouts
 		echo $this->shortcode_content_parser( array(
 			'type' => 'hidden',
 			'role' => 'internal',
@@ -992,17 +992,17 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Save field map 
+	 * Save field map
 	 * @param  integer $form_post_id [description]
 	 * @return [type]                [description]
 	 */
 	private function maybe_update_fields_map( $form_post_id = 0 ) {
 		$form_post_id = (int) $form_post_id ?  (int) $form_post_id : get_the_id();
 		$key = 'fu_form:' . $this->_get_fields_hash();
-		
+
 		// See if we already have field map saved as meta
 		$fields = get_post_meta( $form_post_id, $key, true );
-		
+
 		// If not, update it
 		if ( ! $fields ) {
 			update_post_meta( $form_post_id, $key, $this->form_fields );
