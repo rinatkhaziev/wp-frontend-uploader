@@ -62,8 +62,8 @@ You can also manage UGC for selected custom post types (Please refer to the plug
 
 == Frequently Asked Questions ==
 
-= I get a white screen when trying to upload a file =
-The major cause of this is either request timeout or request exceeding maximum request size. That usually means that either the file was uploading for too long or it was too big. Two PHP settings to look at are:
+= I get a white screen or 0 when trying to upload a file =
+The major cause of this is either request timeout or request exceeding maximum request size. This  means that either the file was uploading for too long or it was too big. Two PHP settings to look at are:
 [max_execution_time](http://us1.php.net/manual/en/info.configuration.php#ini.max-execution-time) and [upload_max_filesize](http://us3.php.net/manual/en/ini.core.php#ini.upload-max-filesize). If you don't have any ability to modify these settings, please contact your hosting company's support.
 
 = Shortcode parameters =
@@ -230,6 +230,9 @@ function my_fu_upload_result( $layout, $result ) {
 }`
 
 == Changelog ==
+
+= 0.7.1 =
+* Fixed fatal error being produced when trying to upload with iOS device
 
 = 0.7 =
 * Meta fields get saved automatically
