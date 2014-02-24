@@ -310,7 +310,7 @@ class Frontend_Uploader {
 			$post_array['post_author'] = (int) $users[0];
 		}
 		
-		$post_array = do_action( 'fu_before_create_post', $post_array );
+		$post_array = apply_filters( 'fu_before_create_post', $post_array );
 		
 		$post_id = wp_insert_post( $post_array, true );
 		// Something went wrong
