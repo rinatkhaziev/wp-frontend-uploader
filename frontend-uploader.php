@@ -685,7 +685,7 @@ class Frontend_Uploader {
 		extract( $atts );
 		$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
 		// Workaround for HTML5 multiple attribute
-		if ( $multiple == 'false' )
+		if ( (bool) $multiple === false )
 			unset( $atts['multiple'] );
 
 		// Allow multiple file upload by default.
