@@ -291,13 +291,22 @@ class Frontend_Uploader {
 		$errors = array();
 		$success = true;
 
+		// Sanitize category if present in request
+		// Allow to supply comma-separated category ids
+		$category = array();
+		if ( isset( $_POST['post_category'] ) ) {
+			foreach( explode( ',', $_POST['post_category'] ) as $cat_id ) {
+				$category[] = (int) $cat_id;
+			}
+		}
+
 		// Construct post array;
 		$post_array = array(
 			'post_type' =>  isset( $_POST['post_type'] ) && in_array( $_POST['post_type'], $this->settings['enabled_post_types'] ) ? $_POST['post_type'] : 'post',
 			'post_title'    => isset( $_POST['caption'] ) ? sanitize_text_field( $_POST['caption'] )  : sanitize_text_field( $_POST['post_title'] ),
 			'post_content'  => wp_filter_post_kses( $_POST['post_content'] ),
 			'post_status'   => $this->_is_public() ? 'publish' : 'private',
-			'post_category' => isset( $_POST['post_category'] ) ? (int) $_POST['post_category'] : 0,
+			'post_category' => $category,
 		);
 
 		$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
@@ -952,7 +961,7 @@ class Frontend_Uploader {
 				'type' => 'hidden',
 				'role' => 'internal',
 				'name' => 'post_category',
-				'value' => (int) $category
+				'value' => $category
 			), null, 'input' );
 		}
 
