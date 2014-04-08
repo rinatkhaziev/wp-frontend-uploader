@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frontend Uploader 0.5.9.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
-"POT-Creation-Date: 2014-03-03 21:39-0600\n"
-"PO-Revision-Date: 2014-03-03 21:39-0600\n"
+"POT-Creation-Date: 2014-04-08 11:25-0600\n"
+"PO-Revision-Date: 2014-04-08 11:25-0600\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_US\n"
@@ -210,6 +210,8 @@ msgid "Frontend Uploader Settings"
 msgstr ""
 
 #: ../lib/php/frontend-uploader-settings.php:54
+#: ../lib/php/settings-api/procedural-example.php:20
+#: ../lib/php/settings-api/settings-api.php:48
 msgid "Basic Settings"
 msgstr ""
 
@@ -278,6 +280,163 @@ msgstr ""
 
 #: ../lib/php/frontend-uploader-settings.php:146
 msgid "Suppress default fields"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:24
+#: ../lib/php/settings-api/settings-api.php:52
+msgid "Advanced Settings"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:28
+#: ../lib/php/settings-api/settings-api.php:56
+msgid "Other Settings"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:36
+#: ../lib/php/settings-api/procedural-example.php:104
+#: ../lib/php/settings-api/procedural-example.php:173
+#: ../lib/php/settings-api/settings-api.php:141
+#: ../lib/php/settings-api/settings-api.php:210
+msgid "Text Input"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:37
+#: ../lib/php/settings-api/procedural-example.php:105
+#: ../lib/php/settings-api/procedural-example.php:174
+#: ../lib/php/settings-api/settings-api.php:73
+#: ../lib/php/settings-api/settings-api.php:142
+#: ../lib/php/settings-api/settings-api.php:211
+msgid "Text input description"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:43
+#: ../lib/php/settings-api/procedural-example.php:111
+#: ../lib/php/settings-api/procedural-example.php:180
+#: ../lib/php/settings-api/settings-api.php:80
+#: ../lib/php/settings-api/settings-api.php:148
+#: ../lib/php/settings-api/settings-api.php:217
+msgid "Textarea Input"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:44
+#: ../lib/php/settings-api/procedural-example.php:112
+#: ../lib/php/settings-api/procedural-example.php:181
+#: ../lib/php/settings-api/settings-api.php:81
+#: ../lib/php/settings-api/settings-api.php:149
+#: ../lib/php/settings-api/settings-api.php:218
+msgid "Textarea description"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:49
+#: ../lib/php/settings-api/procedural-example.php:117
+#: ../lib/php/settings-api/procedural-example.php:186
+#: ../lib/php/settings-api/settings-api.php:86
+#: ../lib/php/settings-api/settings-api.php:154
+#: ../lib/php/settings-api/settings-api.php:223
+msgid "Checkbox"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:50
+#: ../lib/php/settings-api/procedural-example.php:118
+#: ../lib/php/settings-api/procedural-example.php:187
+#: ../lib/php/settings-api/settings-api.php:87
+#: ../lib/php/settings-api/settings-api.php:155
+#: ../lib/php/settings-api/settings-api.php:224
+msgid "Checkbox Label"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:55
+#: ../lib/php/settings-api/procedural-example.php:123
+#: ../lib/php/settings-api/procedural-example.php:192
+#: ../lib/php/settings-api/settings-api.php:92
+#: ../lib/php/settings-api/settings-api.php:160
+#: ../lib/php/settings-api/settings-api.php:229
+msgid "Radio Button"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:56
+#: ../lib/php/settings-api/procedural-example.php:124
+#: ../lib/php/settings-api/procedural-example.php:193
+#: ../lib/php/settings-api/settings-api.php:93
+#: ../lib/php/settings-api/settings-api.php:161
+#: ../lib/php/settings-api/settings-api.php:230
+msgid "A radio button"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:65
+#: ../lib/php/settings-api/procedural-example.php:134
+#: ../lib/php/settings-api/procedural-example.php:202
+#: ../lib/php/settings-api/settings-api.php:102
+#: ../lib/php/settings-api/settings-api.php:171
+#: ../lib/php/settings-api/settings-api.php:239
+msgid "Multile checkbox"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:66
+#: ../lib/php/settings-api/procedural-example.php:135
+#: ../lib/php/settings-api/procedural-example.php:203
+#: ../lib/php/settings-api/settings-api.php:103
+#: ../lib/php/settings-api/settings-api.php:172
+#: ../lib/php/settings-api/settings-api.php:240
+msgid "Multi checkbox description"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:77
+#: ../lib/php/settings-api/procedural-example.php:147
+#: ../lib/php/settings-api/procedural-example.php:214
+#: ../lib/php/settings-api/settings-api.php:114
+#: ../lib/php/settings-api/settings-api.php:184
+#: ../lib/php/settings-api/settings-api.php:251
+msgid "A Dropdown"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:78
+#: ../lib/php/settings-api/procedural-example.php:148
+#: ../lib/php/settings-api/procedural-example.php:215
+#: ../lib/php/settings-api/settings-api.php:115
+#: ../lib/php/settings-api/settings-api.php:185
+#: ../lib/php/settings-api/settings-api.php:252
+msgid "Dropdown description"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:88
+#: ../lib/php/settings-api/procedural-example.php:157
+#: ../lib/php/settings-api/procedural-example.php:224
+#: ../lib/php/settings-api/settings-api.php:125
+#: ../lib/php/settings-api/settings-api.php:194
+#: ../lib/php/settings-api/settings-api.php:261
+msgid "Password"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:89
+#: ../lib/php/settings-api/procedural-example.php:158
+#: ../lib/php/settings-api/procedural-example.php:225
+#: ../lib/php/settings-api/settings-api.php:126
+#: ../lib/php/settings-api/settings-api.php:195
+#: ../lib/php/settings-api/settings-api.php:262
+msgid "Password description"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:95
+#: ../lib/php/settings-api/procedural-example.php:164
+#: ../lib/php/settings-api/procedural-example.php:231
+#: ../lib/php/settings-api/settings-api.php:132
+#: ../lib/php/settings-api/settings-api.php:201
+#: ../lib/php/settings-api/settings-api.php:268
+msgid "File"
+msgstr ""
+
+#: ../lib/php/settings-api/procedural-example.php:96
+#: ../lib/php/settings-api/procedural-example.php:165
+#: ../lib/php/settings-api/procedural-example.php:232
+#: ../lib/php/settings-api/settings-api.php:133
+#: ../lib/php/settings-api/settings-api.php:202
+#: ../lib/php/settings-api/settings-api.php:269
+msgid "File description"
+msgstr ""
+
+#: ../lib/php/settings-api/settings-api.php:72
+msgid "Text Input (integer validation)"
 msgstr ""
 
 #: ../lib/views/manage-ugc-media.tpl.php:5
