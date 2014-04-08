@@ -1176,9 +1176,6 @@ class Frontend_Uploader {
 	 * Enqueue scripts for admin
 	 */
 	function admin_enqueue_scripts() {
-		wp_enqueue_script( 'wp-ajax-response' );
-		wp_enqueue_script( 'jquery-ui-draggable' );
-		wp_enqueue_script( 'media' );
 	}
 
 	/**
