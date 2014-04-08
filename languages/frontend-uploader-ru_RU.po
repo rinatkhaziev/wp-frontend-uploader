@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Frontend Uploader v0.5.9.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-frontend-uploader\n"
 "POT-Creation-Date: 2012-09-01 23:44:34+00:00\n"
-"PO-Revision-Date: 2013-10-29 22:40:44+0000\n"
+"PO-Revision-Date: 2014-04-08 16:40:36+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -193,7 +193,7 @@ msgstr "Прикрепить к посту"
 msgid "No media attachments found."
 msgstr "Файлов не найдено"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:115
 #@ default
 msgctxt "column name"
@@ -206,14 +206,14 @@ msgstr "Файл"
 msgid "Author"
 msgstr "Автор"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:119
 #@ default
 msgctxt "column name"
 msgid "Attached to"
 msgstr "Прикреплен к"
 
-#. translators: column name 
+#. translators: column name
 #: lib/php/class-frontend-uploader-wp-media-list-table.php:122
 #: lib/php/class-frontend-uploader-wp-posts-list-table.php:128
 #@ default
@@ -448,12 +448,12 @@ msgstr "Произошла ошибка при обработке вашего �
 #: frontend-uploader.php:993
 #@ frontend-uploader
 msgid "Security check failed!"
-msgstr ""
+msgstr "Произошла ошибка, попробуйте еще раз"
 
 #: lib/php/frontend-uploader-settings.php:108
 #@ frontend-uploader
 msgid "Enable Frontend Uploader for the following post types"
-msgstr ""
+msgstr "Разрешить загрузку следующих типов постов"
 
 #: lib/php/frontend-uploader-settings.php:131
 #@ frontend-uploader
@@ -468,58 +468,58 @@ msgstr "Автоматически публиковать все загружа�
 #: frontend-uploader.php:172
 #@ frontend-uploader
 msgid "Frontend Uploader requires WordPress 3.3 or newer. Please upgrade."
-msgstr ""
+msgstr "Frontend Uploader работает с версиями 3.3 и выше. Пожалуйста обновите WordPress"
 
 #: frontend-uploader.php:777
 #@ frontend-uploader
 msgid "Your Media Files"
-msgstr ""
+msgstr "Медиа файлы"
 
 #: frontend-uploader.php:808
 #@ frontend-uploader
 msgid "Post content or file description"
-msgstr ""
+msgstr "Содержимое поста или описание файла"
 
 #: frontend-uploader.php:828
 #@ frontend-uploader
 msgid "Post content"
-msgstr ""
+msgstr "Содержимое поста"
 
 #: frontend-uploader.php:964
 #@ frontend-uploader
 msgid "Your post was successfully uploaded!"
-msgstr ""
+msgstr "Ваш пост был успешно загружен!"
 
 #: frontend-uploader.php:1003
 #@ frontend-uploader
 msgid "Couldn't upload the file"
-msgstr ""
+msgstr "Произошла ошибка при загрузке файла"
 
 #: frontend-uploader.php:1006
 #@ frontend-uploader
 msgid "Couldn't create the post"
-msgstr ""
+msgstr "Произошла ошибка при создании поста"
 
 #: lib/php/frontend-uploader-settings.php:116
 #@ frontend-uploader
 msgid "Enable visual editor for textareas"
-msgstr ""
+msgstr "Включить визуальный редактор для textarea"
 
 #: lib/php/class-frontend-uploader-wp-posts-list-table.php:117
 #@ frontend-uploader
 msgid "No posts found."
-msgstr ""
+msgstr "Ничего не найдено"
 
 #: lib/php/frontend-uploader-settings.php:153
 #@ frontend-uploader
 msgid "Suppress default fields"
-msgstr ""
+msgstr "Не отображать поля формы по умолчанию"
 
 #: lib/views/manage-ugc-posts.tpl.php:23
 #: lib/views/manage-ugc-posts.tpl.php:53
 #@ frontend-uploader
 msgid "Post updated."
-msgstr ""
+msgstr "Пост обновлен"
 
 #: lib/views/manage-ugc-posts.tpl.php:34
 #, php-format
@@ -551,20 +551,20 @@ msgstr[2] ""
 #: lib/views/manage-ugc-posts.tpl.php:55
 #@ frontend-uploader
 msgid "Error saving Post."
-msgstr ""
+msgstr "Произошла ошибка при сохранении поста"
 
 #: lib/php/frontend-uploader-settings.php:123
 #@ frontend-uploader
 msgid "Also allow to upload these files (in addition to the ones that WP allows by default)"
-msgstr ""
+msgstr "Разрешить загрузку этих типов файлов (будет добавлено к списку типов файлов, разрешенных по умолчанию)"
 
 #: lib/php/frontend-uploader-settings.php:145
 #@ frontend-uploader
 msgid "Default file name"
-msgstr ""
+msgstr "Имя файла по умолчанию"
 
 #: lib/php/frontend-uploader-settings.php:146
 #@ frontend-uploader
 msgid "Leave blank to use original file name"
-msgstr ""
+msgstr "Оставьте пусты для использования имени файла"
 
