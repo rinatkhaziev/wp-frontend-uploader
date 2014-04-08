@@ -231,6 +231,10 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 0.7.2 =
+* Updated Russian translation
+* Fixed an issue where categories of uploaded post/media weren't properly saved
+
 = 0.7.1 =
 * Fixed fatal error being produced when trying to upload with iOS device
 * Fixed issue with malformed query arguments when redirecting to upload result
