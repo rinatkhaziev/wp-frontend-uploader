@@ -611,6 +611,8 @@ class Frontend_Uploader {
 			$post->post_status = 'publish';
 			wp_update_post( $post );
 
+			do_action( 'fu_post_approved', $post );
+
 			// Check if there's any UGC attachments
 			$attachments = get_children( 'post_type=attachment&post_parent=' . $post->ID );
 			foreach ( (array) $attachments as $image_id => $attachment ) {
