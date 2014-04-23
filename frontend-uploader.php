@@ -582,6 +582,9 @@ class Frontend_Uploader {
 		if ( is_object( $post ) && $post->post_status == 'private' ) {
 			$post->post_status = 'inherit';
 			wp_update_post( $post );
+
+			do_action( 'fu_media_approved', $post );
+
 			$this->update_35_gallery_shortcode( $post->post_parent, $post->ID );
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&approved=1' ) );
 		}
