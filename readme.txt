@@ -231,6 +231,9 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 0.7.4 (Apr 24, 2014) =
+* Bugfix: fix inconsistencies of nonces in admin views. /props EamonMcCambridg
+
 = 0.7.3 =
 * Bugfix: some potential php notices
 * Feature: added fu_post_approved and fu_media_approved actions
