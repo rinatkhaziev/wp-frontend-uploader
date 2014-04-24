@@ -574,8 +574,9 @@ class Frontend_Uploader {
 	 */
 	function approve_media() {
 		// Check permissions, attachment ID, and nonce
-		if ( ! $this->_check_perms_and_nonce() || 0 !== (int) $_GET['id'] )
+		if ( false === $this->_check_perms_and_nonce() || 0 === (int) $_GET['id'] ) {
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
+		}
 
 		$post = get_post( $_GET['id'] );
 
@@ -602,7 +603,7 @@ class Frontend_Uploader {
 	function approve_post() {
 		// check for permissions and id
 		$url = get_admin_url( null, 'edit.php?page=manage_frontend_uploader_posts&error=id_or_perm' );
-		if ( !current_user_can( $this->manage_permissions ) || intval( $_GET['id'] ) == 0  )
+		if ( !current_user_can( $this->manage_permissions ) || intval( $_GET['id'] ) === 0  )
 			wp_safe_redirect( $url );
 
 		$post = get_post( $_GET['id'] );
