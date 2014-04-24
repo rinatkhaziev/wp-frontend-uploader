@@ -802,14 +802,19 @@ class Frontend_Uploader {
 		$options = '';
 		//Build options for the list
 		foreach ( $values as $option ) {
-			$options .= $this->html->element( 'option', $option, array( 'value' => $option ), false );
+			$kv = explode( ":", $option );
+			$caption = isset( $kv[1] ) ? $kv[1] : $kv[0];
+
+			$options .= $this->html->element( 'option', $caption, array( 'value' => $kv[0] ), false );
 		}
+
 		//Render select field
 		$element = $this->html->element( 'label', $description . $this->html->element( 'select', $options, array(
 					'name' => $name,
 					'id' => $id,
 					'class' => $class
 				), false ), array( 'for' => $id ), false );
+
 		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
