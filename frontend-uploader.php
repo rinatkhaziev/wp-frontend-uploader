@@ -527,10 +527,8 @@ class Frontend_Uploader {
 	function render( $view = '' ) {
 		if ( empty( $view ) )
 			return;
-
 		$file = FU_ROOT . "/lib/views/{$view}.tpl.php";
-		if ( file_exists( $file ) )
-			require $file;
+		include_once $file;
 	}
 
 	/**
