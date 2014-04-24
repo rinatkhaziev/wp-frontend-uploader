@@ -5,27 +5,26 @@ Tags: frontend, image, images, media, uploader, upload, video, audio, photo, pho
 Requires at least: 3.3
 Tested up to: 3.9
 Stable tag: 0.7.2
+License: GPLv2 or later
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
 
 == Description ==
 
 **What is Frontend Uploader?**
-This plugin is a simple way for users to submit content to your site. The plugin uses shortcodes to let you add submission forms to your posts and pages. Once the content is submitted, it is held for moderation until you hit “Publish.” It’s that easy!
+
+This plugin is a simple way for users to submit content to your site. The plugin uses a set of shortcodes to let you create highly customizable submission forms to your posts and pages. Once the content is submitted, it is held for moderation until you approve it. It’s that easy!
 
 **5 Steps to using Frontend Uploader**
 
 Step 1: Install the plugin.
-
 Step 2: Insert the Frontend Uploader shortcode into a post. The basic form can be inserted using [fu-upload-form], please visit the FAQs for more complex forms.
-
 Step 3: Users submit content using the form.
-
 Step 4: Go to “Manage UGC” under the “Media” tab. Find the media item you’d like to approve, and click “Approve.”
-
 Step 5: Your user generated media is live.
 
 **Exploring Customizations**
+
 * You can modify the submission form as needed, and have users submit posts. Please visit the FAQ page for more information.
 * This plugin can be applied to Posts, Pages, and Custom Post Types. You can enable this via Settings > Frontend Uploader Settings.
 * In addition to the WordPress whitelisted file types, this also supports uploading of Microsoft Office and Adobe files, as well as various video and audio files. You can enable these file types via Settings > Frontend Uploader Settings.
@@ -33,7 +32,7 @@ Step 5: Your user generated media is live.
 
 You can also manage UGC for selected custom post types (Please refer to the plugin's settings page). By default, UGC is enabled for posts and attachments. If you want to be able to get any other post types UGC submissions just select desired post types at the plugin's settings page, and pass post_type='my_post_type' to the [fu-upload-form] shortcode.
 
-= Translations: =
+== Translations ==
 
 * Se habla español (Spanish) (props Rafael Calzada, gastonbesada)
 * Мы говорим по-русски (Russian)
@@ -75,26 +74,27 @@ If you would like to build a custom form, it must begin with [fu-upload-form] an
 
 Within it, you can add various fields.
 
-1. [input type="text" name="post_title" => A text box for one line of text
-1. [textarea name="post_content"] => A text box for multiple lines of text
-1. [input type="file" name="photo"] => A file uploader
-1. [checkboxes name="foo" class="checkboxes" description="Pick a fruit" values="value:Description,124:Banana,cherry:Cherry"]
-1. [select name="foo" class="select" description="Pick a fruit" values="Apple,Banana,Cherry"]
-1. [input type="submit" class="btn" value="Submit"] => A submit button
+1. `[input type="text" name="post_title"]` => A text box for one line of text
+1. `[textarea name="post_content"]` => A text box for multiple lines of text
+1. `[input type="file" name="photo"]` => A file uploader
+1. `[checkboxes name="foo" class="checkboxes" description="Pick a fruit" values="value:Description,124:Banana,cherry:Cherry"]`
+1. `[select name="foo" class="select" description="Pick a fruit" values="Apple,Banana,Cherry"]`
+1. `[input type="submit" class="btn" value="Submit"]` => A submit button
 
 The [fu-upload-form] shortcode has several parameters that can modify its behavior:
 
-1. ‘form_layout' => This determines whether the form is saved as a post (‘post’), as a media file (‘image’), or as a post with images (‘post_image’). The default is ‘image.’  Example: [fu-upload-form class="your-class" title="Upload your media" form_layout=”post”]
-1. 'title' => Add this [fu-upload-form] shortcode, and this will be the Headline that will be displayed before the form. Example: [fu-upload-form class="your-class" title="Upload your media"]
-1. 'class' => HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’ Example: [input type="text" name="post_title" id="title" class="required"]
-1. 'success_page' => URL to redirect on successful submission, defaults to the URL where the form is being displayed.
-1. 'category' => ID of category the post should be attached (only in post or post+image mode).
-1.  'post_id' => ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on.
-1. 'post_type' => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
-1. 'suppress_default_fields' => Override global setting for supressing default form fields (true or false).
+1. `'form_layout'` => This determines whether the form is saved as a post (‘post’), as a media file (‘image’), or as a post with images (‘post_image’). The default is ‘image.’  Example: [fu-upload-form class="your-class" title="Upload your media" form_layout=”post”]
+1. `'title'` => Add this [fu-upload-form] shortcode, and this will be the Headline that will be displayed before the form. Example: [fu-upload-form class="your-class" title="Upload your media"]
+1. `'class'` => HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’ Example: [input type="text" name="post_title" id="title" class="required"]
+1. `'success_page'` => URL to redirect on successful submission, defaults to the URL where the form is being displayed.
+1. `'category'` => ID of category the post should be attached (only in post or post+image mode).
+1.  `'post_id'` => ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on.
+1. `'post_type'` => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
+1. `'suppress_default_fields'` => Override global setting for supressing default form fields (true or false).
 
 = Example of default media upload form =
-Here's example of default form (*you don't need to enter all that if you want to use default form, just use [fu-upload-form]*):
+
+Here's example of default form (*you don't need to enter all that if you want to use default form, just use `[fu-upload-form]`*):
 
 `[fu-upload-form class="your-class" title="Upload your media"]
 [input type="text" name="post_title" id="title" class="required" description="Title" multiple=""]
