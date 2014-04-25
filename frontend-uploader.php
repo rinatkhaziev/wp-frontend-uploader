@@ -269,7 +269,11 @@ class Frontend_Uploader {
 				$errors['fu-error-media'][] = $k['name'];
 		}
 
-		$success = empty( $errors ) && !empty( $media_ids ) ? true : false;
+		/**
+		 * $success determines the rest of upload flow
+		 * Setting this to true if no errors were produced even if there's was no files to upload
+		 */
+		$success = empty( $errors ) ? true : false;
 
 		if ( $success ) {
 			foreach ( $media_ids as $media_id ) {
@@ -471,7 +475,6 @@ class Frontend_Uploader {
 			if ( isset( $result['media_ids'] ) && !isset( $result['post_id'] ) )
 				$query_args['response'] = 'fu-sent';
 		}
-
 
 		// Some errors happened
 		// Format a string to be passed as GET value
