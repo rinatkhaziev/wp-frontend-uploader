@@ -231,6 +231,9 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 0.7.5 (Apr 25, 2014) =
+* Bugfix: make sure that result of upload of post_media is success when uploading post but no files /props petsuka
+
 = 0.7.4 (Apr 24, 2014) =
 * Bugfix: fix inconsistencies of nonces in admin views. /props EamonMcCambridg
 
