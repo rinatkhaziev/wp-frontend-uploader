@@ -99,6 +99,7 @@ class Frontend_Uploader {
 
 		// Currently supported shortcodes
 		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
+		add_shortcode( 'fu-upload-response', array( $this, 'upload_response_shortcode') );
 
 		// Static assets
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -1057,6 +1058,19 @@ class Frontend_Uploader {
 			return $fields;
 
 		return false;
+	}
+
+	/**
+	 * [fu-upload-response] shortcode callback to render upload results notice
+	 *
+	 * @param  [type] $atts [description]
+	 * @return [type]       [description]
+	 */
+	function upload_response_shortcode( $atts ) {
+		$this->enqueue_scripts();
+		ob_start();
+		$this->_display_response_notices( $_GET );
+		return ob_get_clean();
 	}
 
 	/**
