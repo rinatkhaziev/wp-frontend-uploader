@@ -17,11 +17,11 @@ This plugin is a simple way for users to submit content to your site. The plugin
 
 **5 Steps to using Frontend Uploader**
 
-Step 1: Install the plugin.
-Step 2: Insert the Frontend Uploader shortcode into a post. The basic form can be inserted using [fu-upload-form], please visit the FAQs for more complex forms.
-Step 3: Users submit content using the form.
-Step 4: Go to “Manage UGC” under the “Media” tab. Find the media item you’d like to approve, and click “Approve.”
-Step 5: Your user generated media is live.
+1. Install the plugin.
+1. Insert the Frontend Uploader shortcode into a post. The basic form can be inserted using [fu-upload-form], please visit the FAQs for more complex forms.
+1. Users submit content using the form.
+1. Go to “Manage UGC” under the “Media” tab. Find the media item you’d like to approve, and click “Approve.”
+1. Your user generated media is live.
 
 **Exploring Customizations**
 
@@ -72,25 +72,25 @@ Frontend Uploader uses shortcodes to insert a form into a page or post. The defa
 
 If you would like to build a custom form, it must begin with [fu-upload-form] and end with [/fu-upload-form].
 
-Within it, you can add various fields.
+The [fu-upload-form] shortcode has several parameters that can modify its behavior:
+
+1. `form_layout` => This determines whether the form is saved as a post (‘post’), as a media file (‘image’), or as a post with images (‘post_image’). The default is ‘image.’  Example: [fu-upload-form class="your-class" title="Upload your media" form_layout=”post”]
+1. `title` => Add this [fu-upload-form] shortcode, and this will be the Headline that will be displayed before the form. Example: [fu-upload-form class="your-class" title="Upload your media"]
+1. `class` => HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’ Example: [input type="text" name="post_title" id="title" class="required"]
+1. `success_page` => URL to redirect on successful submission, defaults to the URL where the form is being displayed.
+1. `category` => ID of category the post should be attached (only in post or post+image mode).
+1. `post_id` => ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on.
+1. `post_type` => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
+1. `suppress_default_fields` => Override global setting for supressing default form fields (true or false).
+
+Within [fu-upload-form], you can add various fields with shortcodes like these:
 
 1. `[input type="text" name="post_title"]` => A text box for one line of text
 1. `[textarea name="post_content"]` => A text box for multiple lines of text
 1. `[input type="file" name="photo"]` => A file uploader
 1. `[checkboxes name="foo" class="checkboxes" description="Pick a fruit" values="value:Description,124:Banana,cherry:Cherry"]`
-1. `[select name="foo" class="select" description="Pick a fruit" values="Apple,Banana,Cherry"]`
+1. `[select name="foo" class="select" description="Pick a fruit" values="apple:Apple,banana:Banana,cherry:Cherry"]`
 1. `[input type="submit" class="btn" value="Submit"]` => A submit button
-
-The [fu-upload-form] shortcode has several parameters that can modify its behavior:
-
-1. `'form_layout'` => This determines whether the form is saved as a post (‘post’), as a media file (‘image’), or as a post with images (‘post_image’). The default is ‘image.’  Example: [fu-upload-form class="your-class" title="Upload your media" form_layout=”post”]
-1. `'title'` => Add this [fu-upload-form] shortcode, and this will be the Headline that will be displayed before the form. Example: [fu-upload-form class="your-class" title="Upload your media"]
-1. `'class'` => HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’ Example: [input type="text" name="post_title" id="title" class="required"]
-1. `'success_page'` => URL to redirect on successful submission, defaults to the URL where the form is being displayed.
-1. `'category'` => ID of category the post should be attached (only in post or post+image mode).
-1.  `'post_id'` => ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on.
-1. `'post_type'` => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
-1. `'suppress_default_fields'` => Override global setting for supressing default form fields (true or false).
 
 = Example of default media upload form =
 
