@@ -195,9 +195,9 @@ function my_fu_allowed_mime_types( $mime_types ) {
 
 = fu_after_upload =
 
-`add_action( 'fu_after_upload', 'my_fu_after_upload' );
+`add_action( 'fu_after_upload', 'my_fu_after_upload', 10, 3 );
 
-function my_fu_after_upload( $attachment_ids ) {
+function my_fu_after_upload( $attachment_ids, $success, $post_id ) {
 	// do something with freshly uploaded files
 	// This happens on POST request, so $_POST will also be available for you
 }`
