@@ -284,7 +284,7 @@ class Frontend_Uploader {
 		}
 		// Allow additional setup
 		// Pass array of attachment ids
-		do_action( 'fu_after_upload', $media_ids, $success );
+		do_action( 'fu_after_upload', $media_ids, $success, $post_id );
 		return array( 'success' => $success, 'media_ids' => $media_ids, 'errors' => $errors );
 	}
 
