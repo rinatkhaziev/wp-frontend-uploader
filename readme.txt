@@ -3,7 +3,7 @@ Contributors: rinatkhaziev, danielbachhuber, jtrees
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=rinat%2ekhaziev%40gmail%2ecom
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content, ugc, frontend upload
 Requires at least: 3.3
-Tested up to: 3.9
+Tested up to: 3.9.1
 Stable tag: 0.7.5
 License: GPLv2 or later
 
@@ -230,6 +230,9 @@ function my_fu_upload_result( $layout, $result ) {
 }`
 
 == Changelog ==
+
+= 0.7.6 (Jul 9, 2014) =
+* Bugfix: issues with success_page redirecting to wrong url in subfolder multisite install
 
 = 0.7.5 (Apr 25, 2014) =
 * Bugfix: make sure that result of upload of post_media is success when uploading post but no files /props petsuka
