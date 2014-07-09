@@ -496,30 +496,9 @@ class Frontend_Uploader {
 			$query_args['errors'] = join( ';', $errors_formatted );
 		}
 
-		$redirect_url = '';
-
-		// Account for ugly permalinks
-		if ( ! get_option( 'permalink_structure' ) ) {
-			// This is a workaround to delete duplicate query params
-			// E.g. make sure that ?p=x&response=fu-error&response=fu-error is not possible
-			$query_args = array_merge( wp_parse_args( $url ), $query_args );
-
-			$redirect_url = build_query( $query_args );
-
-			/**
-			 * build_query produces '/=&' instead of proper /?= when
-			 * first element in array is '/'
-			 */
-			$redirect_url = str_replace( '/=&', '/?', $redirect_url );
-
-			// We need full url, not just query part
-			$redirect_url = home_url( $redirect_url );
-		} else {
-			// Use add_query_arg for nice permalinks
-			$redirect_url =  add_query_arg( array( $query_args ) , $url );
-		}
-
-		wp_safe_redirect( $redirect_url );
+		// Perform a safe redirect and exit
+		wp_safe_redirect( add_query_arg( $query_args, $url ) );
+		exit;
 	}
 
 	/**
