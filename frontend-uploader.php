@@ -850,6 +850,33 @@ class Frontend_Uploader {
 		$file_desc = __( 'Your Media Files', 'frontend-uploader' );
 		$submit_button = __( 'Submit', 'frontend-uploader' );
 
+		// Set post type for layouts that include uploading of posts
+		// Put it in front of the main form to allow to override it
+		if ( in_array( $form_layout, array( "post_media", "post_image", "post" ) ) ) {
+			echo $this->shortcode_content_parser( array(
+					'type' => 'hidden',
+					'role' => 'internal',
+					'name' => 'post_type',
+					'value' =>  $post_type
+				), null, 'input' );
+		}
+
+		echo $this->shortcode_content_parser( array(
+				'type' => 'hidden',
+				'role' => 'internal',
+				'name' => 'post_ID',
+				'value' => $post_id
+			), null, 'input' );
+
+		if ( isset( $category ) && 0 !== (int) $category ) {
+			echo $this->shortcode_content_parser( array(
+					'type' => 'hidden',
+					'role' => 'internal',
+					'name' => 'post_category',
+					'value' => $category
+				), null, 'input' );
+		}
+
 		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
 
 			// Display title field
@@ -944,22 +971,6 @@ class Frontend_Uploader {
 				'value' => 'upload_ugc'
 			), null, 'input' );
 
-		echo $this->shortcode_content_parser( array(
-				'type' => 'hidden',
-				'role' => 'internal',
-				'name' => 'post_ID',
-				'value' => $post_id
-			), null, 'input' );
-
-		if ( isset( $category ) && 0 !== (int) $category ) {
-			echo $this->shortcode_content_parser( array(
-					'type' => 'hidden',
-					'role' => 'internal',
-					'name' => 'post_category',
-					'value' => $category
-				), null, 'input' );
-		}
-
 		// Redirect to specified url if valid
 		if ( !empty( $success_page ) && filter_var( $success_page, FILTER_VALIDATE_URL ) ) {
 			echo $this->shortcode_content_parser( array(
@@ -977,16 +988,6 @@ class Frontend_Uploader {
 				'name' => 'form_layout',
 				'value' =>  $form_layout
 			), null, 'input' );
-
-		// Set post type for layouts that include uploading of posts
-		if ( in_array( $form_layout, array( "post_media", "post_image", "post" ) ) ) {
-			echo $this->shortcode_content_parser( array(
-					'type' => 'hidden',
-					'role' => 'internal',
-					'name' => 'post_type',
-					'value' =>  $post_type
-				), null, 'input' );
-		}
 
 		// Allow a little markup customization
 		do_action( 'fu_additional_html' );
