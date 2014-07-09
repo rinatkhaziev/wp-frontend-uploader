@@ -77,7 +77,7 @@ The [fu-upload-form] shortcode has several parameters that can modify its behavi
 1. `form_layout` => This determines whether the form is saved as a post (‘post’), as a media file (‘image’), or as a post with images (‘post_image’). The default is ‘image.’  Example: [fu-upload-form class="your-class" title="Upload your media" form_layout=”post”]
 1. `title` => Add this [fu-upload-form] shortcode, and this will be the Headline that will be displayed before the form. Example: [fu-upload-form class="your-class" title="Upload your media"]
 1. `class` => HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’ Example: [input type="text" name="post_title" id="title" class="required"]
-1. `success_page` => URL to redirect on successful submission, defaults to the URL where the form is being displayed.
+1. `success_page` => URL to redirect on successful submission, defaults to the URL where the form is being displayed. For security reasons this should be an URL on your site (no external links). You can use [fu-upload-response] shortcode to display success/error messages on the given page.
 1. `category` => ID of category the post should be attached (only in post or post+image mode).
 1. `post_id` => ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on.
 1. `post_type` => Any registered whitelisted post type. Defaults to 'post'. Works only in post and post+image modes.
