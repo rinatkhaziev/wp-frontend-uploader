@@ -231,6 +231,9 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 0.7.7 (Jul 9, 2014) =
+* Feature: 
+
 = 0.7.6 (Jul 9, 2014) =
 * Bugfix: issues with success_page redirecting to wrong url in subfolder multisite install
 
