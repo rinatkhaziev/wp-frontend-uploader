@@ -2,7 +2,7 @@
 /**
  * Posts Library List Table class.
  *
- * @todo Unhack
+ * TODO: Unhack
  *
  */
 require_once ABSPATH . '/wp-admin/includes/class-wp-posts-list-table.php';

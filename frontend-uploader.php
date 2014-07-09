@@ -248,12 +248,12 @@ class Frontend_Uploader {
 
 			// Try to set post caption if the field is set on request
 			// Fallback to post_content if the field is not set
-			// @todo remove this in v0.6 when automatic handling of shortcode attributes is implemented
+			// TODO: remove this in v0.6 when automatic handling of shortcode attributes is implemented
 			if ( isset( $_POST['caption'] ) )
 				$caption = sanitize_text_field( $_POST['caption'] );
 			elseif ( isset( $_POST['post_content'] ) )
 				$caption = sanitize_text_field( $_POST['post_content'] );
-			// @todo remove or refactor
+			// TODO: remove or refactor
 			$filename = !empty( $this->settings['default_file_name'] ) ? $this->settings['default_file_name'] : pathinfo( $k['name'], PATHINFO_FILENAME );
 			$post_overrides = array(
 				'post_status' => $this->_is_public() ? 'publish' : 'private',
@@ -389,7 +389,7 @@ class Frontend_Uploader {
 		$hash = sanitize_text_field( $_POST['ff'] );
 		$this->form_fields = !empty( $this->form_fields ) ? $this->form_fields : $this->_get_fields_for_form( $form_post_id, $hash );
 
-		// @todo handle form fields error (false or empty)
+		// TODO: handle form fields error (false or empty)
 
 		$layout = isset( $_POST['form_layout'] ) && !empty( $_POST['form_layout'] ) ? $_POST['form_layout'] : 'image';
 		switch ( $layout ) {
@@ -441,7 +441,7 @@ class Frontend_Uploader {
 		// Notify site admins of new upload
 		if ( ! ( 'on' == $this->settings['notify_admin'] && $result['success'] ) )
 			return;
-		// @todo It'd be nice to add the list of upload files
+		// TODO: It'd be nice to add the list of upload files
 		$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
 		$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
 		wp_mail( $to, $subj, $this->settings['admin_notification_text'] );
@@ -571,7 +571,7 @@ class Frontend_Uploader {
 	/**
 	 * Approve a media file
 	 *
-	 * @todo refactor in 0.6
+	 * TODO: refactor in 0.6
 	 * @return [type] [description]
 	 */
 	function approve_media() {
@@ -599,7 +599,7 @@ class Frontend_Uploader {
 	/**
 	 *
 	 *
-	 * @todo refactor in 0.6
+	 * TODO: refactor in 0.6
 	 * @return [type] [description]
 	 */
 	function approve_post() {
@@ -824,7 +824,7 @@ class Frontend_Uploader {
 	/**
 	 * Display the upload post form
 	 *
-	 * @todo Major refactoring for this before releasing 0.6
+	 * TODO: Major refactoring for this before releasing 0.6
 	 *
 	 * @param array   $atts    shortcode attributes
 	 * @param string  $content content that is encloded in [fu-upload-form][/fu-upload-form]
@@ -917,7 +917,7 @@ class Frontend_Uploader {
 		}
 
 		// Show author field
-		// @todo remove
+		// TODO: remove
 		if ( isset( $this->settings['show_author'] ) && $this->settings['show_author'] == 'on' ) {
 			echo $this->shortcode_content_parser( array(
 					'type' => 'text',
@@ -1154,7 +1154,7 @@ class Frontend_Uploader {
 		);
 
 
-		// @todo DAMN SON you should refactor this
+		// TODO: DAMN SON you should refactor this
 		foreach ( $errors_arr as $error ) {
 			$error_type = explode( ':', $error );
 			$error_details = explode( '|', $error_type[1] );

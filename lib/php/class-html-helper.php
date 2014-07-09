@@ -7,7 +7,6 @@
  */
 class Html_Helper {
 
-	// @todo additional setup on instantiation
 	function __construct() {
 
 	}
@@ -130,19 +129,6 @@ class Html_Helper {
 
 	function form_end() {
 		echo '</form>';
-	}
-	/**
-	 * Cast to string and return with leading zero
-	 *
-	 * @param int     $number
-	 * @todo Why is this here?
-	 */
-	function leading_zero( $number ) {
-		$number = (string) $number;
-		if ( strlen( $number ) > 1 )
-			return $number;
-		else
-			return '0' . $number;
 	}
 
 	/**
