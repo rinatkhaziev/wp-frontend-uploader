@@ -948,7 +948,7 @@ class Frontend_Uploader {
 						'role' => 'file',
 						'name' => 'files',
 						'id' => 'ug_photo',
-						'multiple' => '',
+						'multiple' => 'multiple',
 						'description' =>  $file_desc,
 					), null, 'input' );
 			}
