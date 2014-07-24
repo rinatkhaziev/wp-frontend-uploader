@@ -1182,7 +1182,13 @@ class Frontend_Uploader {
 	 * Enqueue scripts for admin
 	 */
 	function admin_enqueue_scripts() {
-		wp_enqueue_script( 'media', array( 'jquery' ) );
+		$screen = get_current_screen();
+		/**
+		 * Don't try to include media script anywhere except "Manage UGC" screen
+		 * Otherwise it produces JS errors, potentially breaking some post edit screen features
+		 */
+		if ( $screen && 'media_page_manage_frontend_uploader' == $screen->base )
+			wp_enqueue_script( 'media', array( 'jquery' ) );
 	}
 
 	/**
