@@ -235,6 +235,7 @@ function my_fu_upload_result( $layout, $result ) {
 = 0.8 (Jul 24, 2014) =
 * Bugfix: re-attach media file to posts is working as expected now
 * Bugfix: file inputs accept multiple files by default now
+* Translation: added nl_NL translation 
 
 = 0.7.7 (Jul 9, 2014) =
 * Feature: allow overriding default form fields (like category, post_id, etc) with customized inputs in the form
