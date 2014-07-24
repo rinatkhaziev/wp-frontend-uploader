@@ -40,6 +40,7 @@ You can also manage UGC for selected custom post types (Please refer to the plug
 * Nous parlons français (Canadian French) (props rfzappala)
 * Vi snakker norsk (Norwegian) (props André Langseth)
 * Wir sprechen Deutsch (German) (props Joshua Trees)
+* We spreken Nederlands (Dutch) (props Jaap van der Veen)
 
 [Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
 
