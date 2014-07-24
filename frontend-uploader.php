@@ -1182,7 +1182,7 @@ class Frontend_Uploader {
 	 * Enqueue scripts for admin
 	 */
 	function admin_enqueue_scripts() {
-		wp_enqueue_script( 'media', array( 'jquery' ) );
+		wp_enqueue_media();
 	}
 
 	/**
