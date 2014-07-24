@@ -3,7 +3,7 @@ Contributors: rinatkhaziev, danielbachhuber, jtrees
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=rinat%2ekhaziev%40gmail%2ecom
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content, ugc, frontend upload
 Requires at least: 3.3
-Tested up to: 3.9.1
+Tested up to: 4.0
 Stable tag: 0.7.7
 License: GPLv2 or later
 
@@ -232,8 +232,13 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 0.8 (Jul 24, 2014) =
+* Bugfix: re-attach media file to posts is working as expected now
+* Bugfix: file inputs accept multiple files by default now
+
 = 0.7.7 (Jul 9, 2014) =
-* Feature: 
+* Feature: allow overriding default form fields (like category, post_id, etc) with customized inputs in the form
+
 
 = 0.7.6 (Jul 9, 2014) =
 * Bugfix: issues with success_page redirecting to wrong url in subfolder multisite install
