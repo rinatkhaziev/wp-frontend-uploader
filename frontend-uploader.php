@@ -391,11 +391,22 @@ class Frontend_Uploader {
 		$hash = sanitize_text_field( $_POST['ff'] );
 		$this->form_fields = !empty( $this->form_fields ) ? $this->form_fields : $this->_get_fields_for_form( $form_post_id, $hash );
 
-		// TODO: handle form fields error (false or empty)
-
 		$layout = isset( $_POST['form_layout'] ) && !empty( $_POST['form_layout'] ) ? $_POST['form_layout'] : 'image';
-		switch ( $layout ) {
 
+		/**
+		 * Utility hook 'fu_should_process_content_upload': maybe terminate upload early (useful for Akismet integration, etc)
+		 * Defaults to true, upload will be terminated if set to false.
+		 *
+		 * Parameters:
+		 * boolean - whether should process
+		 * string $layout - which form layout is used
+		 */
+		if ( false === apply_filters( 'fu_should_process_content_upload', true, $layout ) ) {
+			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error' ), wp_get_referer() ) );
+			exit;
+		}
+
+		switch ( $layout ) {
 			// Upload the post
 		case 'post':
 			$result = $this->_upload_post();
@@ -412,7 +423,6 @@ class Frontend_Uploader {
 			// Upload media
 		case 'image':
 		case 'media':
-
 			if ( isset( $_POST['post_ID'] ) && 0 !== $pid = (int) $_POST['post_ID'] ) {
 				$result = $this->_upload_files( $pid );
 			}
