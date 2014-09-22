@@ -222,6 +222,8 @@ class Frontend_Uploader {
 		// File field name could be user defined, so we just get the first file
 		$files = current( $_FILES );
 
+		// There can be multiple files
+		// So we need to iterate over each of the files to process
 		for ( $i = 0; $i < count( $files['name'] ); $i++ ) {
 			$fields = array( 'name', 'type', 'tmp_name', 'error', 'size' );
 			foreach ( $fields as $field ) {
