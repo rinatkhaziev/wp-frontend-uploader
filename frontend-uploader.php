@@ -511,7 +511,7 @@ class Frontend_Uploader {
 		/**
 		 * Allow to filter query args before doing the redirect after upload
 		 */
-		$query_args = apply_filters( 'fu_upload_result_query_args', $query_args );
+		$query_args = apply_filters( 'fu_upload_result_query_args', $query_args, $result );
 
 		// Perform a safe redirect and exit
 		wp_safe_redirect( add_query_arg( $query_args, $url ) );
