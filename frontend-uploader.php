@@ -250,7 +250,6 @@ class Frontend_Uploader {
 
 			// Try to set post caption if the field is set on request
 			// Fallback to post_content if the field is not set
-			// TODO: remove this in v0.6 when automatic handling of shortcode attributes is implemented
 			if ( isset( $_POST['caption'] ) )
 				$caption = sanitize_text_field( $_POST['caption'] );
 			elseif ( isset( $_POST['post_content'] ) )
@@ -383,7 +382,7 @@ class Frontend_Uploader {
 
 		// Bail if something fishy is going on
 		if ( !wp_verify_nonce( $_POST['fu_nonce'], FU_NONCE ) ) {
-			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  'nonce-failure' ), wp_get_referer() ) );
+			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  'fu-nonce-failure' ), wp_get_referer() ) );
 			exit;
 		}
 
@@ -402,7 +401,7 @@ class Frontend_Uploader {
 		 * string $layout - which form layout is used
 		 */
 		if ( false === apply_filters( 'fu_should_process_content_upload', true, $layout ) ) {
-			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error' ), wp_get_referer() ) );
+			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-spam' ), wp_get_referer() ) );
 			exit;
 		}
 
@@ -450,9 +449,10 @@ class Frontend_Uploader {
 	 * Notify site administrator by email
 	 */
 	function _notify_admin( $result = array() ) {
-		// Notify site admins of new upload
+		// Email notifications are disabled, or upload has failed, bailing
 		if ( ! ( 'on' == $this->settings['notify_admin'] && $result['success'] ) )
 			return;
+
 		// TODO: It'd be nice to add the list of upload files
 		$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
 		$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
@@ -471,7 +471,6 @@ class Frontend_Uploader {
 			return;
 		}
 
-		$errors_formatted = array();
 		// Either redirect to success page if it's set and valid
 		// Or to referrer
 		$url = isset( $_POST['success_page'] ) && filter_var( $_POST['success_page'], FILTER_VALIDATE_URL ) ? $_POST['success_page'] : wp_get_referer();
@@ -489,23 +488,11 @@ class Frontend_Uploader {
 				$query_args['response'] = 'fu-sent';
 		}
 
-		// Some errors happened
-		// Format a string to be passed as GET value
+		// Something went wrong, let's indicate it
 		if ( !empty( $result['errors'] ) ) {
 			$query_args['response'] = 'fu-error';
-			$_errors = array();
 
-			// Iterate through key=>value pairs of errors
-			foreach ( $result['errors'] as $key => $error ) {
-				if ( isset( $error[0] ) )
-					$_errors[$key] = join( ',,,', (array) $error[0] );
-			}
-
-			foreach ( $_errors as $key => $value ) {
-				$errors_formatted[] = "{$key}:{$value}";
-			}
-
-			$query_args['errors'] = join( ';', $errors_formatted );
+			$query_args['errors'] = $result['errors'];
 		}
 
 		/**
@@ -820,10 +807,8 @@ class Frontend_Uploader {
 	/**
 	 * Display the upload post form
 	 *
-	 * TODO: Major refactoring for this before releasing 0.6
-	 *
 	 * @param array   $atts    shortcode attributes
-	 * @param string  $content content that is encloded in [fu-upload-form][/fu-upload-form]
+	 * @param string  $content content that is enclosed in [fu-upload-form][/fu-upload-form]
 	 */
 	function upload_form( $atts, $content = null ) {
 		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
@@ -1111,6 +1096,10 @@ class Frontend_Uploader {
 				'text' => __( 'There was an error with your submission', 'frontend-uploader' ),
 				'class' => 'failure',
 			),
+			'fu-spam' => array(
+				'text' => __( "Your submission looks spammy", 'frontend-uploader' ),
+				'class' => 'failure',
+			),
 		);
 
 		if ( isset( $res['response'] ) && isset( $map[ $res['response'] ] ) )
@@ -1129,15 +1118,14 @@ class Frontend_Uploader {
 	 * @return string HTML
 	 */
 	function _display_errors( $errors ) {
-		$errors_arr = explode( ';', $errors );
 		$output = '';
 		$map = array(
-			'nonce-failure' => array(
+			'fu-nonce-failure' => array(
 				'text' => __( 'Security check failed!', 'frontend-uploader' ),
 			),
 			'fu-disallowed-mime-type' => array(
 				'text' => __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ),
-				'format' => $this->is_debug ? '%1$s: <br/> File name: %2$s <br/> MIME-TYPE: %3$s' : '%1$s: <br/> %2$s',
+				'format' => $this->is_debug ? '%1$s: <br/> File name: %2$s <br> MIME-TYPE: %3$s' : '%1$s: <br> %2$s',
 			),
 			'fu-invalid-post' => array(
 				'text' =>__( 'The content you are trying to post is invalid.', 'frontend-uploader' ),
@@ -1150,28 +1138,24 @@ class Frontend_Uploader {
 			),
 		);
 
+		// Iterate over all the errors that occured for this submission
+		// $error is the key of error, $details - additional information about the error
+		foreach ( $errors as $error => $details ) {
 
-		// TODO: DAMN SON you should refactor this
-		foreach ( $errors_arr as $error ) {
-			$error_type = explode( ':', $error );
-			$error_details = explode( '|', $error_type[1] );
-			// Iterate over different errors
-			foreach ( $error_details as $single_error ) {
+			// We might have multiple errors of the same type, let's walk through them
+			foreach( (array) $details as $single_error ) {
+				if ( isset( $map[ $error ]['format'] ) ) {
+					// Prepend the array with error message
+					array_unshift( $single_error, $map[ $error ]['text']  );
+					$message = vsprintf( $map[ $error ]['format'], $single_error );
+				} else {
+					$message = $map[ $error ]['text'];
+				}
 
-				// And see if there's any additional details
-				$details = isset( $single_error ) ? explode( ',,,', $single_error ) : explode( ',,,', $single_error );
-				// Add a description to our details array
-				array_unshift( $details, $map[ $error_type[0] ]['text']  );
-				// If we have a format, let's format an error
-				// If not, just display the message
-				if ( isset( $map[ $error_type[0] ]['format'] ) )
-					$message = vsprintf( $map[ $error_type[0] ]['format'], $details );
-				else
-					$message = $map[ $error_type[0] ]['text'];
+				// Append the error to html to display
+				$output .= $this->_notice_html( $message, 'failure' );
 			}
-			$output .= $this->_notice_html( $message, 'failure' );
 		}
-
 		return $output;
 	}
 
