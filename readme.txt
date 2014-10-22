@@ -233,6 +233,11 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 0.9 (Oct 22, 2014) =
+* Feature: Akismet integration! Protects your site from spam submissions
+* Added fu_upload_result_query_args filter
+* A bunch of minor bugfixes and code refactoring
+
 = 0.8.1 (Jul 24, 2014) =
 * Bugfix: Don't try to include media script anywhere except "Manage UGC" screen. Otherwise it produces JS errors, potentially breaking some post edit screen features
 
