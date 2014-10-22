@@ -118,6 +118,9 @@ class Frontend_Uploader {
 		$this->is_debug = (bool) apply_filters( 'fu_is_debug', defined( 'WP_DEBUG' ) && WP_DEBUG );
 
 		add_filter( 'upload_mimes', array( $this,  '_get_mime_types' ), 999 );
+
+		// Maybe enable Akismet protection
+		$this->_enable_akismet_protection();
 	}
 
 	function _get_mime_types() {
@@ -208,7 +211,7 @@ class Frontend_Uploader {
 	 *
 	 * @since  0.4
 	 *
-	 * @uses media_handle_sideload Don't even know why
+	 * @uses media_handle_sideload
 	 *
 	 * @param int     $post_id Parent post id
 	 * @return array Combined result of media ids and errors if any
@@ -1244,6 +1247,15 @@ class Frontend_Uploader {
 
 	function _sanitize_array_element_callback( $el ) {
 		return sanitize_text_field( $el );
+	}
+
+	/**
+	 * Include Akismet spam protection if enabled in plugin settings
+	 */
+	function _enable_akismet_protection() {
+		if ( isset( $this->settings['enable_spam_protection'] ) && 'on' == $this->settings['enable_spam_protection'] ) {
+			require_once FU_ROOT . '/lib/php/akismet.php';
+		}
 	}
 }
 

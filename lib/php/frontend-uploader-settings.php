@@ -67,6 +67,13 @@ class Frontend_Uploader_Settings {
 		$settings_fields = array(
 			'frontend_uploader_settings' => array(
 				array(
+					'name' => 'enable_spam_protection',
+					'label' => __( 'Enable Akismet spam protection', 'frontend-uploader' ),
+					'desc' => __( 'Keep in mind that Akismet must be enabled, configured, and be 3.0 or newer', 'frontend-uploader' ),
+					'type' => 'checkbox',
+					'default' => '',
+				),
+				array(
 					'name' => 'notify_admin',
 					'label' => __( 'Notify site admins', 'frontend-uploader' ),
 					'desc' => __( 'Yes', 'frontend-uploader' ),
