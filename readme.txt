@@ -99,9 +99,9 @@ Within [fu-upload-form], you can add various fields with shortcodes like these:
 Here's example of default form (*you don't need to enter all that if you want to use default form, just use `[fu-upload-form]`*):
 
 `[fu-upload-form class="your-class" title="Upload your media"]
-[input type="text" name="post_title" id="title" class="required" description="Title" multiple=""]
+[input type="text" name="post_title" id="title" class="required" description="Title"]
 [textarea name="post_content" class="textarea" id="ug_caption" description="Description (optional)"]
-[input type="file" name="photo" id="ug_photo" class="required" description="Your Photo" multiple=""]
+[input type="file" name="photo" id="ug_photo" class="required" description="Your Photo" multiple="multiple"]
 [input type="submit" class="btn" value="Submit"]
 [/fu-upload-form]`
 
@@ -170,8 +170,7 @@ function my_fu_allowed_mime_types( $mime_types ) {
 }`
 
 = There's no captcha! =
-The plugin runs on multiple websites doing millions of pageviews daily. So far I haven't received a single report regarding spam.
-If you do get spam, please report it in support forums.
+The plugin uses Akismet as spam protection (you have to have Akismet installed and configured). Just enable Akismet support in the plugin's settings and voila.
 
 = Configuration Filters =
 
