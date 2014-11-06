@@ -69,7 +69,7 @@ class Frontend_Uploader_Settings {
 				array(
 					'name' => 'enable_spam_protection',
 					'label' => __( 'Enable Akismet spam protection', 'frontend-uploader' ),
-					'desc' => __( 'Keep in mind that Akismet must be enabled, configured, and be 3.0 or newer', 'frontend-uploader' ),
+					'desc' => __( 'Yes (Akismet must be enabled and configured)', 'frontend-uploader' ),
 					'type' => 'checkbox',
 					'default' => '',
 				),
