@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Frontend Uploader v0.5.9.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-11-06 10:33-0300\n"
-"PO-Revision-Date: 2014-11-06 10:36-0300\n"
+"PO-Revision-Date: 2014-11-06 12:00-0300\n"
 "Last-Translator: Murilo Pinto Pereira <murilo@murilopereira.com.br>\n"
 "Language-Team: Murilo Pinto Pereira <murilo@murilopereira.com.br>\n"
 "Language: pt_BR\n"
@@ -50,7 +50,7 @@ msgstr "Administrar Mensagens UGC"
 # @ frontend-uploader
 #: frontend-uploader.php:835
 msgid "Submit a new post"
-msgstr "Enviar uma novo Post"
+msgstr "Enviar um novo arquivo"
 
 # @ frontend-uploader
 #: frontend-uploader.php:861
@@ -320,12 +320,14 @@ msgstr "Configurações Basica"
 
 #: lib/php/frontend-uploader-settings.php:71
 msgid "Enable Akismet spam protection"
-msgstr ""
+msgstr "Habilitar proteção Akismet Spam"
 
 #: lib/php/frontend-uploader-settings.php:72
 msgid ""
 "Keep in mind that Akismet must be enabled, configured, and be 3.0 or newer"
 msgstr ""
+"Lembre-se que o Akismet precisa estar habilitado, configurado, e ser da "
+"versão 3.0 ou superior."
 
 # @ frontend-uploader
 #: lib/php/frontend-uploader-settings.php:78
@@ -383,6 +385,8 @@ msgid ""
 "Also allow to upload these files (in addition to the ones that WP allows by "
 "default)"
 msgstr ""
+"Permitir também fazer o upload desses arquivos (em adição aos que o WP "
+"permite, por padrão)"
 
 # @ frontend-uploader
 #: lib/php/frontend-uploader-settings.php:131
@@ -407,7 +411,7 @@ msgstr "Deixe em branco para usar o nome original do arquivo"
 # @ frontend-uploader
 #: lib/php/frontend-uploader-settings.php:153
 msgid "Suppress default fields"
-msgstr "Suprimir campos predeterminados"
+msgstr "Esconder campos predeterminados"
 
 # @ frontend-uploader
 #: lib/php/settings-api/procedural-example.php:24
