@@ -1,3 +1,0 @@
-[submodule "lib/php/settings-api"]
-	path = lib/php/settings-api
-	url = git://github.com/rinatkhaziev/wordpress-settings-api-class.git
