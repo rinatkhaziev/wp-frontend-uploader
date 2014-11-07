@@ -42,6 +42,7 @@ You can also manage UGC for selected custom post types (Please refer to the plug
 * Wir sprechen Deutsch (German) (props Joshua Trees)
 * We spreken Nederlands (Dutch) (props Jaap van der Veen)
 * ما فارسی صحبت می کنند (Persian) (props mojtabashahi)
+* Falamos Português (Brazilian Portuguese) (props Murilo Pinto Pereira)
 
 [Fork the plugin on Github](https://github.com/rinatkhaziev/wp-frontend-uploader/)
 
