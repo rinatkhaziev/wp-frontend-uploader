@@ -99,6 +99,15 @@ class Frontend_Uploader {
 		add_shortcode( 'fu-upload-form', array( $this, 'upload_form' ) );
 		add_shortcode( 'fu-upload-response', array( $this, 'upload_response_shortcode' ) );
 
+		/**
+		 * Since 4.01 shortcode contents is texturized by default,
+		 * avoid the behavior by explicitly whitelisting our shortcode
+		 */
+		add_filter( 'no_texturize_shortcodes', function( $shortcodes ) {
+			$shortcodes[] = 'fu-upload-form';
+			return $shortcodes;
+		});
+
 		// Static assets
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
