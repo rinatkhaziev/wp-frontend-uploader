@@ -233,6 +233,10 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 0.9.1 (Nov 21, 2014) =
+* Bugfix: don't texturize [fu-upload-form] shortcode's inner content (needed due to 4.01 default behavior changed)
+* Translation: added pt_BR translation (props Murilo Pinto Pereira)
+
 = 0.9 (Oct 22, 2014) =
 * Feature: Akismet integration! Protects your site from spam submissions
 * Added fu_upload_result_query_args filter
