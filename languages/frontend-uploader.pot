@@ -2,202 +2,206 @@
 # This file is distributed under the same license as the Frontend Uploader package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Frontend Uploader 0.5.9.2\n"
+"Project-Id-Version: Frontend Uploader 0.9.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
-"POT-Creation-Date: 2014-04-08 11:25-0600\n"
-"PO-Revision-Date: 2014-04-08 11:25-0600\n"
+"POT-Creation-Date: 2014-11-21 21:16+0300\n"
+"PO-Revision-Date: 2014-11-21 21:16+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Frontend Uploader <rinat.khaziev@gmail.com>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.6.10\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../frontend-uploader.php:168
+#: ../frontend-uploader.php:188
 msgid "Frontend Uploader requires WordPress 3.3 or newer. Please upgrade."
 msgstr ""
 
-#: ../frontend-uploader.php:260 ../frontend-uploader.php:261
+#: ../frontend-uploader.php:281 ../frontend-uploader.php:282
 msgid "Unnamed"
 msgstr ""
 
-#: ../frontend-uploader.php:441
+#: ../frontend-uploader.php:477
 msgid "New content was uploaded on your site"
 msgstr ""
 
-#: ../frontend-uploader.php:558 ../frontend-uploader.php:561
-#: ../frontend-uploader.php:565 ../lib/views/manage-ugc-media.tpl.php:2
+#: ../frontend-uploader.php:562 ../frontend-uploader.php:565
+#: ../frontend-uploader.php:569 ../lib/views/manage-ugc-media.tpl.php:2
 msgid "Manage UGC"
 msgstr ""
 
-#: ../frontend-uploader.php:561 ../frontend-uploader.php:565
+#: ../frontend-uploader.php:565 ../frontend-uploader.php:569
 #: ../lib/views/manage-ugc-posts.tpl.php:2
 msgid "Manage UGC Posts"
 msgstr ""
 
-#: ../frontend-uploader.php:831
+#: ../frontend-uploader.php:844
 msgid "Submit a new post"
 msgstr ""
 
-#: ../frontend-uploader.php:857
+#: ../frontend-uploader.php:870
 msgid "Description"
 msgstr ""
 
-#: ../frontend-uploader.php:858
+#: ../frontend-uploader.php:871
 msgid "Your Media Files"
 msgstr ""
 
-#: ../frontend-uploader.php:859
+#: ../frontend-uploader.php:872
 msgid "Submit"
 msgstr ""
 
-#: ../frontend-uploader.php:870
+#: ../frontend-uploader.php:910
 msgid "Title"
 msgstr ""
 
-#: ../frontend-uploader.php:889
+#: ../frontend-uploader.php:929
 msgid "Post content or file description"
 msgstr ""
 
-#: ../frontend-uploader.php:900
+#: ../frontend-uploader.php:940
 msgid "Post content"
 msgstr ""
 
-#: ../frontend-uploader.php:915
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:116
+#: ../frontend-uploader.php:955
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:82
 msgid "Author"
 msgstr ""
 
-#: ../frontend-uploader.php:1080
+#: ../frontend-uploader.php:1107
 msgid "Your file was successfully uploaded!"
 msgstr ""
 
-#: ../frontend-uploader.php:1084
+#: ../frontend-uploader.php:1111
 msgid "Your post was successfully submitted!"
 msgstr ""
 
-#: ../frontend-uploader.php:1088
+#: ../frontend-uploader.php:1115
 msgid "There was an error with your submission"
 msgstr ""
 
-#: ../frontend-uploader.php:1113
+#: ../frontend-uploader.php:1119
+msgid "Your submission looks spammy"
+msgstr ""
+
+#: ../frontend-uploader.php:1143
 msgid "Security check failed!"
 msgstr ""
 
-#: ../frontend-uploader.php:1116
+#: ../frontend-uploader.php:1146
 msgid ""
 "This kind of file is not allowed. Please, try again selecting other file."
 msgstr ""
 
-#: ../frontend-uploader.php:1120
+#: ../frontend-uploader.php:1150
 msgid "The content you are trying to post is invalid."
 msgstr ""
 
-#: ../frontend-uploader.php:1123
+#: ../frontend-uploader.php:1153
 msgid "Couldn't upload the file"
 msgstr ""
 
-#: ../frontend-uploader.php:1126
+#: ../frontend-uploader.php:1156
 msgid "Couldn't create the post"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:82
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:303
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:319
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:325
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:48
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:269
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:285
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:291
 #: ../lib/php/class-frontend-uploader-wp-posts-list-table.php:30
 #: ../lib/php/class-frontend-uploader-wp-posts-list-table.php:108
 msgid "Delete Permanently"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:84
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:50
 msgid "Attach to a post"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:107
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:73
 msgid "No media attachments found."
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:171
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:184
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:137
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:150
 #, php-format
 msgid "Edit \"%s\""
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:216
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:182
 msgid "No Tags"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:231
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:197
 msgid "Unpublished"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:233
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:199
 msgid "Y/m/d g:i:s A"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:238
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:204
 #, php-format
 msgid "%s from now"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:240
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:206
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:242
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:258
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:365
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:208
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:224
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:331
 msgid "Y/m/d"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:263
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:372
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:229
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:338
 msgid "(Unattached)"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:296
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:311
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:262
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:277
 msgid "Edit"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:299
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:316
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:265
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:282
 msgid "Trash"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:305
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:330
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:271
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:296
 #, php-format
 msgid "View \"%s\""
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:305
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:330
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:271
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:296
 msgid "View"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:307
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:373
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:273
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:339
 msgid "Attach"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:314
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:280
 msgid "Restore"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:324
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:290
 #: ../lib/php/class-frontend-uploader-wp-posts-list-table.php:29
 msgid "Approve"
 msgstr ""
 
-#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:367
+#: ../lib/php/class-frontend-uploader-wp-media-list-table.php:333
 msgid "Re-Attach"
 msgstr ""
 
@@ -210,233 +214,82 @@ msgid "Frontend Uploader Settings"
 msgstr ""
 
 #: ../lib/php/frontend-uploader-settings.php:54
-#: ../lib/php/settings-api/procedural-example.php:20
-#: ../lib/php/settings-api/settings-api.php:48
 msgid "Basic Settings"
 msgstr ""
 
 #: ../lib/php/frontend-uploader-settings.php:71
-msgid "Notify site admins"
+msgid "Enable Akismet spam protection"
 msgstr ""
 
 #: ../lib/php/frontend-uploader-settings.php:72
-#: ../lib/php/frontend-uploader-settings.php:95
-#: ../lib/php/frontend-uploader-settings.php:110
-#: ../lib/php/frontend-uploader-settings.php:125
-#: ../lib/php/frontend-uploader-settings.php:132
-#: ../lib/php/frontend-uploader-settings.php:147
-msgid "Yes"
+msgid "Yes (Akismet must be enabled and configured)"
 msgstr ""
 
 #: ../lib/php/frontend-uploader-settings.php:78
-msgid "Admin Notification"
+msgid "Notify site admins"
 msgstr ""
 
 #: ../lib/php/frontend-uploader-settings.php:79
-msgid "Message that admin will get on new file upload"
+#: ../lib/php/frontend-uploader-settings.php:102
+#: ../lib/php/frontend-uploader-settings.php:117
+#: ../lib/php/frontend-uploader-settings.php:132
+#: ../lib/php/frontend-uploader-settings.php:139
+#: ../lib/php/frontend-uploader-settings.php:154
+msgid "Yes"
+msgstr ""
+
+#: ../lib/php/frontend-uploader-settings.php:85
+msgid "Admin Notification"
 msgstr ""
 
 #: ../lib/php/frontend-uploader-settings.php:86
+msgid "Message that admin will get on new file upload"
+msgstr ""
+
+#: ../lib/php/frontend-uploader-settings.php:93
 msgid "Notification email"
 msgstr ""
 
-#: ../lib/php/frontend-uploader-settings.php:87
+#: ../lib/php/frontend-uploader-settings.php:94
 msgid "Leave blank to use site admin email"
 msgstr ""
 
-#: ../lib/php/frontend-uploader-settings.php:94
+#: ../lib/php/frontend-uploader-settings.php:101
 msgid "Show author field"
 msgstr ""
 
-#: ../lib/php/frontend-uploader-settings.php:101
+#: ../lib/php/frontend-uploader-settings.php:108
 msgid "Enable Frontend Uploader for the following post types"
 msgstr ""
 
-#: ../lib/php/frontend-uploader-settings.php:109
+#: ../lib/php/frontend-uploader-settings.php:116
 msgid "Enable visual editor for textareas"
 msgstr ""
 
-#: ../lib/php/frontend-uploader-settings.php:116
+#: ../lib/php/frontend-uploader-settings.php:123
 msgid ""
 "Also allow to upload these files (in addition to the ones that WP allows by "
 "default)"
 msgstr ""
 
-#: ../lib/php/frontend-uploader-settings.php:124
+#: ../lib/php/frontend-uploader-settings.php:131
 msgid "Auto-approve registered users files"
 msgstr ""
 
-#: ../lib/php/frontend-uploader-settings.php:131
+#: ../lib/php/frontend-uploader-settings.php:138
 msgid "Auto-approve any files"
 msgstr ""
 
-#: ../lib/php/frontend-uploader-settings.php:138
+#: ../lib/php/frontend-uploader-settings.php:145
 msgid "Default file name"
 msgstr ""
 
-#: ../lib/php/frontend-uploader-settings.php:139
+#: ../lib/php/frontend-uploader-settings.php:146
 msgid "Leave blank to use original file name"
 msgstr ""
 
-#: ../lib/php/frontend-uploader-settings.php:146
+#: ../lib/php/frontend-uploader-settings.php:153
 msgid "Suppress default fields"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:24
-#: ../lib/php/settings-api/settings-api.php:52
-msgid "Advanced Settings"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:28
-#: ../lib/php/settings-api/settings-api.php:56
-msgid "Other Settings"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:36
-#: ../lib/php/settings-api/procedural-example.php:104
-#: ../lib/php/settings-api/procedural-example.php:173
-#: ../lib/php/settings-api/settings-api.php:141
-#: ../lib/php/settings-api/settings-api.php:210
-msgid "Text Input"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:37
-#: ../lib/php/settings-api/procedural-example.php:105
-#: ../lib/php/settings-api/procedural-example.php:174
-#: ../lib/php/settings-api/settings-api.php:73
-#: ../lib/php/settings-api/settings-api.php:142
-#: ../lib/php/settings-api/settings-api.php:211
-msgid "Text input description"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:43
-#: ../lib/php/settings-api/procedural-example.php:111
-#: ../lib/php/settings-api/procedural-example.php:180
-#: ../lib/php/settings-api/settings-api.php:80
-#: ../lib/php/settings-api/settings-api.php:148
-#: ../lib/php/settings-api/settings-api.php:217
-msgid "Textarea Input"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:44
-#: ../lib/php/settings-api/procedural-example.php:112
-#: ../lib/php/settings-api/procedural-example.php:181
-#: ../lib/php/settings-api/settings-api.php:81
-#: ../lib/php/settings-api/settings-api.php:149
-#: ../lib/php/settings-api/settings-api.php:218
-msgid "Textarea description"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:49
-#: ../lib/php/settings-api/procedural-example.php:117
-#: ../lib/php/settings-api/procedural-example.php:186
-#: ../lib/php/settings-api/settings-api.php:86
-#: ../lib/php/settings-api/settings-api.php:154
-#: ../lib/php/settings-api/settings-api.php:223
-msgid "Checkbox"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:50
-#: ../lib/php/settings-api/procedural-example.php:118
-#: ../lib/php/settings-api/procedural-example.php:187
-#: ../lib/php/settings-api/settings-api.php:87
-#: ../lib/php/settings-api/settings-api.php:155
-#: ../lib/php/settings-api/settings-api.php:224
-msgid "Checkbox Label"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:55
-#: ../lib/php/settings-api/procedural-example.php:123
-#: ../lib/php/settings-api/procedural-example.php:192
-#: ../lib/php/settings-api/settings-api.php:92
-#: ../lib/php/settings-api/settings-api.php:160
-#: ../lib/php/settings-api/settings-api.php:229
-msgid "Radio Button"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:56
-#: ../lib/php/settings-api/procedural-example.php:124
-#: ../lib/php/settings-api/procedural-example.php:193
-#: ../lib/php/settings-api/settings-api.php:93
-#: ../lib/php/settings-api/settings-api.php:161
-#: ../lib/php/settings-api/settings-api.php:230
-msgid "A radio button"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:65
-#: ../lib/php/settings-api/procedural-example.php:134
-#: ../lib/php/settings-api/procedural-example.php:202
-#: ../lib/php/settings-api/settings-api.php:102
-#: ../lib/php/settings-api/settings-api.php:171
-#: ../lib/php/settings-api/settings-api.php:239
-msgid "Multile checkbox"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:66
-#: ../lib/php/settings-api/procedural-example.php:135
-#: ../lib/php/settings-api/procedural-example.php:203
-#: ../lib/php/settings-api/settings-api.php:103
-#: ../lib/php/settings-api/settings-api.php:172
-#: ../lib/php/settings-api/settings-api.php:240
-msgid "Multi checkbox description"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:77
-#: ../lib/php/settings-api/procedural-example.php:147
-#: ../lib/php/settings-api/procedural-example.php:214
-#: ../lib/php/settings-api/settings-api.php:114
-#: ../lib/php/settings-api/settings-api.php:184
-#: ../lib/php/settings-api/settings-api.php:251
-msgid "A Dropdown"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:78
-#: ../lib/php/settings-api/procedural-example.php:148
-#: ../lib/php/settings-api/procedural-example.php:215
-#: ../lib/php/settings-api/settings-api.php:115
-#: ../lib/php/settings-api/settings-api.php:185
-#: ../lib/php/settings-api/settings-api.php:252
-msgid "Dropdown description"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:88
-#: ../lib/php/settings-api/procedural-example.php:157
-#: ../lib/php/settings-api/procedural-example.php:224
-#: ../lib/php/settings-api/settings-api.php:125
-#: ../lib/php/settings-api/settings-api.php:194
-#: ../lib/php/settings-api/settings-api.php:261
-msgid "Password"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:89
-#: ../lib/php/settings-api/procedural-example.php:158
-#: ../lib/php/settings-api/procedural-example.php:225
-#: ../lib/php/settings-api/settings-api.php:126
-#: ../lib/php/settings-api/settings-api.php:195
-#: ../lib/php/settings-api/settings-api.php:262
-msgid "Password description"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:95
-#: ../lib/php/settings-api/procedural-example.php:164
-#: ../lib/php/settings-api/procedural-example.php:231
-#: ../lib/php/settings-api/settings-api.php:132
-#: ../lib/php/settings-api/settings-api.php:201
-#: ../lib/php/settings-api/settings-api.php:268
-msgid "File"
-msgstr ""
-
-#: ../lib/php/settings-api/procedural-example.php:96
-#: ../lib/php/settings-api/procedural-example.php:165
-#: ../lib/php/settings-api/procedural-example.php:232
-#: ../lib/php/settings-api/settings-api.php:133
-#: ../lib/php/settings-api/settings-api.php:202
-#: ../lib/php/settings-api/settings-api.php:269
-msgid "File description"
-msgstr ""
-
-#: ../lib/php/settings-api/settings-api.php:72
-msgid "Text Input (integer validation)"
 msgstr ""
 
 #: ../lib/views/manage-ugc-media.tpl.php:5
