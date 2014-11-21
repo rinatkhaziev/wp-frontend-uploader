@@ -40,8 +40,8 @@
 	line-height: 14px;
 }
 
-.ugc-input-wrapper .checkbox-option-wrapper input[type="checkbox"] {
-	float: left; margin-right: 4px;
+.ugc-input-wrapper .checkbox-option-wrapper input {
+	float: left; margin-right: 8px;
 }
 
 .ugc-input-wrapper .checkbox-option-wrapper label { font-weight: normal; }
