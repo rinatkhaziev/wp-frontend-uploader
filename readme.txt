@@ -71,6 +71,7 @@ The major cause of this is either request timeout or request exceeding maximum r
 = Shortcode parameters =
 
 **Customizing Your Form with Shortcode Parameters**
+
 Frontend Uploader uses shortcodes to insert a form into a page or post. The default form is [fu-upload-form], which will upload a media file.
 
 If you would like to build a custom form, it must begin with [fu-upload-form] and end with [/fu-upload-form].
@@ -94,6 +95,10 @@ Within [fu-upload-form], you can add various fields with shortcodes like these:
 1. `[checkboxes name="foo" class="checkboxes" description="Pick a fruit" values="value:Description,124:Banana,cherry:Cherry"]`
 1. `[select name="foo" class="select" description="Pick a fruit" values="apple:Apple,banana:Banana,cherry:Cherry"]`
 1. `[input type="submit" class="btn" value="Submit"]` => A submit button
+
+**Caveats**
+
+You can modify the form as you'd like but you have to make sure that 'post_title' field is present, otherwise upload might fail
 
 = Example of default media upload form =
 
