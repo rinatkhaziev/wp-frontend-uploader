@@ -93,6 +93,7 @@ Within [fu-upload-form], you can add various fields with shortcodes like these:
 1. `[textarea name="post_content"]` => A text box for multiple lines of text
 1. `[input type="file" name="photo"]` => A file uploader
 1. `[checkboxes name="foo" class="checkboxes" description="Pick a fruit" values="value:Description,124:Banana,cherry:Cherry"]`
+1. `[radio name="foo" class="checkboxes" description="Pick a fruit" values="value:Description,124:Banana,cherry:Cherry"]`
 1. `[select name="foo" class="select" description="Pick a fruit" values="apple:Apple,banana:Banana,cherry:Cherry"]`
 1. `[input type="submit" class="btn" value="Submit"]` => A submit button
 
