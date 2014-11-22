@@ -239,6 +239,9 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 0.9.2 (Nov 22, 2014) =
+* PHP 5.2 compat for 0.9.1
+
 = 0.9.1 (Nov 21, 2014) =
 * Bugfix: don't texturize [fu-upload-form] shortcode's inner content (needed due to 4.01 default behavior changed)
 * Translation: added pt_BR translation (props Murilo Pinto Pereira)
