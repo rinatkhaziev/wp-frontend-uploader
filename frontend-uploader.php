@@ -1103,7 +1103,8 @@ class Frontend_Uploader {
 	function _notice_html( $message, $class ) {
 		if ( empty( $message ) || empty( $class ) )
 			return;
-		return sprintf( '<p class="ugc-notice %1$s">%2$s</p>', $class, $message );
+
+		return sprintf( '<p class="ugc-notice %1$s">%2$s</p>', esc_attr( $class ), esc_html( $message ) );
 	}
 
 	/**
