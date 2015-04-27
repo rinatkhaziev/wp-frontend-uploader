@@ -330,10 +330,12 @@ class Frontend_Uploader {
 			}
 		}
 
+		$post_title = isset( $_POST['caption'] ) ? sanitize_text_field( $_POST['caption'] ) : sanitize_text_field( $_POST['post_title'] );
+
 		// Construct post array;
 		$post_array = array(
 			'post_type' => isset( $_POST['post_type'] ) && in_array( $_POST['post_type'], $this->settings['enabled_post_types'] ) ? $_POST['post_type'] : 'post',
-			'post_title' => isset( $_POST['caption'] ) ? sanitize_text_field( $_POST['caption'] ) : sanitize_text_field( $_POST['post_title'] ),
+			'post_title' => $post_title ? $post_title : __( 'Untitled post submission', 'frontend-uploader' ),
 			'post_content' => wp_filter_post_kses( $_POST['post_content'] ),
 			'post_status' => $this->_is_public() ? 'publish' : 'private',
 			'post_category' => $category,
