@@ -236,7 +236,7 @@ class Frontend_Uploader {
 	 * @param int  $post_id Parent post id
 	 * @return array Combined result of media ids and errors if any
 	 */
-	function _upload_files( $post_id ) {
+	function _upload_files( $post_id = 0 ) {
 		$media_ids = $errors = array();
 		// Bail if there are no files
 		if ( empty( $_FILES ) )
@@ -447,9 +447,8 @@ class Frontend_Uploader {
 			// Upload media
 		case 'image':
 		case 'media':
-			if ( isset( $_POST['post_ID'] ) && 0 !== $pid = (int) $_POST['post_ID'] ) {
-				$result = $this->_upload_files( $pid );
-			}
+			$pid = isset( $_POST['post_ID'] ) ? (int) $_POST['post_ID'] : 0;
+			$result = $this->_upload_files( $pid );
 
 			break;
 		}
