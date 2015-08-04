@@ -342,13 +342,16 @@ class Frontend_Uploader {
 		);
 
 		$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
-		$users = get_users( array(
+
+		if ( $author ) {
+			$users = get_users( array(
 				'search' => $author,
 				'fields' => 'ID'
 			) );
 
-		if ( isset( $users[0] ) ) {
-			$post_array['post_author'] = (int) $users[0];
+			if ( isset( $users[0] ) ) {
+				$post_array['post_author'] = (int) $users[0];
+			}
 		}
 
 		$post_array = apply_filters( 'fu_before_create_post', $post_array );
