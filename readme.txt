@@ -239,6 +239,9 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 0.9.4 (Aug 4, 2015) =
+* Bugfixes
+
 = 0.9.2 (Nov 22, 2014) =
 * PHP 5.2 compat for 0.9.1
 
