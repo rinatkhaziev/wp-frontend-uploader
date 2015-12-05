@@ -680,9 +680,10 @@ class Frontend_Uploader {
 	 */
 	function shortcode_content_parser( $atts, $content = null, $tag ) {
 		$atts = shortcode_atts( array(
-				'id' => '',
+				'id' =>  isset( $atts['name'] ) ? 'ugc-input-' . sanitize_key( $atts['name'] ) : '' ,
 				'name' => '',
 				'description' => '',
+				'help' => '',
 				'value' => '',
 				'type' => '',
 				'class' => '',
@@ -729,9 +730,11 @@ class Frontend_Uploader {
 		if ( $type == 'hidden' )
 			return $input;
 
-		$element = $this->html->element( 'label', $description . $input , array( 'for' => $id ), false );
+		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
 
-		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+		$help = isset( $help ) && $help ? $this->html->element( 'p', sanitize_text_field( $help ), array( 'class' => 'ugc-help' ) ) : '';
+
+		return $this->html->element( 'div', $label . $help . $input, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
 	/**
@@ -742,6 +745,11 @@ class Frontend_Uploader {
 	 */
 	function _render_textarea( $atts ) {
 		extract( $atts );
+
+		$help = isset( $help ) && $help ? $this->html->element( 'p', sanitize_text_field( $help ), array( 'class' => 'ugc-help' ) ) : '';
+
+		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
+
 		// Render WYSIWYG textarea
 		if ( ( isset( $this->settings['wysiwyg_enabled'] ) && 'on' == $this->settings['wysiwyg_enabled'] ) || $wysiwyg_enabled == true ) {
 			ob_start();
@@ -752,14 +760,14 @@ class Frontend_Uploader {
 					'quicktags' => false
 				) );
 			$tiny = ob_get_clean();
-			$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
-			return $this->html->element( 'div', $label . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
+
+			return $this->html->element( 'div', $label  . $help . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
 		}
 		// Render plain textarea
 		$element = $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) );
 		$label = $this->html->element( 'label', $description, array( 'for' => $id ), false );
 
-		return $this->html->element( 'div', $label . $element, array( 'class' => 'ugc-input-wrapper' ), false );
+		return $this->html->element( 'div', $label . $help . $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
 	/**
@@ -774,6 +782,8 @@ class Frontend_Uploader {
 		$values = explode( ',', $values );
 		$options = '';
 
+		$help = isset( $help ) && $help ? $this->html->element( 'p', sanitize_text_field( $help ), array( 'class' => 'ugc-help' ) ) : '';
+
 		// Making sure we're having array of values for checkboxes
 		if ( false === stristr( '[]', $name ) )
 			$name = $name . '[]';
@@ -787,7 +797,8 @@ class Frontend_Uploader {
 		$description = $label = $this->html->element( 'label', $description, array(), false );
 
 		// Render select field
-		$element = $this->html->element( 'div', $description . $options, array( 'class' => 'checkbox-wrapper ' . $class ), false );
+		$element = $this->html->element( 'div', $description  . $help . $options, array( 'class' => 'checkbox-wrapper ' . $class ), false );
+
 		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
@@ -802,6 +813,8 @@ class Frontend_Uploader {
 		$values = explode( ',', $values );
 		$options = '';
 
+		$help = isset( $help ) && $help ? $this->html->element( 'p', sanitize_text_field( $help ), array( 'class' => 'ugc-help' ) ) : '';
+
 		//Build options for the list
 		foreach ( $values as $option ) {
 			$kv = explode( ":", $option );
@@ -810,9 +823,9 @@ class Frontend_Uploader {
 		}
 
 		//Render
-		$element = $this->html->element( 'label', $description . $options, array( 'for' => $id ), false );
+		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
 
-		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper ' . $class ), false );
+		return $this->html->element( 'div', $label . $help . $options, array( 'class' => 'ugc-input-wrapper ' . $class ), false );
 	}
 
 	/**
@@ -825,6 +838,8 @@ class Frontend_Uploader {
 		extract( $atts );
 		$values = explode( ',', $values );
 		$options = '';
+		$help = isset( $help ) && $help ? $this->html->element( 'p', sanitize_text_field( $help ), array( 'class' => 'ugc-help' ) ) : '';
+
 		//Build options for the list
 		foreach ( $values as $option ) {
 			$kv = explode( ":", $option );
@@ -834,13 +849,15 @@ class Frontend_Uploader {
 		}
 
 		//Render select field
-		$element = $this->html->element( 'label', $description . $this->html->element( 'select', $options, array(
-					'name' => $name,
-					'id' => $id,
-					'class' => $class
-				), false ), array( 'for' => $id ), false );
+		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
 
-		return $this->html->element( 'div', $element, array( 'class' => 'ugc-input-wrapper' ), false );
+		$element =$this->html->element( 'select', $options, array(
+			'name' => $name,
+			'id' => $id,
+			'class' => $class
+		), false );
+
+		return $this->html->element( 'div', $label . $help . $element, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
 	/**
@@ -992,6 +1009,7 @@ class Frontend_Uploader {
 						'id' => 'ug_photo',
 						'multiple' => 'multiple',
 						'description' => $file_desc,
+						'help' => ''
 					), null, 'input' );
 			}
 
