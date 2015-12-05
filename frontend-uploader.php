@@ -1202,7 +1202,7 @@ class Frontend_Uploader {
 	 */
 	function enqueue_scripts() {
 		wp_enqueue_style( 'frontend-uploader', FU_URL . 'lib/css/frontend-uploader.css' );
-		wp_enqueue_script( 'jquery-validate', FU_URL .' lib/js/validate/jquery.validate.js ', array( 'jquery' ) );
+		wp_enqueue_script( 'jquery-validate', FU_URL . 'lib/js/validate/jquery.validate.js ', array( 'jquery' ) );
 		wp_enqueue_script( 'frontend-uploader-js', FU_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 		// Include localization strings for default messages of validation plugin
 		// Filter is needed for wordpress.com
