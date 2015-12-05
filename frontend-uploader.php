@@ -3,7 +3,7 @@
 Plugin Name: Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev, Daniel Bachhuber
-Version: 0.9.3
+Version: 0.9.4
 Author URI: http://digitallyconscious.com
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
 // Define consts and bootstrap and dependencies
-define( 'FU_VERSION', '0.9.3' );
+define( 'FU_VERSION', '0.9.4' );
 define( 'FU_ROOT' , dirname( __FILE__ ) );
 define( 'FU_FILE_PATH' , FU_ROOT . '/' . basename( __FILE__ ) );
 define( 'FU_URL' , plugins_url( '/', __FILE__ ) );
@@ -342,13 +342,16 @@ class Frontend_Uploader {
 		);
 
 		$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
-		$users = get_users( array(
+
+		if ( $author ) {
+			$users = get_users( array(
 				'search' => $author,
 				'fields' => 'ID'
 			) );
 
-		if ( isset( $users[0] ) ) {
-			$post_array['post_author'] = (int) $users[0];
+			if ( isset( $users[0] ) ) {
+				$post_array['post_author'] = (int) $users[0];
+			}
 		}
 
 		$post_array = apply_filters( 'fu_before_create_post', $post_array );
