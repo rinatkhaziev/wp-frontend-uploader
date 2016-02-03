@@ -1,9 +1,9 @@
 === Frontend Uploader ===
 Contributors: rinatkhaziev, danielbachhuber, jtrees
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=rinat%2ekhaziev%40gmail%2ecom
+Donate link: https://www.paypal.me/RinatK
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content, ugc, frontend upload
 Requires at least: 3.3
-Tested up to: 4.1
+Tested up to: 4.4.1
 Stable tag: 0.9.4
 License: GPLv2 or later
 

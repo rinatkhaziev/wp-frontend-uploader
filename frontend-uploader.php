@@ -688,6 +688,8 @@ class Frontend_Uploader {
 				'type' => '',
 				'class' => '',
 				'multiple' => false,
+				'required' => false,
+				'aria-required' => false,
 				'values' => '',
 				'wysiwyg_enabled' => false,
 				'role' => 'meta'
