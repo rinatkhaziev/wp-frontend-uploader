@@ -1201,7 +1201,7 @@ class Frontend_Uploader {
 
 		// Iterate over all the errors that occured for this submission
 		// $error is the key of error, $details - additional information about the error
-		foreach ( $errors as $error => $details ) {
+		foreach ( (array) $errors as $error => $details ) {
 
 			// We might have multiple errors of the same type, let's walk through them
 			foreach ( (array) $details as $single_error ) {
