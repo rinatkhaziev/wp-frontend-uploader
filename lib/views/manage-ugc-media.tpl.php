@@ -7,6 +7,7 @@ if ( ! current_user_can( 'upload_files' ) )
 $wp_list_table = new FU_WP_Media_List_Table();
 $pagenum = $wp_list_table->get_pagenum();
 $doaction = $wp_list_table->current_action();
+
 $wp_list_table->prepare_items();
 ?>
 <div class="wrap">
@@ -61,14 +62,15 @@ if ( isset( $_GET['message'] ) && (int) $_GET['message'] ) {
 }
 
 if ( !empty( $message ) ) { ?>
-<div id="message" class="updated"><p><?php echo $message; ?></p></div>
+<div id="message" class="updated"><p><?php echo esc_html( $message ); ?></p></div>
 <?php } ?>
 
-<?php $wp_list_table->views(); ?>
 
 <form id="posts-filter" action="" method="get">
 
-<?php $wp_list_table->search_box( __( 'Search Media', 'frontend-uploader' ), 'media' ); ?>
+<?php
+$wp_list_table->search_box( __( 'Search Media', 'frontend-uploader' ), 'media' );
+?>
 
 <?php $wp_list_table->display(); ?>
 
