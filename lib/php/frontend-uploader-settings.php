@@ -62,7 +62,7 @@ class Frontend_Uploader_Settings {
 	 *
 	 * @return array settings fields
 	 */
-	static function get_settings_fields() {;
+	static function get_settings_fields() {
 		$default_post_type = array( 'post' => 'Posts', 'post' => 'post' );
 		$settings_fields = array(
 			'frontend_uploader_settings' => array(
@@ -71,6 +71,27 @@ class Frontend_Uploader_Settings {
 					'label' => __( 'Enable Akismet spam protection', 'frontend-uploader' ),
 					'desc' => __( 'Yes (Akismet must be enabled and configured)', 'frontend-uploader' ),
 					'type' => 'checkbox',
+					'default' => '',
+				),
+				array(
+					'name' => 'enable_recaptcha_protection',
+					'label' => __( 'Enable Recaptcha spam protection', 'frontend-uploader' ),
+					'desc' => __( 'Yes (Fill in Recaptcha credentials below)', 'frontend-uploader' ),
+					'type' => 'checkbox',
+					'default' => '',
+				),
+				array(
+					'name' => 'recaptcha_site_key',
+					'label' => __( 'Recaptcha Site Key', 'frontend-uploader' ) . " Get at https://www.google.com/recaptcha/admin",
+					'desc' => __( '', 'frontend-uploader' ),
+					'type' => 'text',
+					'default' => '',
+				),
+				array(
+					'name' => 'recaptcha_secret_key',
+					'label' => __( 'Recaptcha Site Secret', 'frontend-uploader' ) . " Get at https://www.google.com/recaptcha/admin",
+					'desc' => __( '', 'frontend-uploader' ),
+					'type' => 'text',
 					'default' => '',
 				),
 				array(
@@ -86,7 +107,7 @@ class Frontend_Uploader_Settings {
 					'desc' => __( 'Message that admin will get on new file upload', 'frontend-uploader' ),
 					'type' => 'textarea',
 					'default' => 'Someone uploaded a new UGC file, please moderate at: ' . admin_url( 'upload.php?page=manage_frontend_uploader' ),
-					'sanitize_callback' => 'wp_filter_post_kses'
+					'sanitize_callback' => 'wp_kses_post'
 				),
 				array(
 					'name' => 'notification_email',
@@ -107,9 +128,9 @@ class Frontend_Uploader_Settings {
 					'name' => 'enabled_post_types',
 					'label' => __( 'Enable Frontend Uploader for the following post types', 'frontend-uploader' ),
 					'desc' => '',
-                    'type' => 'multicheck',
-                    'default' => $default_post_type,
-                    'options' => self::get_post_types(),
+					'type' => 'multicheck',
+					'default' => $default_post_type,
+					'options' => self::get_post_types(),
 				),
 				array(
 					'name' => 'wysiwyg_enabled',
@@ -122,9 +143,9 @@ class Frontend_Uploader_Settings {
 					'name' => 'enabled_files',
 					'label' => __( 'Also allow to upload these files (in addition to the ones that WP allows by default)', 'frontend-uploader' ),
 					'desc' => '',
-                    'type' => 'multicheck',
-                    'default' => array(),
-                    'options' => fu_get_exts_descs(),
+					'type' => 'multicheck',
+					'default' => array(),
+					'options' => fu_get_exts_descs(),
 				),
 				array(
 					'name' => 'auto_approve_user_files',
