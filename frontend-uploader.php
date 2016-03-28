@@ -122,6 +122,9 @@ class Frontend_Uploader {
 
 		// Maybe enable Akismet protection
 		$this->_enable_akismet_protection();
+
+		// Maybe enable Recaptcha protection
+		$this->_enable_recaptcha_protection();
 	}
 
 	/**
@@ -877,6 +880,7 @@ class Frontend_Uploader {
 		add_shortcode( 'select', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'checkboxes', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'radio', array( $this, 'shortcode_content_parser' ) );
+		add_shortcode( 'recaptcha', 'fu_get_recaptcha_markup' );
 
 		// Reset postdata in case it got polluted somewhere
 		wp_reset_postdata();
@@ -1018,6 +1022,10 @@ class Frontend_Uploader {
 					), null, 'input' );
 			}
 
+			if ( $this->settings['enable_recaptcha_protection' ] )
+				echo fu_get_recaptcha_markup();
+
+			do_action( 'fu_additional_html', $this );
 
 			echo $this->shortcode_content_parser( array(
 					'type' => 'submit',
@@ -1026,6 +1034,8 @@ class Frontend_Uploader {
 					'class' => 'btn',
 					'value' => $submit_button,
 				), null, 'input' );
+		} else {
+			do_action( 'fu_additional_html', $this );
 		}
 
 		// wp_ajax_ hook
@@ -1053,9 +1063,6 @@ class Frontend_Uploader {
 				'name' => 'form_layout',
 				'value' => $form_layout
 			), null, 'input' );
-
-		// Allow a little markup customization
-		do_action( 'fu_additional_html' );
 ?>
 		<?php wp_nonce_field( FU_NONCE, 'fu_nonce' ); ?>
 		<input type="hidden" name="ff" value="<?php echo esc_attr( $this->_get_fields_hash() ) ?>" />
@@ -1161,7 +1168,7 @@ class Frontend_Uploader {
 				'class' => 'failure',
 			),
 			'fu-spam' => array(
-				'text' => __( "Your submission looks spammy", 'frontend-uploader' ),
+				'text' => __( "Your submission failed spam checks", 'frontend-uploader' ),
 				'class' => 'failure',
 			),
 		);
@@ -1228,7 +1235,7 @@ class Frontend_Uploader {
 	 */
 	function enqueue_scripts() {
 		wp_enqueue_style( 'frontend-uploader', FU_URL . 'lib/css/frontend-uploader.css' );
-		wp_enqueue_script( 'jquery-validate', FU_URL . 'lib/js/validate/jquery.validate.js ', array( 'jquery' ) );
+		wp_enqueue_script( 'jquery-validate', FU_URL . 'lib/js/validate/jquery.validate.js', array( 'jquery' ) );
 		wp_enqueue_script( 'frontend-uploader-js', FU_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 		// Include localization strings for default messages of validation plugin
 		// Filter is needed for wordpress.com
@@ -1240,7 +1247,6 @@ class Frontend_Uploader {
 			if ( file_exists( FU_ROOT . "/{$relative_path}" ) )
 				wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );
 		}
-
 	}
 
 	/**
@@ -1293,8 +1299,8 @@ class Frontend_Uploader {
 		$deconstructed = array( 'way_before', 'before', 'ids', 'after' );
 		// Iterate through match elements and reconstruct the post
 		foreach ( $deconstructed as $match_key ) {
-			if ( isset( $matches[$match_key] ) ) {
-				$content .= $matches[$match_key];
+			if ( isset( $matches[ $match_key ] ) ) {
+				$content .= $matches[ $match_key ];
 			}
 		}
 
@@ -1314,11 +1320,25 @@ class Frontend_Uploader {
 	 * Include Akismet spam protection if enabled in plugin settings
 	 */
 	function _enable_akismet_protection() {
-		if ( isset( $this->settings['enable_spam_protection'] ) && 'on' == $this->settings['enable_spam_protection'] ) {
+		// Maybe include Akismet
+		if ( isset( $this->settings['enable_akismet_protection'] ) && 'on' == $this->settings['enable_akismet_protection'] ) {
 			require_once FU_ROOT . '/lib/php/akismet.php';
 		}
 	}
+
+	/**
+	 * Include recaptcha if configured properly
+	 * @return [type] [description]
+	 */
+	function _enable_recaptcha_protection() {
+		$to_check = array( 'enable_recaptcha_protection', 'recaptcha_site_key', 'recaptcha_secret_key' );
+		foreach( $to_check as $check ) {
+			if ( !isset( $this->settings[ $check ] ) || ! $this->settings[ $check ] )
+				return;
+		}
+
+		require_once FU_ROOT . '/lib/php/recaptcha.php';
+	}
 }
 
-global $frontend_uploader;
-$frontend_uploader = new Frontend_Uploader;
+$GLOBALS['frontend_uploader'] = new Frontend_Uploader;

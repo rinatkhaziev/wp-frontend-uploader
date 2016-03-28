@@ -246,3 +246,16 @@ function fu_get_exts_descs() {
 
 	return $a;
 }
+
+function fu_get_option( $slug = '' ) {
+	static $options;
+	$slug = sanitize_key( $slug );
+	if ( ! $options )
+		$options  = $GLOBALS['frontend_uploader']->settings;
+
+	return isset( $options[ $slug ] ) ? $options[ $slug ] : '';
+}
+
+function fu_get_recaptcha_markup() {
+	return '<div class="g-recaptcha" data-sitekey="' . esc_attr( fu_get_option( 'recaptcha_site_key' ) ) . '"></div>';
+}

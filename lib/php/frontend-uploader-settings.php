@@ -63,11 +63,11 @@ class Frontend_Uploader_Settings {
 	 * @return array settings fields
 	 */
 	static function get_settings_fields() {
-		$default_post_type = array( 'post' => 'Posts', 'post' => 'post' );
+		$default_post_type = array( 'post' => 'Posts' );
 		$settings_fields = array(
 			'frontend_uploader_settings' => array(
 				array(
-					'name' => 'enable_spam_protection',
+					'name' => 'enable_akismet_protection',
 					'label' => __( 'Enable Akismet spam protection', 'frontend-uploader' ),
 					'desc' => __( 'Yes (Akismet must be enabled and configured)', 'frontend-uploader' ),
 					'type' => 'checkbox',
@@ -82,14 +82,14 @@ class Frontend_Uploader_Settings {
 				),
 				array(
 					'name' => 'recaptcha_site_key',
-					'label' => __( 'Recaptcha Site Key', 'frontend-uploader' ) . " Get at https://www.google.com/recaptcha/admin",
+					'label' => __( 'Recaptcha Site Key', 'frontend-uploader' ) . " get at https://www.google.com/recaptcha/admin",
 					'desc' => __( '', 'frontend-uploader' ),
 					'type' => 'text',
 					'default' => '',
 				),
 				array(
 					'name' => 'recaptcha_secret_key',
-					'label' => __( 'Recaptcha Site Secret', 'frontend-uploader' ) . " Get at https://www.google.com/recaptcha/admin",
+					'label' => __( 'Recaptcha Site Secret', 'frontend-uploader' ) . " get at https://www.google.com/recaptcha/admin",
 					'desc' => __( '', 'frontend-uploader' ),
 					'type' => 'text',
 					'default' => '',
@@ -178,6 +178,7 @@ class Frontend_Uploader_Settings {
 				),
 			),
 		);
+
 		return $settings_fields;
 	}
 
