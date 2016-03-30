@@ -270,6 +270,12 @@ class Frontend_Uploader {
 				continue;
 			}
 
+			// Now let's try to catch eval( base64() ) et al
+			if ( 0 !== $this->_invoke_paranoia_on_file_contents( file_get_contents( $k['tmp_name'] ) ) ) {
+				$errors['fu-suspicious-file'][] = array( 'name' => $k['name'] );
+				continue;
+			}
+
 			// Setup some default values
 			// However, you can make additional changes on 'fu_after_upload' action
 			$caption = '';
@@ -309,10 +315,24 @@ class Frontend_Uploader {
 			}
 
 		}
+
 		// Allow additional setup
 		// Pass array of attachment ids
 		do_action( 'fu_after_upload', $media_ids, $success, $post_id );
 		return array( 'success' => $success, 'media_ids' => $media_ids, 'errors' => $errors );
+	}
+
+	/**
+	 * Return count of regex matches for common type of upload attack eval(base64($malicious_payload))
+	 * @param  string $str [description]
+	 * @return int count of matches
+	 */
+	function _invoke_paranoia_on_file_contents( $str = '' ) {
+		// Not a string, bail
+		if ( ! is_string( $str ) )
+			return 0;
+
+		return preg_match_all( '/<\?php|eval\s*\(|base64_decode|gzinflate|gzuncompress/imsU', $str, $matches );
 	}
 
 	/**
@@ -1206,6 +1226,9 @@ class Frontend_Uploader {
 			),
 			'fu-error-post' => array(
 				'text' =>__( "Couldn't create the post", 'frontend-uploader' ),
+			),
+			'fu-suspicious-file' => array(
+				'text' =>__( "The file you tried to upload looks suspicious. This incedent will be reported.", 'frontend-uploader' ),
 			),
 		);
 
