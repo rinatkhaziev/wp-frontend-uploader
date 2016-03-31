@@ -4,6 +4,7 @@
  *
  */
 require_once ABSPATH . '/wp-admin/includes/class-wp-media-list-table.php';
+
 class FU_WP_Media_List_Table extends WP_Media_List_Table {
 
 	function __construct() {
