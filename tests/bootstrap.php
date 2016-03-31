@@ -8,8 +8,7 @@ if ( ! $_tests_dir ) {
 require_once $_tests_dir . '/includes/functions.php';
 
 function _manually_load_plugin() {
-	require_once( ABSPATH . '/wp-admin/admin.php' );
-
+	require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
 	require dirname( dirname( __FILE__ ) ) . '/frontend-uploader.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
