@@ -762,7 +762,7 @@ class Frontend_Uploader {
 
 		$help = isset( $help ) && $help ? $this->html->element( 'p', sanitize_text_field( $help ), array( 'class' => 'ugc-help' ) ) : '';
 
-		return $this->html->element( 'div', $label . $help . $input, array( 'class' => 'ugc-input-wrapper' ), false );
+		return $this->html->element( 'div', $label . $input . $help, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
 	/**
@@ -789,13 +789,13 @@ class Frontend_Uploader {
 				) );
 			$tiny = ob_get_clean();
 
-			return $this->html->element( 'div', $label  . $help . $tiny, array( 'class' => 'ugc-input-wrapper' ), false ) ;
+			return $this->html->element( 'div', $label  . $tiny . $help, array( 'class' => 'ugc-input-wrapper' ), false ) ;
 		}
 		// Render plain textarea
 		$element = $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) );
 		$label = $this->html->element( 'label', $description, array( 'for' => $id ), false );
 
-		return $this->html->element( 'div', $label . $help . $element, array( 'class' => 'ugc-input-wrapper' ), false );
+		return $this->html->element( 'div', $label  . $element . $help, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
 
 	/**
@@ -917,6 +917,7 @@ class Frontend_Uploader {
 					'post_type' => 'post',
 					'category' => '',
 					'suppress_default_fields' => false,
+					'append_to_post' => true,
 				), $atts ) );
 
 		$post_id = (int) $post_id;
@@ -997,6 +998,7 @@ class Frontend_Uploader {
 					), null, 'textarea' );
 
 				break;
+
 			case 'post':
 				// post_content
 				echo $this->shortcode_content_parser( array(
@@ -1083,6 +1085,17 @@ class Frontend_Uploader {
 				'name' => 'form_layout',
 				'value' => $form_layout
 			), null, 'input' );
+
+		if ( in_array( $form_layout, array( 'post_media', 'post_image' ) ) ) {
+					// One of supported form layouts
+			echo $this->shortcode_content_parser( array(
+					'type' => 'hidden',
+					'role' => 'internal',
+					'name' => 'append_to_post',
+					'value' => (bool) $append_to_post
+				), null, 'input' );
+		}
+
 ?>
 		<?php wp_nonce_field( FU_NONCE, 'fu_nonce' ); ?>
 		<input type="hidden" name="ff" value="<?php echo esc_attr( $this->_get_fields_hash() ) ?>" />
