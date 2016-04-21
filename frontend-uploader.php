@@ -120,6 +120,8 @@ class Frontend_Uploader {
 
 		add_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
 
+		add_action( 'fu_after_upload', array( $this, '_maybe_insert_images_into_post' ), 10, 3 );
+
 		// Maybe enable Akismet protection
 		$this->_enable_akismet_protection();
 
@@ -320,6 +322,10 @@ class Frontend_Uploader {
 		// Pass array of attachment ids
 		do_action( 'fu_after_upload', $media_ids, $success, $post_id );
 		return array( 'success' => $success, 'media_ids' => $media_ids, 'errors' => $errors );
+	}
+
+	function _maybe_insert_images_into_post( $media_ids, $success, $post_id ) {
+		// stub
 	}
 
 	/**
@@ -718,7 +724,9 @@ class Frontend_Uploader {
 				'aria-required' => false,
 				'values' => '',
 				'wysiwyg_enabled' => false,
-				'role' => 'meta'
+				'role' => 'meta',
+				'minlength' => '',
+				'maxlength' => '',
 			), $atts );
 
 		extract( $atts );
@@ -741,6 +749,8 @@ class Frontend_Uploader {
 	 * @return string formatted html element
 	 */
 	function _render_input( $atts ) {
+		// $ml = array( 'maxlength', 'minlength' );
+
 		extract( $atts );
 		$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
 		// Workaround for HTML5 multiple attribute
@@ -791,8 +801,8 @@ class Frontend_Uploader {
 
 			return $this->html->element( 'div', $label  . $tiny . $help, array( 'class' => 'ugc-input-wrapper' ), false ) ;
 		}
-		// Render plain textarea
 		$element = $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) );
+		// Render plain textarea
 		$label = $this->html->element( 'label', $description, array( 'for' => $id ), false );
 
 		return $this->html->element( 'div', $label  . $element . $help, array( 'class' => 'ugc-input-wrapper' ), false );

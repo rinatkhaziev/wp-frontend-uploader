@@ -156,7 +156,13 @@ class Html_Helper {
 	 * @return string attributes
 	 */
 	function _format_attributes( $attrs = array() ) {
+		if ( ! $attrs['required'] ) {
+			unset( $attrs['aria-required' ] );
+			unset( $attrs['required' ] );
+		}
+
 		$attr_string = '';
+
 		foreach ( (array) $attrs as $attr => $value ) {
 			if ( in_array( $attr, $this->_allowed_html_attrs() ) )
 				$attr_string .= " {$attr}='" . esc_attr ( $value ) . "'";
@@ -182,6 +188,6 @@ class Html_Helper {
 	 * Returns allowed HTML attributes
 	 */
 	function _allowed_html_attrs() {
-		return apply_filters( 'hh_allowed_html_attributes', array( 'href', 'class', 'id', 'value', 'action', 'name', 'method', 'selected', 'checked', 'for', 'multiple', 'required', 'aria-required' ) );
+		return apply_filters( 'hh_allowed_html_attributes', array( 'href', 'maxlength', 'minlength', 'class', 'id', 'value', 'action', 'name', 'method', 'selected', 'checked', 'for', 'multiple', 'required', 'aria-required' ) );
 	}
 }
