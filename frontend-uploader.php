@@ -759,10 +759,8 @@ class Frontend_Uploader {
 	 * @return string formatted html element
 	 */
 	function _render_input( $atts ) {
-		// $ml = array( 'maxlength', 'minlength' );
-
 		extract( $atts );
-		$atts = array( 'id' => $id, 'class' => $class, 'multiple' => $multiple );
+
 		// Workaround for HTML5 multiple attribute
 		if ( (bool) $multiple === false )
 			unset( $atts['multiple'] );
@@ -811,7 +809,7 @@ class Frontend_Uploader {
 
 			return $this->html->element( 'div', $label  . $tiny . $help, array( 'class' => 'ugc-input-wrapper' ), false ) ;
 		}
-		$element = $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class ) );
+		$element = $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class, 'minlength' => $minlength, 'maxlength' => $maxlength, 'required' => $required ) );
 		// Render plain textarea
 		$label = $this->html->element( 'label', $description, array( 'for' => $id ), false );
 
