@@ -143,7 +143,7 @@ class Html_Helper {
 	 * @return string rendered html tag
 	 */
 	function element( $tag, $content, $params = array(), $escape = true ) {
-		$allowed = apply_filters( 'hh_allowed_html_elements' , array( 'div', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'td', 'option', 'label', 'textarea', 'select', 'option' ) );
+		$allowed = apply_filters( 'hh_allowed_html_elements' , array( 'div', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'td', 'option', 'label', 'textarea', 'select', 'option', 'fieldset' ) );
 		$attr_string = $this->_format_attributes( $params );
 		if ( in_array( $tag, $allowed ) )
 			return "<{$tag} {$attr_string}>" . ( $escape ? esc_html ( $content ) : $content ) . "</{$tag}>";
@@ -156,7 +156,7 @@ class Html_Helper {
 	 * @return string attributes
 	 */
 	function _format_attributes( $attrs = array() ) {
-		if ( ! $attrs['required'] ) {
+		if ( ! isset( $attrs['required' ] ) || ! $attrs['required'] ) {
 			unset( $attrs['aria-required' ] );
 			unset( $attrs['required' ] );
 		}
@@ -164,7 +164,7 @@ class Html_Helper {
 		$attr_string = '';
 
 		foreach ( (array) $attrs as $attr => $value ) {
-			if ( in_array( $attr, $this->_allowed_html_attrs() ) )
+			if ( in_array( $attr, $this->_allowed_html_attrs() ) && $value != '' )
 				$attr_string .= " {$attr}='" . esc_attr ( $value ) . "'";
 		}
 		return $attr_string;
