@@ -118,8 +118,6 @@ class Frontend_Uploader {
 		// Debug mode filter
 		$this->is_debug = (bool) apply_filters( 'fu_is_debug', defined( 'WP_DEBUG' ) && WP_DEBUG );
 
-		add_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
-
 		add_action( 'fu_after_upload', array( $this, '_maybe_insert_images_into_post' ), 10, 3 );
 
 		// Maybe enable Akismet protection
@@ -151,6 +149,7 @@ class Frontend_Uploader {
 				$mime_types[ $extension . '|' . $extension . sanitize_title_with_dashes( $ext_mime ) ] = $ext_mime;
 			}
 		}
+
 		// Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme)
 		$mime_types = apply_filters( 'fu_allowed_mime_types', $mime_types );
 
@@ -242,6 +241,10 @@ class Frontend_Uploader {
 	 * @return array Combined result of media ids and errors if any
 	 */
 	function _upload_files( $post_id = 0 ) {
+		// Only filter mimes just before the upload
+		add_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
+
+
 		$media_ids = $errors = array();
 		// Bail if there are no files
 		if ( empty( $_FILES ) )
@@ -297,8 +300,15 @@ class Frontend_Uploader {
 				'post_excerpt' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : $caption,
 			);
 
+			// Obfuscate filename, just in case
+			$m = $k;
+			$fn = explode( '.', $k['name'] );
+			$k['name'] = uniqid() . '.' . end( $fn );
+
 			// Trying to upload the file
 			$upload_id = media_handle_sideload( $k, (int) $post_id, $post_overrides['post_title'], $post_overrides );
+			$m = $k;
+
 			if ( !is_wp_error( $upload_id ) )
 				$media_ids[] = $upload_id;
 			else
