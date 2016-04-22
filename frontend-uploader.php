@@ -1224,7 +1224,7 @@ class Frontend_Uploader {
 	 * @return [type] [description]
 	 */
 	function _display_response_notices( $res = array() ) {
-		if ( empty( $res ) )
+		if ( empty( $res ) || !is_array( $res ) )
 			return;
 
 		array_walk_recursive( $res, 'sanitize_text_field' );
