@@ -1227,7 +1227,7 @@ class Frontend_Uploader {
 		if ( empty( $res ) )
 			return;
 
-		array_walk_recursive( (array) $res, 'sanitize_text_field' );
+		array_walk_recursive( $res, 'sanitize_text_field' );
 
 		$output = '';
 		$map = array(
@@ -1410,12 +1410,9 @@ class Frontend_Uploader {
 	 * @return [type] [description]
 	 */
 	function _enable_recaptcha_protection() {
-		if (  !isset( $this->settings['enable_recaptcha_protection'] ) || $this->settings['enable_recaptcha_protection'] == 'off' )
-			return false;
-
-		$to_check = array( 'recaptcha_site_key', 'recaptcha_secret_key' );
+		$to_check = array( 'recaptcha_site_key', 'recaptcha_secret_key', 'enable_recaptcha_protection' );
 		foreach( $to_check as $check ) {
-			if ( !isset( $this->settings[ $check ] ) || ! $this->settings[ $check ] )
+			if ( !isset( $this->settings[ $check ] ) || ! $this->settings[ $check ] || 'off' === $this->settings[ $check ] )
 				return false;
 		}
 
