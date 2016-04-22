@@ -73,7 +73,7 @@ class Frontend_Uploader {
 
 		// Either use default settings if no setting set, or try to merge defaults with existing settings
 		// Needed if new options were added in upgraded version of the plugin
-		$this->settings = array_merge( $this->settings_defaults(), (array) get_option( $this->settings_slug, $this->settings_defaults() ) );
+		$this->settings = get_option( $this->settings_slug, $this->settings_defaults() );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 	}
 
@@ -138,10 +138,11 @@ class Frontend_Uploader {
 		// Workaround for IE
 		$mime_types['jpg|jpe|jpeg|pjpg'] = 'image/pjpeg';
 		$mime_types['png|xpng'] = 'image/x-png';
+		$enabled = isset( $this->settings['enabled_files'] ) && is_array( $this->settings['enabled_files'] ) ?  $this->settings['enabled_files'] : array();
 		// Iterate through default extensions
 		foreach ( $fu_mime_types as $extension => $details ) {
 			// Skip if it's not in the settings
-			if ( !in_array( $extension, $this->settings['enabled_files'] ) )
+			if ( !in_array( $extension, $enabled ) )
 				continue;
 
 			// Iterate through mime-types for this extension
@@ -325,7 +326,6 @@ class Frontend_Uploader {
 			foreach ( $media_ids as $media_id ) {
 				$this->_save_post_meta_fields( $media_id );
 			}
-
 		}
 
 		// Allow additional setup
@@ -334,8 +334,45 @@ class Frontend_Uploader {
 		return array( 'success' => $success, 'media_ids' => $media_ids, 'errors' => $errors );
 	}
 
+	/**
+	 * A callback to append uploaded images html to post
+	 *
+	 * @param  array $media_ids [description]
+	 * @param  bool  $success   [description]
+	 * @param  int   $post_id   [description]
+	 * @return mixed            [description]
+	 */
 	function _maybe_insert_images_into_post( $media_ids, $success, $post_id ) {
-		// stub
+		// Bail if request is failed,
+		if ( ! $success || !isset( $_POST[ 'append_to_post' ] ) || !$_POST['append_to_post'] )
+			return;
+		$post = get_post( $post_id );
+
+		$attachments_html = "\n";
+
+		foreach( $media_ids as $media_id ) {
+			$attachments_html .= wp_get_attachment_image( $media_id, 'full' );
+		}
+
+		// add wp_kses_allowed_html filter just in time before we save post
+		add_filter( 'wp_kses_allowed_html', array( $this, 'wp_kses_add_srcset' ), 10, 2 );
+
+		$post->post_content .= $attachments_html;
+
+		return wp_update_post( $post, true );
+	}
+
+	/**
+	 * Force adding srcset as allowed attr for repsonsive images
+	 * @param  [type] $tags    [description]
+	 * @param  [type] $context [description]
+	 * @return [type]          [description]
+	 */
+	function wp_kses_add_srcset( $tags, $context ) {
+		if ( $context == 'post' )
+			$tags['img']['srcset'] = true;
+
+		return $tags;
 	}
 
 	/**
@@ -934,7 +971,7 @@ class Frontend_Uploader {
 					'post_type' => 'post',
 					'category' => '',
 					'suppress_default_fields' => false,
-					'append_to_post' => true,
+					'append_to_post' => false,
 				), $atts ) );
 
 		$post_id = (int) $post_id;
@@ -1048,7 +1085,7 @@ class Frontend_Uploader {
 					), null, 'input' );
 			}
 
-			if ( $this->settings['enable_recaptcha_protection' ] )
+			if ( $this->settings['enable_recaptcha_protection' ] == 'on' )
 				echo fu_get_recaptcha_markup();
 
 			do_action( 'fu_additional_html', $this );
@@ -1371,10 +1408,13 @@ class Frontend_Uploader {
 	 * @return [type] [description]
 	 */
 	function _enable_recaptcha_protection() {
-		$to_check = array( 'enable_recaptcha_protection', 'recaptcha_site_key', 'recaptcha_secret_key' );
+		if (  !isset( $this->settings['enable_recaptcha_protection'] ) || $this->settings['enable_recaptcha_protection'] == 'off' )
+			return false;
+
+		$to_check = array( 'recaptcha_site_key', 'recaptcha_secret_key' );
 		foreach( $to_check as $check ) {
 			if ( !isset( $this->settings[ $check ] ) || ! $this->settings[ $check ] )
-				return;
+				return false;
 		}
 
 		require_once FU_ROOT . '/lib/php/recaptcha.php';
