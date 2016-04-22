@@ -491,7 +491,6 @@ class Frontend_Uploader {
 		case 'media':
 			$pid = isset( $_POST['post_ID'] ) ? (int) $_POST['post_ID'] : 0;
 			$result = $this->_upload_files( $pid );
-
 			break;
 		}
 
@@ -1028,19 +1027,6 @@ class Frontend_Uploader {
 					), null, 'textarea' );
 				break;
 			}
-		}
-
-		// Show author field
-		// TODO: remove
-		if ( isset( $this->settings['show_author'] ) && $this->settings['show_author'] == 'on' ) {
-			echo $this->shortcode_content_parser( array(
-					'type' => 'text',
-					'role' => 'author',
-					'name' => 'post_author',
-					'id' => 'ug_post_author',
-					'class' => '',
-					'description' => __( 'Author', 'frontend-uploader' ),
-				), null, 'input' );
 		}
 
 		// Parse nested shortcodes
