@@ -1227,6 +1227,8 @@ class Frontend_Uploader {
 		if ( empty( $res ) )
 			return;
 
+		array_walk_recursive( (array) $res, 'sanitize_text_field' );
+
 		$output = '';
 		$map = array(
 			'fu-sent' => array(
