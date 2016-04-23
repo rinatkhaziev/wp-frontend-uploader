@@ -31,6 +31,7 @@ define( 'FU_FILE_PATH' , FU_ROOT . '/' . basename( __FILE__ ) );
 define( 'FU_URL' , plugins_url( '/', __FILE__ ) );
 define( 'FU_NONCE', 'frontend-uploader-upload-media' );
 
+require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
 require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php';
 require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-posts-list-table.php';
 require_once FU_ROOT . '/lib/php/class-html-helper.php';
