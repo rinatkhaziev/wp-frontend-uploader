@@ -286,6 +286,12 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 1.0 (Apr 22, 2016) =
+* Added Recaptcha support
+* Added option to auto-append uploaded images to posts
+* Preserve values in text fields on failed upload
+* Bugfixes
+
 = 0.9.4 (Aug 4, 2015) =
 * Bugfixes
 
