@@ -31,9 +31,6 @@ define( 'FU_FILE_PATH' , FU_ROOT . '/' . basename( __FILE__ ) );
 define( 'FU_URL' , plugins_url( '/', __FILE__ ) );
 define( 'FU_NONCE', 'frontend-uploader-upload-media' );
 
-require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
-require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php';
-require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-posts-list-table.php';
 require_once FU_ROOT . '/lib/php/class-html-helper.php';
 require_once FU_ROOT . '/lib/php/settings-api/class.settings-api.php';
 require_once FU_ROOT . '/lib/php/functions.php';
@@ -617,6 +614,12 @@ class Frontend_Uploader {
 	function render( $view = '' ) {
 		if ( empty( $view ) )
 			return;
+
+		require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
+		require_once ABSPATH . '/wp-admin/includes/class-wp-posts-list-table.php';
+		require_once ABSPATH . '/wp-admin/includes/class-wp-media-list-table.php';
+		require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php';
+		require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-posts-list-table.php';
 
 		$file = FU_ROOT . "/lib/views/{$view}.tpl.php";
 		if ( 0 === validate_file(  $file ) ) {
@@ -1315,7 +1318,8 @@ class Frontend_Uploader {
 	 */
 	function enqueue_scripts() {
 		wp_enqueue_style( 'frontend-uploader', FU_URL . 'lib/css/frontend-uploader.css' );
-		wp_enqueue_script( 'jquery-validate', FU_URL . 'lib/js/validate/jquery.validate.js', array( 'jquery', 'underscore' ) );
+		wp_enqueue_script( 'jquery-validate', FU_URL . 'lib/js/validate/jquery.validate.min.js', array( 'jquery', 'underscore' ) );
+		wp_enqueue_script( 'jquery-validate-additional', FU_URL . 'lib/js/validate/additional-methods.min.js', array( 'jquery', 'underscore' ) );
 		wp_enqueue_script( 'fu-underscore-string', FU_URL . 'lib/js/underscore.string.min.js', array( 'jquery', 'underscore' ) );
 		wp_enqueue_script( 'frontend-uploader-js', FU_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 		// Include localization strings for default messages of validation plugin

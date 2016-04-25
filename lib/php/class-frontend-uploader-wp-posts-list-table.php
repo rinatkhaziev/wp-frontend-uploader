@@ -2,11 +2,7 @@
 /**
  * Posts Library List Table class.
  *
- * TODO: Unhack
- *
  */
-require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
-require_once ABSPATH . '/wp-admin/includes/class-wp-posts-list-table.php';
 class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 
 	function __construct() {
