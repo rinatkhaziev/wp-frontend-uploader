@@ -15,14 +15,14 @@ function fu_recaptcha_check_submission( $should_process, $layout ) {
 	if ( !isset( $_POST['g-recaptcha-response'] ) )
 		return false;
 
-	$req = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', [
-		'body' => [
+	$req = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array(
+		'body' => array(
 			'secret' => fu_get_option( 'recaptcha_secret_key' ),
 			'response' => $_POST['g-recaptcha-response'],
 			'remoteip' => $_SERVER['REMOTE_ADDR']
-		],
+		),
 		'timeout' => 1,
-	] );
+	) );
 
 	// Request failed, let's bail
 	if ( is_wp_error( $req ) )
