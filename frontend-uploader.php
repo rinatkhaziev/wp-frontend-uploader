@@ -518,7 +518,10 @@ class Frontend_Uploader {
 			$result = $this->_upload_post();
 			if ( ! is_wp_error( $result['post_id'] ) ) {
 				$media_result = $this->_upload_files( $result['post_id'] );
-				$result = array_merge( $result, $media_result );
+
+				// Make sure we don't merge a non-array (_upload_files might return null, false or WP_Error)
+				if ( $media_result && is_array( $media_result ) )
+					$result = array_merge( $result, $media_result );
 			}
 			break;
 			// Upload media
