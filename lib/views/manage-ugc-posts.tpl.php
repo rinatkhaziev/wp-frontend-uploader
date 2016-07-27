@@ -1,6 +1,5 @@
 <?php
 $title = __( 'Manage UGC Posts', 'frontend-uploader' );
-
 if ( ! current_user_can( 'publish_posts' ) )
 	wp_die( __( 'You do not have permission to publish posts.', 'frontend-uploader' ) );
 

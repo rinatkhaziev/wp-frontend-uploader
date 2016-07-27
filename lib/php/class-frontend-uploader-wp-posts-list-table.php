@@ -5,19 +5,17 @@
  */
 class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 
-	function __construct() {
+	function __construct( $args = array() ) {
 		global $frontend_uploader;
+
 		$screen = get_current_screen();
 		if ( $screen->post_type == '' ) {
 			$screen->post_type ='post';
 		}
 
-		foreach( (array) $frontend_uploader->settings['enabled_post_types'] as $post_type ) {
-			add_filter( "{$post_type}_row_actions", array( $this, '_add_row_actions' ), 10, 2 );
-		}
+		add_filter( "{$screen->post_type}_row_actions", array( $this, '_add_row_actions' ), 10, 2 );
 
 		parent::__construct( array( 'screen' => $screen ) );
-
 	}
 
 	function _add_row_actions( $actions, $post ) {
@@ -29,17 +27,12 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 		return $actions;
 	}
 
+	/**
+	* WP_Posts_List_Table is loaded in a different matter and WP_Posts_List::prepare_items() calls wp
+	* And we don't want that, so the query is set with query_posts in Frontend_Uploader::_set_global_query_for_tables()
+	*/
 	function prepare_items() {
 		global $lost, $wpdb, $wp_query, $post_mime_types, $avail_post_mime_types;
-
-		$q = $_REQUEST;
-
-		if ( !empty( $lost ) )
-			$q['post__in'] = implode( ',', $lost );
-
-		add_filter( 'posts_where', array( $this, 'modify_post_status_to_private' ) );
-
-		parent::prepare_items();
 
 		$this->items = $wp_query->posts;
 
@@ -49,22 +42,11 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 			'id',
 		);
 		$this->_column_headers = array( $columns, $hidden, $this->get_sortable_columns() ) ;
-
-		remove_filter( 'posts_where', array( $this, 'modify_post_status_to_private' ) );
-	}
-
-
-	function modify_post_status_to_private( $where ) {
-		global $wpdb;
-		return "AND $wpdb->posts.post_type = '{$this->screen->post_type}' AND ($wpdb->posts.post_status = 'inherit' OR $wpdb->posts.post_status = 'private') ";
-
 	}
 
 	function get_views() {
 		return array();
 	}
-
-
 
 	function get_bulk_actions() {
 		$actions = array();

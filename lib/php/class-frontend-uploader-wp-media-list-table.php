@@ -9,12 +9,12 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 		parent::__construct();
 	}
 
+	/**
+	* WP_Media_List_Table is loaded in a different matter and WP_Media_List::prepare_items() calls wp
+	* And we don't want that, so the query is set with query_posts in Frontend_Uploader::_set_global_query_for_tables()
+	*/
 	function prepare_items() {
 		global $lost, $wpdb, $wp_query, $post_mime_types, $avail_post_mime_types;
-
-		add_filter( 'posts_where', array( $this, 'modify_post_status_to_private' ) );
-
-		parent::prepare_items();
 
 		$this->items = $wp_query->posts;
 		/* -- Register the Columns -- */
@@ -26,8 +26,6 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $this->get_sortable_columns() ) ;
 
 		add_filter( 'media_row_actions', array( $this, 'filter_media_row_actions' ), 9, 3);
-
-		remove_filter( 'posts_where', array( $this, 'modify_post_status_to_private' ) );
 	}
 
 	function filter_media_row_actions( $actions, $post, $detached ) {
@@ -42,9 +40,4 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 
 		return $actions;
 	}
-
-	function modify_post_status_to_private( $where ) {
-		return str_replace( "post_status = 'inherit' ", "post_status = 'private' ", $where );
-	}
-
 }

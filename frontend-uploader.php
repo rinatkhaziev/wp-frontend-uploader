@@ -408,7 +408,7 @@ class Frontend_Uploader {
 
 		// Construct post array;
 		$post_array = array(
-			'post_type' => isset( $_POST['post_type'] ) && in_array( $_POST['post_type'], $this->settings['enabled_post_types'] ) ? $_POST['post_type'] : 'post',
+			'post_type' => isset( $_POST['post_type'] ) && $this->is_allowed_post_type( $_POST['post_type'] ) ? sanitize_key( $_POST['post_type'] ) : 'post',
 			'post_title' => $post_title ? $post_title : __( 'Untitled post submission', 'frontend-uploader' ),
 			'post_content' => wp_filter_post_kses( $_POST['post_content'] ),
 			'post_status' => $this->_is_public() ? 'publish' : 'private',
@@ -618,16 +618,55 @@ class Frontend_Uploader {
 		if ( empty( $view ) )
 			return;
 
+		$this->_set_global_query_for_tables( $view );
+
 		require_once ABSPATH . '/wp-admin/includes/class-wp-list-table.php';
 		require_once ABSPATH . '/wp-admin/includes/class-wp-posts-list-table.php';
 		require_once ABSPATH . '/wp-admin/includes/class-wp-media-list-table.php';
 		require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php';
 		require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-posts-list-table.php';
 
-		$file = FU_ROOT . "/lib/views/{$view}.tpl.php";
-		if ( 0 === validate_file(  $file ) ) {
+		$file = FU_ROOT . "/lib/views/manage-ugc-{$view}.tpl.php";
+
+		if ( 0 === validate_file( $file ) ) {
 			include_once $file;
 		}
+	}
+
+	/**
+	 * We need to set global $wp_query in order for list tables to work properly
+	 * @param string $type (media|posts)
+	 */
+	private function _set_global_query_for_tables( $type = 'posts' ) {
+		if ( ! in_array( $type, array( 'posts', 'media' ) ) )
+			return false;
+
+		$args = array(
+			'post_status' => array( 'private' ),
+			'posts_per_page' => 20,
+			'paged' => isset( $_GET['paged'] ) ? (int) $_GET['paged'] : 1,
+		);
+
+		// Tweak query arguments (set proper post type and post status)
+		switch( $type ) {
+			case 'posts':
+				$args['post_type'] = isset( $_GET['post_type'] ) && $this->is_allowed_post_type( $_GET['post_type'] ) ? sanitize_key( $_GET['post_type'] ) : 'post';
+			break;
+			case 'media':
+				$args['post_type'] = 'attachment';
+			break;
+		}
+
+		query_posts( $args );
+	}
+
+	/**
+	 * Is post type allowed UGC post type?
+	 * @param  string  $post_type to check
+	 * @return boolean
+	 */
+	function is_allowed_post_type( $post_type = 'post' ) {
+		return in_array( $post_type, $this->settings['enabled_post_types'], true );
 	}
 
 	/**
@@ -636,7 +675,7 @@ class Frontend_Uploader {
 	 * @return [type] [description]
 	 */
 	function admin_list() {
-		$this->render( 'manage-ugc-media' );
+		$this->render( 'media' );
 	}
 
 	/**
@@ -645,7 +684,7 @@ class Frontend_Uploader {
 	 * @return [type] [description]
 	 */
 	function admin_posts_list() {
-		$this->render( 'manage-ugc-posts' );
+		$this->render( 'posts' );
 	}
 
 	/**
