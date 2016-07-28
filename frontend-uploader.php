@@ -348,7 +348,7 @@ class Frontend_Uploader {
 
 		$attachments_html = "\n";
 
-		foreach( $media_ids as $media_id ) {
+		foreach( (array) $media_ids as $media_id ) {
 			$attachments_html .= wp_get_attachment_image( $media_id, 'full' );
 		}
 

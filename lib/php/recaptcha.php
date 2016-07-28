@@ -1,7 +1,6 @@
 <?php
 
 add_filter( 'fu_should_process_content_upload', 'fu_recaptcha_check_submission', 10, 2 );
-// add_action( 'fu_additional_html', 'fu_recaptcha_additional_html' );
 add_action( 'wp_head', 'fu_add_recaptcha_js' );
 
 function fu_add_recaptcha_js() {
@@ -18,7 +17,7 @@ function fu_recaptcha_check_submission( $should_process, $layout ) {
 	$req = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array(
 		'body' => array(
 			'secret' => fu_get_option( 'recaptcha_secret_key' ),
-			'response' => $_POST['g-recaptcha-response'],
+			'response' => sanitize_text_field( $_POST['g-recaptcha-response'] ),
 			'remoteip' => $_SERVER['REMOTE_ADDR']
 		),
 		'timeout' => 1,
@@ -28,7 +27,7 @@ function fu_recaptcha_check_submission( $should_process, $layout ) {
 	if ( is_wp_error( $req ) )
 		return $should_process;
 
-	$res = json_decode( wp_remote_retrieve_body( $req ) );
+	$res = wp_json_decode( wp_remote_retrieve_body( $req ) );
 
 	return $res->success;
 }

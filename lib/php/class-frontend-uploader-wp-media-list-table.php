@@ -30,7 +30,7 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 
 	function filter_media_row_actions( $actions, $post, $detached ) {
 		$detached = $post->post_parent === 0;
-		$actions['pass'] = '<a href="' . admin_url( 'admin-ajax.php' ).'?action=approve_ugc&id=' . $post->ID . '&fu_nonce=' . wp_create_nonce( FU_NONCE ). '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
+		$actions['pass'] = '<a href="' . esc_url( admin_url( 'admin-ajax.php' ).'?action=approve_ugc&id=' . $post->ID . '&fu_nonce=' . wp_create_nonce( FU_NONCE ) ). '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
 
 		if ( ! $detached ) {
 			$actions['re-attach'] = sprintf( '<a class="hide-if-no-js" onclick="findPosts.open( \'media[]\', \'%d\' );return false;" href="#the-list">%s</a>',
