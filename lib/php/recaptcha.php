@@ -10,8 +10,10 @@ function fu_add_recaptcha_js() {
 }
 
 function fu_recaptcha_check_submission( $should_process, $layout ) {
+
 	// Recaptcha is enabled but payload is missing g-recaptcha-response field
-	if ( !isset( $_POST['g-recaptcha-response'] ) )
+	// or it's empty
+	if ( !isset( $_POST['g-recaptcha-response'] ) || ! $_POST['g-recaptcha-response'] )
 		return false;
 
 	$req = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array(
@@ -20,14 +22,15 @@ function fu_recaptcha_check_submission( $should_process, $layout ) {
 			'response' => sanitize_text_field( $_POST['g-recaptcha-response'] ),
 			'remoteip' => $_SERVER['REMOTE_ADDR']
 		),
-		'timeout' => 1,
+		'timeout' => 3,
 	) );
 
-	// Request failed, let's bail
+	// Request failed, fail the check
+	// Because we have no means to verify if it's a valid submission
 	if ( is_wp_error( $req ) )
-		return $should_process;
+		return false;
 
-	$res = wp_json_decode( wp_remote_retrieve_body( $req ) );
+	$res = json_decode( wp_remote_retrieve_body( $req ) );
 
 	return $res->success;
 }
