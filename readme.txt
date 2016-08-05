@@ -2,9 +2,9 @@
 Contributors: rinatkhaziev, danielbachhuber, jtrees
 Donate link: https://www.paypal.me/RinatK
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content, ugc, frontend upload
-Requires at least: 3.3
-Tested up to: 4.5
-Stable tag: 1.0.2
+Requires at least: 4.1
+Tested up to: 4.6
+Stable tag: 1.1
 License: GPLv2 or later
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
@@ -285,6 +285,11 @@ function my_fu_upload_result( $layout, $result ) {
 }`
 
 == Changelog ==
+
+= 1.1 (Aug 5, 2016) =
+* Refactored admin list tables to prevent "Headers already sent error"
+* Better Recaptcha workflow
+* Minor impovements
 
 = 1.0 (Apr 22, 2016) =
 * Added Recaptcha support
