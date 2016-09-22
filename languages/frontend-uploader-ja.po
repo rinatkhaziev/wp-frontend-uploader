@@ -1,0 +1,477 @@
+# Copyright (C) 2013 Frontend Uploader
+# This file is distributed under the same license as the Frontend Uploader package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Frontend Uploader 0.9.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/frontend-uploader\n"
+"POT-Creation-Date: 2016-09-22 00:50+0900\n"
+"PO-Revision-Date: 2016-09-22 23:44+0900\n"
+"Last-Translator: YANO Yasuhiro <yano.yasuhiro@gmail.com>\n"
+"Language-Team: Frontend Uploader <rinat.khaziev@gmail.com>\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.8.9\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: frontend-uploader.php:185
+msgid "Frontend Uploader requires WordPress 3.3 or newer. Please upgrade."
+msgstr ""
+"フロントエンドアップローダーはWordPress 3.3 またはそれ以降が必要です。アップ"
+"グレードしてください。"
+
+#: frontend-uploader.php:298 frontend-uploader.php:299
+msgid "Unnamed"
+msgstr "入力なし"
+
+#: frontend-uploader.php:412
+msgid "Untitled post submission"
+msgstr "タイトルなし"
+
+#: frontend-uploader.php:561
+msgid "New content was uploaded on your site"
+msgstr "あたらしいコンテンツがアップロードされました"
+
+#: frontend-uploader.php:694 frontend-uploader.php:697
+#: frontend-uploader.php:701 lib/views/manage-ugc-media.tpl.php:2
+msgid "Manage UGC"
+msgstr "ユーザーコンテンツ管理"
+
+#: frontend-uploader.php:697 frontend-uploader.php:701
+#: lib/views/manage-ugc-posts.tpl.php:2
+msgid "Manage UGC Posts"
+msgstr "投稿を管理"
+
+#: frontend-uploader.php:1011
+msgid "Submit a new post"
+msgstr "送信"
+
+#: frontend-uploader.php:1038
+msgid "Description"
+msgstr "説明"
+
+#: frontend-uploader.php:1039
+msgid "Your Media Files"
+msgstr "メディアファイル"
+
+#: frontend-uploader.php:1040
+msgid "Submit"
+msgstr "送信"
+
+#: frontend-uploader.php:1078
+msgid "Title"
+msgstr "タイトル"
+
+#: frontend-uploader.php:1097
+msgid "Post content or file description"
+msgstr "ファイルの説明"
+
+#: frontend-uploader.php:1109
+msgid "Post content"
+msgstr "投稿"
+
+#: frontend-uploader.php:1281
+msgid "Your file was successfully uploaded!"
+msgstr "ファイルのアップロードに成功しました"
+
+#: frontend-uploader.php:1285
+msgid "Your post was successfully submitted!"
+msgstr "投稿に成功しました。"
+
+#: frontend-uploader.php:1289
+msgid "There was an error with your submission"
+msgstr "送信時にエラーが発生しました"
+
+#: frontend-uploader.php:1293
+msgid "Your submission failed spam checks"
+msgstr "スパムに該当しました"
+
+#: frontend-uploader.php:1317
+msgid "Security check failed!"
+msgstr "セキュリティチェックに失敗しました"
+
+#: frontend-uploader.php:1320
+msgid ""
+"This kind of file is not allowed. Please, try again selecting other file."
+msgstr ""
+"この種類のファイルは受け付けていません。違うファイルを選択してください。"
+
+#: frontend-uploader.php:1324
+msgid "The content you are trying to post is invalid."
+msgstr "投稿が不正です"
+
+#: frontend-uploader.php:1327
+msgid "Couldn't upload the file"
+msgstr "アップロードできません"
+
+#: frontend-uploader.php:1330
+msgid "Couldn't create the post"
+msgstr "投稿が作成できません"
+
+#: frontend-uploader.php:1333
+msgid ""
+"The file you tried to upload looks suspicious. This incedent will be "
+"reported."
+msgstr "疑わしいファイルがアップロードされました。管理者に報告されます。"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:33
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:24
+msgid "Approve"
+msgstr "承認"
+
+#: lib/php/class-frontend-uploader-wp-media-list-table.php:37
+msgid "Re-Attach"
+msgstr "既存コンテンツに添付"
+
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:25
+#: lib/php/class-frontend-uploader-wp-posts-list-table.php:53
+msgid "Delete Permanently"
+msgstr "完全に削除する"
+
+#: lib/php/frontend-uploader-settings.php:47
+msgid "Frontend Uploader Settings"
+msgstr "Frontend Uploader 設定"
+
+#: lib/php/frontend-uploader-settings.php:54
+#: lib/php/settings-api/procedural-example.php:20
+#: lib/php/settings-api/settings-api.php:48
+msgid "Basic Settings"
+msgstr "基本設定"
+
+#: lib/php/frontend-uploader-settings.php:71
+msgid "Enable Akismet spam protection"
+msgstr "スパム対策にAkismet を使用する"
+
+#: lib/php/frontend-uploader-settings.php:72
+msgid "Yes (Akismet must be enabled and configured)"
+msgstr "使用する（Akismetの有効化と設定が必要です）"
+
+#: lib/php/frontend-uploader-settings.php:78
+msgid "Enable Recaptcha spam protection"
+msgstr "スパム対策にRecaptcha を使用する"
+
+#: lib/php/frontend-uploader-settings.php:79
+msgid "Yes (Fill in Recaptcha credentials below)"
+msgstr "使用する（Recaptcha の資格情報が必要です）"
+
+#: lib/php/frontend-uploader-settings.php:85
+msgid "Recaptcha Site Key"
+msgstr "RecaptchaのSite key"
+
+#: lib/php/frontend-uploader-settings.php:92
+msgid "Recaptcha Site Secret"
+msgstr "RecaptchaのSecret key"
+
+#: lib/php/frontend-uploader-settings.php:99
+msgid "Notify site admins"
+msgstr "管理画面で通知する"
+
+#: lib/php/frontend-uploader-settings.php:100
+#: lib/php/frontend-uploader-settings.php:123
+#: lib/php/frontend-uploader-settings.php:138
+#: lib/php/frontend-uploader-settings.php:153
+#: lib/php/frontend-uploader-settings.php:160
+#: lib/php/frontend-uploader-settings.php:175
+msgid "Yes"
+msgstr "使用する"
+
+#: lib/php/frontend-uploader-settings.php:106
+msgid "Admin Notification"
+msgstr "管理者への通知"
+
+#: lib/php/frontend-uploader-settings.php:107
+msgid "Message that admin will get on new file upload"
+msgstr "新しいファイルがアップロードされたときに通知されます"
+
+#: lib/php/frontend-uploader-settings.php:114
+msgid "Notification email"
+msgstr "メールで通知する"
+
+#: lib/php/frontend-uploader-settings.php:115
+msgid "Leave blank to use site admin email"
+msgstr "空白時、サイト管理のメールアドレスを使用します"
+
+#: lib/php/frontend-uploader-settings.php:122
+msgid "Show author field"
+msgstr "投稿者欄を表示"
+
+#: lib/php/frontend-uploader-settings.php:129
+msgid "Enable Frontend Uploader for the following post types"
+msgstr "Frontend Uploader を有効にする投稿タイプ"
+
+#: lib/php/frontend-uploader-settings.php:137
+msgid "Enable visual editor for textareas"
+msgstr "テキストエリアにビジュアルエディターを使用する"
+
+#: lib/php/frontend-uploader-settings.php:144
+msgid ""
+"Also allow to upload these files (in addition to the ones that WP allows by "
+"default)"
+msgstr "アップロードを許可するファイル"
+
+#: lib/php/frontend-uploader-settings.php:152
+msgid "Auto-approve registered users files"
+msgstr "登録されているユーザーのファイルは自動承認する"
+
+#: lib/php/frontend-uploader-settings.php:159
+msgid "Auto-approve any files"
+msgstr "自動承認する"
+
+#: lib/php/frontend-uploader-settings.php:166
+msgid "Default file name"
+msgstr "デフォルトのファイル名"
+
+#: lib/php/frontend-uploader-settings.php:167
+msgid "Leave blank to use original file name"
+msgstr "空白時、アップロードされたファイル名を使用します"
+
+#: lib/php/frontend-uploader-settings.php:174
+msgid "Suppress default fields"
+msgstr "初期項目の制限"
+
+#: lib/php/settings-api/procedural-example.php:24
+#: lib/php/settings-api/settings-api.php:52
+msgid "Advanced Settings"
+msgstr "拡張設定"
+
+#: lib/php/settings-api/procedural-example.php:28
+#: lib/php/settings-api/settings-api.php:56
+msgid "Other Settings"
+msgstr "その他の設定"
+
+#: lib/php/settings-api/procedural-example.php:36
+#: lib/php/settings-api/procedural-example.php:104
+#: lib/php/settings-api/procedural-example.php:173
+#: lib/php/settings-api/settings-api.php:141
+#: lib/php/settings-api/settings-api.php:210
+msgid "Text Input"
+msgstr "テキスト入力"
+
+#: lib/php/settings-api/procedural-example.php:37
+#: lib/php/settings-api/procedural-example.php:105
+#: lib/php/settings-api/procedural-example.php:174
+#: lib/php/settings-api/settings-api.php:73
+#: lib/php/settings-api/settings-api.php:142
+#: lib/php/settings-api/settings-api.php:211
+msgid "Text input description"
+msgstr "テキスト入力（説明）"
+
+#: lib/php/settings-api/procedural-example.php:43
+#: lib/php/settings-api/procedural-example.php:111
+#: lib/php/settings-api/procedural-example.php:180
+#: lib/php/settings-api/settings-api.php:80
+#: lib/php/settings-api/settings-api.php:148
+#: lib/php/settings-api/settings-api.php:217
+msgid "Textarea Input"
+msgstr "テキストエリア"
+
+#: lib/php/settings-api/procedural-example.php:44
+#: lib/php/settings-api/procedural-example.php:112
+#: lib/php/settings-api/procedural-example.php:181
+#: lib/php/settings-api/settings-api.php:81
+#: lib/php/settings-api/settings-api.php:149
+#: lib/php/settings-api/settings-api.php:218
+msgid "Textarea description"
+msgstr "テキストエリア（説明）"
+
+#: lib/php/settings-api/procedural-example.php:49
+#: lib/php/settings-api/procedural-example.php:117
+#: lib/php/settings-api/procedural-example.php:186
+#: lib/php/settings-api/settings-api.php:86
+#: lib/php/settings-api/settings-api.php:154
+#: lib/php/settings-api/settings-api.php:223
+msgid "Checkbox"
+msgstr "チェックボックス"
+
+#: lib/php/settings-api/procedural-example.php:50
+#: lib/php/settings-api/procedural-example.php:118
+#: lib/php/settings-api/procedural-example.php:187
+#: lib/php/settings-api/settings-api.php:87
+#: lib/php/settings-api/settings-api.php:155
+#: lib/php/settings-api/settings-api.php:224
+msgid "Checkbox Label"
+msgstr "チェックボックスのラベル"
+
+#: lib/php/settings-api/procedural-example.php:55
+#: lib/php/settings-api/procedural-example.php:123
+#: lib/php/settings-api/procedural-example.php:192
+#: lib/php/settings-api/settings-api.php:92
+#: lib/php/settings-api/settings-api.php:160
+#: lib/php/settings-api/settings-api.php:229
+msgid "Radio Button"
+msgstr "ラジオボタン"
+
+#: lib/php/settings-api/procedural-example.php:56
+#: lib/php/settings-api/procedural-example.php:124
+#: lib/php/settings-api/procedural-example.php:193
+#: lib/php/settings-api/settings-api.php:93
+#: lib/php/settings-api/settings-api.php:161
+#: lib/php/settings-api/settings-api.php:230
+msgid "A radio button"
+msgstr "ラジオボタン"
+
+#: lib/php/settings-api/procedural-example.php:65
+#: lib/php/settings-api/procedural-example.php:134
+#: lib/php/settings-api/procedural-example.php:202
+#: lib/php/settings-api/settings-api.php:102
+#: lib/php/settings-api/settings-api.php:171
+#: lib/php/settings-api/settings-api.php:239
+msgid "Multile checkbox"
+msgstr "複数選択"
+
+#: lib/php/settings-api/procedural-example.php:66
+#: lib/php/settings-api/procedural-example.php:135
+#: lib/php/settings-api/procedural-example.php:203
+#: lib/php/settings-api/settings-api.php:103
+#: lib/php/settings-api/settings-api.php:172
+#: lib/php/settings-api/settings-api.php:240
+msgid "Multi checkbox description"
+msgstr "複数選択の説明"
+
+#: lib/php/settings-api/procedural-example.php:77
+#: lib/php/settings-api/procedural-example.php:147
+#: lib/php/settings-api/procedural-example.php:214
+#: lib/php/settings-api/settings-api.php:114
+#: lib/php/settings-api/settings-api.php:184
+#: lib/php/settings-api/settings-api.php:251
+msgid "A Dropdown"
+msgstr "ドロップ ダウン リスト"
+
+#: lib/php/settings-api/procedural-example.php:78
+#: lib/php/settings-api/procedural-example.php:148
+#: lib/php/settings-api/procedural-example.php:215
+#: lib/php/settings-api/settings-api.php:115
+#: lib/php/settings-api/settings-api.php:185
+#: lib/php/settings-api/settings-api.php:252
+msgid "Dropdown description"
+msgstr "ドロップダウンリストの説明"
+
+#: lib/php/settings-api/procedural-example.php:88
+#: lib/php/settings-api/procedural-example.php:157
+#: lib/php/settings-api/procedural-example.php:224
+#: lib/php/settings-api/settings-api.php:125
+#: lib/php/settings-api/settings-api.php:194
+#: lib/php/settings-api/settings-api.php:261
+msgid "Password"
+msgstr "パスワード"
+
+#: lib/php/settings-api/procedural-example.php:89
+#: lib/php/settings-api/procedural-example.php:158
+#: lib/php/settings-api/procedural-example.php:225
+#: lib/php/settings-api/settings-api.php:126
+#: lib/php/settings-api/settings-api.php:195
+#: lib/php/settings-api/settings-api.php:262
+msgid "Password description"
+msgstr "パスワードの説明"
+
+#: lib/php/settings-api/procedural-example.php:95
+#: lib/php/settings-api/procedural-example.php:164
+#: lib/php/settings-api/procedural-example.php:231
+#: lib/php/settings-api/settings-api.php:132
+#: lib/php/settings-api/settings-api.php:201
+#: lib/php/settings-api/settings-api.php:268
+msgid "File"
+msgstr "ファイル"
+
+#: lib/php/settings-api/procedural-example.php:96
+#: lib/php/settings-api/procedural-example.php:165
+#: lib/php/settings-api/procedural-example.php:232
+#: lib/php/settings-api/settings-api.php:133
+#: lib/php/settings-api/settings-api.php:202
+#: lib/php/settings-api/settings-api.php:269
+msgid "File description"
+msgstr "ファイルの説明"
+
+#: lib/php/settings-api/settings-api.php:72
+msgid "Text Input (integer validation)"
+msgstr "テキスト入力（数値チェックあり）"
+
+#: lib/views/manage-ugc-media.tpl.php:5
+msgid "You do not have permission to upload files."
+msgstr "ファイルをアップロードする権限がありません"
+
+#: lib/views/manage-ugc-media.tpl.php:17 lib/views/manage-ugc-posts.tpl.php:16
+#, php-format
+msgid "Search results for &#8220;%s&#8221;"
+msgstr "&#8220;%s&#8221;の検索結果"
+
+#: lib/views/manage-ugc-media.tpl.php:23 lib/views/manage-ugc-media.tpl.php:53
+msgid "Media attachment updated."
+msgstr "添付されたメディアを更新しました"
+
+#: lib/views/manage-ugc-media.tpl.php:40 lib/views/manage-ugc-media.tpl.php:56
+#: lib/views/manage-ugc-posts.tpl.php:39 lib/views/manage-ugc-posts.tpl.php:55
+msgid "Undo"
+msgstr "元に戻す"
+
+#: lib/views/manage-ugc-media.tpl.php:54 lib/views/manage-ugc-posts.tpl.php:53
+msgid "Media permanently deleted."
+msgstr "メディアは完全に削除されました"
+
+#: lib/views/manage-ugc-media.tpl.php:55
+msgid "Error saving media attachment."
+msgstr "添付時にエラーが発生しました"
+
+#: lib/views/manage-ugc-media.tpl.php:56 lib/views/manage-ugc-posts.tpl.php:55
+msgid "Media moved to the trash."
+msgstr "メディアをゴミ箱に移動しました"
+
+#: lib/views/manage-ugc-media.tpl.php:57 lib/views/manage-ugc-posts.tpl.php:56
+msgid "Media restored from the trash."
+msgstr "メディアをゴミ箱から復元しました"
+
+#: lib/views/manage-ugc-media.tpl.php:72
+msgid "Search Media"
+msgstr "メディアを検索"
+
+#: lib/views/manage-ugc-posts.tpl.php:4
+msgid "You do not have permission to publish posts."
+msgstr "投稿を公開する権限がありません"
+
+#: lib/views/manage-ugc-posts.tpl.php:22 lib/views/manage-ugc-posts.tpl.php:52
+msgid "Post updated."
+msgstr "投稿を更新しました"
+
+#: lib/views/manage-ugc-posts.tpl.php:54
+msgid "Error saving Post."
+msgstr "投稿の保存時にエラーが発生しました"
+
+#: lib/views/manage-ugc-posts.tpl.php:71
+msgid "Search Posts"
+msgstr "投稿を検索"
+
+#~ msgid "Author"
+#~ msgstr "投稿者"
+
+#, fuzzy
+#~ msgid "Attach to a post"
+#~ msgstr "タイトルなし"
+
+#~ msgid "Edit \"%s\""
+#~ msgstr "\"%s\"を編集"
+
+#, fuzzy
+#~ msgid "%s from now"
+#~ msgstr "\"%s\"を編集"
+
+#, fuzzy
+#~ msgid "%s ago"
+#~ msgstr "\"%s\"を編集"
+
+#, fuzzy
+#~ msgid "Edit"
+#~ msgstr "\"%s\"を編集"
+
+#, fuzzy
+#~ msgid "View \"%s\""
+#~ msgstr "\"%s\"を編集"
+
+#, fuzzy
+#~ msgid "No posts found."
+#~ msgstr "投稿を管理"
