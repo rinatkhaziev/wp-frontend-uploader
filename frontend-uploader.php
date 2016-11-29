@@ -1276,7 +1276,7 @@ class Frontend_Uploader {
 		array_walk_recursive( $res, 'sanitize_text_field' );
 
 		$output = '';
-		$map = array(
+		$map = apply_filters( 'fu_response_notices', array(
 			'fu-sent' => array(
 				'text' => __( 'Your file was successfully uploaded!', 'frontend-uploader' ),
 				'class' => 'success',
@@ -1293,7 +1293,7 @@ class Frontend_Uploader {
 				'text' => __( "Your submission failed spam checks", 'frontend-uploader' ),
 				'class' => 'failure',
 			),
-		);
+		) );
 
 		if ( isset( $res['response'] ) && isset( $map[ $res['response'] ] ) )
 			$output .= $this->_notice_html( $map[ $res['response'] ]['text'] , $map[ $res['response'] ]['class'] );
