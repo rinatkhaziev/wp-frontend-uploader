@@ -290,8 +290,8 @@ class Frontend_Uploader {
 				$caption = sanitize_text_field( $_POST['caption'] );
 			elseif ( isset( $_POST['post_content'] ) )
 				$caption = sanitize_text_field( $_POST['post_content'] );
-			// TODO: remove or refactor
-			$filename = !empty( $this->settings['default_file_name'] ) ? $this->settings['default_file_name'] : pathinfo( $k['name'], PATHINFO_FILENAME );
+
+			$filename = pathinfo( $k['name'], PATHINFO_FILENAME );
 			$post_overrides = array(
 				'post_status' => $this->_is_public() ? 'publish' : 'private',
 				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : sanitize_text_field( $filename ),
@@ -299,14 +299,16 @@ class Frontend_Uploader {
 				'post_excerpt' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : $caption,
 			);
 
-			// Obfuscate filename, just in case
-			$m = $k;
-			$fn = explode( '.', $k['name'] );
-			$k['name'] = uniqid() . '.' . end( $fn );
 
-			// Trying to upload the file
-			$upload_id = media_handle_sideload( $k, (int) $post_id, $post_overrides['post_title'], $post_overrides );
 			$m = $k;
+
+			// Obfuscate filename if setting is present
+			if (  isset( $this->settings['obfuscate_file_name'] ) && 'on' == $this->settings['obfuscate_file_name']  ){
+				$fn = explode( '.', $k['name'] );
+				$m['name'] = uniqid( mt_rand( 1, 1000 ) , true ) . '.' . end( $fn );
+			}
+			// Trying to upload the file
+			$upload_id = media_handle_sideload( $m, (int) $post_id, $post_overrides['post_title'], $post_overrides );
 
 			if ( !is_wp_error( $upload_id ) )
 				$media_ids[] = $upload_id;
