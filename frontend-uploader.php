@@ -243,7 +243,6 @@ class Frontend_Uploader {
 		// Only filter mimes just before the upload
 		add_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
 
-
 		$media_ids = $errors = array();
 		// Bail if there are no files
 		if ( empty( $_FILES ) )
@@ -264,6 +263,7 @@ class Frontend_Uploader {
 
 			// Skip to the next file if upload went wrong
 			if ( $k['tmp_name'] == "" ) {
+				$errors['fu-error-media'][] = array( 'name' => $k['name'] );
 				continue;
 			}
 
@@ -299,7 +299,6 @@ class Frontend_Uploader {
 				'post_excerpt' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : $caption,
 			);
 
-
 			$m = $k;
 
 			// Obfuscate filename if setting is present
@@ -307,6 +306,7 @@ class Frontend_Uploader {
 				$fn = explode( '.', $k['name'] );
 				$m['name'] = uniqid( mt_rand( 1, 1000 ) , true ) . '.' . end( $fn );
 			}
+
 			// Trying to upload the file
 			$upload_id = media_handle_sideload( $m, (int) $post_id, $post_overrides['post_title'], $post_overrides );
 
@@ -433,9 +433,10 @@ class Frontend_Uploader {
 		$post_array = apply_filters( 'fu_before_create_post', $post_array );
 
 		$post_id = wp_insert_post( $post_array, true );
+
 		// Something went wrong
 		if ( is_wp_error( $post_id ) ) {
-			$errors[] = 'fu-error-post';
+			$errors = array( 'fu-error-post' => 1 );
 			$success = false;
 		} else {
 			do_action( 'fu_after_create_post', $post_id );
@@ -486,7 +487,13 @@ class Frontend_Uploader {
 
 		// Bail if something fishy is going on
 		if ( !wp_verify_nonce( $_POST['fu_nonce'], FU_NONCE ) ) {
-			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' => 'fu-nonce-failure' ), wp_get_referer() ) );
+			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  array( 'fu-nonce-failure' => 1 ) ), wp_get_referer() ) );
+			exit;
+		}
+
+		// Bail if supplied post type is not allowed
+		if ( isset( $_POST['post_type'] ) && ! $this->is_allowed_post_type( $_POST['post_type'] ) ) {
+			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' => array( 'fu-disallowed-post-type' => sanitize_key( $_POST['post_type'] ) ) ), wp_get_referer() ) );
 			exit;
 		}
 
@@ -1300,7 +1307,7 @@ class Frontend_Uploader {
 		if ( isset( $res['response'] ) && isset( $map[ $res['response'] ] ) )
 			$output .= $this->_notice_html( $map[ $res['response'] ]['text'] , $map[ $res['response'] ]['class'] );
 
-		if ( !empty( $res['errors' ] ) )
+		if ( !empty( $res['errors' ] ) && 'fu-error' === $res['response'] )
 			$output .= $this->_display_errors( $res['errors' ] );
 
 		echo $output;
@@ -1309,10 +1316,13 @@ class Frontend_Uploader {
 	 * Handle errors
 	 *
 	 * @since 0.4
-	 * @param string $errors [description]
+	 * @param mixed $errors either a comma separated string of error codes or
 	 * @return string HTML
 	 */
 	function _display_errors( $errors ) {
+		if ( ! $errors )
+			return;
+
 		$output = '';
 		$map = array(
 			'fu-nonce-failure' => array(
@@ -1320,16 +1330,17 @@ class Frontend_Uploader {
 			),
 			'fu-disallowed-mime-type' => array(
 				'text' => __( 'This kind of file is not allowed. Please, try again selecting other file.', 'frontend-uploader' ),
-				'format' => $this->is_debug ? '%1$s: <br/> File name: %2$s <br> MIME-TYPE: %3$s' : '%1$s: <br> %2$s',
+				'format' => $this->is_debug ? '%1$s File name: %2$s  MIME-TYPE: %3$s' : '%1$s: %2$s',
 			),
-			'fu-invalid-post' => array(
-				'text' =>__( 'The content you are trying to post is invalid.', 'frontend-uploader' ),
+			'fu-disallowed-post-type' => array(
+				'text' =>__( 'This post type is not allowed.', 'frontend-uploader' ),
 			),
 			'fu-error-media' => array(
-				'text' =>__( "Couldn't upload the file", 'frontend-uploader' ),
+				'text' =>__( "Couldn't upload the file due to server error", 'frontend-uploader' ),
+				'format' => '%1$s - %2$s'
 			),
 			'fu-error-post' => array(
-				'text' =>__( "Couldn't create the post", 'frontend-uploader' ),
+				'text' =>__( "Couldn't create the post due to server error", 'frontend-uploader' ),
 			),
 			'fu-suspicious-file' => array(
 				'text' =>__( "The file you tried to upload looks suspicious. This incedent will be reported.", 'frontend-uploader' ),
@@ -1339,6 +1350,10 @@ class Frontend_Uploader {
 		// Iterate over all the errors that occured for this submission
 		// $error is the key of error, $details - additional information about the error
 		foreach ( (array) $errors as $error => $details ) {
+
+			if ( ! isset( $map[ $error] ) ) {
+				continue;
+			}
 
 			// We might have multiple errors of the same type, let's walk through them
 			foreach ( (array) $details as $single_error ) {
@@ -1354,6 +1369,7 @@ class Frontend_Uploader {
 				$output .= $this->_notice_html( $message, 'failure' );
 			}
 		}
+
 		return $output;
 	}
 
