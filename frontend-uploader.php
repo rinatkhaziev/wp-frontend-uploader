@@ -1004,6 +1004,8 @@ class Frontend_Uploader {
 	 * @param string $content content that is enclosed in [fu-upload-form][/fu-upload-form]
 	 */
 	function upload_form( $atts, $content = null ) {
+		static $inst = 0;
+
 		add_shortcode( 'input', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'textarea', array( $this, 'shortcode_content_parser' ) );
 		add_shortcode( 'select', array( $this, 'shortcode_content_parser' ) );
@@ -1037,7 +1039,7 @@ class Frontend_Uploader {
 
 		ob_start();
 ?>
-	<form action="<?php echo admin_url( 'admin-ajax.php' ) ?>" method="post" id="ugc-media-form" class="<?php echo esc_attr( $class )?> fu-upload-form" enctype="multipart/form-data">
+	<form action="<?php echo admin_url( 'admin-ajax.php' ) ?>" method="post" id="ugc-media-form-<?php echo $inst++; ?>" class="<?php echo esc_attr( $class )?> fu-upload-form" enctype="multipart/form-data">
 	 <div class="ugc-inner-wrapper">
 		 <h2><?php echo esc_html( $title ) ?></h2>
 <?php
