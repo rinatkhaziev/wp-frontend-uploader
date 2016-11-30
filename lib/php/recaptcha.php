@@ -4,11 +4,11 @@ add_filter( 'fu_should_process_content_upload', 'fu_recaptcha_check_submission',
 add_action( 'wp_head', 'fu_add_recaptcha_js' );
 
 function fu_add_recaptcha_js() {
+	global $frontend_uploader;
 	?>
-	<script src='https://www.google.com/recaptcha/api.js' async defer></script>
+	<script src='<?php echo esc_url( add_query_arg( array( 'hl' => $frontend_uploader->lang_short ), 'https://www.google.com/recaptcha/api.js' ) ) ?>' async defer></script>
 	<?php
 }
-
 function fu_recaptcha_check_submission( $should_process, $layout ) {
 
 	// Recaptcha is enabled but payload is missing g-recaptcha-response field
