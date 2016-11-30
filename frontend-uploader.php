@@ -43,6 +43,8 @@ class Frontend_Uploader {
 	public $settings;
 	public $settings_slug = 'frontend_uploader_settings';
 	public $is_debug = false;
+	public $lang = 'en_US';
+	public $lang_short = 'en';
 	/**
 	 * Should consist of fields to be proccessed automatically on content submission
 	 *
@@ -118,11 +120,23 @@ class Frontend_Uploader {
 
 		add_action( 'fu_after_upload', array( $this, '_maybe_insert_images_into_post' ), 10, 3 );
 
+		$this->_set_language();
+
 		// Maybe enable Akismet protection
 		$this->_enable_akismet_protection();
 
 		// Maybe enable Recaptcha protection
 		$this->_enable_recaptcha_protection();
+	}
+
+
+	/**
+	 * Set current language (used for captcha and jquery validate l18n )
+	 */
+	function _set_language() {
+		// Filter is needed for wordpress.com
+		$this->lang = apply_filters( 'fu_wplang', get_bloginfo( 'language' ) );
+		$this->lang_short = substr( $this->lang, 0, 2 );
 	}
 
 	/**
@@ -1385,11 +1399,8 @@ class Frontend_Uploader {
 		wp_enqueue_script( 'fu-underscore-string', FU_URL . 'lib/js/underscore.string.min.js', array( 'jquery', 'underscore' ) );
 		wp_enqueue_script( 'frontend-uploader-js', FU_URL . 'lib/js/frontend-uploader.js', array( 'jquery', 'jquery-validate' ) );
 		// Include localization strings for default messages of validation plugin
-		// Filter is needed for wordpress.com
-		$wplang = apply_filters( 'fu_wplang', defined( 'WPLANG' ) ? WPLANG : '' );
-		if ( $wplang ) {
-			$lang = explode( '_', $wplang );
-			$relative_path = "lib/js/validate/localization/messages_{$lang[0]}.js";
+		if ( $this->lang ) {
+			$relative_path = "lib/js/validate/localization/messages_{$this->lang_short}.js";
 			$url = FU_URL . $relative_path;
 			if ( file_exists( FU_ROOT . "/{$relative_path}" ) )
 				wp_enqueue_script( 'jquery-validate-messages', $url, array( 'jquery' ) );

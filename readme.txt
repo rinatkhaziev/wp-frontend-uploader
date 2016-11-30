@@ -46,7 +46,7 @@ Now that you have a general idea of how things work, let's dive deeper.
 
 **[fu-upload-form]**
 
-`[fu-upload-form]` is the main shortcode, and it has many important attributes that modify plugin's behavior.
+The main shortcode, it has many important parameters that modify plugin's behavior.
 
 In the following example we are creating a form with title "Upload your story and image". The form will allow to submit a custom post type *story* with an image which is going to be automatically inserted at the end of the story. The story will have a category with ID 1. On successful submission user will be redirected to http://example.com/success-page/
 
@@ -56,7 +56,7 @@ In the following example we are creating a form with title "Upload your story an
 
  `form_layout`
 
- This determines whether the form is saved as a post/custom post type (‘post’), as a media file (`media`), or as a post with images (`post_media`).  Default value is `media`. Example: **[fu-upload-form form_layout=”post”]**
+ This determines whether the form is saved as a post/custom post type (‘post’), as a media file (`media`), or as a post with images (`post_media`).  Default value is `media`. Example: *[fu-upload-form form_layout=”post”]*
 
  `title`
 
@@ -64,11 +64,11 @@ In the following example we are creating a form with title "Upload your story an
 
  `class`
 
- HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’ Example: **[input type="text" name="post_title" id="title" class="required"]**
+ HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’ Example: *[input type="text" name="post_title" id="title" class="required"]*
 
  `post_type`
 
- Any post whitelisted in settings post type. Defaults to 'post'. Example: **[fu-upload-form post_type="my-custom-post-type-slug"]**
+ Any post whitelisted in settings post type. Defaults to 'post'. Example: *[fu-upload-form post_type="my-custom-post-type-slug"]*
 
  `append_to_post`
 
