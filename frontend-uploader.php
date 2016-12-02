@@ -735,8 +735,6 @@ class Frontend_Uploader {
 	/**
 	 * Approve a media file
 	 *
-	 * TODO: refactor in 0.6
-	 *
 	 * @return [type] [description]
 	 */
 	function approve_media() {
@@ -756,6 +754,7 @@ class Frontend_Uploader {
 
 			$this->update_35_gallery_shortcode( $post->post_parent, $post->ID );
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&approved=1' ) );
+			exit;
 		}
 
 		wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader' ) );
@@ -770,8 +769,10 @@ class Frontend_Uploader {
 	function approve_post() {
 		// check for permissions and id
 		$url = get_admin_url( null, 'edit.php?page=manage_frontend_uploader_posts&error=id_or_perm' );
-		if ( !current_user_can( $this->manage_permissions ) || intval( $_GET['id'] ) === 0 )
+		if ( !current_user_can( $this->manage_permissions ) || intval( $_GET['id'] ) === 0 ) {
 			wp_safe_redirect( $url );
+			exit;
+		}
 
 		$post = get_post( $_GET['id'] );
 
