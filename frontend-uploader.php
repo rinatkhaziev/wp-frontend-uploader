@@ -260,7 +260,7 @@ class Frontend_Uploader {
 		$media_ids = $errors = array();
 		// Bail if there are no files
 		if ( empty( $_FILES ) )
-			return false;
+			return array();
 
 		// File field name could be user defined, so we just get the first file
 		$files = current( $_FILES );
@@ -275,9 +275,14 @@ class Frontend_Uploader {
 
 			$k['name'] = sanitize_file_name( $k['name'] );
 
+			//
+			if ( $k['error'] === 4 ) {
+				continue;
+			}
+
 			// Skip to the next file if upload went wrong
-			if ( $k['tmp_name'] == "" ) {
-				$errors['fu-error-media'][] = array( 'name' => $k['name'] );
+			if ( $k['error'] !== 0  ) {
+				$errors['fu-error-media'][] = array( 'name' => $k['name'], 'code' => $k['error'] );
 				continue;
 			}
 
@@ -448,6 +453,8 @@ class Frontend_Uploader {
 
 		$post_id = wp_insert_post( $post_array, true );
 
+
+
 		// Something went wrong
 		if ( is_wp_error( $post_id ) ) {
 			$errors = array( 'fu-error-post' => 1 );
@@ -501,8 +508,7 @@ class Frontend_Uploader {
 
 		// Bail if something fishy is going on
 		if ( !wp_verify_nonce( $_POST['fu_nonce'], FU_NONCE ) ) {
-			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  array( 'fu-nonce-failure' => 1 ) ), wp_get_referer() ) );
-			exit;
+			exit( wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  array( 'fu-nonce-failure' => 1 ) ), wp_get_referer() ) ) );
 		}
 
 		// Bail if supplied post type is not allowed
@@ -539,11 +545,12 @@ class Frontend_Uploader {
 		case 'post_image':
 		case 'post_media';
 			$result = $this->_upload_post();
+
+
 			if ( ! is_wp_error( $result['post_id'] ) ) {
 				$media_result = $this->_upload_files( $result['post_id'] );
-
 				// Make sure we don't merge a non-array (_upload_files might return null, false or WP_Error)
-				if ( $media_result && is_array( $media_result ) )
+				if ( is_array( $media_result ) )
 					$result = array_merge( $result, $media_result );
 			}
 			break;
