@@ -743,6 +743,7 @@ class Frontend_Uploader {
 		// Check permissions, attachment ID, and nonce
 		if ( false === $this->_check_perms_and_nonce() || 0 === (int) $_GET['id'] ) {
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
+			exit;
 		}
 
 		$post = get_post( $_GET['id'] );
