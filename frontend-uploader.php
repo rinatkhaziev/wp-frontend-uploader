@@ -776,7 +776,7 @@ class Frontend_Uploader {
 
 		$post = get_post( $_GET['id'] );
 
-		if ( !is_wp_error( $post ) ) {
+		if ( is_object( $post ) ) {
 			$post->post_status = 'publish';
 			wp_update_post( $post );
 
