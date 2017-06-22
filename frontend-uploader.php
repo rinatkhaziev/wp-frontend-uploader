@@ -138,16 +138,12 @@ class Frontend_Uploader {
 		$this->lang_short = substr( $this->lang, 0, 2 );
 	}
 
-	/**
-	 * Slightly convoluted workaround to allow modifying of allowed MIME types for WP < 3.5,
-	 * Workaround for IE sometimes setting image/pjepg and image/x-png for JPEGs and PNGs respectively
-	 */
 	function _get_mime_types() {
-		// Use wp_get_mime_types if available, fallback to get_allowed_mime_types()
-		$mime_types = function_exists( 'wp_get_mime_types' ) ? wp_get_mime_types() : get_allowed_mime_types();
+		$mime_types = wp_get_mime_types();
 		$fu_mime_types = fu_get_mime_types();
 
 		$enabled = isset( $this->settings['enabled_files'] ) && is_array( $this->settings['enabled_files'] ) ?  $this->settings['enabled_files'] : array();
+
 		// Iterate through default extensions
 		foreach ( $fu_mime_types as $extension => $details ) {
 			// Skip if it's not in the settings
