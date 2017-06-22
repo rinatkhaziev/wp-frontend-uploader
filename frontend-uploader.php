@@ -146,9 +146,7 @@ class Frontend_Uploader {
 		// Use wp_get_mime_types if available, fallback to get_allowed_mime_types()
 		$mime_types = function_exists( 'wp_get_mime_types' ) ? wp_get_mime_types() : get_allowed_mime_types();
 		$fu_mime_types = fu_get_mime_types();
-		// Workaround for IE
-		$mime_types['jpg|jpe|jpeg|pjpg'] = 'image/pjpeg';
-		$mime_types['png|xpng'] = 'image/x-png';
+
 		$enabled = isset( $this->settings['enabled_files'] ) && is_array( $this->settings['enabled_files'] ) ?  $this->settings['enabled_files'] : array();
 		// Iterate through default extensions
 		foreach ( $fu_mime_types as $extension => $details ) {
@@ -589,15 +587,21 @@ class Frontend_Uploader {
 		$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
 		$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
 
-		$content = $this->_get_html_email_template( $result );
-
 		add_filter( 'wp_mail_content_type', 'fu_email_content_type' );
 
-		wp_mail( $to, $subj, $content );
+		wp_mail( $to, $subj, $this->_get_html_email_template( $result ) );
 
 		remove_filter( 'wp_mail_content_type', 'fu_email_content_type' );
 	}
 
+	/**
+	 * Get html template
+	 *
+	 * @since 1.2
+	 *
+	 * @param  array  $result [description]
+	 * @return [type]         [description]
+	 */
 	function _get_html_email_template( $result = array() ) {
 		global $fu_result;
 		$fu_result = $result;
