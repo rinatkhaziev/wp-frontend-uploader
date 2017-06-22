@@ -292,3 +292,7 @@ function fu_get_file_array() {
 
     return $files;
 }
+
+function fu_email_content_type( $content_type ) {
+	return 'text/html';
+}

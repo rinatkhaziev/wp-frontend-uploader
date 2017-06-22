@@ -111,7 +111,6 @@ class Frontend_Uploader {
 		// @since core 3.5-beta-1
 		add_filter( 'posts_where', array( $this, 'filter_posts_where' ) );
 
-
 		$this->allowed_mime_types = $this->_get_mime_types();
 		// Configuration filter to change manage permissions
 		$this->manage_permissions = apply_filters( 'fu_manage_permissions', 'edit_posts' );
@@ -145,7 +144,7 @@ class Frontend_Uploader {
 	 */
 	function _get_mime_types() {
 		// Use wp_get_mime_types if available, fallback to get_allowed_mime_types()
-		$mime_types = function_exists( 'wp_get_mime_types' ) ? wp_get_mime_types() : get_allowed_mime_types() ;
+		$mime_types = function_exists( 'wp_get_mime_types' ) ? wp_get_mime_types() : get_allowed_mime_types();
 		$fu_mime_types = fu_get_mime_types();
 		// Workaround for IE
 		$mime_types['jpg|jpe|jpeg|pjpg'] = 'image/pjpeg';
@@ -203,7 +202,6 @@ class Frontend_Uploader {
 		$existing_settings = (array) get_option( $this->settings_slug, $this->settings_defaults() );
 		update_option( $this->settings_slug, array_merge( $defaults, (array) $existing_settings ) );
 	}
-
 
 	/**
 	 * Since 4.01 shortcode contents is texturized by default,
@@ -586,11 +584,28 @@ class Frontend_Uploader {
 		if ( ! ( 'on' == $this->settings['notify_admin'] && $result['success'] ) )
 			return;
 
+
 		// TODO: It'd be nice to add the list of upload files
 		$to = !empty( $this->settings['notification_email'] ) && filter_var( $this->settings['notification_email'], FILTER_VALIDATE_EMAIL ) ? $this->settings['notification_email'] : get_option( 'admin_email' );
 		$subj = __( 'New content was uploaded on your site', 'frontend-uploader' );
-		wp_mail( $to, $subj, $this->settings['admin_notification_text'] );
+
+		$content = $this->_get_html_email_template( $result );
+
+		add_filter( 'wp_mail_content_type', 'fu_email_content_type' );
+
+		wp_mail( $to, $subj, $content );
+
+		remove_filter( 'wp_mail_content_type', 'fu_email_content_type' );
 	}
+
+	function _get_html_email_template( $result = array() ) {
+		global $fu_result;
+		$fu_result = $result;
+		ob_start();
+		include_once FU_ROOT . "/lib/views/html-email.tpl.php";
+		return ob_get_clean();
+	}
+
 
 	/**
 	 * Process response from upload logic
@@ -752,7 +767,7 @@ class Frontend_Uploader {
 
 			do_action( 'fu_media_approved', $post );
 
-			$this->update_35_gallery_shortcode( $post->post_parent, $post->ID );
+			$this->update_gallery_shortcode( $post->post_parent, $post->ID );
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&approved=1' ) );
 			exit;
 		}
@@ -1058,7 +1073,7 @@ class Frontend_Uploader {
 
 		$this->enqueue_scripts();
 
-		$form_layout = in_array( $form_layout, array( 'post', 'image', 'media', 'post_image', 'post_media' ) ) ? $form_layout : 'media';
+		$form_layout = in_array( $form_layout, array( 'post', 'image', 'media', 'post_image', 'post_media' ), true ) ? $form_layout : 'media';
 
 		ob_start();
 ?>
@@ -1430,15 +1445,14 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * 3.5 brings new Media UI
-	 * Unfortunately, we have to specify ids of approved attachments explicitly,
+	 * We have to specify ids of approved attachments explicitly in shortcode,
 	 * Otherwise, editors have to pick photos after they have already approved them in "Manage UGC"
 	 *
 	 * This method will search a parent post with a regular expression, and update gallery shortcode with freshly approved attachment ID
 	 *
 	 * @return post id/wp_error
 	 */
-	function update_35_gallery_shortcode( $post_id, $attachment_id ) {
+	function update_gallery_shortcode( $post_id, $attachment_id ) {
 		global $wp_version;
 		// Bail of wp is older than 3.5
 		if ( version_compare( $wp_version, '3.5', '<' ) )
