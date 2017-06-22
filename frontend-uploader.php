@@ -138,19 +138,27 @@ class Frontend_Uploader {
 		$this->lang_short = substr( $this->lang, 0, 2 );
 	}
 
+
+	/**
+	 * Add extra mime-types
+	 *
+	 * This is mostly legacy, and really should be deprecated or refactored due to unneccessary complexity
+	 *
+	 * @return [type] [description]
+	 */
 	function _get_mime_types() {
 		$mime_types = wp_get_mime_types();
 		$fu_mime_types = fu_get_mime_types();
 
 		$enabled = isset( $this->settings['enabled_files'] ) && is_array( $this->settings['enabled_files'] ) ?  $this->settings['enabled_files'] : array();
 
-		// Iterate through default extensions
+		// $fu_mime_types holds extra mimes that are not allowed by WP
 		foreach ( $fu_mime_types as $extension => $details ) {
 			// Skip if it's not in the settings
 			if ( !in_array( $extension, $enabled ) )
 				continue;
 
-			// Iterate through mime-types for this extension
+			// Files have multiple mimes sometimes, we need to cover all of them
 			foreach ( $details['mimes'] as $ext_mime ) {
 				$mime_types[ $extension . '|' . $extension . sanitize_title_with_dashes( $ext_mime ) ] = $ext_mime;
 			}
@@ -164,6 +172,7 @@ class Frontend_Uploader {
 			if ( false !== strpos( $mime, 'php' ) )
 				unset( $mime_types[$ext_key] );
 		}
+
 		return $mime_types;
 	}
 
