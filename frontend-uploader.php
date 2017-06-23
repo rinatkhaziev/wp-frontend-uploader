@@ -509,11 +509,12 @@ class Frontend_Uploader {
 
 		// Bail if something fishy is going on
 		if ( !wp_verify_nonce( $_POST['fu_nonce'], FU_NONCE ) ) {
-			exit( wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  array( 'fu-nonce-failure' => 1 ) ), wp_get_referer() ) ) );
+			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  array( 'fu-nonce-failure' => 1 ) ), wp_get_referer() ) );
+			exit;
 		}
 
 		// Bail if supplied post type is not allowed
-		if ( isset( $_POST['post_type'] ) && ! $this->is_allowed_post_type( $_POST['post_type'] ) ) {
+		if ( isset( $_POST['post_type'] ) && ! $this->is_allowed_post_type( sanitize_key( $_POST['post_type'] ) ) ) {
 			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' => array( 'fu-disallowed-post-type' => sanitize_key( $_POST['post_type'] ) ) ), wp_get_referer() ) );
 			exit;
 		}
