@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/RinatK
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content, ugc, frontend upload
 Requires at least: 4.1
 Tested up to: 4.8
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
@@ -33,10 +33,14 @@ This will render a default form for media upload that has title, description and
 
 The same shortcode with some customizations would look like this:
 
-`[fu-upload-form class="html-wrapper-class" form_layout="media" title="Upload your media"]
-[input type="text" name="post_title" id="title" class="required" description="Title"]
-[textarea name="post_content" class="textarea" id="my-textarea" description="Description (optional)"]
-[input type="file" name="photo" id="my-photo-submission" class="required" description="Your Photo" multiple="multiple"]
+`[fu-upload-form class="html-wrapper-class"
+form_layout="media" title="Upload your media"]
+[input type="text" name="post_title" id="title"
+class="required" description="Title"]
+[textarea name="post_content" class="textarea"
+id="my-textarea" description="Description (optional)"]
+[input type="file" name="photo" id="my-photo-submission"
+class="required" description="Your Photo" multiple="multiple"]
 [input type="submit" class="btn" value="Submit"]
 [/fu-upload-form]`
 
@@ -48,50 +52,57 @@ The main shortcode, it has many important parameters that modify form behavior.
 
 In the following example we are creating a form with title "Upload your story and image". The form will allow to submit a custom post type *story* with an image which is going to be automatically inserted at the end of the story. The story will have a category with ID 1. On successful submission user will be redirected to http://example.com/success-page/
 
-`[fu-upload-form form_layout="post_media" title="Upload your story and image" class="my-class validate" post_type="story" append_to_post="true" success_page="http://example.com/success-page/" category="1" ][/fu-upload-form]`
+`[fu-upload-form form_layout="post_media" title="Upload your story and image"
+class="my-class validate" post_type="story" append_to_post="true"
+success_page="http://example.com/success-page/" category="1" ][/fu-upload-form]`
 
-* The list of all parameters for [fu-upload-form] *
+**The list of all parameters for [fu-upload-form]**
 
- `form_layout`
+*form_layout*
 
- This determines whether the form is saved as a post/custom post type (‘post’), as a media file (`media`), or as a post with images (`post_media`).  Default value is `media`.
- Example: *[fu-upload-form form_layout=”post”]*
+This determines whether the form is saved as a post/custom post type (‘post’), as a media file (`media`), or as a post with images (`post_media`).  Default value is `media`.
+Example:
+`[fu-upload-form form_layout=”post”]`
 
- `title`
+*title*
 
- Add this *[fu-upload-form]* shortcode, and this will be the Headline that will be displayed before the form.
- Example: **[fu-upload-form class="your-class" title="Upload your media"]**
+Add this *[fu-upload-form]* shortcode, and this will be the Headline that will be displayed before the form.
+Example:
+`fu-upload-form class="your-class" title="Upload your media"]`
 
- `class`
+*class*
 
- HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’
- Example: *[input type="text" name="post_title" id="title" class="required"]*
+HTML class of the form, defaults to 'validate'. If you want your form being validated - do not remove validate class. If you would like to item to be required before a user can submit, you can set it to ‘required.’
+Example:
+`[input type="text" name="post_title" id="title" class="required"]`
 
- `post_type`
+*post_type*
 
- Any post whitelisted in settings post type. Defaults to 'post'.
- Example: *[fu-upload-form post_type="my-custom-post-type-slug"]*
+Any post whitelisted in settings post type. Defaults to 'post'.
+Example:
+`[fu-upload-form post_type="my-custom-post-type-slug"]`
 
- `append_to_post`
+*append_to_post*
 
- Automatically insert images into uploaded post *(true or false)*
+Automatically insert images into uploaded post *(true or false)*
 
- `success_page`
+*success_page*
 
- URL to redirect on successful submission, defaults to the URL where the form is being displayed. For security reasons this should be an URL on your site (no external links). You can use **[fu-upload-response]** shortcode to display success/error messages on the redirect page.
+URL to redirect on successful submission, defaults to the URL where the form is being displayed. For security reasons this should be an URL on your site (no external links). You can use `[fu-upload-response]` shortcode to display success/error messages on the redirect page.
 
- `category`
+*category*
 
- ID of category the post should be attached (only in post or post+media mode).
+ID of category the post should be attached (only in post or post+media mode).
 
- `post_id`
+*post_id*
 
- ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on.
+ID of the post the image should be attached to. Defaults to the post ID of the post the shortcode is on.
 
- `suppress_default_fields`
+*suppress_default_fields*
 
- Override global setting for supressing default form fields *(true or false)*.
- Example: `[fu-upload-form suppress_default_fields="true"] ... inner shortcodes omitted... [/fu-upload-form]`
+Override global setting for supressing default form fields *(true or false)*.
+Example:
+`[fu-upload-form suppress_default_fields="true"] ... inner shortcodes omitted... [/fu-upload-form]`
 
 
 = Form Elements =
@@ -104,7 +115,7 @@ In the following example we are creating a form with title "Upload your story an
 * `[select name="select-fruit" class="select" description="Pick a fruit" values="apple:Apple,banana:Banana,cherry:Cherry"]` => A select
 * `[input type="submit" class="btn" value="Submit"]` => A submit button
 
-** Each field has a set of attributes **
+**Field Attributes**
 
 `id` - id of element
 
