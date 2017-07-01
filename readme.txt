@@ -3,7 +3,7 @@ Contributors: rinatkhaziev, danielbachhuber, jtrees
 Donate link: https://www.paypal.me/RinatK
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content, ugc, frontend upload
 Requires at least: 4.1
-Tested up to: 4.6
+Tested up to: 4.8
 Stable tag: 1.1
 License: GPLv2 or later
 
