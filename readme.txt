@@ -107,13 +107,31 @@ Example:
 
 = Form Elements =
 
-* `[input type="text" name="post_title" class="my-class" ]` A text box for one line of text
-* `[textarea name="post_content" class="my-text-area"]` => A text box for multiple lines of text
-* `[input type="file" name="my-file"]` => A file uploader
-* `[checkboxes name="fruits" values="value:Description,124:Banana,cherry:Cherry"]` => A set of checkboxes
-* `[radio name="fruit" class="checkboxes" description="Pick a fruit" values="value:Description,124:Banana,cherry:Cherry"]` => A set of radio buttons
-* `[select name="select-fruit" class="select" description="Pick a fruit" values="apple:Apple,banana:Banana,cherry:Cherry"]` => A select
-* `[input type="submit" class="btn" value="Submit"]` => A submit button
+Following are form elements you can use, please refer to *Field Attributes* section for more details on what attributes can be used.
+
+Text box for one line of text:
+`[input type="text" name="post_title" class="my-class" ]`
+
+Text box for multiple lines of text:
+`[textarea name="post_content" class="my-text-area"]`
+
+File upload field:
+`[input type="file" name="my-file"]`
+
+Set of checkboxes:
+`[checkboxes name="fruits" values="value:Description,124:Banana,cherry:Cherry"]`
+
+Set of radio buttons:
+`[radio name="fruit" class="checkboxes" description="Pick a fruit" values="value:Description,124:Banana,cherry:Cherry"]`
+
+Select:
+`[select name="select-fruit" class="select" description="Pick a fruit" values="apple:Apple,banana:Banana,cherry:Cherry"]`
+
+Submit button:
+`[input type="submit" class="btn" value="Submit"]`
+
+Recaptcha:
+`[recaptcha]`
 
 **Field Attributes**
 
@@ -311,6 +329,9 @@ function my_fu_upload_result( $layout, $result ) {
 }`
 
 == Changelog ==
+
+= 1.2.2 (Jul 19, 2017) =
+* Fix broken pagination in list tables
 
 = 1.2 (Jun 30, 2017) =
 * Added image preview in email notification
