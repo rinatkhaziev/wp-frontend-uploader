@@ -23,6 +23,12 @@ class FU_WP_Media_List_Table extends WP_Media_List_Table {
 			'id',
 		);
 
+		$this->set_pagination_args( array(
+			'total_items' => $wp_query->found_posts,
+			'total_pages' => $wp_query->max_num_pages,
+			'per_page' => $wp_query->query_vars['posts_per_page'],
+		) );
+
 		$this->_column_headers = array( $columns, $hidden, $this->get_sortable_columns() ) ;
 
 		add_filter( 'media_row_actions', array( $this, 'filter_media_row_actions' ), 9, 3);

@@ -41,6 +41,13 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 		$hidden = array(
 			'id',
 		);
+
+		$this->set_pagination_args( array(
+			'total_items' => $wp_query->found_posts,
+			'total_pages' => $wp_query->max_num_pages,
+			'per_page' => $wp_query->query_vars['posts_per_page'],
+		) );
+
 		$this->_column_headers = array( $columns, $hidden, $this->get_sortable_columns() ) ;
 	}
 
