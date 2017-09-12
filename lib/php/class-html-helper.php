@@ -188,6 +188,29 @@ class Html_Helper {
 	 * Returns allowed HTML attributes
 	 */
 	function _allowed_html_attrs() {
-		return apply_filters( 'hh_allowed_html_attributes', array( 'href', 'maxlength', 'minlength', 'class', 'id', 'value', 'action', 'name', 'method', 'selected', 'checked', 'for', 'multiple', 'required', 'aria-required' ) );
+		return apply_filters( 'hh_allowed_html_attributes', array(
+			'href',
+			'maxlength',
+			'minlength',
+			'class',
+			'id',
+			'value',
+			'action',
+			'name',
+			'method',
+			'selected',
+			'checked',
+			'for',
+			'multiple',
+			'required',
+			'aria-required',
+			'readonly',
+			'autocomplete',
+			'disabled',
+			'min',
+			'max',
+			'placeholder',
+
+		) );
 	}
 }
