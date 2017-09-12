@@ -3,7 +3,7 @@ Contributors: rinatkhaziev, danielbachhuber, jtrees
 Donate link: https://www.paypal.me/RinatK
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content, ugc, frontend upload
 Requires at least: 4.1
-Tested up to: 4.8
+Tested up to: 4.8.1
 Stable tag: 1.2.2
 License: GPLv2 or later
 
@@ -137,25 +137,35 @@ Recaptcha:
 
 `id` - id of element
 
-`name` - name of element1
+`name` - name of element
 
 `class` - extra classes you want to add
 
 `type` - text or file or submit
 
-`required` - whether the field is required
+`required` - This attribute specifies that the user must fill in a value before submitting a form.
 
 `minlength` - minimum amount of characters for field value
 
-`maxlength` - maximum  amount of characters for field value
+`maxlength` - maximum amount of characters for field value
+
+`min` - The minimum (numeric or date-time) value for this item, which must not be greater than its maximum (max attribute) value.
+
+`max` - The maximum (numeric or date-time) value for this item, which must not be less than its minimum (min attribute) value.
 
 `multiple` - allow multiple file uploads (only for file inputs)
+
+`placeholder` - A hint to the user of what can be entered in the control.
+
+`readonly` - This attribute indicates that the user cannot modify the value of the control.
+
+`disabled` - This Boolean attribute indicates that the form control is not available for interaction
+
+`value` - input value
 
 `description` - input label
 
 `help` - input help text displayed underneath
-
-`value` - input value
 
 `values` - multiple option inputs (checkboxes,select,radio) values in format *value:description, another_value:anotherdescription*
 
@@ -329,6 +339,9 @@ function my_fu_upload_result( $layout, $result ) {
 }`
 
 == Changelog ==
+
+= 1.3 (Sep 12, 2017 )
+* Add HTML5 attributes - min, max, placeholder, readonly, disabled
 
 = 1.2.2 (Jul 19, 2017) =
 * Fix broken pagination in list tables
