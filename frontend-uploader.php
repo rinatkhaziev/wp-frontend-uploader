@@ -1393,7 +1393,7 @@ class Frontend_Uploader {
 				'text' =>__( "Couldn't create the post due to server error", 'frontend-uploader' ),
 			),
 			'fu-suspicious-file' => array(
-				'text' =>__( "The file you tried to upload looks suspicious. This incedent will be reported.", 'frontend-uploader' ),
+				'text' =>__( "The file you tried to upload looks suspicious. This incident will be reported.", 'frontend-uploader' ),
 			),
 		);
 
