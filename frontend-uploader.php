@@ -681,10 +681,13 @@ class Frontend_Uploader {
 		require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-media-list-table.php';
 		require_once FU_ROOT . '/lib/php/class-frontend-uploader-wp-posts-list-table.php';
 
-		$file = FU_ROOT . "/lib/views/manage-ugc-{$view}.tpl.php";
+		$file = "lib/views/manage-ugc-{$view}.tpl.php";
 
-		if ( 0 === validate_file( $file ) ) {
-			include_once $file;
+		// Supply relative path to validate_file as it fails to validate absolute paths on Windows (due to colon)
+		if ( 0 === validate_file( $file ) && file_exists( FU_ROOT . '/' . $file ) ) {
+			include_once FU_ROOT . '/' . $file;
+		} else {
+			wp_die( __( "Couldn't find template file", 'frontend-uploader' ) );
 		}
 	}
 
