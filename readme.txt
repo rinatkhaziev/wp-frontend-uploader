@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/RinatK
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content, ugc, frontend upload
 Requires at least: 4.1
 Tested up to: 4.8.2
-Stable tag: 1.3
+Stable tag: 1.3.1
 License: GPLv2 or later
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
