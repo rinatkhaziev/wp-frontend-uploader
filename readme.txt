@@ -3,7 +3,7 @@ Contributors: rinatkhaziev, danielbachhuber, jtrees
 Donate link: https://www.paypal.me/RinatK
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content, ugc, frontend upload
 Requires at least: 4.1
-Tested up to: 4.8.1
+Tested up to: 4.8.2
 Stable tag: 1.3
 License: GPLv2 or later
 
@@ -339,6 +339,9 @@ function my_fu_upload_result( $layout, $result ) {
 }`
 
 == Changelog ==
+
+= 1.3.1 (Sep 21, 2017) =
+* Bugfix: fix blank page in Manage UGC on Windows machines
 
 = 1.3 (Sep 12, 2017 )
 * Add HTML5 attributes - min, max, placeholder, readonly, disabled
