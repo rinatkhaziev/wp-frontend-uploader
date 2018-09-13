@@ -76,6 +76,22 @@ class Html_Helper {
 		case 'submit':
 		case 'file':
 		case 'checkbox':
+		case 'email':
+		case 'date':
+		case 'datetime':
+		case 'datetime-local':
+		case 'color':
+		case 'month':
+		case 'number':
+		case 'password':
+		case 'range':
+		case 'search':
+		case 'reset':
+		case 'button':
+		case 'tel':
+		case 'time':
+		case 'url':
+		case 'week':
 			return $this->_text( $name, $type,  $data, $attrs ) ;
 			break;
 		case 'radio':
@@ -210,7 +226,6 @@ class Html_Helper {
 			'min',
 			'max',
 			'placeholder',
-
 		) );
 	}
 }
