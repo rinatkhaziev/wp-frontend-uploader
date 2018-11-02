@@ -340,6 +340,10 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 1.3.2 (Nov 2, 2018) =
+* Bugfix: allow multiple forms to be properly validated if they're rendered on the same page.
+* Feature: add support for all HTML5 input types
+
 = 1.3.1 (Sep 21, 2017) =
 * Bugfix: fix blank page in Manage UGC on Windows machines
 
