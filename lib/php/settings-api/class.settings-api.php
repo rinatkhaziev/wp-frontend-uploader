@@ -102,7 +102,7 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
     function admin_init() {
         //register settings sections
         foreach ( $this->settings_sections as $section ) {
-            if ( false == get_option( $section['id'] ) ) {
+            if ( false === get_option( $section['id'] ) ) {
                 add_option( $section['id'] );
             }
 
@@ -142,11 +142,11 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
      */
     function callback_text( $args ) {
 
-        $value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+        $value = $this->get_option( $args['id'], $args['section'], $args['std'] );
         $size = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
 
-        $html = sprintf( '<input type="text" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $size, $args['section'], $args['id'], $value );
-        $html .= sprintf( '<span class="description"> %s</span>', $args['desc'] );
+        $html = sprintf( '<input type="text" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', esc_attr( $size ), esc_attr( $args['section'] ), esc_attr( $args['id'] ), esc_attr( $value ) );
+        $html .= sprintf( '<span class="description"> %s</span>', esc_html( $args['desc'] ) );
 
         echo $html;
     }
@@ -158,11 +158,11 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
      */
     function callback_checkbox( $args ) {
 
-        $value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+        $value = $this->get_option( $args['id'], $args['section'], $args['std'] );
 
-        $html = sprintf( '<input type="hidden" name="%1$s[%2$s]" value="off" />', $args['section'], $args['id'] );
-        $html .= sprintf( '<input type="checkbox" class="checkbox" id="%1$s[%2$s]" name="%1$s[%2$s]" value="on"%4$s />', $args['section'], $args['id'], $value, checked( $value, 'on', false ) );
-        $html .= sprintf( '<label for="%1$s[%2$s]"> %3$s</label>', $args['section'], $args['id'], $args['desc'] );
+        $html = sprintf( '<input type="hidden" name="%1$s[%2$s]" value="off" />', esc_attr( $args['section'] ), esc_attr( $args['id'] ) );
+        $html .= sprintf( '<input type="checkbox" class="checkbox" id="%1$s[%2$s]" name="%1$s[%2$s]" value="on"%4$s />', esc_attr( $args['section'] ), esc_attr( $args['id'] ), esc_attr( $value ), checked( $value, 'on', false ) );
+        $html .= sprintf( '<label for="%1$s[%2$s]"> %3$s</label>', esc_attr( $args['section'] ), esc_attr( $args['id'] ), esc_html( $args['desc'] ) );
 
         echo $html;
     }
@@ -179,10 +179,10 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
         $html = '';
         foreach ( $args['options'] as $key => $label ) {
             $checked = isset( $value[$key] ) ? $value[$key] : '0';
-            $html .= sprintf( '<input type="checkbox" class="checkbox" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s][%3$s]" value="%3$s"%4$s />', $args['section'], $args['id'], $key, checked( $checked, $key, false ) );
-            $html .= sprintf( '<label for="%1$s[%2$s][%4$s]"> %3$s</label><br>', $args['section'], $args['id'], $label, $key );
+            $html .= sprintf( '<input type="checkbox" class="checkbox" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s][%3$s]" value="%3$s"%4$s />', esc_attr( $args['section'] ), esc_attr( $args['id'] ), esc_attr( $key ), checked( $checked, $key, false ) );
+            $html .= sprintf( '<label for="%1$s[%2$s][%4$s]"> %3$s</label><br>', esc_attr( $args['section'] ), esc_attr( $args['id'] ), esc_html( $label ), esc_attr( $key ) );
         }
-        $html .= sprintf( '<span class="description"> %s</label>', $args['desc'] );
+        $html .= sprintf( '<span class="description"> %s</label>', esc_html( $args['desc'] ) );
 
         echo $html;
     }
@@ -198,10 +198,10 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
 
         $html = '';
         foreach ( $args['options'] as $key => $label ) {
-            $html .= sprintf( '<input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s"%4$s />', $args['section'], $args['id'], $key, checked( $value, $key, false ) );
-            $html .= sprintf( '<label for="%1$s[%2$s][%4$s]"> %3$s</label><br>', $args['section'], $args['id'], $label, $key );
+            $html .= sprintf( '<input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s"%4$s />', esc_attr( $args['section'] ), esc_attr( $args['id'] ), esc_attr( $key ), checked( $value, $key, false ) );
+            $html .= sprintf( '<label for="%1$s[%2$s][%4$s]"> %3$s</label><br>', esc_attr( $args['section'] ), esc_attr( $args['id'] ), esc_html( $label ), esc_attr( $key ) );
         }
-        $html .= sprintf( '<span class="description"> %s</label>', $args['desc'] );
+        $html .= sprintf( '<span class="description"> %s</label>', esc_html( $args['desc'] ) );
 
         echo $html;
     }
@@ -213,15 +213,15 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
      */
     function callback_select( $args ) {
 
-        $value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+        $value = $this->get_option( $args['id'], $args['section'], $args['std'] );
         $size = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
 
-        $html = sprintf( '<select class="%1$s" name="%2$s[%3$s]" id="%2$s[%3$s]">', $size, $args['section'], $args['id'] );
+        $html = sprintf( '<select class="%1$s" name="%2$s[%3$s]" id="%2$s[%3$s]">', esc_attr( $size ), esc_attr( $args['section'] ), esc_attr( $args['id'] ) );
         foreach ( $args['options'] as $key => $label ) {
-            $html .= sprintf( '<option value="%s"%s>%s</option>', $key, selected( $value, $key, false ), $label );
+            $html .= sprintf( '<option value="%s"%s>%s</option>', esc_attr( $key ), selected( $value, $key, false ), esc_html( $label ) );
         }
         $html .= sprintf( '</select>' );
-        $html .= sprintf( '<span class="description"> %s</span>', $args['desc'] );
+        $html .= sprintf( '<span class="description"> %s</span>', esc_html( $args['desc'] ) );
 
         echo $html;
     }
@@ -233,11 +233,11 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
      */
     function callback_textarea( $args ) {
 
-        $value = esc_textarea( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+        $value = $this->get_option( $args['id'], $args['section'], $args['std'] );
         $size = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
 
-        $html = sprintf( '<textarea rows="5" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]">%4$s</textarea>', $size, $args['section'], $args['id'], $value );
-        $html .= sprintf( '<br><span class="description"> %s</span>', $args['desc'] );
+        $html = sprintf( '<textarea rows="5" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]">%4$s</textarea>', esc_attr( $size ), esc_attr( $args['section'] ), esc_attr( $args['id'] ), esc_textarea( $value ) );
+        $html .= sprintf( '<br><span class="description"> %s</span>', esc_html( $args['desc'] ) );
 
         echo $html;
     }
@@ -248,7 +248,7 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
      * @param array   $args settings field args
      */
     function callback_html( $args ) {
-        echo $args['desc'];
+        echo esc_textarea( $args['desc'] );
     }
 
     /**
@@ -261,13 +261,13 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
         $value = wpautop( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
         $size = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : '500px';
 
-        echo '<div style="width: ' . $size . ';">';
+        echo '<div style="width: ' . esc_attr( $size ) . ';">';
 
         wp_editor( $value, $args['section'] . '[' . $args['id'] . ']', array( 'teeny' => true, 'textarea_rows' => 10 ) );
 
         echo '</div>';
 
-        echo sprintf( '<br><span class="description"> %s</span>', $args['desc'] );
+        echo sprintf( '<br><span class="description"> %s</span>', esc_html( $args['desc'] ) );
     }
 
     /**
@@ -281,11 +281,11 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
         $size = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
         $id = $args['section']  . '[' . $args['id'] . ']';
         $js_id = $args['section']  . '\\\\[' . $args['id'] . '\\\\]';
-        $html = sprintf( '<input type="text" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $size, $args['section'], $args['id'], $value );
-        $html .= '<input type="button" class="button wpsf-browse" id="'. $id .'_button" value="Browse" />
+        $html = sprintf( '<input type="text" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', esc_attr( $size ), esc_attr( $args['section'] ), esc_attr( $args['id'] ), esc_attr( $value ) );
+        $html .= '<input type="button" class="button wpsf-browse" id="'. esc_attr( $id ) .'_button" value="Browse" />
         <script type="text/javascript">
         jQuery(document).ready(function($){
-            $("#'. $js_id .'_button").click(function() {
+            $("#'. wp_json_encode( $js_id ) .'_button").click(function() {
                 tb_show("", "media-upload.php?post_id=0&amp;type=image&amp;TB_iframe=true");
                 window.original_send_to_editor = window.send_to_editor;
             window.send_to_editor = function(html) {
@@ -293,7 +293,7 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
                 if ( !url ) {
                     url = $(html).attr(\'src\');
                 };
-                $("#'. $js_id .'").val(url);
+                $("#'. wp_json_encode( $js_id ) .'").val(url);
                 tb_remove();
                 window.send_to_editor = window.original_send_to_editor;
             };
@@ -301,7 +301,7 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
             });
         });
         </script>';
-        $html .= sprintf( '<span class="description"> %s</span>', $args['desc'] );
+        $html .= sprintf( '<span class="description"> %s</span>', esc_html( $args['desc'] ) );
 
         echo $html;
     }
@@ -316,8 +316,8 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
         $value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
         $size = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
 
-        $html = sprintf( '<input type="password" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $size, $args['section'], $args['id'], $value );
-        $html .= sprintf( '<span class="description"> %s</span>', $args['desc'] );
+        $html = sprintf( '<input type="password" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', esc_attr( $size ), esc_attr( $args['section'] ), esc_attr( $args['id'] ), esc_attr( $value ) );
+        $html .= sprintf( '<span class="description"> %s</span>', esc_html( $args['desc'] ) );
 
         echo $html;
     }
@@ -357,7 +357,7 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
         // Iterate over registered fields and see if we can find proper callback
         foreach( $this->settings_fields as $section => $options ) {
             foreach ( $options as $option ) {
-                if ( $option['name'] != $slug )
+                if ( $option['name'] !== $slug )
                     continue;
                 // Return the callback name 
                 return isset( $option['sanitize_callback'] ) && is_callable( $option['sanitize_callback'] ) ? $option['sanitize_callback'] : false;
@@ -394,7 +394,7 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
         $html = '<h2 class="nav-tab-wrapper">';
 
         foreach ( $this->settings_sections as $tab ) {
-            $html .= sprintf( '<a href="#%1$s" class="nav-tab" id="%1$s-tab">%2$s</a>', $tab['id'], $tab['title'] );
+            $html .= sprintf( '<a href="#%1$s" class="nav-tab" id="%1$s-tab">%2$s</a>', esc_attr( esc_url( $tab['id'] ) ), esc_html( $tab['title'] ) );
         }
 
         $html .= '</h2>';
@@ -412,7 +412,7 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
         <div class="metabox-holder">
             <div class="postbox">
                 <?php foreach ( $this->settings_sections as $form ) { ?>
-                    <div id="<?php echo $form['id']; ?>" class="group inside">
+                    <div id="<?php echo esc_attr( $form['id'] ); ?>" class="group inside">
                         <form method="post" action="options.php">
 
                             <?php do_action( 'wsa_form_top_' . $form['id'], $form ); ?>

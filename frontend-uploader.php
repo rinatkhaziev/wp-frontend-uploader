@@ -155,7 +155,7 @@ class Frontend_Uploader {
 		// $fu_mime_types holds extra mimes that are not allowed by WP
 		foreach ( $fu_mime_types as $extension => $details ) {
 			// Skip if it's not in the settings
-			if ( !in_array( $extension, $enabled ) )
+			if ( ! in_array( $extension, $enabled, true ) )
 				continue;
 
 			// Files have multiple mimes sometimes, we need to cover all of them
@@ -198,7 +198,7 @@ class Frontend_Uploader {
 	function activate_plugin() {
 		global $wp_version;
 		if ( version_compare( $wp_version, '3.3', '<' ) ) {
-			wp_die( __( 'Frontend Uploader requires WordPress 3.3 or newer. Please upgrade.', 'frontend-uploader' ) );
+			wp_die( esc_html__( 'Frontend Uploader requires WordPress 3.3 or newer. Please upgrade.', 'frontend-uploader' ) );
 		}
 
 		$defaults = $this->settings_defaults();
@@ -229,7 +229,7 @@ class Frontend_Uploader {
 			return $where;
 
 		$screen = get_current_screen();
-		if ( ! defined( 'DOING_AJAX' ) && $screen && isset( $screen->base ) && $screen->base == 'upload' && ( !isset( $_GET['page'] ) || $_GET['page'] != 'manage_frontend_uploader' ) ) {
+		if ( ! defined( 'DOING_AJAX' ) && $screen && isset( $screen->base ) && $screen->base === 'upload' && ( !isset( $_GET['page'] ) || $_GET['page'] !== 'manage_frontend_uploader' ) ) {
 			$where = str_replace( "post_status = 'private'", "post_status = 'inherit'", $where );
 		}
 		return $where;
@@ -241,7 +241,7 @@ class Frontend_Uploader {
 	 * @return boolean [description]
 	 */
 	function _is_public() {
-		return ( current_user_can( 'read' ) && 'on' == $this->settings['auto_approve_user_files'] ) || ( 'on' == $this->settings['auto_approve_any_files'] );
+		return ( current_user_can( 'read' ) && 'on' === $this->settings['auto_approve_user_files'] ) || ( 'on' === $this->settings['auto_approve_any_files'] );
 	}
 
 	/**
@@ -289,7 +289,7 @@ class Frontend_Uploader {
 
 			$typecheck = wp_check_filetype_and_ext( $k['tmp_name'], $k['name'], false );
 			// Add an error message if MIME-type is not allowed
-			if ( ! in_array( $typecheck['type'], (array) $this->allowed_mime_types ) ) {
+			if ( ! in_array( $typecheck['type'], (array) $this->allowed_mime_types, true ) ) {
 				$errors['fu-disallowed-mime-type'][] = array( 'name' => $k['name'], 'mime' => $k['type'] );
 				continue;
 			}
@@ -322,9 +322,9 @@ class Frontend_Uploader {
 			$m = $k;
 
 			// Obfuscate filename if setting is present
-			if (  isset( $this->settings['obfuscate_file_name'] ) && 'on' == $this->settings['obfuscate_file_name']  ){
+			if ( isset( $this->settings['obfuscate_file_name'] ) && 'on' === $this->settings['obfuscate_file_name']  ){
 				$fn = explode( '.', $k['name'] );
-				$m['name'] = uniqid( mt_rand( 1, 1000 ) , true ) . '.' . end( $fn );
+				$m['name'] = uniqid( wp_rand( 1, 1000 ) , true ) . '.' . end( $fn );
 			}
 
 			// Trying to upload the file
@@ -389,7 +389,7 @@ class Frontend_Uploader {
 	 * @return [type]          [description]
 	 */
 	function wp_kses_add_srcset( $tags, $context ) {
-		if ( $context == 'post' )
+		if ( $context === 'post' )
 			$tags['img']['srcset'] = true;
 
 		return $tags;
@@ -523,7 +523,7 @@ class Frontend_Uploader {
 		$hash = sanitize_text_field( $_POST['ff'] );
 		$this->form_fields = !empty( $this->form_fields ) ? $this->form_fields : $this->_get_fields_for_form( $form_post_id, $hash );
 
-		$layout = isset( $_POST['form_layout'] ) && !empty( $_POST['form_layout'] ) ? $_POST['form_layout'] : 'image';
+		$layout = isset( $_POST['form_layout'] ) && ! empty( $_POST['form_layout'] ) ? sanitize_text_field( $_POST['form_layout'] ) : 'image';
 
 		/**
 		 * Utility hook 'fu_should_process_content_upload': maybe terminate upload early (useful for Akismet integration, etc)
@@ -585,7 +585,7 @@ class Frontend_Uploader {
 	 */
 	function _notify_admin( $result = array() ) {
 		// Email notifications are disabled, or upload has failed, bailing
-		if ( ! ( 'on' == $this->settings['notify_admin'] && $result['success'] ) )
+		if ( ! ( 'on' === $this->settings['notify_admin'] && $result['success'] ) )
 			return;
 
 
@@ -626,12 +626,14 @@ class Frontend_Uploader {
 		// Redirect to referrer if repsonse is malformed
 		if ( empty( $result ) || !is_array( $result ) ) {
 			wp_safe_redirect( wp_get_referer() );
+			exit;
+
 			return;
 		}
 
 		// Either redirect to success page if it's set and valid
 		// Or to referrer
-		$url = isset( $_POST['success_page'] ) && filter_var( $_POST['success_page'], FILTER_VALIDATE_URL ) ? $_POST['success_page'] : wp_get_referer();
+		$url = isset( $_POST['success_page'] ) && filter_var( $_POST['success_page'], FILTER_VALIDATE_URL ) ? esc_url_raw( $_POST['success_page'] ) : wp_get_referer();
 
 		// $query_args will hold everything that's needed for displaying notices to user
 		$query_args = array();
@@ -687,7 +689,7 @@ class Frontend_Uploader {
 		if ( 0 === validate_file( $file ) && file_exists( FU_ROOT . '/' . $file ) ) {
 			include_once FU_ROOT . '/' . $file;
 		} else {
-			wp_die( __( "Couldn't find template file", 'frontend-uploader' ) );
+			wp_die( esc_html__( "Couldn't find template file", 'frontend-uploader' ) );
 		}
 	}
 
@@ -696,7 +698,7 @@ class Frontend_Uploader {
 	 * @param string $type (media|posts)
 	 */
 	private function _set_global_query_for_tables( $type = 'posts' ) {
-		if ( ! in_array( $type, array( 'posts', 'media' ) ) )
+		if ( ! in_array( $type, array( 'posts', 'media' ), true ) )
 			return false;
 
 		$args = array(
@@ -751,7 +753,7 @@ class Frontend_Uploader {
 	function add_menu_items() {
 		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), $this->manage_permissions, 'manage_frontend_uploader', array( $this, 'admin_list' ) );
 		foreach ( (array) $this->settings['enabled_post_types'] as $cpt ) {
-			if ( $cpt == 'post' ) {
+			if ( $cpt === 'post' ) {
 				add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), $this->manage_permissions, 'manage_frontend_uploader_posts', array( $this, 'admin_posts_list' ) );
 				continue;
 			}
@@ -772,9 +774,9 @@ class Frontend_Uploader {
 			exit;
 		}
 
-		$post = get_post( $_GET['id'] );
+		$post = get_post( (int) $_GET['id'] );
 
-		if ( is_object( $post ) && $post->post_status == 'private' ) {
+		if ( is_object( $post ) && $post->post_status === 'private' ) {
 			$post->post_status = 'inherit';
 			wp_update_post( $post );
 
@@ -802,7 +804,7 @@ class Frontend_Uploader {
 			exit;
 		}
 
-		$post = get_post( $_GET['id'] );
+		$post = get_post( (int) $_GET['id'] );
 
 		if ( is_object( $post ) ) {
 			$post->post_status = 'publish';
@@ -821,7 +823,7 @@ class Frontend_Uploader {
 			$qa = array(
 				'page' => "manage_frontend_uploader_{$post->post_type}s",
 				'approved' => 1,
-				'post_type' => $post->post_type != 'post' ? $post->post_type : '',
+				'post_type' => $post->post_type !== 'post' ? $post->post_type : '',
 			);
 
 			$url = add_query_arg( $qa, get_admin_url( null, "edit.php" ) );
@@ -883,7 +885,7 @@ class Frontend_Uploader {
 
 		extract( $atts );
 
-		$role = in_array( $role, array( 'meta', 'title', 'description', 'author', 'internal', 'content' ) ) ? $role : 'meta';
+		$role = in_array( $role, array( 'meta', 'title', 'description', 'author', 'internal', 'content' ), true ) ? $role : 'meta';
 		$name = sanitize_text_field( $name );
 		// Add the field to fields map
 		$this->form_fields[$role][] = $name;
@@ -909,13 +911,13 @@ class Frontend_Uploader {
 
 		// Allow multiple file upload by default.
 		// To do so, we need to add array notation to name field: []
-		if ( !strpos( $name, '[]' ) && $type == 'file' )
+		if ( !strpos( $name, '[]' ) && $type === 'file' )
 			$name = 'files' . '[]';
 
 		$input = $this->html->input( $type, $name, $value, $atts );
 
 		// No need for wrappers or labels for hidden input
-		if ( $type == 'hidden' )
+		if ( $type === 'hidden' )
 			return $input;
 
 		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
@@ -939,7 +941,7 @@ class Frontend_Uploader {
 		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
 
 		// Render WYSIWYG textarea
-		if ( ( isset( $this->settings['wysiwyg_enabled'] ) && 'on' == $this->settings['wysiwyg_enabled'] ) || $wysiwyg_enabled == true ) {
+		if ( ( isset( $this->settings['wysiwyg_enabled'] ) && 'on' === $this->settings['wysiwyg_enabled'] ) || $wysiwyg_enabled === true ) {
 			ob_start();
 			wp_editor( '', $id, array(
 					'textarea_name' => $name,
@@ -1090,7 +1092,7 @@ class Frontend_Uploader {
 
 		ob_start();
 ?>
-	<form action="<?php echo admin_url( 'admin-ajax.php' ) ?>" method="post" id="ugc-media-form-<?php echo $inst++; ?>" class="<?php echo esc_attr( $class )?> fu-upload-form" enctype="multipart/form-data">
+	<form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ) ?>" method="post" id="ugc-media-form-<?php echo esc_attr( $inst++ ); ?>" class="<?php echo esc_attr( $class )?> fu-upload-form" enctype="multipart/form-data">
 	 <div class="ugc-inner-wrapper">
 		 <h2><?php echo esc_html( $title ) ?></h2>
 <?php
@@ -1103,7 +1105,7 @@ class Frontend_Uploader {
 
 		// Set post type for layouts that include uploading of posts
 		// Put it in front of the main form to allow to override it
-		if ( in_array( $form_layout, array( "post_media", "post_image", "post" ) ) ) {
+		if ( in_array( $form_layout, array( "post_media", "post_image", "post" ), true ) ) {
 			echo $this->shortcode_content_parser( array(
 					'type' => 'hidden',
 					'role' => 'internal',
@@ -1128,7 +1130,7 @@ class Frontend_Uploader {
 				), null, 'input' );
 		}
 
-		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
+		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' === $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
 
 			// Display title field
 			echo $this->shortcode_content_parser( array(
@@ -1178,9 +1180,9 @@ class Frontend_Uploader {
 		if ( $content )
 			echo do_shortcode( $content );
 
-		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' == $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
+		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' === $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
 
-			if ( in_array( $form_layout, array( 'image', 'media', 'post_image', 'post_media' ) ) ) {
+			if ( in_array( $form_layout, array( 'image', 'media', 'post_image', 'post_media' ), true ) ) {
 				// Default upload field
 				echo $this->shortcode_content_parser( array(
 						'type' => 'file',
@@ -1193,7 +1195,7 @@ class Frontend_Uploader {
 					), null, 'input' );
 			}
 
-			if ( $this->settings['enable_recaptcha_protection' ] == 'on' )
+			if ( $this->settings['enable_recaptcha_protection' ] === 'on' )
 				echo fu_get_recaptcha_markup();
 
 			do_action( 'fu_additional_html', $this );
@@ -1235,7 +1237,7 @@ class Frontend_Uploader {
 				'value' => $form_layout
 			), null, 'input' );
 
-		if ( in_array( $form_layout, array( 'post_media', 'post_image' ) ) ) {
+		if ( in_array( $form_layout, array( 'post_media', 'post_image' ), true ) ) {
 					// One of supported form layouts
 			echo $this->shortcode_content_parser( array(
 					'type' => 'hidden',
@@ -1453,7 +1455,7 @@ class Frontend_Uploader {
 		 * Don't try to include media script anywhere except "Manage UGC" screen
 		 * Otherwise it produces JS errors, potentially breaking some post edit screen features
 		 */
-		if ( $screen && 'media_page_manage_frontend_uploader' == $screen->base )
+		if ( $screen && 'media_page_manage_frontend_uploader' === $screen->base )
 			wp_enqueue_script( 'media', array( 'jquery' ) );
 	}
 
@@ -1515,7 +1517,7 @@ class Frontend_Uploader {
 	 */
 	function _enable_akismet_protection() {
 		// Maybe include Akismet
-		if ( isset( $this->settings['enable_akismet_protection'] ) && 'on' == $this->settings['enable_akismet_protection'] ) {
+		if ( isset( $this->settings['enable_akismet_protection'] ) && 'on' === $this->settings['enable_akismet_protection'] ) {
 			require_once FU_ROOT . '/lib/php/akismet.php';
 		}
 	}

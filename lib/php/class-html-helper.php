@@ -19,16 +19,16 @@ class Html_Helper {
 	 * @param array   $data
 	 */
 	function checkboxes( $name = '', $description = '', $data = array(), $checked = array() ) {
-		if ( $name != '' ) {
+		if ( $name !== '' ) {
 			$name = filter_var( $name, FILTER_SANITIZE_STRING );
 			if ( $description );
 			echo $this->element( 'p', __( $description ) );
 			echo '<input type="hidden" name="' . esc_attr( $name ) .'" value="" />';
 			foreach ( (array) $data as $item ) {
-				$is_checked_attr =  in_array( $item, (array) $checked ) ? ' checked="true" ' : '';
+				$is_checked_attr =  in_array( $item, (array) $checked, true ) ? ' checked="true" ' : '';
 				$item = filter_var( $item, FILTER_SANITIZE_STRING );
 				echo '<div class="sm-input-wrapper">';
-				echo '<input type="checkbox" name="' . esc_attr( $name ) . '[]" value="' . esc_attr( $item ) . '" id="' .esc_attr( $name ) . esc_attr( $item )  . '" ' . $is_checked_attr . ' />';
+				echo '<input type="checkbox" name="' . esc_attr( $name ) . '[]" value="' . esc_attr( $item ) . '" id="' .esc_attr( $name ) . esc_attr( $item )  . '" ' . esc_attr( $is_checked_attr ) . ' />';
 				echo '<label for="' .esc_attr( $name ) . esc_attr( $item )  . '">' . esc_attr ( $item ) . '</label>';
 				echo '</div>';
 			}
@@ -121,7 +121,7 @@ class Html_Helper {
 		$ret  = '';
 		foreach ( (array) $data as $key => $value ) {
 			$attrs_to_pass = array( 'value' => $key );
-			if ( isset( $attrs[ 'default' ] ) && $key == $attrs[ 'default' ] )
+			if ( isset( $attrs[ 'default' ] ) && $key === $attrs[ 'default' ] )
 				$attrs_to_pass[ 'selected' ] = 'selected';
 			$ret .= $this->element( 'option', $value, $attrs_to_pass, false );
 		}
@@ -161,7 +161,7 @@ class Html_Helper {
 	function element( $tag, $content, $params = array(), $escape = true ) {
 		$allowed = apply_filters( 'hh_allowed_html_elements' , array( 'div', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'td', 'option', 'label', 'textarea', 'select', 'option', 'fieldset' ) );
 		$attr_string = $this->_format_attributes( $params );
-		if ( in_array( $tag, $allowed ) )
+		if ( in_array( $tag, $allowed, true ) )
 			return "<{$tag} {$attr_string}>" . ( $escape ? esc_html ( $content ) : $content ) . "</{$tag}>";
 	}
 
@@ -180,7 +180,7 @@ class Html_Helper {
 		$attr_string = '';
 
 		foreach ( (array) $attrs as $attr => $value ) {
-			if ( in_array( $attr, $this->_allowed_html_attrs() ) && $value != '' )
+			if ( in_array( $attr, $this->_allowed_html_attrs(), true ) && $value !== '' )
 				$attr_string .= " {$attr}='" . esc_attr ( $value ) . "'";
 		}
 		return $attr_string;
@@ -197,7 +197,7 @@ class Html_Helper {
 	function a( $url, $title = '', $params = array() ) {
 		$attr_string = $this->_format_attributes( $params );
 		if ( filter_var( trim( $url ), FILTER_VALIDATE_URL ) )
-			return '<a href="' . esc_url( trim( $url ) ) . '" ' . $attr_string . '>' . ( $title != '' ? esc_html ( $title ) : esc_url( trim( $url ) ) ) . '</a>';
+			return '<a href="' . esc_url( trim( $url ) ) . '" ' . $attr_string . '>' . ( $title !== '' ? esc_html ( $title ) : esc_url( trim( $url ) ) ) . '</a>';
 	}
 
 	/**

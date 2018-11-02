@@ -9,7 +9,7 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 		global $frontend_uploader;
 
 		$screen = get_current_screen();
-		if ( $screen->post_type == '' ) {
+		if ( $screen->post_type === '' ) {
 			$screen->post_type ='post';
 		}
 
@@ -20,7 +20,7 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 
 	function _add_row_actions( $actions, $post ) {
 		unset( $actions['inline hide-if-no-js'] );
-		if ( $post->post_status == 'private' ) {
+		if ( $post->post_status === 'private' ) {
 			$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc_post&id=' . $post->ID . '&post_type=' . $post->post_type . '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
 			$actions['delete'] = '<a onclick="return showNotice.warn();" href="'.admin_url( 'admin-ajax.php' ).'?action=delete_ugc&id=' . $post->ID . '&post_type=' . $post->post_type . '&fu_nonce=' . wp_create_nonce( FU_NONCE ). '">'. __( 'Delete Permanently', 'frontend-uploader' ) .'</a>';
 		}
