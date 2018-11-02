@@ -1086,7 +1086,7 @@ class Frontend_Uploader {
 
 		$post_id = (int) $post_id;
 
-		$this->enqueue_scripts();
+		add_action( 'wp_footer', array( $this, 'enqueue_scripts' ), 0 );
 
 		$form_layout = in_array( $form_layout, array( 'post', 'image', 'media', 'post_image', 'post_media' ), true ) ? $form_layout : 'media';
 
