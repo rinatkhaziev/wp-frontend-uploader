@@ -20,7 +20,7 @@ function fu_recaptcha_check_submission( $should_process, $layout ) {
 		'body' => array(
 			'secret' => fu_get_option( 'recaptcha_secret_key' ),
 			'response' => sanitize_text_field( $_POST['g-recaptcha-response'] ),
-			'remoteip' => $_SERVER['REMOTE_ADDR']
+			'remoteip' => sanitize_text_field( $_SERVER['REMOTE_ADDR'] )
 		),
 		'timeout' => 3,
 	) );

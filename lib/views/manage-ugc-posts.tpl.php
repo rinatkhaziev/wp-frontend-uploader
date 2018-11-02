@@ -1,7 +1,7 @@
 <?php
 $title = __( 'Manage UGC Posts', 'frontend-uploader' );
 if ( ! current_user_can( 'publish_posts' ) )
-	wp_die( __( 'You do not have permission to publish posts.', 'frontend-uploader' ) );
+	wp_die( esc_html__( 'You do not have permission to publish posts.', 'frontend-uploader' ) );
 
 $wp_post_list_table = new FU_WP_Posts_List_Table();
 $pagenum = $wp_post_list_table->get_pagenum();
@@ -13,7 +13,7 @@ $wp_post_list_table->prepare_items();
 <?php screen_icon(); ?>
 <h2><?php echo esc_html( $title ); ?><?php
 if ( isset( $_REQUEST['s'] ) && $_REQUEST['s'] )
-	printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'frontend-uploader' ) . '</span>', get_search_query() ); ?>
+	printf( '<span class="subtitle">' . esc_html__( 'Search results for &#8220;%s&#8221;', 'frontend-uploader' ) . '</span>', get_search_query() ); ?>
 </h2>
 
 <?php
@@ -35,13 +35,13 @@ if ( isset( $_GET['deleted'] ) && (int) $_GET['deleted'] ) {
 }
 
 if ( isset( $_GET['trashed'] ) && (int) $_GET['trashed'] ) {
-	$message = sprintf( _n( 'Post moved to the trash.', '%d Posts moved to the trash.', $_GET['trashed'] ), number_format_i18n( $_GET['trashed'] ) );
-	$message .= ' <a href="' . esc_url( wp_nonce_url( 'upload.php?doaction=undo&action=untrash&ids='.( isset( $_GET['ids'] ) ? $_GET['ids'] : '' ), "bulk-media" ) ) . '">' . __( 'Undo', 'frontend-uploader' ) . '</a>';
+	$message = sprintf( _n( 'Post moved to the trash.', '%d Posts moved to the trash.', sanitize_text_field( $_GET['trashed'] ) ), number_format_i18n( $_GET['trashed'] ) );
+	$message .= ' <a href="' . esc_url( wp_nonce_url( 'upload.php?doaction=undo&action=untrash&ids='.( isset( $_GET['ids'] ) ? sanitize_text_field( $_GET['ids'] ) : '' ), "bulk-media" ) ) . '">' . __( 'Undo', 'frontend-uploader' ) . '</a>';
 	$_SERVER['REQUEST_URI'] = remove_query_arg( array( 'trashed' ), $_SERVER['REQUEST_URI'] );
 }
 
 if ( isset( $_GET['untrashed'] ) && (int) $_GET['untrashed'] ) {
-	$message = sprintf( _n( 'Post restored from the trash.', '%d Posts restored from the trash.', $_GET['untrashed'] ), number_format_i18n( $_GET['untrashed'] ) );
+	$message = sprintf( _n( 'Post restored from the trash.', '%d Posts restored from the trash.', sanitize_text_field( $_GET['untrashed'] ) ), number_format_i18n( $_GET['untrashed'] ) );
 	$_SERVER['REQUEST_URI'] = remove_query_arg( array( 'untrashed' ), $_SERVER['REQUEST_URI'] );
 }
 
@@ -52,16 +52,16 @@ if ( isset( $_GET['approved'] ) ) {
 $messages[1] = __( 'Post updated.', 'frontend-uploader' );
 $messages[2] = __( 'Media permanently deleted.', 'frontend-uploader' );
 $messages[3] = __( 'Error saving Post.', 'frontend-uploader' );
-$messages[4] = __( 'Media moved to the trash.', 'frontend-uploader' ) . ' <a href="' . esc_url( wp_nonce_url( 'upload.php?doaction=undo&action=untrash&ids='.( isset( $_GET['ids'] ) ? $_GET['ids'] : '' ), "bulk-media" ) ) . '">' . __( 'Undo', 'frontend-uploader' ) . '</a>';
+$messages[4] = __( 'Media moved to the trash.', 'frontend-uploader' ) . ' <a href="' . esc_url( wp_nonce_url( 'upload.php?doaction=undo&action=untrash&ids='.( isset( $_GET['ids'] ) ? sanitize_text_field( $_GET['ids'] ) : '' ), "bulk-media" ) ) . '">' . __( 'Undo', 'frontend-uploader' ) . '</a>';
 $messages[5] = __( 'Media restored from the trash.', 'frontend-uploader' );
 
 if ( isset( $_GET['message'] ) && (int) $_GET['message'] ) {
-	$message = $messages[$_GET['message']];
+	$message = $messages[ sanitize_text_field( $_GET['message'] ) ];
 	$_SERVER['REQUEST_URI'] = remove_query_arg( array( 'message' ), $_SERVER['REQUEST_URI'] );
 }
 
 if ( !empty( $message ) ) { ?>
-<div id="message" class="updated"><p><?php echo $message; ?></p></div>
+<div id="message" class="updated"><p><?php echo esc_html( $message ); ?></p></div>
 <?php } ?>
 
 <?php $wp_post_list_table->views(); ?>

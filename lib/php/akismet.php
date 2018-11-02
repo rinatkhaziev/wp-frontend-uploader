@@ -17,16 +17,16 @@ function fu_akismet_check_submission( $should_process, $layout ) {
 	$content = array();
 
 	$content['comment_author'] = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : null;
-	$content['comment_content'] = isset( $_POST[ 'post_content' ] ) ? $_POST['post_content'] : null;
+	$content['comment_content'] = isset( $_POST[ 'post_content' ] ) ? wp_kses_post( $_POST['post_content'] ) : null;
 
 	// Permalink of the post with upload form, fallback to wp_get_referer()
 	// Fallback is used to
-	$content['permalink'] = isset( $_POST['form_post_id'] ) ? get_permalink( $_POST['form_post_id'] ) : wp_get_referer();
+	$content['permalink'] = isset( $_POST['form_post_id'] ) ? get_permalink( sanitize_text_area( $_POST['form_post_id'] ) ) : wp_get_referer();
 
 	// Set required Akismet values
-	$content['user_ip'] = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : null;
-	$content['user_agent'] = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : null;
-	$content['referrer'] = isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : null;
+	$content['user_ip'] = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( $_SERVER['REMOTE_ADDR'] ) : null;
+	$content['user_agent'] = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : null;
+	$content['referrer'] = isset( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( $_SERVER['HTTP_REFERER'] ) : null;
 	$content['blog'] = get_option( 'home' );
 	$content['blog_lang']    = get_locale();
 	$content['blog_charset'] = get_option( 'blog_charset' );
@@ -35,12 +35,12 @@ function fu_akismet_check_submission( $should_process, $layout ) {
 	// This approach is stolen from Akismet::auto_check_comment()
 	$ignore = array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW', 'ff', 'fu_nonce' );
 	foreach ( $_POST as $key => $value ) {
-		if ( !in_array( $key, $ignore ) && is_string( $value ) )
+		if ( ! in_array( $key, $ignore, true ) && is_string( $value ) )
 			$content["POST_{$key}"] = $value;
 	}
 
 	foreach ( $_SERVER as $key => $value ) {
-		if ( !in_array( $key, $ignore ) && is_string( $value ) )
+		if ( ! in_array( $key, $ignore, true ) && is_string( $value ) )
 			$content["$key"] = $value;
 		else
 			$content["$key"] = '';
@@ -51,7 +51,7 @@ function fu_akismet_check_submission( $should_process, $layout ) {
 	$response = Akismet::http_post( $request, 'comment-check' );
 
 	// It's a spam
-	if ( $response[1] == 'true' )
+	if ( $response[1] === 'true' )
 		$should_process = false;
 
 	return $should_process;

@@ -19,7 +19,7 @@ class Frontend_Uploader_Settings {
 	 */
 	function action_current_screen() {
 		$screen = get_current_screen();
-		if ( in_array( $screen->base, array( 'settings_page_fu_settings', 'options' ) ) ) {
+		if ( in_array( $screen->base, array( 'settings_page_fu_settings', 'options' ), true ) ) {
 			$this->settings_api->set_sections( $this->get_settings_sections() );
 			$this->settings_api->set_fields( $this->get_settings_fields() );
 			// Initialize settings
@@ -34,7 +34,7 @@ class Frontend_Uploader_Settings {
 	static function get_post_types() {
 		$fu_public_post_types = get_post_types( array( 'public' => true ), 'objects' );
 		foreach( $fu_public_post_types as $slug => $post_object ) {
-			if ( $slug == 'attachment' ) {
+			if ( $slug === 'attachment' ) {
 				unset( $fu_public_post_types[$slug] );
 				continue;
 			}
