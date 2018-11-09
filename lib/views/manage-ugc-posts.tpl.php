@@ -10,7 +10,6 @@ $wp_post_list_table->prepare_items();
 ?>
 
 <div class="wrap">
-<?php screen_icon(); ?>
 <h2><?php echo esc_html( $title ); ?><?php
 if ( isset( $_REQUEST['s'] ) && $_REQUEST['s'] )
 	printf( '<span class="subtitle">' . esc_html__( 'Search results for &#8220;%s&#8221;', 'frontend-uploader' ) . '</span>', get_search_query() ); ?>
