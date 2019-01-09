@@ -877,7 +877,7 @@ class Frontend_Uploader {
 				'required' => false,
 				'aria-required' => false,
 				'values' => '',
-				'wysiwyg_enabled' => false,
+				'wysiwyg_enabled' => isset( $this->settings['wysiwyg_enabled'] ) && 'on' === $this->settings['wysiwyg_enabled'] ,
 				'role' => 'meta',
 				'minlength' => '',
 				'maxlength' => '',
@@ -941,18 +941,20 @@ class Frontend_Uploader {
 		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
 
 		// Render WYSIWYG textarea
-		if ( ( isset( $this->settings['wysiwyg_enabled'] ) && 'on' === $this->settings['wysiwyg_enabled'] ) || $wysiwyg_enabled === true ) {
+		if ( $wysiwyg_enabled ) {
 			ob_start();
 			wp_editor( '', $id, array(
 					'textarea_name' => $name,
 					'media_buttons' => false,
 					'teeny' => true,
-					'quicktags' => false
+					'quicktags' => false,
 				) );
+
 			$tiny = ob_get_clean();
 
 			return $this->html->element( 'div', $label  . $tiny . $help, array( 'class' => 'ugc-input-wrapper' ), false ) ;
 		}
+
 		$element = $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class, 'minlength' => $minlength, 'maxlength' => $maxlength, 'required' => $required ) );
 		// Render plain textarea
 		$label = $this->html->element( 'label', $description, array( 'for' => $id ), false );
@@ -1080,7 +1082,7 @@ class Frontend_Uploader {
 					'post_id' => get_the_ID(),
 					'post_type' => 'post',
 					'category' => '',
-					'suppress_default_fields' => false,
+					'suppress_default_fields' => ! ( isset( $this->settings['suppress_default_fields'] ) && 'on' === $this->settings['suppress_default_fields'] ),
 					'append_to_post' => false,
 				), $atts ) );
 
@@ -1130,7 +1132,7 @@ class Frontend_Uploader {
 				), null, 'input' );
 		}
 
-		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' === $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
+		if ( ! $suppress_default_fields ) {
 
 			// Display title field
 			echo $this->shortcode_content_parser( array(
@@ -1180,7 +1182,7 @@ class Frontend_Uploader {
 		if ( $content )
 			echo do_shortcode( $content );
 
-		if ( !( isset( $this->settings['suppress_default_fields'] ) && 'on' === $this->settings['suppress_default_fields'] ) && ( $suppress_default_fields === false ) ) {
+		if ( ! $suppress_default_fields ) {
 
 			if ( in_array( $form_layout, array( 'image', 'media', 'post_image', 'post_media' ), true ) ) {
 				// Default upload field
