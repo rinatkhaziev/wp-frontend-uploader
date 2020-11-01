@@ -1,6 +1,6 @@
 # Frontend Uploader
 
-_This plugin is not actively maintained._ Any discovered security issues will be patched though. 
+⚠️ _This plugin is not actively maintained._ Any discovered security issues will be patched though. ⚠️
 
 If you're interested in becoming a maintainer please let me know.
 
