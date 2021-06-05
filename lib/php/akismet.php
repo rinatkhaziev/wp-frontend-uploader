@@ -21,7 +21,7 @@ function fu_akismet_check_submission( $should_process, $layout ) {
 
 	// Permalink of the post with upload form, fallback to wp_get_referer()
 	// Fallback is used to
-	$content['permalink'] = isset( $_POST['form_post_id'] ) ? get_permalink( sanitize_text_area( $_POST['form_post_id'] ) ) : wp_get_referer();
+	$content['permalink'] = isset( $_POST['form_post_id'] ) ? get_permalink( sanitize_textarea_field( $_POST['form_post_id'] ) ) : wp_get_referer();
 
 	// Set required Akismet values
 	$content['user_ip'] = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( $_SERVER['REMOTE_ADDR'] ) : null;
