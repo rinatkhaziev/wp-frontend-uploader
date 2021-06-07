@@ -19,9 +19,8 @@ This plugin gives you an ability to easily accept, moderate and publish user gen
 ## Upgrade instructions
 
 1. Pull as usual
-2. Do `git submodule -q foreach git pull -q origin master` to update submodules
-3. ...
-4. Profit
+2. ...
+3. Profit
 
 ## Developers
 
