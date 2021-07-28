@@ -169,10 +169,15 @@ class Frontend_Uploader {
 		$mime_types = apply_filters( 'fu_allowed_mime_types', $mime_types );
 
 		foreach ( $mime_types as $ext_key => $mime ) {
-			// Check for php just in case
-			if ( false !== strpos( $mime, 'php' ) )
-				unset( $mime_types[$ext_key] );
+			// Check for PHP.
+			if ( false !== strpos( $mime, 'php' ) ) {
+				unset( $mime_types[ $ext_key ] );
+			}
 		}
+
+		// Disable other potentially exploitable types.
+		unset( $mime_types['htm|html'] );
+		unset( $mime_types['js'] );
 
 		return $mime_types;
 	}
