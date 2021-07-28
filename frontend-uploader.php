@@ -149,24 +149,6 @@ class Frontend_Uploader {
 	 */
 	function _get_mime_types() {
 		$mime_types = wp_get_mime_types();
-		$fu_mime_types = fu_get_mime_types();
-
-		$enabled = isset( $this->settings['enabled_files'] ) && is_array( $this->settings['enabled_files'] ) ?  $this->settings['enabled_files'] : array();
-
-		// $fu_mime_types holds extra mimes that are not allowed by WP
-		foreach ( $fu_mime_types as $extension => $details ) {
-			// Skip if it's not in the settings
-			if ( ! in_array( $extension, $enabled, true ) )
-				continue;
-
-			// Files have multiple mimes sometimes, we need to cover all of them
-			foreach ( $details['mimes'] as $ext_mime ) {
-				$mime_types[ $extension . '|' . $extension . sanitize_title_with_dashes( $ext_mime ) ] = $ext_mime;
-			}
-		}
-
-		// Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme)
-		$mime_types = apply_filters( 'fu_allowed_mime_types', $mime_types );
 
 		foreach ( $mime_types as $ext_key => $mime ) {
 			// Check for PHP.
@@ -178,6 +160,9 @@ class Frontend_Uploader {
 		// Disable other potentially exploitable types.
 		unset( $mime_types['htm|html'] );
 		unset( $mime_types['js'] );
+
+		// Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme).
+		$mime_types = apply_filters( 'fu_allowed_mime_types', $mime_types );
 
 		return $mime_types;
 	}

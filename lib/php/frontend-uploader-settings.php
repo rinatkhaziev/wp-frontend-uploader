@@ -140,14 +140,6 @@ class Frontend_Uploader_Settings {
 					'default' => '',
 				),
 				array(
-					'name' => 'enabled_files',
-					'label' => __( 'Also allow to upload these files (in addition to the ones that WP allows by default)', 'frontend-uploader' ),
-					'desc' => '',
-					'type' => 'multicheck',
-					'default' => array(),
-					'options' => fu_get_exts_descs(),
-				),
-				array(
 					'name' => 'auto_approve_user_files',
 					'label' => __( 'Auto-approve registered users files', 'frontend-uploader' ),
 					'desc' => __( 'Yes', 'frontend-uploader' ),
