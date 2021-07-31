@@ -1073,7 +1073,7 @@ class Frontend_Uploader {
 					'post_id' => get_the_ID(),
 					'post_type' => 'post',
 					'category' => '',
-					'suppress_default_fields' => ! ( isset( $this->settings['suppress_default_fields'] ) && 'on' === $this->settings['suppress_default_fields'] ),
+					'suppress_default_fields' => isset( $this->settings['suppress_default_fields'] ) && 'on' === $this->settings['suppress_default_fields'],
 					'append_to_post' => false,
 				), $atts ) );
 
