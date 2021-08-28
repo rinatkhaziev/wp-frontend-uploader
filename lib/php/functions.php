@@ -3,6 +3,20 @@
  * Various helper functions
  */
 
+/**
+ * Generate slug => description array for Frontend Uploader settings
+ * @return array
+ */
+function fu_get_exts_descs() {
+	$mimes = wp_get_mime_types();
+	$a = array();
+
+	foreach( $mimes as $ext => $mime ) {
+		$a[ $ext ] = sprintf( '%2$s (%1$s)', $mime, str_replace( '|', ', ', $ext ) );
+	}
+
+	return $a;
+}
 
 function fu_get_option( $slug = '' ) {
 	static $options;

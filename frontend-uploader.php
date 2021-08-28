@@ -72,9 +72,6 @@ class Frontend_Uploader {
 		// HTML helper to render HTML elements
 		$this->html = new Html_Helper;
 
-		// Either use default settings if no setting set, or try to merge defaults with existing settings
-		// Needed if new options were added in upgraded version of the plugin
-		$this->settings = get_option( $this->settings_slug, $this->settings_defaults() );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 	}
 
@@ -82,6 +79,8 @@ class Frontend_Uploader {
 	 * Load languages and a bit of paranoia
 	 */
 	function action_init() {
+		// Try to gracefully fallback on default values, as well as merge any potentially new settings coming from an upgrade (:
+		$this->settings = array_merge( $this->settings_defaults(), (array) get_option( $this->settings_slug, [] ) );
 
 		load_plugin_textdomain( 'frontend-uploader', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		// Hooking to wp_ajax
@@ -141,28 +140,43 @@ class Frontend_Uploader {
 
 
 	/**
-	 * Add extra mime-types
+	 * Handle MIME-types:
 	 *
-	 * This is mostly legacy, and really should be deprecated or refactored due to unneccessary complexity
+	 * First we check what's in the plugin setting (if there's nothing we're falling back to Core list)
+	 * If we're falling back to core value, make sure to remove HTML and JS files.
+	 * Then we also explicitly try to remove any variant of PHP, just in case.
 	 *
-	 * @return [type] [description]
+	 * After that we pass the value to the filter,
+	 * so if somebody really wants to shoot in the foot they can do so.
+	 *
+	 * @return array the list of allowed for uploading mime types
 	 */
 	function _get_mime_types() {
-		$mime_types = wp_get_mime_types();
-
-		foreach ( $mime_types as $ext_key => $mime ) {
-			// Check for PHP.
-			if ( false !== strpos( $mime, 'php' ) ) {
-				unset( $mime_types[ $ext_key ] );
-			}
-		}
-
-		// Disable other potentially exploitable types.
+		// Use the fallback value but explicitly discard HTML and JS to prevent a possibility of XSS:
+		// If these types are enabled in the UI they'll end up in $this->settings['enabled_files'].
+		// $mime_types_orig is needed to re-map the values from the settings lib structure to core WP extension regex => mime-type format.
+		$mime_types = $mime_types_orig = wp_get_mime_types();
 		unset( $mime_types['htm|html'] );
 		unset( $mime_types['js'] );
 
-		// Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme).
-		$mime_types = apply_filters( 'fu_allowed_mime_types', $mime_types );
+		$enabled = isset( $this->settings['enabled_files'] ) && is_array( $this->settings['enabled_files'] ) && $this->settings['enabled_files'] ? $this->settings['enabled_files'] : $mime_types;
+
+		foreach ( $enabled as $ext_key => $mime ) {
+			// Check for PHP.
+			if ( false !== strpos( $mime, 'php' ) ) {
+				unset( $enabled[ $ext_key ] );
+				trigger_error( __( "Frontend Uploader doesn't support PHP uploads for security reasons", 'frontend-uploader' ) );
+			}
+
+			// We need to re-map the value from our settings to the proper MIME-type instead of regex key for mime check to work correctly.
+			$enabled[ $ext_key ] = $mime_types_orig[ $ext_key ];
+		}
+
+		/**
+		 * Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme)
+		 * @param array $enabled the list of enabled mime-types in core-compatible [ 'ext|ext2' => 'mime/type' ] format.
+		 */
+		$mime_types = apply_filters( 'fu_allowed_mime_types', $enabled );
 
 		return $mime_types;
 	}
@@ -175,7 +189,7 @@ class Frontend_Uploader {
 	function settings_defaults() {
 		$defaults = array();
 		$settings = Frontend_Uploader_Settings::get_settings_fields();
-		foreach ( $settings[$this->settings_slug] as $setting ) {
+		foreach ( $settings[ $this->settings_slug ] as $setting ) {
 			$defaults[ $setting['name'] ] = $setting['default'];
 		}
 		return $defaults;
@@ -246,7 +260,7 @@ class Frontend_Uploader {
 	 * @return array Combined result of media ids and errors if any
 	 */
 	function _upload_files( $post_id = 0 ) {
-		// Only filter mimes just before the upload
+		// Only filter mimes just before the upload.
 		add_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
 
 		$media_ids = $errors = array();
@@ -273,14 +287,14 @@ class Frontend_Uploader {
 			}
 
 			// Skip to the next file if upload went wrong
-			if ( $k['error'] !== 0  ) {
+			if ( $k['error'] !== 0 ) {
 				$errors['fu-error-media'][] = array( 'name' => $k['name'], 'code' => $k['error'] );
 				continue;
 			}
 
-			$typecheck = wp_check_filetype_and_ext( $k['tmp_name'], $k['name'], false );
+			$typecheck = mime_content_type( $k['tmp_name'] );
 			// Add an error message if MIME-type is not allowed
-			if ( ! in_array( $typecheck['type'], (array) $this->allowed_mime_types, true ) ) {
+			if ( ! in_array( $typecheck, (array) $this->allowed_mime_types, true ) ) {
 				$errors['fu-disallowed-mime-type'][] = array( 'name' => $k['name'], 'mime' => $k['type'] );
 				continue;
 			}

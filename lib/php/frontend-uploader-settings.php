@@ -63,7 +63,21 @@ class Frontend_Uploader_Settings {
 	 * @return array settings fields
 	 */
 	static function get_settings_fields() {
+		static $settings_fields;
+
+		if ( $settings_fields ) {
+			return $settings_fields;
+		}
+
 		$default_post_type = array( 'post' => 'Posts' );
+		$core_mime_types = fu_get_exts_descs();
+
+		// Sanitize a bit.
+		$safe_defaults = $core_mime_types;
+		unset( $safe_defaults['htm|html'] );
+		unset( $safe_defaults['js'] );
+		$safe_defaults_keys = array_keys( $safe_defaults );
+
 		$settings_fields = array(
 			'frontend_uploader_settings' => array(
 				array(
@@ -138,6 +152,14 @@ class Frontend_Uploader_Settings {
 					'desc' => __( 'Yes', 'frontend-uploader' ),
 					'type' => 'checkbox',
 					'default' => '',
+				),
+				array(
+					'name' => 'enabled_files',
+					'label' => __( 'Also allow to upload these files (in addition to the ones that WP allows by default)', 'frontend-uploader' ),
+					'desc' => '',
+					'type' => 'multicheck',
+					'default' => array_combine( $safe_defaults_keys, $safe_defaults_keys ),
+					'options' => $core_mime_types,
 				),
 				array(
 					'name' => 'auto_approve_user_files',
