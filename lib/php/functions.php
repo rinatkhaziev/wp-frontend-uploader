@@ -4,106 +4,16 @@
  */
 
 /**
- * Get the common MIME-types for extensions
- * @return array
- */
-function fu_get_mime_types() {
-	// Generated with dyn_php class: http://www.phpclasses.org/package/2923-PHP-Generate-PHP-code-programmatically.html
-	$mimes_exts = array(
-		'csv'=>
-		array(
-			'label'=> 'Comma Separated Values File',
-			'mimes'=>
-			array(
-				'text/comma-separated-values',
-				'text/csv',
-				'application/csv',
-				'application/excel',
-				'application/vnd.ms-excel',
-				'application/vnd.msexcel',
-				'text/anytext',
-			),
-		),
-		'mp3'=>
-		array(
-			'label'=> 'MP3 Audio File',
-			'mimes'=>
-			array(
-				'audio/mpeg',
-				'audio/x-mpeg',
-				'audio/mp3',
-				'audio/x-mp3',
-				'audio/mpeg3',
-				'audio/x-mpeg3',
-				'audio/mpg',
-				'audio/x-mpg',
-				'audio/x-mpegaudio',
-			),
-		),
-		'avi'=>
-		array(
-			'label'=> 'Audio Video Interleave File',
-			'mimes'=>
-			array(
-				'video/avi',
-				'video/msvideo',
-				'video/x-msvideo',
-				'image/avi',
-				'video/xmpg2',
-				'application/x-troff-msvideo',
-				'audio/aiff',
-				'audio/avi',
-			),
-		),
-
-		'mid'=>
-		array(
-			'label'=> 'MIDI File',
-			'mimes'=>
-			array(
-				'audio/mid',
-				'audio/m',
-				'audio/midi',
-				'audio/x-midi',
-				'application/x-midi',
-				'audio/soundtrack',
-			),
-		),
-		'wav'=>
-		array(
-			'label'=> 'WAVE Audio File',
-			'mimes'=>
-			array(
-				'audio/wav',
-				'audio/x-wav',
-				'audio/wave',
-				'audio/x-pn-wav',
-			),
-		),
-		'wma'=>
-		array(
-			'label'=> 'Windows Media Audio File',
-			'mimes'=>
-			array(
-				'audio/x-ms-wma',
-				'video/x-ms-asf',
-			),
-		),
-	);
-
-	return $mimes_exts;
-}
-
-/**
  * Generate slug => description array for Frontend Uploader settings
  * @return array
  */
 function fu_get_exts_descs() {
-	$mimes = fu_get_mime_types();
+	$mimes = wp_get_mime_types();
 	$a = array();
 
-	foreach( $mimes as $ext => $mime )
-		$a[$ext] = sprintf( '%1$s (.%2$s)', $mime['label'], $ext );
+	foreach( $mimes as $ext => $mime ) {
+		$a[ $ext ] = sprintf( '%2$s (%1$s)', $mime, str_replace( '|', ', ', $ext ) );
+	}
 
 	return $a;
 }

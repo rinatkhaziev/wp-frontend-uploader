@@ -15,6 +15,10 @@ This plugin allows your visitors to upload User Generated Content (media and pos
 
 This plugin is a simple way for users to submit content to your site. The plugin uses a set of shortcodes to let you create highly customizable submission forms to your posts and pages. Once the content is submitted, it is held for moderation until you approve it. It’s that easy!
 
+**Security**
+
+Allowing uploads from unauthenticated users is inherently risky. The plugin relies on the core allow list for files. However, we explicitly remove HTML, JS and PHP files even if they're in the allow list. To modify the list of allowed file types please refer to *fu_allowed_mime_types* configuration filter section for additional details.
+
 = Exploring Customizations =
 
 * You can modify the submission form as needed, and have users submit posts. Please visit the FAQ page for more information.
@@ -332,7 +336,7 @@ If you're experiencing issues with upload it might be due to server misconfigura
 = fu_upload_result =
 
 This action runs after form was uploaded. Arguments are: (string) $layout (form layout), (array) $result - result of the upload.
-`add_action('fu_upload_result', 'my_fu_upload_result', 10, 2 );
+`add_action( 'fu_upload_result', 'my_fu_upload_result', 10, 2 );
 
 function my_fu_upload_result( $layout, $result ) {
 	// do something
