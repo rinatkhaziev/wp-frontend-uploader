@@ -400,6 +400,10 @@ function my_fu_upload_result( $layout, $result ) {
 
 == Changelog ==
 
+= 1.3.3 (Aug 28, 2021) =
+* Re-worked the way file type allow list works
+* Readme formatting updates to hopefully make it clearer
+
 = 1.3.2 (Nov 2, 2018) =
 * Bugfix: allow multiple forms to be properly validated if they're rendered on the same page.
 * Feature: add support for all HTML5 input types
