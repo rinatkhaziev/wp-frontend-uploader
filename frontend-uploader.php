@@ -4,7 +4,7 @@ Plugin Name: Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev, Daniel Bachhuber
 Version: 1.3.2
-Author URI: http://digitallyconscious.com
+Author URI: https://rinat.dev/
 Text Domain: frontend-uploader
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
