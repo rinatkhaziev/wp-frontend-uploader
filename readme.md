@@ -11,7 +11,6 @@ This plugin gives you an ability to easily accept, moderate and publish user gen
 ## Installation
 
 1. `git clone https://github.com/rinatkhaziev/wp-frontend-uploader.git` in your WP plugins directory
-1. `git submodule update --init --recursive` in the plugin dir to get dependencies
 1. Activate the plugin
 1. Set the settings
 1. Enjoy
