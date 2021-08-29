@@ -1,2 +1,3 @@
 .phptidy-cache
 .DS_Store
+vendor/
