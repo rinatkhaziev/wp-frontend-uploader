@@ -6,6 +6,8 @@ Author: Rinat Khaziev, Daniel Bachhuber
 Version: 1.3.2
 Author URI: https://rinat.dev/
 Text Domain: frontend-uploader
+Requires at least: 4.6
+Requires PHP: 7.2
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
 
