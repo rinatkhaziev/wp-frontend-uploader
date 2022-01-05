@@ -3,7 +3,7 @@
 Plugin Name: Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev, Daniel Bachhuber
-Version: 1.3.2
+Version: 1.3.3
 Author URI: https://rinat.dev/
 Text Domain: frontend-uploader
 Requires at least: 4.6
@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
 // Define consts and bootstrap and dependencies
-define( 'FU_VERSION', '1.3.2' );
+define( 'FU_VERSION', '1.3.3' );
 define( 'FU_ROOT' , dirname( __FILE__ ) );
 define( 'FU_FILE_PATH' , FU_ROOT . '/' . basename( __FILE__ ) );
 define( 'FU_URL' , plugins_url( '/', __FILE__ ) );
@@ -154,12 +154,8 @@ class Frontend_Uploader {
 	 * @return array the list of allowed for uploading mime types
 	 */
 	function _get_mime_types() {
-		// Use the fallback value but explicitly discard HTML and JS to prevent a possibility of XSS:
-		// If these types are enabled in the UI they'll end up in $this->settings['enabled_files'].
 		// $mime_types_orig is needed to re-map the values from the settings lib structure to core WP extension regex => mime-type format.
-		$mime_types = $mime_types_orig = wp_get_mime_types();
-		unset( $mime_types['htm|html'] );
-		unset( $mime_types['js'] );
+		$mime_types = $mime_types_orig = get_allowed_mime_types();
 
 		$enabled = isset( $this->settings['enabled_files'] ) && is_array( $this->settings['enabled_files'] ) && $this->settings['enabled_files'] ? $this->settings['enabled_files'] : $mime_types;
 
@@ -174,11 +170,15 @@ class Frontend_Uploader {
 			$enabled[ $ext_key ] = $mime_types_orig[ $ext_key ];
 		}
 
+		unset( $enabled['htm|html'] );
+		unset( $enabled['js'] );
+
 		/**
 		 * Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme)
 		 * @param array $enabled the list of enabled mime-types in core-compatible [ 'ext|ext2' => 'mime/type' ] format.
 		 */
 		$mime_types = apply_filters( 'fu_allowed_mime_types', $enabled );
+
 
 		return $mime_types;
 	}
