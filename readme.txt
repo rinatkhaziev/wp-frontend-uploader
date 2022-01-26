@@ -5,7 +5,7 @@ Tags: frontend, image, images, media, uploader, upload, video, audio, photo, pho
 Requires at least: 4.6
 Requires PHP: 7.2
 Tested up to: 5.9
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv2 or later
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
@@ -399,6 +399,9 @@ function my_fu_upload_result( $layout, $result ) {
 }`
 
 == Changelog ==
+
+= 1.3.4 (Jan 26, 2022) =
+* Bugfix: the new allow type logic resulted in an infinite loop in some cases
 
 = 1.3.3 (Aug 28, 2021) =
 * Re-worked the way file type allow list works
