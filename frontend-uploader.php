@@ -155,7 +155,9 @@ class Frontend_Uploader {
 	 */
 	function _get_mime_types() {
 		// $mime_types_orig is needed to re-map the values from the settings lib structure to core WP extension regex => mime-type format.
+		remove_filter( 'upload_mimes', [ $this, '_get_mime_types' ], 999 );
 		$mime_types = $mime_types_orig = get_allowed_mime_types();
+		add_filter( 'upload_mimes', [ $this, '_get_mime_types' ], 999 );
 
 		$enabled = isset( $this->settings['enabled_files'] ) && is_array( $this->settings['enabled_files'] ) && $this->settings['enabled_files'] ? $this->settings['enabled_files'] : $mime_types;
 
