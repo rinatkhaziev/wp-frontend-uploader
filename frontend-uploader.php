@@ -174,6 +174,7 @@ class Frontend_Uploader {
 
 		unset( $enabled['htm|html'] );
 		unset( $enabled['js'] );
+		unset( $enabled['svg|svgz'] );
 
 		/**
 		 * Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme)
