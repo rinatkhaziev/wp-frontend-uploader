@@ -3,7 +3,7 @@
 Plugin Name: Frontend Uploader
 Description: Allow your visitors to upload content and moderate it.
 Author: Rinat Khaziev, Daniel Bachhuber
-Version: 1.3.3
+Version: 1.3.4
 Author URI: https://rinat.dev/
 Text Domain: frontend-uploader
 Requires at least: 4.6
@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
 // Define consts and bootstrap and dependencies
-define( 'FU_VERSION', '1.3.3' );
+define( 'FU_VERSION', '1.3.4' );
 define( 'FU_ROOT' , dirname( __FILE__ ) );
 define( 'FU_FILE_PATH' , FU_ROOT . '/' . basename( __FILE__ ) );
 define( 'FU_URL' , plugins_url( '/', __FILE__ ) );
@@ -155,7 +155,9 @@ class Frontend_Uploader {
 	 */
 	function _get_mime_types() {
 		// $mime_types_orig is needed to re-map the values from the settings lib structure to core WP extension regex => mime-type format.
+		remove_filter( 'upload_mimes', [ $this, '_get_mime_types' ], 999 );
 		$mime_types = $mime_types_orig = get_allowed_mime_types();
+		add_filter( 'upload_mimes', [ $this, '_get_mime_types' ], 999 );
 
 		$enabled = isset( $this->settings['enabled_files'] ) && is_array( $this->settings['enabled_files'] ) && $this->settings['enabled_files'] ? $this->settings['enabled_files'] : $mime_types;
 
@@ -172,6 +174,7 @@ class Frontend_Uploader {
 
 		unset( $enabled['htm|html'] );
 		unset( $enabled['js'] );
+		unset( $enabled['svg|svgz'] );
 
 		/**
 		 * Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme)
