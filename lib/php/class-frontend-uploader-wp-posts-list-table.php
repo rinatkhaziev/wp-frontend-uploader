@@ -19,10 +19,14 @@ class FU_WP_Posts_List_Table extends WP_Posts_List_Table {
 	}
 
 	function _add_row_actions( $actions, $post ) {
+		global $frontend_uploader;
+
 		unset( $actions['inline hide-if-no-js'] );
 		if ( $post->post_status === 'private' ) {
-			$actions['pass'] = '<a href="'.admin_url( 'admin-ajax.php' ).'?action=approve_ugc_post&id=' . $post->ID . '&post_type=' . $post->post_type . '">'. __( 'Approve', 'frontend-uploader' ) .'</a>';
-			$actions['delete'] = '<a onclick="return showNotice.warn();" href="'.admin_url( 'admin-ajax.php' ).'?action=delete_ugc&id=' . $post->ID . '&post_type=' . $post->post_type . '&fu_nonce=' . wp_create_nonce( FU_NONCE ). '">'. __( 'Delete Permanently', 'frontend-uploader' ) .'</a>';
+			$approve_nonce     = wp_create_nonce( $frontend_uploader->get_moderation_nonce_action( 'approve-post', $post->ID ) );
+			$delete_nonce      = wp_create_nonce( $frontend_uploader->get_moderation_nonce_action( 'delete', $post->ID ) );
+			$actions['pass']   = '<a href="' . esc_url( admin_url( 'admin-ajax.php' ) . '?action=approve_ugc_post&id=' . $post->ID . '&post_type=' . $post->post_type . '&fu_nonce=' . $approve_nonce ) . '">' . __( 'Approve', 'frontend-uploader' ) . '</a>';
+			$actions['delete'] = '<a onclick="return showNotice.warn();" href="' . esc_url( admin_url( 'admin-ajax.php' ) . '?action=delete_ugc&id=' . $post->ID . '&post_type=' . $post->post_type . '&fu_nonce=' . $delete_nonce ) . '">' . __( 'Delete Permanently', 'frontend-uploader' ) . '</a>';
 		}
 		return $actions;
 	}
