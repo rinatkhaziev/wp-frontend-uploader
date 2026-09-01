@@ -502,18 +502,21 @@ class Frontend_Uploader {
 			}
 		}
 
-		if ( isset( $_POST['caption'] ) ) {
-			$post_title = sanitize_text_field( wp_unslash( $_POST['caption'] ) );
-		} elseif ( isset( $_POST['post_title'] ) ) {
-			$post_title = sanitize_text_field( wp_unslash( $_POST['post_title'] ) );
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- wp_insert_post() is "Expected_slashed (everything!)" and unslashes the array itself.
+		if ( isset( $_POST['caption'] ) && is_scalar( $_POST['caption'] ) ) {
+			$post_title = sanitize_text_field( $_POST['caption'] );
+		} elseif ( isset( $_POST['post_title'] ) && is_scalar( $_POST['post_title'] ) ) {
+			$post_title = sanitize_text_field( $_POST['post_title'] );
 		} else {
 			$post_title = '';
 		}
+		// phpcs:enable WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- wp_filter_post_kses() sanitizes and re-slashes; wp_insert_post() expects slashed data.
 		$post_content = isset( $_POST['post_content'] ) && is_scalar( $_POST['post_content'] ) ? wp_filter_post_kses( (string) $_POST['post_content'] ) : '';
 
-		$submitted_post_type = isset( $_POST['post_type'] ) && is_scalar( $_POST['post_type'] ) ? sanitize_key( wp_unslash( $_POST['post_type'] ) ) : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- see above; sanitize_key() strips backslashes regardless.
+		$submitted_post_type = isset( $_POST['post_type'] ) && is_scalar( $_POST['post_type'] ) ? sanitize_key( $_POST['post_type'] ) : '';
 
 		// Construct post array;
 		$post_array = array(
