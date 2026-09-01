@@ -864,7 +864,7 @@ class Frontend_Uploader {
 	 */
 	function add_menu_items() {
 		add_media_page( __( 'Manage UGC', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), $this->manage_permissions, 'manage_frontend_uploader', array( $this, 'admin_list' ) );
-		foreach ( (array) $this->settings['enabled_post_types'] as $cpt ) {
+		foreach ( $this->get_enabled_post_types() as $cpt ) {
 			if ( $cpt === 'post' ) {
 				add_posts_page( __( 'Manage UGC Posts', 'frontend-uploader' ), __( 'Manage UGC', 'frontend-uploader' ), $this->manage_permissions, 'manage_frontend_uploader_posts', array( $this, 'admin_posts_list' ) );
 				continue;
@@ -1303,7 +1303,7 @@ class Frontend_Uploader {
 
 		// Not via shortcode_content_parser(), which would put it in the field map and change the `ff` hash.
 		if ( 0 !== $post_id ) {
-			wp_nonce_field( FU_PARENT_NONCE . '-' . $post_id, 'fu_parent_nonce' );
+			wp_nonce_field( FU_PARENT_NONCE . '-' . $post_id, 'fu_parent_nonce', false );
 		}
 
 		if ( isset( $category ) && 0 !== (int) $category ) {
