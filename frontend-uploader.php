@@ -33,6 +33,9 @@ define( 'FU_ROOT' , dirname( __FILE__ ) );
 define( 'FU_FILE_PATH' , FU_ROOT . '/' . basename( __FILE__ ) );
 define( 'FU_URL' , plugins_url( '/', __FILE__ ) );
 define( 'FU_NONCE', 'frontend-uploader-upload-media' );
+// FU_NONCE is public -- [fu-upload-form] prints it. These two are not, and are scoped per object.
+define( 'FU_PARENT_NONCE', 'frontend-uploader-parent-post' );
+define( 'FU_MODERATION_NONCE', 'frontend-uploader-moderate-ugc' );
 
 require_once FU_ROOT . '/lib/php/class-html-helper.php';
 require_once FU_ROOT . '/lib/php/settings-api/class.settings-api.php';
@@ -570,6 +573,16 @@ class Frontend_Uploader {
 		case 'image':
 		case 'media':
 			$pid = isset( $_POST['post_ID'] ) ? (int) $_POST['post_ID'] : 0;
+
+			if ( 0 !== $pid && ! $this->is_authorized_parent_post( $pid ) ) {
+				$fu_parent_error = array(
+					'response' => 'fu-error',
+					'errors'   => array( 'fu-disallowed-parent' => 1 ),
+				);
+				wp_safe_redirect( add_query_arg( $fu_parent_error, wp_get_referer() ) );
+				exit;
+			}
+
 			$result = $this->_upload_files( $pid );
 			break;
 		}
@@ -588,6 +601,25 @@ class Frontend_Uploader {
 		// Handle error and success messages, and redirect
 		$this->_handle_result( $result );
 		exit;
+	}
+
+	/**
+	 * Is the submitted parent post id one this request is allowed to name?
+	 *
+	 * @since 1.3.5
+	 *
+	 * @param int $post_id Parent post id taken from the request.
+	 * @return bool Whether the upload may be attached to that post.
+	 */
+	private function is_authorized_parent_post( $post_id ) {
+		$post_id = (int) $post_id;
+		$nonce   = isset( $_POST['fu_parent_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['fu_parent_nonce'] ) ) : '';
+
+		if ( wp_verify_nonce( $nonce, FU_PARENT_NONCE . '-' . $post_id ) ) {
+			return true;
+		}
+
+		return current_user_can( 'edit_post', $post_id );
 	}
 
 	/**
@@ -779,14 +811,14 @@ class Frontend_Uploader {
 	 */
 	function approve_media() {
 		// Check permissions, attachment ID, and nonce
-		if ( false === $this->_check_perms_and_nonce() || 0 === (int) $_GET['id'] ) {
+		$post = $this->authorize_ugc_action( 'approve-media', 'edit_post', array( 'attachment' ) );
+
+		if ( false === $post ) {
 			wp_safe_redirect( get_admin_url( null, 'upload.php?page=manage_frontend_uploader&error=id_or_perm' ) );
 			exit;
 		}
 
-		$post = get_post( (int) $_GET['id'] );
-
-		if ( is_object( $post ) && $post->post_status === 'private' ) {
+		if ( 'private' === $post->post_status ) {
 			$post->post_status = 'inherit';
 			wp_update_post( $post );
 
@@ -808,38 +840,42 @@ class Frontend_Uploader {
 	 */
 	function approve_post() {
 		// check for permissions and id
-		$url = get_admin_url( null, 'edit.php?page=manage_frontend_uploader_posts&error=id_or_perm' );
-		if ( !current_user_can( $this->manage_permissions ) || intval( $_GET['id'] ) === 0 ) {
-			wp_safe_redirect( $url );
+		$post = $this->authorize_ugc_action( 'approve-post', 'edit_post', $this->get_moderatable_post_types() );
+
+		// Publishing is its own right; the 'publish_post' meta cap is WP 6.1+, so check the post type's.
+		if ( false !== $post ) {
+			$post_type_object = get_post_type_object( $post->post_type );
+
+			if ( ! $post_type_object || ! current_user_can( $post_type_object->cap->publish_posts ) ) {
+				$post = false;
+			}
+		}
+
+		if ( false === $post ) {
+			wp_safe_redirect( get_admin_url( null, 'edit.php?page=manage_frontend_uploader_posts&error=id_or_perm' ) );
 			exit;
 		}
 
-		$post = get_post( (int) $_GET['id'] );
+		$post->post_status = 'publish';
+		wp_update_post( $post );
 
-		if ( is_object( $post ) ) {
-			$post->post_status = 'publish';
-			wp_update_post( $post );
+		do_action( 'fu_post_approved', $post );
 
-			do_action( 'fu_post_approved', $post );
-
-			// Check if there's any UGC attachments
-			$attachments = get_children( 'post_type=attachment&post_parent=' . $post->ID );
-			foreach ( (array) $attachments as $image_id => $attachment ) {
-				$attachment->post_status = "inherit";
-				wp_update_post( $attachment );
-			}
-
-			// Override query args
-			$qa = array(
-				'page' => "manage_frontend_uploader_{$post->post_type}s",
-				'approved' => 1,
-				'post_type' => $post->post_type !== 'post' ? $post->post_type : '',
-			);
-
-			$url = add_query_arg( $qa, get_admin_url( null, "edit.php" ) );
+		// Check if there's any UGC attachments.
+		$attachments = get_children( 'post_type=attachment&post_parent=' . $post->ID );
+		foreach ( (array) $attachments as $image_id => $attachment ) {
+			$attachment->post_status = 'inherit';
+			wp_update_post( $attachment );
 		}
 
-		wp_safe_redirect( $url );
+		// Override query args.
+		$qa = array(
+			'page'      => "manage_frontend_uploader_{$post->post_type}s",
+			'approved'  => 1,
+			'post_type' => 'post' !== $post->post_type ? $post->post_type : '',
+		);
+
+		wp_safe_redirect( add_query_arg( $qa, get_admin_url( null, 'edit.php' ) ) );
 		exit;
 	}
 
@@ -849,9 +885,11 @@ class Frontend_Uploader {
 	 * @return [type] [description]
 	 */
 	function delete_post() {
-		if ( $this->_check_perms_and_nonce() && 0 !== (int) $_GET['id'] ) {
-			if ( wp_delete_post( (int) $_GET['id'], true ) )
-				$args['deleted'] = 1;
+		$args = array();
+		$post = $this->authorize_ugc_action( 'delete', 'delete_post', array_merge( array( 'attachment' ), $this->get_moderatable_post_types() ) );
+
+		if ( false !== $post && wp_delete_post( $post->ID, true ) ) {
+			$args['deleted'] = 1;
 		}
 
 		wp_safe_redirect( add_query_arg( $args, wp_get_referer() ) );
@@ -859,12 +897,68 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Handles security checks
+	 * Authorize a moderation request against the object it names
 	 *
-	 * @return bool
+	 * Not FU_NONCE: the public upload form hands that one to any visitor.
+	 *
+	 * @since 1.3.5
+	 *
+	 * @param string $action Moderation action, used to scope the nonce.
+	 * @param string $cap Meta capability required against the post.
+	 * @param array  $post_types Post types this action may act on.
+	 * @return WP_Post|false The post when the request is authorized.
 	 */
-	function _check_perms_and_nonce() {
-		return current_user_can( $this->manage_permissions ) && wp_verify_nonce( $_REQUEST['fu_nonce'], FU_NONCE );
+	private function authorize_ugc_action( $action, $cap, $post_types ) {
+		$post_id = isset( $_GET['id'] ) ? (int) $_GET['id'] : 0;
+		$nonce   = isset( $_REQUEST['fu_nonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['fu_nonce'] ) ) : '';
+
+		if ( 0 === $post_id || ! current_user_can( $this->manage_permissions ) ) {
+			return false;
+		}
+
+		if ( ! wp_verify_nonce( $nonce, $this->get_moderation_nonce_action( $action, $post_id ) ) ) {
+			return false;
+		}
+
+		$post = get_post( $post_id );
+
+		if ( ! $post instanceof WP_Post || ! in_array( $post->post_type, (array) $post_types, true ) ) {
+			return false;
+		}
+
+		if ( ! current_user_can( $cap, $post->ID ) ) {
+			return false;
+		}
+
+		return $post;
+	}
+
+	/**
+	 * Nonce action for a moderation link, scoped to the action and the object
+	 *
+	 * @since 1.3.5
+	 *
+	 * @param string $action Moderation action.
+	 * @param int    $post_id Post the link acts on.
+	 * @return string Nonce action.
+	 */
+	public function get_moderation_nonce_action( $action, $post_id ) {
+		return FU_MODERATION_NONCE . '-' . $action . '-' . (int) $post_id;
+	}
+
+	/**
+	 * Post types the plugin moderates
+	 *
+	 * @since 1.3.5
+	 *
+	 * @return array Registered post type names.
+	 */
+	private function get_moderatable_post_types() {
+		$enabled = array_filter( (array) $this->settings['enabled_post_types'] );
+		$keys    = array_keys( $enabled );
+		$names   = $keys && is_string( $keys[0] ) ? $keys : array_values( $enabled );
+
+		return array_values( array_filter( $names, 'post_type_exists' ) );
 	}
 
 	/**
@@ -1132,6 +1226,11 @@ class Frontend_Uploader {
 				'name' => 'post_ID',
 				'value' => $post_id
 			), null, 'input' );
+
+		// Not via shortcode_content_parser(), which would put it in the field map and change the `ff` hash.
+		if ( 0 !== $post_id ) {
+			wp_nonce_field( FU_PARENT_NONCE . '-' . $post_id, 'fu_parent_nonce' );
+		}
 
 		if ( isset( $category ) && 0 !== (int) $category ) {
 			echo $this->shortcode_content_parser( array(
@@ -1401,6 +1500,9 @@ class Frontend_Uploader {
 			),
 			'fu-disallowed-post-type' => array(
 				'text' =>__( 'This post type is not allowed.', 'frontend-uploader' ),
+			),
+			'fu-disallowed-parent'    => array(
+				'text' => __( 'This upload can not be attached to that post.', 'frontend-uploader' ),
 			),
 			'fu-error-media' => array(
 				'text' =>__( "Couldn't upload the file due to server error", 'frontend-uploader' ),
