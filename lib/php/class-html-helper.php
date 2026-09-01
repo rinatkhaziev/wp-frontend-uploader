@@ -20,15 +20,19 @@ class Html_Helper {
 	 */
 	function checkboxes( $name = '', $description = '', $data = array(), $checked = array() ) {
 		if ( $name !== '' ) {
-			$name = filter_var( $name, FILTER_SANITIZE_STRING );
-			if ( $description );
-			echo $this->element( 'p', __( $description ) );
+			$name = sanitize_text_field( $name );
+			if ( $description ) {
+				echo wp_kses_post( $this->element( 'p', $description ) );
+			}
 			echo '<input type="hidden" name="' . esc_attr( $name ) .'" value="" />';
+			$checked = array_map( 'sanitize_text_field', (array) $checked );
+
 			foreach ( (array) $data as $item ) {
-				$is_checked_attr =  in_array( $item, (array) $checked, true ) ? ' checked="true" ' : '';
-				$item = filter_var( $item, FILTER_SANITIZE_STRING );
+				// Compare after sanitizing, so the checked state matches the value submitted.
+				$item       = sanitize_text_field( $item );
+				$is_checked = in_array( $item, $checked, true );
 				echo '<div class="sm-input-wrapper">';
-				echo '<input type="checkbox" name="' . esc_attr( $name ) . '[]" value="' . esc_attr( $item ) . '" id="' .esc_attr( $name ) . esc_attr( $item )  . '" ' . esc_attr( $is_checked_attr ) . ' />';
+				echo '<input type="checkbox" name="' . esc_attr( $name ) . '[]" value="' . esc_attr( $item ) . '" id="' . esc_attr( $name ) . esc_attr( $item ) . '"' . checked( $is_checked, true, false ) . ' />';
 				echo '<label for="' .esc_attr( $name ) . esc_attr( $item )  . '">' . esc_attr ( $item ) . '</label>';
 				echo '</div>';
 			}
@@ -55,7 +59,7 @@ class Html_Helper {
 		$data = func_get_args();
 		$ret = '';
 		foreach ( $data as $cell )
-			$ret .= $this->element( 'td', $cell, null, false );
+			$ret .= $this->element( 'td', $cell, null );
 		return "<tr>" . $ret . "</tr>\n";
 	}
 
@@ -121,9 +125,12 @@ class Html_Helper {
 		$ret  = '';
 		foreach ( (array) $data as $key => $value ) {
 			$attrs_to_pass = array( 'value' => $key );
-			if ( isset( $attrs[ 'default' ] ) && $key === $attrs[ 'default' ] )
-				$attrs_to_pass[ 'selected' ] = 'selected';
-			$ret .= $this->element( 'option', $value, $attrs_to_pass, false );
+
+			if ( isset( $attrs['default'] ) && $key === $attrs['default'] ) {
+				$attrs_to_pass['selected'] = 'selected';
+			}
+
+			$ret .= $this->element( 'option', $value, $attrs_to_pass );
 		}
 		return '<select name="' . esc_attr( $name ) . '">' . $ret . '</select>';
 	}
