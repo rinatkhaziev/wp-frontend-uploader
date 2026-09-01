@@ -448,7 +448,19 @@ class Frontend_Uploader {
 		// Bail if request is failed,
 		if ( ! $success || !isset( $_POST[ 'append_to_post' ] ) || !$_POST['append_to_post'] )
 			return;
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- upload_content() verifies FU_NONCE before dispatching here.
+		$layout = isset( $_POST['form_layout'] ) && is_scalar( $_POST['form_layout'] ) ? sanitize_text_field( wp_unslash( $_POST['form_layout'] ) ) : '';
+
+		if ( ! in_array( $layout, array( 'post_image', 'post_media' ), true ) ) {
+			return;
+		}
+
 		$post = get_post( $post_id );
+
+		if ( ! $post instanceof WP_Post ) {
+			return;
+		}
 
 		$attachments_html = "\n";
 
