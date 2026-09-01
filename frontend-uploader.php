@@ -1426,6 +1426,7 @@ class Frontend_Uploader {
 			foreach ( (array) $details as $single_error ) {
 				if ( isset( $map[ $error ]['format'] ) ) {
 					// Prepend the array with error message
+					$single_error = (array) $single_error;
 					array_unshift( $single_error, $map[ $error ]['text'] );
 					$message = vsprintf( $map[ $error ]['format'], $single_error );
 				} else {
