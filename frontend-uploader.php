@@ -456,22 +456,27 @@ class Frontend_Uploader {
 			return;
 		}
 
+		$attachments_html = '';
+
+		foreach( (array) $media_ids as $media_id ) {
+			$attachments_html .= wp_get_attachment_image( $media_id, 'full' );
+		}
+
+		// Nothing rendered (no file, or a non-image attachment) -- don't re-save the post to append a bare newline.
+		if ( '' === $attachments_html ) {
+			return;
+		}
+
 		$post = get_post( $post_id );
 
 		if ( ! $post instanceof WP_Post ) {
 			return;
 		}
 
-		$attachments_html = "\n";
-
-		foreach( (array) $media_ids as $media_id ) {
-			$attachments_html .= wp_get_attachment_image( $media_id, 'full' );
-		}
-
 		// add wp_kses_allowed_html filter just in time before we save post
 		add_filter( 'wp_kses_allowed_html', array( $this, 'wp_kses_add_srcset' ), 10, 2 );
 
-		$post->post_content .= $attachments_html;
+		$post->post_content .= "\n" . $attachments_html;
 
 		return wp_update_post( $post, true );
 	}
