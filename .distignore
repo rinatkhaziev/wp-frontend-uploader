@@ -1,0 +1,25 @@
+# Files and directories that should not ship in the plugin package.
+# Consumed by 10up/action-wordpress-plugin-deploy via rsync --exclude-from.
+#
+# screenshot-*.png are deliberately absent: wp.org serves this plugin's
+# screenshots from trunk, since SVN assets/ holds only the banner.
+
+/.git
+/.github
+/.wordpress-org
+/bin
+/tests
+/node_modules
+/vendor
+
+.distignore
+.gitignore
+.gitattributes
+.travis.yml
+composer.json
+composer.lock
+phpunit.xml
+readme.md
+
+.DS_Store
+Thumbs.db
