@@ -148,8 +148,8 @@ class Frontend_Uploader {
 	 * Handle MIME-types:
 	 *
 	 * First we check what's in the plugin setting (if there's nothing we're falling back to Core list)
-	 * If we're falling back to core value, make sure to remove HTML and JS files.
-	 * Then we also explicitly try to remove any variant of PHP, just in case.
+	 * Entries are re-mapped to core's own extension regex => mime-type pair, then filtered by
+	 * mime-type value.
 	 *
 	 * After that we pass the value to the filter,
 	 * so if somebody really wants to shoot in the foot they can do so.
@@ -157,27 +157,63 @@ class Frontend_Uploader {
 	 * @return array the list of allowed for uploading mime types
 	 */
 	function _get_mime_types() {
-		// $mime_types_orig is needed to re-map the values from the settings lib structure to core WP extension regex => mime-type format.
-		remove_filter( 'upload_mimes', [ $this, '_get_mime_types' ], 999 );
+		// Only re-attach when it was attached, or calling this directly applies the list site-wide.
+		$was_filtering = remove_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
 		$mime_types = $mime_types_orig = get_allowed_mime_types();
-		add_filter( 'upload_mimes', [ $this, '_get_mime_types' ], 999 );
+		if ( $was_filtering ) {
+			add_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
+		}
 
 		$enabled = isset( $this->settings['enabled_files'] ) && is_array( $this->settings['enabled_files'] ) && $this->settings['enabled_files'] ? $this->settings['enabled_files'] : $mime_types;
 
+		// Per extension, not a substring test: 'phtml' does not contain 'php'.
+		$executable = '/^(php\d*|phps|pht|phtml?|phar|shtml?|cgi|pl|htaccess|htpasswd)$/i';
+
 		foreach ( $enabled as $ext_key => $mime ) {
-			// Check for PHP.
-			if ( false !== strpos( $mime, 'php' ) ) {
+			$is_executable = false;
+
+			foreach ( explode( '|', (string) $ext_key ) as $extension ) {
+				if ( preg_match( $executable, trim( $extension ) ) ) {
+					$is_executable = true;
+					break;
+				}
+			}
+
+			if ( $is_executable ) {
 				unset( $enabled[ $ext_key ] );
 				trigger_error( __( "Frontend Uploader doesn't support PHP uploads for security reasons", 'frontend-uploader' ) );
+				continue;
+			}
+
+			if ( ! isset( $mime_types_orig[ $ext_key ] ) ) {
+				unset( $enabled[ $ext_key ] );
+				continue;
 			}
 
 			// We need to re-map the value from our settings to the proper MIME-type instead of regex key for mime check to work correctly.
 			$enabled[ $ext_key ] = $mime_types_orig[ $ext_key ];
 		}
 
-		unset( $enabled['htm|html'] );
-		unset( $enabled['js'] );
-		unset( $enabled['svg|svgz'] );
+		// By mime-type, not key: core ships no 'svg' entry, so a key-based unset() catches nothing.
+		$blocked = array(
+			'text/html',
+			'application/xhtml+xml',
+			'image/svg+xml',
+			'application/javascript',
+			'text/javascript',
+			'application/x-javascript',
+			'application/x-shockwave-flash',
+			'application/x-msdownload',
+			'application/x-httpd-php',
+			'application/x-httpd-php-source',
+			'text/x-php',
+		);
+
+		foreach ( $enabled as $ext_key => $mime ) {
+			if ( in_array( $mime, $blocked, true ) ) {
+				unset( $enabled[ $ext_key ] );
+			}
+		}
 
 		/**
 		 * Configuration filter: fu_allowed_mime_types should return array of allowed mime types (see readme)
@@ -268,9 +304,6 @@ class Frontend_Uploader {
 	 * @return array Combined result of media ids and errors if any
 	 */
 	function _upload_files( $post_id = 0 ) {
-		// Only filter mimes just before the upload.
-		add_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
-
 		$media_ids = $errors = array();
 		// Bail if there are no files
 		if ( empty( $_FILES ) )
@@ -279,18 +312,38 @@ class Frontend_Uploader {
 		// File field name could be user defined, so we just get the first file
 		$files = current( $_FILES );
 
-		// There can be multiple files
-		// So we need to iterate over each of the files to process
-		for ( $i = 0; $i < count( $files['name'] ); $i++ ) {
-			$fields = array( 'name', 'type', 'tmp_name', 'error', 'size' );
+		if ( ! isset( $files['name'] ) ) {
+			return array();
+		}
+
+		$fields = array( 'name', 'type', 'tmp_name', 'error', 'size' );
+
+		// A field posted without [] yields scalars rather than arrays.
+		if ( ! is_array( $files['name'] ) ) {
 			foreach ( $fields as $field ) {
-				$k[$field] = $files[$field][$i];
+				$files[ $field ] = array( isset( $files[ $field ] ) ? $files[ $field ] : '' );
+			}
+		}
+
+		$file_count = count( $files['name'] );
+
+		// Attached here rather than on entry: the bails above must not outrun the removal below.
+		add_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
+
+		for ( $i = 0; $i < $file_count; $i++ ) {
+			$k = array();
+			foreach ( $fields as $field ) {
+				$k[ $field ] = isset( $files[ $field ][ $i ] ) ? $files[ $field ][ $i ] : '';
+			}
+
+			// A nested field (name="a[b][]") leaves arrays here, with nothing to sideload.
+			if ( ! is_string( $k['name'] ) || ! is_string( $k['tmp_name'] ) ) {
+				continue;
 			}
 
 			$k['name'] = sanitize_file_name( $k['name'] );
 
-			//
-			if ( $k['error'] === 4 ) {
+			if ( UPLOAD_ERR_NO_FILE === (int) $k['error'] ) {
 				continue;
 			}
 
@@ -348,6 +401,8 @@ class Frontend_Uploader {
 			else
 				$errors['fu-error-media'][] = $k['name'];
 		}
+
+		remove_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
 
 		/**
 		 * $success determines the rest of upload flow
@@ -427,41 +482,43 @@ class Frontend_Uploader {
 	 * @since 0.4
 	 */
 	function _upload_post() {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- upload_content() verifies FU_NONCE before dispatching here.
 		$errors = array();
 		$success = true;
 
-		// Sanitize category if present in request
-		// Allow to supply comma-separated category ids
 		$category = array();
-		if ( isset( $_POST['post_category'] ) ) {
-			foreach ( explode( ',', $_POST['post_category'] ) as $cat_id ) {
+		if ( isset( $_POST['post_category'] ) && is_scalar( $_POST['post_category'] ) ) {
+			$submitted_categories = sanitize_text_field( wp_unslash( $_POST['post_category'] ) );
+
+			foreach ( explode( ',', $submitted_categories ) as $cat_id ) {
 				$category[] = (int) $cat_id;
 			}
 		}
 
-		$post_title = isset( $_POST['caption'] ) ? sanitize_text_field( $_POST['caption'] ) : sanitize_text_field( $_POST['post_title'] );
+		if ( isset( $_POST['caption'] ) ) {
+			$post_title = sanitize_text_field( wp_unslash( $_POST['caption'] ) );
+		} elseif ( isset( $_POST['post_title'] ) ) {
+			$post_title = sanitize_text_field( wp_unslash( $_POST['post_title'] ) );
+		} else {
+			$post_title = '';
+		}
+
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- wp_filter_post_kses() sanitizes and re-slashes; wp_insert_post() expects slashed data.
+		$post_content = isset( $_POST['post_content'] ) ? wp_filter_post_kses( $_POST['post_content'] ) : '';
+
+		$submitted_post_type = isset( $_POST['post_type'] ) && is_scalar( $_POST['post_type'] ) ? sanitize_key( wp_unslash( $_POST['post_type'] ) ) : '';
 
 		// Construct post array;
 		$post_array = array(
-			'post_type' => isset( $_POST['post_type'] ) && $this->is_allowed_post_type( $_POST['post_type'] ) ? sanitize_key( $_POST['post_type'] ) : 'post',
-			'post_title' => $post_title ? $post_title : __( 'Untitled post submission', 'frontend-uploader' ),
-			'post_content' => wp_filter_post_kses( $_POST['post_content'] ),
-			'post_status' => $this->_is_public() ? 'publish' : 'private',
+			'post_type'     => $this->is_allowed_post_type( $submitted_post_type ) ? $submitted_post_type : 'post',
+			'post_title'    => $post_title ? $post_title : __( 'Untitled post submission', 'frontend-uploader' ),
+			'post_content'  => $post_content,
+			'post_status'   => $this->_is_public() ? 'publish' : 'private',
 			'post_category' => $category,
 		);
 
+		// Stored as meta only: resolving this to a user would let anyone post as an administrator.
 		$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
-
-		if ( $author ) {
-			$users = get_users( array(
-				'search' => $author,
-				'fields' => 'ID'
-			) );
-
-			if ( isset( $users[0] ) ) {
-				$post_array['post_author'] = (int) $users[0];
-			}
-		}
 
 		$post_array = apply_filters( 'fu_before_create_post', $post_array );
 
@@ -477,11 +534,11 @@ class Frontend_Uploader {
 			do_action( 'fu_after_create_post', $post_id );
 
 			$this->_save_post_meta_fields( $post_id );
-			// If the author name is not in registered users
-			// Save the author name if it was filled and post was created successfully
 			if ( $author )
 				add_post_meta( $post_id, 'author_name', $author );
 		}
+
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		return array( 'success' => $success, 'post_id' => $post_id, 'errors' => $errors );
 	}
@@ -521,19 +578,32 @@ class Frontend_Uploader {
 		$fields = $result = array();
 
 		// Bail if something fishy is going on
-		if ( !wp_verify_nonce( $_POST['fu_nonce'], FU_NONCE ) ) {
-			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' =>  array( 'fu-nonce-failure' => 1 ) ), wp_get_referer() ) );
+		$fu_nonce = isset( $_POST['fu_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['fu_nonce'] ) ) : '';
+		if ( ! wp_verify_nonce( $fu_nonce, FU_NONCE ) ) {
+			$nonce_error = array(
+				'response' => 'fu-error',
+				'errors'   => array( 'fu-nonce-failure' => 1 ),
+			);
+			wp_safe_redirect( add_query_arg( $nonce_error, wp_get_referer() ) );
 			exit;
 		}
 
 		// Bail if supplied post type is not allowed
-		if ( isset( $_POST['post_type'] ) && ! $this->is_allowed_post_type( sanitize_key( $_POST['post_type'] ) ) ) {
-			wp_safe_redirect( add_query_arg( array( 'response' => 'fu-error', 'errors' => array( 'fu-disallowed-post-type' => sanitize_key( $_POST['post_type'] ) ) ), wp_get_referer() ) );
-			exit;
+		if ( isset( $_POST['post_type'] ) ) {
+			$submitted_post_type = is_scalar( $_POST['post_type'] ) ? sanitize_key( wp_unslash( $_POST['post_type'] ) ) : '';
+
+			if ( ! $this->is_allowed_post_type( $submitted_post_type ) ) {
+				$post_type_error = array(
+					'response' => 'fu-error',
+					'errors'   => array( 'fu-disallowed-post-type' => $submitted_post_type ),
+				);
+				wp_safe_redirect( add_query_arg( $post_type_error, wp_get_referer() ) );
+				exit;
+			}
 		}
 
-		$form_post_id = isset( $_POST['form_post_id'] ) ? (int) $_POST['form_post_id'] : 0;
-		$hash = sanitize_text_field( $_POST['ff'] );
+		$form_post_id      = isset( $_POST['form_post_id'] ) ? (int) $_POST['form_post_id'] : 0;
+		$hash              = isset( $_POST['ff'] ) && is_scalar( $_POST['ff'] ) ? sanitize_text_field( wp_unslash( $_POST['ff'] ) ) : '';
 		$this->form_fields = !empty( $this->form_fields ) ? $this->form_fields : $this->_get_fields_for_form( $form_post_id, $hash );
 
 		$layout = isset( $_POST['form_layout'] ) && ! empty( $_POST['form_layout'] ) ? sanitize_text_field( $_POST['form_layout'] ) : 'image';
@@ -768,7 +838,7 @@ class Frontend_Uploader {
 	 * @return boolean
 	 */
 	function is_allowed_post_type( $post_type = 'post' ) {
-		return in_array( $post_type, $this->settings['enabled_post_types'], true );
+		return in_array( $post_type, $this->get_enabled_post_types(), true );
 	}
 
 	/**
@@ -840,7 +910,7 @@ class Frontend_Uploader {
 	 */
 	function approve_post() {
 		// check for permissions and id
-		$post = $this->authorize_ugc_action( 'approve-post', 'edit_post', $this->get_moderatable_post_types() );
+		$post = $this->authorize_ugc_action( 'approve-post', 'edit_post', $this->get_enabled_post_types() );
 
 		// Publishing is its own right; the 'publish_post' meta cap is WP 6.1+, so check the post type's.
 		if ( false !== $post ) {
@@ -886,7 +956,7 @@ class Frontend_Uploader {
 	 */
 	function delete_post() {
 		$args = array();
-		$post = $this->authorize_ugc_action( 'delete', 'delete_post', array_merge( array( 'attachment' ), $this->get_moderatable_post_types() ) );
+		$post = $this->authorize_ugc_action( 'delete', 'delete_post', array_merge( array( 'attachment' ), $this->get_enabled_post_types() ) );
 
 		if ( false !== $post && wp_delete_post( $post->ID, true ) ) {
 			$args['deleted'] = 1;
@@ -947,13 +1017,16 @@ class Frontend_Uploader {
 	}
 
 	/**
-	 * Post types the plugin moderates
+	 * Post types the plugin accepts submissions for and moderates
+	 *
+	 * Normalizes both shapes the setting takes: key => label before the settings page is
+	 * saved, key => key after.
 	 *
 	 * @since 1.3.5
 	 *
 	 * @return array Registered post type names.
 	 */
-	private function get_moderatable_post_types() {
+	private function get_enabled_post_types() {
 		$enabled = array_filter( (array) $this->settings['enabled_post_types'] );
 		$keys    = array_keys( $enabled );
 		$names   = $keys && is_string( $keys[0] ) ? $keys : array_values( $enabled );
@@ -1024,7 +1097,7 @@ class Frontend_Uploader {
 		if ( $type === 'hidden' )
 			return $input;
 
-		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
+		$label = $this->html->element( 'label', $description, array( 'for' => $id ) );
 
 		$help = isset( $help ) && $help ? $this->html->element( 'p', sanitize_text_field( $help ), array( 'class' => 'ugc-help' ) ) : '';
 
@@ -1042,7 +1115,7 @@ class Frontend_Uploader {
 
 		$help = isset( $help ) && $help ? $this->html->element( 'p', sanitize_text_field( $help ), array( 'class' => 'ugc-help' ) ) : '';
 
-		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
+		$label = $this->html->element( 'label', $description, array( 'for' => $id ) );
 
 		// Render WYSIWYG textarea
 		if ( $wysiwyg_enabled ) {
@@ -1061,7 +1134,7 @@ class Frontend_Uploader {
 
 		$element = $this->html->element( 'textarea', '', array( 'name' => $name, 'id' => $id, 'class' => $class, 'minlength' => $minlength, 'maxlength' => $maxlength, 'required' => $required ) );
 		// Render plain textarea
-		$label = $this->html->element( 'label', $description, array( 'for' => $id ), false );
+		$label = $this->html->element( 'label', $description, array( 'for' => $id ) );
 
 		return $this->html->element( 'div', $label  . $element . $help, array( 'class' => 'ugc-input-wrapper' ), false );
 	}
@@ -1090,7 +1163,8 @@ class Frontend_Uploader {
 			$options .= $this->html->_checkbox( $name, isset( $kv[1] ) ? $kv[1] : $kv[0], $kv[0], $atts, array() );
 		}
 
-		$description = $label = $this->html->element( 'label', $description, array(), false );
+		$label       = $this->html->element( 'label', $description, array() );
+		$description = $label;
 
 		// Render select field
 		$element = $this->html->element( 'div', $description  . $help . $options, array( 'class' => 'checkbox-wrapper ' . $class ), false );
@@ -1119,7 +1193,7 @@ class Frontend_Uploader {
 		}
 
 		//Render
-		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
+		$label = $this->html->element( 'label', $description, array( 'for' => $id ) );
 
 		return $this->html->element( 'div', $label . $help . $options, array( 'class' => 'ugc-input-wrapper ' . $class ), false );
 	}
@@ -1141,11 +1215,11 @@ class Frontend_Uploader {
 			$kv = explode( ":", $option );
 			$caption = isset( $kv[1] ) ? $kv[1] : $kv[0];
 
-			$options .= $this->html->element( 'option', $caption, array( 'value' => $kv[0] ), false );
+			$options .= $this->html->element( 'option', $caption, array( 'value' => $kv[0] ) );
 		}
 
 		//Render select field
-		$label = $this->html->element( 'label', $description , array( 'for' => $id ), false );
+		$label = $this->html->element( 'label', $description, array( 'for' => $id ) );
 
 		$element =$this->html->element( 'select', $options, array(
 			'name' => $name,
@@ -1448,7 +1522,8 @@ class Frontend_Uploader {
 		if ( empty( $res ) || !is_array( $res ) )
 			return;
 
-		array_walk_recursive( $res, 'sanitize_text_field' );
+		// map_deep() returns the sanitized copy; array_walk_recursive() would discard it.
+		$res = map_deep( $res, 'sanitize_text_field' );
 
 		$output = '';
 		$map = apply_filters( 'fu_response_notices', array(
@@ -1527,10 +1602,22 @@ class Frontend_Uploader {
 			// We might have multiple errors of the same type, let's walk through them
 			foreach ( (array) $details as $single_error ) {
 				if ( isset( $map[ $error ]['format'] ) ) {
+					// $errors comes from the query string, so the arg count is attacker-controlled.
+					$single_error = array_map(
+						function ( $arg ) {
+							return is_scalar( $arg ) ? (string) $arg : '';
+						},
+						array_values( (array) $single_error )
+					);
+
 					// Prepend the array with error message
-					$single_error = (array) $single_error;
 					array_unshift( $single_error, $map[ $error ]['text'] );
-					$message = vsprintf( $map[ $error ]['format'], $single_error );
+
+					$arity = preg_match_all( '/%(\d+)\$/', $map[ $error ]['format'], $matches )
+						? max( array_map( 'intval', $matches[1] ) )
+						: 0;
+
+					$message = vsprintf( $map[ $error ]['format'], array_pad( $single_error, $arity, '' ) );
 				} else {
 					$message = $map[ $error ]['text'];
 				}
