@@ -306,10 +306,6 @@ class Frontend_Uploader {
 	function _upload_files( $post_id = 0 ) {
 		$media_ids = $errors = array();
 
-		/*
-		 * Callers read $result['success'] unconditionally, so the bails below return the same
-		 * shape as the normal path. No files is not an error, matching $success below.
-		 */
 		$no_files = array(
 			'success'   => true,
 			'media_ids' => array(),
