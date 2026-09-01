@@ -3,17 +3,6 @@ name: Deploy to WordPress.org
 on:
   release:
     types: [published]
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to deploy, e.g. 1.3.5. Must match a tag and the readme.txt stable tag.'
-        required: true
-        type: string
-      dry-run:
-        description: 'Run without committing to SVN'
-        required: false
-        default: true
-        type: boolean
 
 jobs:
   deploy:
@@ -23,17 +12,11 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.ref }}
 
       - name: Deploy to WordPress.org
         uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # 2.3.0
-        with:
-          dry-run: ${{ inputs.dry-run || false }}
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           # The wp.org slug is not the repository name, which the action would otherwise use.
           SLUG: frontend-uploader
-          # Empty on release, where the action derives the version from the tag.
-          VERSION: ${{ inputs.version }}
