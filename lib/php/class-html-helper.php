@@ -25,9 +25,12 @@ class Html_Helper {
 				echo wp_kses_post( $this->element( 'p', $description ) );
 			}
 			echo '<input type="hidden" name="' . esc_attr( $name ) .'" value="" />';
+			$checked = array_map( 'sanitize_text_field', (array) $checked );
+
 			foreach ( (array) $data as $item ) {
-				$is_checked = in_array( $item, (array) $checked, true );
+				// Compare after sanitizing, so the checked state matches the value submitted.
 				$item       = sanitize_text_field( $item );
+				$is_checked = in_array( $item, $checked, true );
 				echo '<div class="sm-input-wrapper">';
 				echo '<input type="checkbox" name="' . esc_attr( $name ) . '[]" value="' . esc_attr( $item ) . '" id="' . esc_attr( $name ) . esc_attr( $item ) . '"' . checked( $is_checked, true, false ) . ' />';
 				echo '<label for="' .esc_attr( $name ) . esc_attr( $item )  . '">' . esc_attr ( $item ) . '</label>';

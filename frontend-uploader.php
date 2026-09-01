@@ -181,7 +181,14 @@ class Frontend_Uploader {
 
 			if ( $is_executable ) {
 				unset( $enabled[ $ext_key ] );
-				trigger_error( __( "Frontend Uploader doesn't support PHP uploads for security reasons", 'frontend-uploader' ) );
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error -- pre-existing developer notice.
+				trigger_error(
+					sprintf(
+						/* translators: %s: the blocked extension key, e.g. "phtml". */
+						esc_html__( 'Frontend Uploader blocks uploads of executable file types for security reasons: %s', 'frontend-uploader' ),
+						esc_html( $ext_key )
+					)
+				);
 				continue;
 			}
 
