@@ -305,15 +305,26 @@ class Frontend_Uploader {
 	 */
 	function _upload_files( $post_id = 0 ) {
 		$media_ids = $errors = array();
+
+		/*
+		 * Callers read $result['success'] unconditionally, so the bails below return the same
+		 * shape as the normal path. No files is not an error, matching $success below.
+		 */
+		$no_files = array(
+			'success'   => true,
+			'media_ids' => array(),
+			'errors'    => array(),
+		);
+
 		// Bail if there are no files
 		if ( empty( $_FILES ) )
-			return array();
+			return $no_files;
 
 		// File field name could be user defined, so we just get the first file
 		$files = current( $_FILES );
 
 		if ( ! isset( $files['name'] ) ) {
-			return array();
+			return $no_files;
 		}
 
 		$fields = array( 'name', 'type', 'tmp_name', 'error', 'size' );
@@ -504,7 +515,7 @@ class Frontend_Uploader {
 		}
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- wp_filter_post_kses() sanitizes and re-slashes; wp_insert_post() expects slashed data.
-		$post_content = isset( $_POST['post_content'] ) ? wp_filter_post_kses( $_POST['post_content'] ) : '';
+		$post_content = isset( $_POST['post_content'] ) && is_scalar( $_POST['post_content'] ) ? wp_filter_post_kses( (string) $_POST['post_content'] ) : '';
 
 		$submitted_post_type = isset( $_POST['post_type'] ) && is_scalar( $_POST['post_type'] ) ? sanitize_key( wp_unslash( $_POST['post_type'] ) ) : '';
 
@@ -518,7 +529,8 @@ class Frontend_Uploader {
 		);
 
 		// Stored as meta only: resolving this to a user would let anyone post as an administrator.
-		$author = isset( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- add_post_meta() unslashes; unslashing here too would mangle names like O'Brien.
+		$author = isset( $_POST['post_author'] ) && is_scalar( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
 
 		$post_array = apply_filters( 'fu_before_create_post', $post_array );
 
@@ -606,7 +618,7 @@ class Frontend_Uploader {
 		$hash              = isset( $_POST['ff'] ) && is_scalar( $_POST['ff'] ) ? sanitize_text_field( wp_unslash( $_POST['ff'] ) ) : '';
 		$this->form_fields = !empty( $this->form_fields ) ? $this->form_fields : $this->_get_fields_for_form( $form_post_id, $hash );
 
-		$layout = isset( $_POST['form_layout'] ) && ! empty( $_POST['form_layout'] ) ? sanitize_text_field( $_POST['form_layout'] ) : 'image';
+		$layout = isset( $_POST['form_layout'] ) && is_scalar( $_POST['form_layout'] ) && ! empty( $_POST['form_layout'] ) ? sanitize_text_field( wp_unslash( $_POST['form_layout'] ) ) : 'image';
 
 		/**
 		 * Utility hook 'fu_should_process_content_upload': maybe terminate upload early (useful for Akismet integration, etc)
