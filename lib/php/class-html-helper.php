@@ -39,13 +39,13 @@ class Html_Helper {
 		}
 	}
 
-	function _checkbox( $name = '', $description = '', $value = '', $atts, $checked = array() ) {
+	function _checkbox( $name, $description, $value, $atts, $checked = array() ) {
 		// Generate unique id to make label clickable
 		$rnd_id = uniqid( 'uniq-label-id-' );
 		return '<div class="checkbox-option-wrapper"><input type="checkbox" id="' . esc_attr( $rnd_id ) . '" value="'. esc_attr( $value ) . '" name="' . esc_attr( $name ) . '" '.$this->_format_attributes( $atts ) . ' /><label for="' . esc_attr( $rnd_id ) . '">' .  esc_html ($description ) . '</label></div>';
 	}
 
-	function _radio( $name = '', $description = '', $value = '', $atts, $checked = array() ) {
+	function _radio( $name, $description, $value, $atts, $checked = array() ) {
 		// Generate unique id to make label clickable
 		$rnd_id = uniqid( 'uniq-label-id-' );
 		return '<div class="checkbox-option-wrapper"><input type="radio" id="' . esc_attr( $rnd_id ) . '" value="'. esc_attr( $value ) . '" name="' . esc_attr( $name ) . '" '.$this->_format_attributes( $atts ) . ' /><label for="' . esc_attr( $rnd_id ) . '">' .  esc_html ($description ) . '</label></div>';
@@ -99,7 +99,7 @@ class Html_Helper {
 			return $this->_text( $name, $type,  $data, $attrs ) ;
 			break;
 		case 'radio':
-			return $this->_radio( $name, $data, $attrs ) ;
+			return $this->_radio( $name, '', $data, $attrs );
 		default:
 			return;
 		}
@@ -121,7 +121,7 @@ class Html_Helper {
 	 *
 	 * @access private
 	 */
-	function _select( $name, $data = array(), $attrs ) {
+	function _select( $name, $data, $attrs ) {
 		$ret  = '';
 		foreach ( (array) $data as $key => $value ) {
 			$attrs_to_pass = array( 'value' => $key );

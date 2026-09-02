@@ -7,7 +7,7 @@ Version: 1.3.5
 Author URI: https://rinat.dev/
 Text Domain: frontend-uploader
 Requires at least: 4.6
-Requires PHP: 7.2
+Requires PHP: 8.0
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
 
@@ -663,7 +663,7 @@ class Frontend_Uploader {
 			break;
 			// Upload the post first, and then upload media and attach to the post
 		case 'post_image':
-		case 'post_media';
+		case 'post_media':
 			$result = $this->_upload_post();
 
 
@@ -1076,7 +1076,7 @@ class Frontend_Uploader {
 	 * @param unknown $content not used
 	 * @param string $tag
 	 */
-	function shortcode_content_parser( $atts, $content = null, $tag ) {
+	function shortcode_content_parser( $atts, $content, $tag ) {
 		$atts = shortcode_atts( array(
 				'id' =>  isset( $atts['name'] ) ? 'ugc-input-' . sanitize_key( $atts['name'] ) : '' ,
 				'name' => '',

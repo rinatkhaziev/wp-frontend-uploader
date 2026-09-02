@@ -1,0 +1,44 @@
+name: PHPUnit
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  phpunit:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - '8.0'
+          - '8.1'
+          - '8.2'
+          - '8.3'
+          - '8.4'
+          - '8.5'
+    env:
+      WP_ENV_PHP_VERSION: ${{ matrix.php }}
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Start WordPress
+        run: npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json start
+
+      - name: Install PHP dependencies
+        run: npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer install --no-interaction --prefer-dist
+
+      - name: Run PHP tests
+        run: npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer test
+
+      - name: Stop WordPress
+        if: always()
+        run: npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json stop
