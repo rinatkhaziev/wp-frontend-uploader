@@ -47,16 +47,28 @@ npx --yes --package=@wordpress/env wp-env start
 npx --yes --package=@wordpress/env wp-env status
 ```
 
-Install the PHP test dependencies inside the environment:
+Automated tests use a separate `wp-env` configuration and database, so they do not reset the development site. Start the test environment:
 
 ```sh
-npx --yes --package=@wordpress/env wp-env run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer install
+npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json start
+```
+
+Install the PHP test dependencies inside the test environment:
+
+```sh
+npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer install
 ```
 
 Run the syntax checks and PHPUnit suite:
 
 ```sh
-npx --yes --package=@wordpress/env wp-env run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer test
+npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer test
+```
+
+Stop the test environment when you are finished:
+
+```sh
+npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json stop
 ```
 
 Sign in with username `admin` and password `password`, then smoke-test the plugin:
@@ -72,4 +84,4 @@ Stop the environment without deleting its data:
 npx --yes --package=@wordpress/env wp-env stop
 ```
 
-To remove the environment and its local WordPress data completely, run `npx --yes --package=@wordpress/env wp-env destroy`.
+To remove the development environment and its local WordPress data completely, run `npx --yes --package=@wordpress/env wp-env destroy`.

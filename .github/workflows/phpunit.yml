@@ -27,14 +27,14 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Start WordPress
-        run: npx --yes --package=@wordpress/env wp-env start
+        run: npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json start
 
       - name: Install PHP dependencies
-        run: npx --yes --package=@wordpress/env wp-env run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer install --no-interaction --prefer-dist
+        run: npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer install --no-interaction --prefer-dist
 
       - name: Run PHP tests
-        run: npx --yes --package=@wordpress/env wp-env run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer test
+        run: npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer test
 
       - name: Stop WordPress
         if: always()
-        run: npx --yes --package=@wordpress/env wp-env stop
+        run: npx --yes --package=@wordpress/env wp-env --config=.wp-env.phpunit.json stop
