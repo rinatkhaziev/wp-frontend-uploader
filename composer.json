@@ -10,14 +10,31 @@
 		}
 	],
 	"minimum-stability": "beta",
+	"require": {
+		"php": ">=8.0"
+	},
 	"require-dev": {
-		"phpcompatibility/phpcompatibility-wp": "*"
+		"php-parallel-lint/php-parallel-lint": "^1.4",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"phpunit/phpunit": "^9.6",
+		"yoast/phpunit-polyfills": "^4.0"
 	},
 	"scripts": {
-		"php:compatibility": "vendor/bin/phpcs -p -s --standard=PHPCompatibilityWP --runtime-set testVersion 7.2- --ignore=docker,tools,tests,node_modules,vendor,packages/*/wordpress --extensions=php .",
+		"php:compatibility": "vendor/bin/phpcs -p -s --standard=PHPCompatibilityWP --runtime-set testVersion 8.0- --ignore=docker,tools,tests,node_modules,vendor,packages/*/wordpress --extensions=php .",
 		"php:lint": "vendor/bin/phpcs -p -s",
 		"php:changed": "vendor/sirbrillig/phpcs-changed/bin/phpcs-changed --git",
 		"php:autofix": "vendor/bin/phpcbf",
-		"php:lint:errors": "vendor/bin/phpcs -p -s --runtime-set ignore_warnings_on_exit 1"
+		"php:lint:errors": "vendor/bin/phpcs -p -s --runtime-set ignore_warnings_on_exit 1",
+		"php:syntax": "parallel-lint --show-deprecated --exclude vendor .",
+		"test:phpunit": "phpunit",
+		"test": [
+			"@php:syntax",
+			"@test:phpunit"
+		]
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	}
 }
