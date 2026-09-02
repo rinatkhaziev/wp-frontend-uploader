@@ -47,6 +47,18 @@ npx --yes --package=@wordpress/env wp-env start
 npx --yes --package=@wordpress/env wp-env status
 ```
 
+Install the PHP test dependencies inside the environment:
+
+```sh
+npx --yes --package=@wordpress/env wp-env run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer install
+```
+
+Run the syntax checks and PHPUnit suite:
+
+```sh
+npx --yes --package=@wordpress/env wp-env run cli --env-cwd=wp-content/plugins/wp-frontend-uploader composer test
+```
+
 Sign in with username `admin` and password `password`, then smoke-test the plugin:
 
 1. Review the plugin options under **Settings > Frontend Uploader Settings**.
