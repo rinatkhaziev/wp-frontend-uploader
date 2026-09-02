@@ -1,0 +1,6 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
+	"plugins": [ "." ],
+	"autoPort": true,
+	"testsEnvironment": false
+}
