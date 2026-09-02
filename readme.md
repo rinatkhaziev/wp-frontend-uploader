@@ -24,3 +24,40 @@ This plugin gives you an ability to easily accept, moderate and publish user gen
 ## Developers
 
 Miss a feature? Pull requests are welcome.
+
+## Local testing with wp-env
+
+You can use [`wp-env`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) to start a local WordPress site with this plugin mounted and activated.
+
+Before starting, make sure Node.js and Docker with the Compose plugin are available. [Docker Desktop](https://www.docker.com/products/docker-desktop/) includes Docker Compose. Confirm that Docker is running and Compose can be found:
+
+```sh
+docker compose version
+```
+
+Then, from this repository, run:
+
+```sh
+npx --yes --package=@wordpress/env wp-env start
+```
+
+`wp-env` selects an available port and prints the local site URL. You can also display it with:
+
+```sh
+npx --yes --package=@wordpress/env wp-env status
+```
+
+Sign in with username `admin` and password `password`, then smoke-test the plugin:
+
+1. Review the plugin options under **Settings > Frontend Uploader Settings**.
+2. Create a page containing the `[fu-upload-form]` shortcode.
+3. View the page and submit an allowed image.
+4. Review the submission under **Media > Manage UGC**.
+
+Stop the environment without deleting its data:
+
+```sh
+npx --yes --package=@wordpress/env wp-env stop
+```
+
+To remove the environment and its local WordPress data completely, run `npx --yes --package=@wordpress/env wp-env destroy`.
