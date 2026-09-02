@@ -3,7 +3,7 @@ Contributors: rinatkhaziev, danielbachhuber, jtrees
 Donate link: https://www.paypal.me/RinatK
 Tags: frontend, image, images, media, uploader, upload, video, audio, photo, photos, picture, pictures, file, user generated content, ugc, frontend upload
 Requires at least: 4.6
-Requires PHP: 7.2
+Requires PHP: 8.0
 Tested up to: 7.1
 Stable tag: 1.3.5
 License: GPLv2 or later
