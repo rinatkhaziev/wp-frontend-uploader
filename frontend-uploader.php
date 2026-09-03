@@ -1404,6 +1404,18 @@ class Frontend_Uploader {
 			}
 		}
 
+		// Show the optional guest byline even when the other default fields are suppressed.
+		if ( isset( $this->settings['show_author'] ) && 'on' === $this->settings['show_author'] ) {
+			echo $this->shortcode_content_parser( array(
+					'type' => 'text',
+					'role' => 'author',
+					'name' => 'post_author',
+					'id' => 'ug_post_author',
+					'class' => '',
+					'description' => __( 'Author', 'frontend-uploader' ),
+				), null, 'input' );
+		}
+
 		// Parse nested shortcodes
 		if ( $content )
 			echo do_shortcode( $content );

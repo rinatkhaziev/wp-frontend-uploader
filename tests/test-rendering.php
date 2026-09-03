@@ -116,6 +116,56 @@ class Frontend_Uploader_Rendering_Test extends Frontend_Uploader_Test_Case {
 		$this->assertStringContainsString( 'name="files[]"', $form );
 	}
 
+	public function test_author_setting_renders_guest_byline_when_default_fields_are_suppressed() {
+		$page_id         = self::factory()->post->create( array( 'post_type' => 'page' ) );
+		$GLOBALS['post'] = get_post( $page_id );
+		setup_postdata( $GLOBALS['post'] );
+
+		$this->fu->settings = array_merge(
+			(array) $this->fu->settings,
+			array(
+				'enable_recaptcha_protection' => 'off',
+				'show_author'                 => 'on',
+			)
+		);
+
+		$form = $this->fu->upload_form(
+			array(
+				'form_layout'            => 'post',
+				'post_id'                => $page_id,
+				'suppress_default_fields' => true,
+			)
+		);
+
+		$this->assertStringContainsString( 'name="post_author"', $form );
+		$this->assertStringContainsString( 'Author</label>', $form );
+
+		preg_match( '/name="ff" value="([a-f0-9]+)"/', $form, $hash_match );
+		$fields = $this->fu->_get_fields_for_form( $page_id, $hash_match[1] );
+		$this->assertSame( array( 'post_author' ), $fields['author'] );
+
+		wp_reset_postdata();
+	}
+
+	public function test_disabled_author_setting_does_not_render_guest_byline() {
+		$this->fu->settings = array_merge(
+			(array) $this->fu->settings,
+			array(
+				'enable_recaptcha_protection' => 'off',
+				'show_author'                 => 'off',
+			)
+		);
+
+		$form = $this->fu->upload_form(
+			array(
+				'form_layout'            => 'post',
+				'suppress_default_fields' => true,
+			)
+		);
+
+		$this->assertStringNotContainsString( 'name="post_author"', $form );
+	}
+
 	public function test_image_form_without_parent_omits_parent_nonce_and_append_flag() {
 		$this->fu->settings = array_merge(
 			(array) $this->fu->settings,
