@@ -129,6 +129,32 @@ class Frontend_Uploader_Uploads_Test extends Frontend_Uploader_Test_Case {
 		}
 	}
 
+	public function test_guest_author_is_saved_on_successful_attachment_in_partial_batch() {
+		$upload = $this->create_png_upload( 'successful.png' );
+		$result = array();
+
+		try {
+			$this->fu->allowed_mime_types = array( 'png' => 'image/png' );
+			$_POST['post_author']          = 'Partial Visitor';
+			$_FILES['files']               = array(
+				'name'     => array( $upload['name'], 'failed.png' ),
+				'type'     => array( $upload['type'], 'image/png' ),
+				'tmp_name' => array( $upload['tmp_name'], '' ),
+				'error'    => array( $upload['error'], UPLOAD_ERR_INI_SIZE ),
+				'size'     => array( $upload['size'], 0 ),
+			);
+
+			$result = $this->fu->_upload_files();
+
+			$this->assertFalse( $result['success'] );
+			$this->assertCount( 1, $result['media_ids'] );
+			$this->assertSame( UPLOAD_ERR_INI_SIZE, $result['errors']['fu-error-media'][0]['code'] );
+			$this->assertSame( 'Partial Visitor', get_post_meta( $result['media_ids'][0], 'author_name', true ) );
+		} finally {
+			$this->delete_uploaded_media( $result, array( $upload['tmp_name'] ) );
+		}
+	}
+
 	public function test_guest_author_is_saved_on_combined_post_and_media_submission() {
 		$upload      = $this->create_png_upload( 'combined.png' );
 		$post_result = array();

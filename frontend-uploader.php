@@ -410,10 +410,12 @@ class Frontend_Uploader {
 			// Trying to upload the file
 			$upload_id = media_handle_sideload( $m, (int) $post_id, $post_overrides['post_title'], $post_overrides );
 
-			if ( !is_wp_error( $upload_id ) )
+			if ( !is_wp_error( $upload_id ) ) {
 				$media_ids[] = $upload_id;
-			else
+				$this->_save_guest_author_name( $upload_id );
+			} else {
 				$errors['fu-error-media'][] = $k['name'];
+			}
 		}
 
 		remove_filter( 'upload_mimes', array( $this, '_get_mime_types' ), 999 );
@@ -427,7 +429,6 @@ class Frontend_Uploader {
 		if ( $success ) {
 			foreach ( $media_ids as $media_id ) {
 				$this->_save_post_meta_fields( $media_id );
-				$this->_save_guest_author_name( $media_id );
 			}
 		}
 
