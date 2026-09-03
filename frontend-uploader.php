@@ -551,10 +551,6 @@ class Frontend_Uploader {
 			'post_category' => $category,
 		);
 
-		// Stored as meta only: resolving this to a user would let anyone post as an administrator.
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- add_post_meta() unslashes; unslashing here too would mangle names like O'Brien.
-		$author = isset( $_POST['post_author'] ) && is_scalar( $_POST['post_author'] ) ? sanitize_text_field( $_POST['post_author'] ) : '';
-
 		$post_array = apply_filters( 'fu_before_create_post', $post_array );
 
 		$post_id = wp_insert_post( $post_array, true );
@@ -569,13 +565,38 @@ class Frontend_Uploader {
 			do_action( 'fu_after_create_post', $post_id );
 
 			$this->_save_post_meta_fields( $post_id );
-			if ( $author )
-				add_post_meta( $post_id, 'author_name', $author );
+			$this->_save_guest_author_name( $post_id );
 		}
 
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		return array( 'success' => $success, 'post_id' => $post_id, 'errors' => $errors );
+	}
+
+	/**
+	 * Store the submitted guest byline as post metadata.
+	 *
+	 * The value is deliberately not resolved to a WordPress user ID, because an
+	 * anonymous submitter must not be able to select the author account.
+	 *
+	 * @param int $post_id Post or attachment ID.
+	 * @return int|false Meta ID on success, false when there is nothing to store.
+	 */
+	private function _save_guest_author_name( $post_id ) {
+		$post_id = (int) $post_id;
+
+		if ( 0 === $post_id || ! isset( $_POST['post_author'] ) || ! is_scalar( $_POST['post_author'] ) ) {
+			return false;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- upload_content() verifies FU_NONCE; add_post_meta() unslashes, so unslashing here too would mangle names like O'Brien.
+		$author = sanitize_text_field( $_POST['post_author'] );
+
+		if ( '' === $author ) {
+			return false;
+		}
+
+		return add_post_meta( $post_id, 'author_name', $author, true );
 	}
 
 	private function _save_post_meta_fields( $post_id = 0 ) {

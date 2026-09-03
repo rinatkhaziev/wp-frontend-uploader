@@ -69,7 +69,20 @@ class Frontend_Uploader_Submissions_Test extends Frontend_Uploader_Test_Case {
 		$this->assertSame( 'post', $post->post_type );
 		$this->assertSame( 'Untitled post submission', $post->post_title );
 		$this->assertSame( '', $post->post_content );
-		$this->assertSame( '', get_post_meta( $post->ID, 'author_name', true ) );
+		$this->assertFalse( metadata_exists( 'post', $post->ID, 'author_name' ) );
+	}
+
+	public function test_empty_guest_author_is_not_persisted() {
+		$_POST = array(
+			'post_type'   => 'post',
+			'post_title'  => 'Anonymous submission',
+			'post_author' => '   ',
+		);
+
+		$result = $this->fu->_upload_post();
+
+		$this->assertTrue( $result['success'] );
+		$this->assertFalse( metadata_exists( 'post', $result['post_id'], 'author_name' ) );
 	}
 
 	public function test_disallowed_post_type_falls_back_to_post() {
