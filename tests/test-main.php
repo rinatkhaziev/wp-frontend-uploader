@@ -3,13 +3,7 @@
  * Frontend Uploader integration tests.
  */
 
-class Frontend_Uploader_UnitTestCase extends WP_UnitTestCase {
-	protected $fu;
-
-	public function set_up() {
-		parent::set_up();
-		$this->fu = $GLOBALS['frontend_uploader'];
-	}
+class Frontend_Uploader_UnitTestCase extends Frontend_Uploader_Test_Case {
 
 	public function test_plugin_is_loaded() {
 		$this->assertInstanceOf( Frontend_Uploader::class, $this->fu );

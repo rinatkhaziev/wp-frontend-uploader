@@ -1097,7 +1097,15 @@ class Frontend_Uploader {
 
 		extract( $atts );
 
-		$role = in_array( $role, array( 'meta', 'title', 'description', 'author', 'internal', 'content' ), true ) ? $role : 'meta';
+		if ( 'file' === $type ) {
+			$role = 'file';
+			if ( '' === $name ) {
+				$name         = 'files';
+				$atts['name'] = $name;
+			}
+		}
+
+		$role = in_array( $role, array( 'meta', 'title', 'description', 'author', 'internal', 'content', 'file' ), true ) ? $role : 'meta';
 		$name = sanitize_text_field( $name );
 		// Add the field to fields map
 		$this->form_fields[$role][] = $name;
@@ -1124,7 +1132,7 @@ class Frontend_Uploader {
 		// Allow multiple file upload by default.
 		// To do so, we need to add array notation to name field: []
 		if ( !strpos( $name, '[]' ) && $type === 'file' )
-			$name = 'files' . '[]';
+			$name .= '[]';
 
 		$input = $this->html->input( $type, $name, $value, $atts );
 
