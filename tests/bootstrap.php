@@ -29,3 +29,5 @@ function frontend_uploader_manually_load_plugin() {
 tests_add_filter( 'muplugins_loaded', 'frontend_uploader_manually_load_plugin' );
 
 require $_tests_dir . '/includes/bootstrap.php';
+
+require_once __DIR__ . '/includes/class-frontend-uploader-test-case.php';
