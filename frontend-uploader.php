@@ -427,6 +427,7 @@ class Frontend_Uploader {
 		if ( $success ) {
 			foreach ( $media_ids as $media_id ) {
 				$this->_save_post_meta_fields( $media_id );
+				$this->_save_guest_author_name( $media_id );
 			}
 		}
 

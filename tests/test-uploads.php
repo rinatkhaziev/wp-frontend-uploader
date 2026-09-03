@@ -4,6 +4,32 @@
  */
 
 class Frontend_Uploader_Uploads_Test extends Frontend_Uploader_Test_Case {
+	private function create_png_upload( $name ) {
+		$tmp_name = wp_tempnam( $name );
+		$png      = base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=' );
+		file_put_contents( $tmp_name, $png );
+
+		return array(
+			'name'     => $name,
+			'type'     => 'image/png',
+			'tmp_name' => $tmp_name,
+			'error'    => 0,
+			'size'     => filesize( $tmp_name ),
+		);
+	}
+
+	private function delete_uploaded_media( $result, $temporary_files ) {
+		foreach ( isset( $result['media_ids'] ) ? $result['media_ids'] : array() as $media_id ) {
+			wp_delete_attachment( $media_id, true );
+		}
+
+		foreach ( $temporary_files as $temporary_file ) {
+			if ( file_exists( $temporary_file ) ) {
+				unlink( $temporary_file );
+			}
+		}
+	}
+
 	public function test_no_files_is_a_successful_no_op() {
 		$this->assertSame(
 			array(
@@ -71,6 +97,66 @@ class Frontend_Uploader_Uploads_Test extends Frontend_Uploader_Test_Case {
 			$this->assertFalse( has_filter( 'upload_mimes', array( $this->fu, '_get_mime_types' ) ) );
 		} finally {
 			unlink( $tmp_name );
+		}
+	}
+
+	public function test_guest_author_is_saved_on_every_successful_attachment() {
+		$first  = $this->create_png_upload( 'first.png' );
+		$second = $this->create_png_upload( 'second.png' );
+		$result = array();
+
+		try {
+			$this->fu->allowed_mime_types = array( 'png' => 'image/png' );
+			$_POST['post_author']          = 'Visitor <script>alert(1)</script>';
+			$_FILES['files']               = array(
+				'name'     => array( $first['name'], $second['name'] ),
+				'type'     => array( $first['type'], $second['type'] ),
+				'tmp_name' => array( $first['tmp_name'], $second['tmp_name'] ),
+				'error'    => array( $first['error'], $second['error'] ),
+				'size'     => array( $first['size'], $second['size'] ),
+			);
+
+			$result = $this->fu->_upload_files();
+
+			$this->assertTrue( $result['success'] );
+			$this->assertCount( 2, $result['media_ids'] );
+			foreach ( $result['media_ids'] as $media_id ) {
+				$this->assertSame( 'Visitor', get_post_meta( $media_id, 'author_name', true ) );
+				$this->assertSame( 0, (int) get_post( $media_id )->post_author );
+			}
+		} finally {
+			$this->delete_uploaded_media( $result, array( $first['tmp_name'], $second['tmp_name'] ) );
+		}
+	}
+
+	public function test_guest_author_is_saved_on_combined_post_and_media_submission() {
+		$upload      = $this->create_png_upload( 'combined.png' );
+		$post_result = array();
+		$file_result = array();
+
+		try {
+			$this->fu->settings['enabled_post_types'] = array( 'post' => 'Posts' );
+			$this->fu->allowed_mime_types             = array( 'png' => 'image/png' );
+			$_POST                                    = array(
+				'post_type'   => 'post',
+				'post_title'  => 'Combined submission',
+				'post_author' => 'Combined Visitor',
+			);
+			$_FILES['files']                          = $upload;
+
+			$post_result = $this->fu->_upload_post();
+			$file_result = $this->fu->_upload_files( $post_result['post_id'] );
+
+			$this->assertTrue( $post_result['success'] );
+			$this->assertTrue( $file_result['success'] );
+			$this->assertSame( 'Combined Visitor', get_post_meta( $post_result['post_id'], 'author_name', true ) );
+			$this->assertCount( 1, $file_result['media_ids'] );
+			$this->assertSame( 'Combined Visitor', get_post_meta( $file_result['media_ids'][0], 'author_name', true ) );
+		} finally {
+			$this->delete_uploaded_media( $file_result, array( $upload['tmp_name'] ) );
+			if ( isset( $post_result['post_id'] ) && ! is_wp_error( $post_result['post_id'] ) ) {
+				wp_delete_post( $post_result['post_id'], true );
+			}
 		}
 	}
 }
