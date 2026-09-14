@@ -1591,8 +1591,9 @@ class Frontend_Uploader {
 		if ( isset( $res['response'] ) && isset( $map[ $res['response'] ] ) )
 			$output .= $this->_notice_html( $map[ $res['response'] ]['text'] , $map[ $res['response'] ]['class'] );
 
-		if ( !empty( $res['errors' ] ) && 'fu-error' === $res['response'] )
-			$output .= $this->_display_errors( $res['errors' ] );
+		if ( ! empty( $res['errors'] ) && isset( $res['response'] ) && 'fu-error' === $res['response'] ) {
+			$output .= $this->_display_errors( $res['errors'] );
+		}
 
 		echo $output;
 	}

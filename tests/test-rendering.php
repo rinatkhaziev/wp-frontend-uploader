@@ -32,6 +32,34 @@ class Frontend_Uploader_Rendering_Test extends Frontend_Uploader_Test_Case {
 		$this->assertStringNotContainsString( 'onerror=', $output );
 	}
 
+	public function test_response_notice_ignores_errors_without_a_response() {
+		$warnings = array();
+
+		set_error_handler(
+			function ( $severity, $message ) use ( &$warnings ) {
+				$warnings[] = $message;
+				return true;
+			}
+		);
+
+		try {
+			$output = $this->capture_output(
+				function () {
+					$this->fu->_display_response_notices(
+						array(
+							'errors' => array( 'fu-error-media' => array( 'example.png' ) ),
+						)
+					);
+				}
+			);
+		} finally {
+			restore_error_handler();
+		}
+
+		$this->assertSame( array(), $warnings );
+		$this->assertSame( '', $output );
+	}
+
 	public function test_post_media_form_contains_scoped_parent_nonce_and_field_map() {
 		$page_id         = self::factory()->post->create( array( 'post_type' => 'page' ) );
 		$GLOBALS['post'] = get_post( $page_id );
