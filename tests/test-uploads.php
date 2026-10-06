@@ -99,9 +99,9 @@ class Frontend_Uploader_Uploads_Test extends Frontend_Uploader_Test_Case {
 		list( $result, $tmp_name ) = $this->upload_png( 'caption.png' );
 
 		try {
-			$attachment = get_post( $result['media_ids'][0] );
-
 			$this->assertTrue( $result['success'] );
+
+			$attachment = get_post( $result['media_ids'][0] );
 			$this->assertSame( 'A &lt; b data-x="1" &gt;bold&lt; /b &gt; &amp; "c"', $attachment->post_content );
 			$this->assertSame( 'A &lt; b data-x="1" &gt;bold&lt; /b &gt; &amp; "c"', $attachment->post_excerpt );
 		} finally {
@@ -138,6 +138,20 @@ class Frontend_Uploader_Uploads_Test extends Frontend_Uploader_Test_Case {
 		try {
 			$this->assertTrue( $result['success'] );
 			$this->assertSame( $expected, get_post( $result['media_ids'][0] )->post_title );
+		} finally {
+			$this->delete_upload( $result, $tmp_name );
+		}
+	}
+
+	/**
+	 * A title taken from the filename has no markup to encode: sanitize_file_name() strips it.
+	 */
+	public function test_attachment_title_from_filename_has_no_markup() {
+		list( $result, $tmp_name ) = $this->upload_png( '< b >x< /b > & y.png' );
+
+		try {
+			$this->assertTrue( $result['success'] );
+			$this->assertSame( 'b-x-b-y', get_post( $result['media_ids'][0] )->post_title );
 		} finally {
 			$this->delete_upload( $result, $tmp_name );
 		}

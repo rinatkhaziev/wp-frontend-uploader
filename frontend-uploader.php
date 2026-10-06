@@ -515,11 +515,10 @@ class Frontend_Uploader {
 			return '';
 		}
 
-		$text    = sanitize_text_field( wp_unslash( (string) $value ) );
-		$charset = _canonical_charset( get_option( 'blog_charset' ) );
+		$text = sanitize_text_field( wp_unslash( (string) $value ) );
 
-		// ENT_HTML5, so entities kses keeps, such as &apos;, aren't double-encoded.
-		return wp_slash( htmlspecialchars( $text, ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_HTML5, $charset, false ) );
+		// Charset-agnostic, and keeps the same entities kses does.
+		return wp_slash( wp_kses_normalize_entities( str_replace( array( '<', '>' ), array( '&lt;', '&gt;' ), $text ) ) );
 	}
 
 	/**
