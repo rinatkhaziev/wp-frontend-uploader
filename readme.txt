@@ -5,7 +5,7 @@ Tags: frontend, image, images, media, uploader, upload, video, audio, photo, pho
 Requires at least: 4.6
 Requires PHP: 8.0
 Tested up to: 7.1
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 License: GPLv2 or later
 
 This plugin allows your visitors to upload User Generated Content (media and posts/custom-post-types with media).
@@ -399,6 +399,10 @@ function my_fu_upload_result( $layout, $result ) {
 }`
 
 == Changelog ==
+
+= 1.3.6 (Oct 6, 2026) =
+* Store tag-like text in submitted titles and captions as text, so it can't turn into markup.
+* Fix a PHP warning when upload notices are rendered without a response.
 
 = 1.3.5 (Sep 2, 2026) =
 * Improve upload and moderation request handling.

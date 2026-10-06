@@ -19,6 +19,9 @@
 composer.json
 composer.lock
 phpunit.xml
+phpunit.xml.dist
+.wp-env.json
+.wp-env.phpunit.json
 readme.md
 
 .DS_Store
