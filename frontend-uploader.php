@@ -392,10 +392,11 @@ class Frontend_Uploader {
 			elseif ( isset( $_POST['post_content'] ) )
 				$caption = $this->_text_to_html( $_POST['post_content'] );
 
-			$filename = pathinfo( $k['name'], PATHINFO_FILENAME );
+			$filename       = pathinfo( $k['name'], PATHINFO_FILENAME );
+			$title          = isset( $_POST['post_title'] ) ? $this->_text_to_html( $_POST['post_title'] ) : '';
 			$post_overrides = array(
 				'post_status' => $this->_is_public() ? 'publish' : 'private',
-				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? $this->_text_to_html( $_POST['post_title'] ) : sanitize_text_field( $filename ),
+				'post_title' => '' !== $title ? $title : sanitize_text_field( $filename ),
 				'post_content' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : $caption,
 				'post_excerpt' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : $caption,
 			);
@@ -504,6 +505,8 @@ class Frontend_Uploader {
 	 * elements when the post is saved, so the remaining `&`, `<` and `>` are encoded.
 	 * Quotes stay as they are: they mean nothing in text, and search matches them.
 	 *
+	 * @since 1.3.6
+	 *
 	 * @param mixed $value Slashed request value.
 	 * @return string Slashed HTML, as wp_insert_post() expects.
 	 */
@@ -512,9 +515,11 @@ class Frontend_Uploader {
 			return '';
 		}
 
-		$text = sanitize_text_field( wp_unslash( (string) $value ) );
+		$text    = sanitize_text_field( wp_unslash( (string) $value ) );
+		$charset = _canonical_charset( get_option( 'blog_charset' ) );
 
-		return wp_slash( htmlspecialchars( $text, ENT_NOQUOTES | ENT_SUBSTITUTE, get_bloginfo( 'charset' ), false ) );
+		// ENT_HTML5, so entities kses keeps, such as &apos;, aren't double-encoded.
+		return wp_slash( htmlspecialchars( $text, ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_HTML5, $charset, false ) );
 	}
 
 	/**
