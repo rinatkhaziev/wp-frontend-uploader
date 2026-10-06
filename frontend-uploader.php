@@ -383,21 +383,23 @@ class Frontend_Uploader {
 			// Setup some default values
 			// However, you can make additional changes on 'fu_after_upload' action
 			$caption = '';
+			// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- upload_content() verifies FU_NONCE; _text_to_html() unslashes, sanitizes and re-slashes.
 
 			// Try to set post caption if the field is set on request
 			// Fallback to post_content if the field is not set
 			if ( isset( $_POST['caption'] ) )
-				$caption = sanitize_text_field( $_POST['caption'] );
+				$caption = $this->_text_to_html( $_POST['caption'] );
 			elseif ( isset( $_POST['post_content'] ) )
-				$caption = sanitize_text_field( $_POST['post_content'] );
+				$caption = $this->_text_to_html( $_POST['post_content'] );
 
 			$filename = pathinfo( $k['name'], PATHINFO_FILENAME );
 			$post_overrides = array(
 				'post_status' => $this->_is_public() ? 'publish' : 'private',
-				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : sanitize_text_field( $filename ),
+				'post_title' => isset( $_POST['post_title'] ) && ! empty( $_POST['post_title'] ) ? $this->_text_to_html( $_POST['post_title'] ) : sanitize_text_field( $filename ),
 				'post_content' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : $caption,
 				'post_excerpt' => empty( $caption ) ? __( 'Unnamed', 'frontend-uploader' ) : $caption,
 			);
+			// phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 			$m = $k;
 
@@ -495,6 +497,27 @@ class Frontend_Uploader {
 	}
 
 	/**
+	 * Converts a submitted plain-text value to HTML for a post field.
+	 *
+	 * Post titles, content and excerpts are HTML. sanitize_text_field() only strips
+	 * what PHP sees as tags, and kses rebuilds what's left, such as `< b >`, into real
+	 * elements when the post is saved, so the remaining `&`, `<` and `>` are encoded.
+	 * Quotes stay as they are: they mean nothing in text, and search matches them.
+	 *
+	 * @param mixed $value Slashed request value.
+	 * @return string Slashed HTML, as wp_insert_post() expects.
+	 */
+	private function _text_to_html( $value ) {
+		if ( ! is_scalar( $value ) ) {
+			return '';
+		}
+
+		$text = sanitize_text_field( wp_unslash( (string) $value ) );
+
+		return wp_slash( htmlspecialchars( $text, ENT_NOQUOTES | ENT_SUBSTITUTE, get_bloginfo( 'charset' ), false ) );
+	}
+
+	/**
 	 * Return count of regex matches for common type of upload attack eval(base64($malicious_payload))
 	 * @param  string $str [description]
 	 * @return int count of matches
@@ -526,15 +549,15 @@ class Frontend_Uploader {
 			}
 		}
 
-		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- wp_insert_post() is "Expected_slashed (everything!)" and unslashes the array itself.
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- _text_to_html() unslashes, sanitizes and re-slashes.
 		if ( isset( $_POST['caption'] ) && is_scalar( $_POST['caption'] ) ) {
-			$post_title = sanitize_text_field( $_POST['caption'] );
+			$post_title = $this->_text_to_html( $_POST['caption'] );
 		} elseif ( isset( $_POST['post_title'] ) && is_scalar( $_POST['post_title'] ) ) {
-			$post_title = sanitize_text_field( $_POST['post_title'] );
+			$post_title = $this->_text_to_html( $_POST['post_title'] );
 		} else {
 			$post_title = '';
 		}
-		// phpcs:enable WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		// phpcs:enable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- wp_filter_post_kses() sanitizes and re-slashes; wp_insert_post() expects slashed data.
 		$post_content = isset( $_POST['post_content'] ) && is_scalar( $_POST['post_content'] ) ? wp_filter_post_kses( (string) $_POST['post_content'] ) : '';

@@ -73,4 +73,55 @@ class Frontend_Uploader_Uploads_Test extends Frontend_Uploader_Test_Case {
 			unlink( $tmp_name );
 		}
 	}
+
+	/**
+	 * Request fields the attachment caption is read from.
+	 *
+	 * @return array[]
+	 */
+	public function data_caption_fields() {
+		return array(
+			'caption'                    => array( 'caption' ),
+			'post_content as a fallback' => array( 'post_content' ),
+		);
+	}
+
+	/**
+	 * Tag-like text that sanitize_text_field() leaves must not come back as markup.
+	 *
+	 * @dataProvider data_caption_fields
+	 *
+	 * @param string $field Request field holding the caption.
+	 */
+	public function test_caption_is_stored_as_text_that_kses_cannot_rebuild_into_markup( $field ) {
+		$tmp_name = wp_tempnam( 'caption.png' );
+		file_put_contents( $tmp_name, base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=' ) );
+		$result = array();
+
+		try {
+			$this->fu->allowed_mime_types = array( 'png' => 'image/png' );
+			$_POST[ $field ]              = wp_slash( 'A < b data-x="1" >bold< /b > & "c"' );
+			$_FILES['files']              = array(
+				'name'     => array( 'caption.png' ),
+				'type'     => array( 'image/png' ),
+				'tmp_name' => array( $tmp_name ),
+				'error'    => array( 0 ),
+				'size'     => array( filesize( $tmp_name ) ),
+			);
+
+			$result     = $this->fu->_upload_files();
+			$attachment = get_post( $result['media_ids'][0] );
+
+			$this->assertTrue( $result['success'] );
+			$this->assertSame( 'A &lt; b data-x="1" &gt;bold&lt; /b &gt; &amp; "c"', $attachment->post_content );
+			$this->assertSame( 'A &lt; b data-x="1" &gt;bold&lt; /b &gt; &amp; "c"', $attachment->post_excerpt );
+		} finally {
+			foreach ( $result['media_ids'] ?? array() as $media_id ) {
+				wp_delete_attachment( $media_id, true );
+			}
+			if ( file_exists( $tmp_name ) ) {
+				unlink( $tmp_name );
+			}
+		}
+	}
 }
