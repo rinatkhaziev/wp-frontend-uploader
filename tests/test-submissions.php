@@ -18,13 +18,20 @@ class Frontend_Uploader_Submissions_Test extends Frontend_Uploader_Test_Case {
 	}
 
 	public function test_post_submission_is_private_and_sanitized() {
-		$category_id = self::factory()->category->create();
-		$_POST       = array(
+		$category_id      = self::factory()->category->create();
+		$matching_user_id = self::factory()->user->create(
+			array(
+				'user_login'   => 'guest-author-admin',
+				'display_name' => 'Guest Author Admin',
+				'role'         => 'administrator',
+			)
+		);
+		$_POST = array(
 			'post_type'     => 'post',
 			'post_title'    => '<b>Submission title</b>',
 			'post_content'  => '<script>alert(1)</script><p>Allowed content</p>',
 			'post_category' => $category_id . ',not-a-number',
-			'post_author'   => 'Visitor <script>alert(1)</script>',
+			'post_author'   => 'guest-author-admin <script>alert(1)</script>',
 		);
 
 		$result = $this->fu->_upload_post();
@@ -38,7 +45,8 @@ class Frontend_Uploader_Submissions_Test extends Frontend_Uploader_Test_Case {
 		$this->assertStringContainsString( '<p>Allowed content</p>', $post->post_content );
 		$this->assertContains( $category_id, wp_get_post_categories( $post->ID ) );
 		$this->assertSame( 0, (int) $post->post_author );
-		$this->assertSame( 'Visitor', get_post_meta( $post->ID, 'author_name', true ) );
+		$this->assertNotSame( $matching_user_id, (int) $post->post_author );
+		$this->assertSame( 'guest-author-admin', get_post_meta( $post->ID, 'author_name', true ) );
 	}
 
 	public function test_auto_approved_submission_is_published() {
@@ -69,7 +77,20 @@ class Frontend_Uploader_Submissions_Test extends Frontend_Uploader_Test_Case {
 		$this->assertSame( 'post', $post->post_type );
 		$this->assertSame( 'Untitled post submission', $post->post_title );
 		$this->assertSame( '', $post->post_content );
-		$this->assertSame( '', get_post_meta( $post->ID, 'author_name', true ) );
+		$this->assertFalse( metadata_exists( 'post', $post->ID, 'author_name' ) );
+	}
+
+	public function test_empty_guest_author_is_not_persisted() {
+		$_POST = array(
+			'post_type'   => 'post',
+			'post_title'  => 'Anonymous submission',
+			'post_author' => '   ',
+		);
+
+		$result = $this->fu->_upload_post();
+
+		$this->assertTrue( $result['success'] );
+		$this->assertFalse( metadata_exists( 'post', $result['post_id'], 'author_name' ) );
 	}
 
 	public function test_disallowed_post_type_falls_back_to_post() {
