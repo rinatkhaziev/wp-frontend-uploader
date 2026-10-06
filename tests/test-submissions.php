@@ -41,6 +41,37 @@ class Frontend_Uploader_Submissions_Test extends Frontend_Uploader_Test_Case {
 		$this->assertSame( 'Visitor', get_post_meta( $post->ID, 'author_name', true ) );
 	}
 
+	/**
+	 * Request fields the post title is read from.
+	 *
+	 * @return array[]
+	 */
+	public function data_title_fields() {
+		return array(
+			'caption'    => array( 'caption' ),
+			'post_title' => array( 'post_title' ),
+		);
+	}
+
+	/**
+	 * Tag-like text that sanitize_text_field() leaves must not come back as markup.
+	 *
+	 * @dataProvider data_title_fields
+	 *
+	 * @param string $field Request field holding the title.
+	 */
+	public function test_title_is_stored_as_text_that_kses_cannot_rebuild_into_markup( $field ) {
+		$_POST = array(
+			'post_type' => 'post',
+			$field      => wp_slash( 'A < b >bold< /b > & "c"' ),
+		);
+
+		$result = $this->fu->_upload_post();
+
+		$this->assertTrue( $result['success'] );
+		$this->assertSame( 'A &lt; b &gt;bold&lt; /b &gt; &amp; "c"', get_post( $result['post_id'] )->post_title );
+	}
+
 	public function test_auto_approved_submission_is_published() {
 		$this->fu->settings['auto_approve_any_files'] = 'on';
 		$_POST = array(
